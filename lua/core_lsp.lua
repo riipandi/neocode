@@ -75,7 +75,7 @@ local function format_code()
 
   if filetype == 'python' or filename:match('%.py$') then
     if filename == '' then
-      print("Save the file first before formatting Python")
+      vim.notify("Save the file first before formatting Python", vim.log.levels.WARN)
       return
     end
 
@@ -85,10 +85,10 @@ local function format_code()
     if vim.v.shell_error == 0 then
       vim.cmd('checktime')
       vim.api.nvim_win_set_cursor(0, cursor_pos)
-      print("Formatted with black")
+      vim.notify("Formatted with black", vim.log.levels.INFO)
       return
     else
-      print("No Python formatter available (install black)")
+      vim.notify("No Python formatter available (install black)", vim.log.levels.WARN)
       return
     end
   end
@@ -107,15 +107,15 @@ local function format_code()
       end
       vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, formatted_lines)
       vim.api.nvim_win_set_cursor(0, cursor_pos)
-      print("Shell script formatted with shfmt")
+      vim.notify("Shell script formatted with shfmt", vim.log.levels.INFO)
       return
     else
-      print("shfmt error: " .. result)
+      vim.notify("shfmt error: " .. result, vim.log.levels.ERROR)
       return
     end
   end
 
-  print("No formatter available for " .. filetype)
+  vim.notify("No formatter available for " .. filetype, vim.log.levels.WARN)
 end
 
 vim.api.nvim_create_user_command("FormatCode", format_code, {
@@ -202,10 +202,10 @@ vim.diagnostic.config({
 vim.api.nvim_create_user_command('LspInfo', function()
   local clients = vim.lsp.get_clients({ bufnr = 0 })
   if #clients == 0 then
-    print("No LSP clients attached to current buffer")
+    vim.notify("No LSP clients attached to current buffer", vim.log.levels.WARN)
   else
     for _, client in ipairs(clients) do
-      print("LSP: " .. client.name .. " (ID: " .. client.id .. ")")
+      vim.notify("LSP: " .. client.name .. " (ID: " .. client.id .. ")", vim.log.levels.INFO)
     end
   end
 end, { desc = 'Show LSP client info' })

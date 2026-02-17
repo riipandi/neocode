@@ -9,7 +9,7 @@ local augroup = vim.api.nvim_create_augroup
 vim.keymap.set("n", "<leader>pa", function()
 	local path = vim.fn.expand("%:p")
 	vim.fn.setreg("+", path)
-	print("file:", path)
+	vim.notify("file: " .. path, vim.log.levels.INFO)
 end)
 
 -- Basic autocommands

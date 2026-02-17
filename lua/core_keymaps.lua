@@ -132,7 +132,7 @@ keymap("n", "<C-g>", function()
   local buf = vim.api.nvim_get_current_buf()
   local name = vim.api.nvim_buf_get_name(buf)
   if name == "" then
-    vim.cmd('echo "No file open"')
+    vim.notify("No file open", vim.log.levels.WARN)
     return
   end
 
@@ -182,7 +182,7 @@ keymap("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>", ns)
 
     -- Prevent closing when focused on nvim-tree
     if current_name:match("NvimTree") then
-      vim.cmd('echo "Cannot close explorer buffer"')
+      vim.notify("Cannot close explorer buffer", vim.log.levels.WARN)
       return
     end
 
