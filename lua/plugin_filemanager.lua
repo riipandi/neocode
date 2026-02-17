@@ -163,7 +163,38 @@ local function custom_on_attach(bufnr)
   vim.keymap.set('n', '<2-LeftMouse>', api.node.open.edit,            opts('Open'))
   vim.keymap.set('n', 'q',       api.tree.close,                       opts('Close'))
   vim.keymap.set('n', 'g?',      api.tree.toggle_help,                opts('Help'))
-  vim.keymap.set('n', 'dd',      api.fs.remove,                        opts('Delete'))
+
+  -- File operations
+  vim.keymap.set('n', 'a',       function() api.fs.create() end,       opts('Create'))
+  vim.keymap.set('n', 'd',       function() api.fs.remove() end,       opts('Delete'))
+  vim.keymap.set('n', 'r',       function() api.fs.rename() end,       opts('Rename'))
+  vim.keymap.set('n', 'x',       function() api.fs.cut() end,           opts('Cut'))
+  vim.keymap.set('n', 'p',       function() api.fs.paste() end,         opts('Paste'))
+  vim.keymap.set('n', 'yy',      function() api.fs.copy.node() end,     opts('Copy Name'))
+  vim.keymap.set('n', 'yn',      function() api.fs.copy.filename() end, opts('Copy Filename'))
+  vim.keymap.set('n', 'yp',      function() api.fs.copy.absolute_path() end, opts('Copy Absolute Path'))
+  vim.keymap.set('n', 'y.',      function() api.fs.copy.relative_path() end, opts('Copy Relative Path'))
+
+  -- Navigation
+  -- Note: Change directory is disabled in config to prevent parent access
+  vim.keymap.set('n', 'J',       function() api.node.navigate.sibling.next() end, opts('Next Sibling'))
+  vim.keymap.set('n', 'K',       function() api.node.navigate.sibling.prev() end, opts('Prev Sibling'))
+  vim.keymap.set('n', '<C-v>',   function() api.node.open.vertical() end, opts('Open: Vertical Split'))
+  vim.keymap.set('n', '<C-s>',   function() api.node.open.horizontal() end, opts('Open: Horizontal Split'))
+  vim.keymap.set('n', '<C-t>',   function() api.node.open.tab() end, opts('Open: New Tab'))
+  vim.keymap.set('n', '<C-e>',   function() api.node.open.replace_tree_buffer() end, opts('Open: In Place'))
+
+  -- Tree operations
+  vim.keymap.set('n', '<C-k>',   function() api.tree.toggle_custom_filter() end, opts('Toggle Filter'))
+  vim.keymap.set('n', 'f',       function() api.live_filter.start() end, opts('Filter'))
+  vim.keymap.set('n', 'F',       function() api.live_filter.clear() end, opts('Clean Filter'))
+  vim.keymap.set('n', '[c',      function() api.node.navigate.git.prev() end, opts('Prev Git'))
+  vim.keymap.set('n', ']c',      function() api.node.navigate.git.next() end, opts('Next Git'))
+  vim.keymap.set('n', 's',       function() api.node.run.system() end, opts('Run System'))
+  vim.keymap.set('n', 'u',       function() api.tree.toggle_hidden_filter() end, opts('Toggle Dotfiles'))
+  vim.keymap.set('n', 'W',       function() api.tree.collapse_all() end, opts('Collapse'))
+  vim.keymap.set('n', 'E',       function() api.tree.expand_all() end, opts('Expand All'))
+  vim.keymap.set('n', 'R',       function() api.tree.reload() end, opts('Refresh'))
 end
 
 require('nvim-tree').setup({
@@ -179,6 +210,27 @@ require('nvim-tree').setup({
   },
   filters = {
     dotfiles = true,
+  },
+  -- Restrict nvim-tree to current working directory only
+  respect_buf_cwd = false,
+  sync_root_with_cwd = false,
+  update_focused_file = {
+    enable = false,
+  },
+  -- Prevent navigation to parent directories
+  actions = {
+    change_dir = {
+      enable = false,
+      global = false,
+    },
+    open_file = {
+      quit_on_open = false,
+      resize_window = false,
+    },
+  },
+  -- Don't follow symlinks to parent directories
+  filesystem_watchers = {
+    enable = true,
   },
 })
 

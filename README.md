@@ -108,30 +108,65 @@ rm -fr ~/.cache/nvim
 
 ### File Explorer (nvim-tree)
 
-| Shortcut | Action          |
-|----------|-----------------|
-| `h`      | Collapse folder |
-| `l`      | Expand folder   |
-| `Left`   | Collapse folder |
-| `Right`  | Expand folder   |
-| `q`      | Close explorer  |
-| `Enter`  | Open file       |
+**Note**: File explorer is restricted to current working directory (cwd) only. Cannot navigate to parent directories.
+
+| Shortcut | Action                     |
+|----------|----------------------------|
+| `h`      | Collapse folder            |
+| `l`      | Expand folder              |
+| `Left`   | Collapse folder            |
+| `Right`  | Expand folder              |
+| `Enter`  | Open file                  |
+| `q`      | Close explorer             |
+| `a`      | Create file/folder         |
+| `d`      | Delete                     |
+| `r`      | Rename/move                |
+| `x`      | Cut                        |
+| `p`      | Paste                      |
+| `yy`     | Copy name to clipboard     |
+| `yn`     | Copy filename to clipboard |
+| `yp`     | Copy absolute path         |
+| `y.`     | Copy relative path         |
+| `J`      | Next sibling               |
+| `K`      | Previous sibling           |
+| `Ctrl+V` | Open in vertical split     |
+| `Ctrl+S` | Open in horizontal split   |
+| `Ctrl+T` | Open in new tab            |
+| `Ctrl+E` | Open in place              |
+| `Ctrl+K` | Toggle custom filter       |
+| `f`      | Live filter                |
+| `F`      | Clear filter               |
+| `[c`     | Previous git item          |
+| `]c`     | Next git item              |
+| `s`      | Open with system app       |
+| `u`      | Toggle hidden files        |
+| `W`      | Collapse all               |
+| `E`      | Expand all                 |
+| `R`      | Refresh tree               |
+| `g?`     | Show help                  |
 
 ### OpenCode (AI Assistant)
 
-| Shortcut       | Action                         |
-|----------------|--------------------------------|
-| `Ctrl+Shift+L` | Toggle OpenCode (right split, 60:40) |
-| `leader` + `oa` | Ask about this                  |
-| `leader` + `os` | Select prompt/command           |
-| `leader` + `oc` | Command                         |
-| `leader` + `on` | New session                     |
-| `leader` + `oi` | Interrupt session               |
-| `leader` + `oA` | Cycle agent                     |
-| `go`           | Add range to opencode (operator) |
-| `goo`          | Add line to opencode            |
-| `Ctrl+Shift+U` | Scroll opencode up              |
-| `Ctrl+Shift+D` | Scroll opencode down            |
+| Shortcut        | Action                               |
+|-----------------|--------------------------------------|
+| `Ctrl+Shift+L`  | Toggle OpenCode (right split, 65:35) |
+| `leader` + `of` | Focus opencode panel (from editor)   |
+| `Esc`           | Return to editor (when in opencode)  |
+| `leader` + `oa` | Ask about this                       |
+| `leader` + `os` | Select prompt/command                |
+| `leader` + `oc` | Command                              |
+| `leader` + `on` | New session                          |
+| `leader` + `oi` | Interrupt session                    |
+| `leader` + `ox` | Exit OpenCode (with confirmation)    |
+| `leader` + `oA` | Cycle agent                          |
+| `go`            | Add range to opencode (operator)     |
+| `goo`           | Add line to opencode                 |
+| `Ctrl+Shift+U`  | Scroll opencode up                   |
+| `Ctrl+Shift+D`  | Scroll opencode down                 |
+
+**Note**:
+- Exit OpenCode (`leader+ox`) uses fzf-lua dialog (same as Ctrl+Q for Quit Neovim).
+- Use **cursor** for navigation and **Enter** to select Yes/No.
 
 ### Search
 
