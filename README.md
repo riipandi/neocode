@@ -75,15 +75,16 @@ rm -fr ~/.cache/nvim
 
 ### Editor
 
-| Shortcut       | Action                                |
-|----------------|---------------------------------------|
-| `Ctrl+G`       | Go to line (format: `10` atau `10:5`) |
-| `Ctrl+Shift+G` | Toggle LazyGit                        |
-| `Ctrl+X`       | Close buffer                          |
-| `Ctrl+Shift+W` | Close all buffers                     |
-| `Ctrl+Q`       | Quit Neovim                           |
-| `Ctrl+\`       | Split vertical                        |
-| `Ctrl+Shift+\` | Split horizontal                      |
+| Shortcut       | Action                              |
+|----------------|-------------------------------------|
+| `Ctrl+G`       | Go to line (format: `10` or `10:5`) |
+| `Ctrl+Shift+G` | Toggle LazyGit                      |
+| `Ctrl+Shift+S` | Toggle floating terminal            |
+| `Ctrl+X`       | Close buffer                        |
+| `Ctrl+Shift+W` | Close all buffers                   |
+| `Ctrl+Q`       | Quit Neovim                         |
+| `Ctrl+\`       | Split vertical                      |
+| `Ctrl+Shift+\` | Split horizontal                    |
 
 ### Scrolling
 
