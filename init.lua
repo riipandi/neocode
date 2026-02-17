@@ -101,19 +101,6 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
   end,
 })
 
--- Setup cmdline keymaps for popupmenu navigation
-local function map_cmdline_nav(keys, pum_action, fallback)
-  vim.keymap.set("c", keys, function()
-    if vim.fn.pumvisible() == 1 then
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(pum_action, true, true, true), "n", true)
-      return ""
-    else
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(fallback, true, true, true), "n", true)
-      return ""
-    end
-  end, { noremap = true, silent = true })
-end
-
 -- Note: Insert mode completion handled by blink.cmp with preset 'default'
 -- This provides: arrow keys navigation, tab navigation, and enter to accept
 -- Display invisible characters

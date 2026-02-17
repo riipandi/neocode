@@ -86,8 +86,8 @@ snacks.setup({
       commands = {
         layout = {
           box = "vertical",
-          width = 0.4,
-          height = 0.6,
+          width = 0.35,
+          height = 0.55,
           border = "rounded",
           title = "{title}",
           title_pos = "center",

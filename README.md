@@ -213,6 +213,7 @@ npx tiged https://github.com/riipandi/neovim-config ~/.config/nvim
 - https://github.com/radleylewis/nvim-lite
 - https://vieitesss.github.io/posts/Neovim-new-config
 - https://github.com/kezhenxu94/dotfiles/tree/main/config/nvim
+- https://ricoberger.de/blog/posts/my-dotfiles/
 
 <!-- link reference definition -->
 [kickstart-nvim]: https://github.com/nvim-lua/kickstart.nvim

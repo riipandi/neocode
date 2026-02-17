@@ -23,7 +23,7 @@ vim.g.opencode_opts = {
     snacks = {
       win = {
         position = "right",
-        width = math.floor(vim.o.columns * 0.35),
+        width = math.floor(vim.o.columns * 0.30),
       },
     },
   },

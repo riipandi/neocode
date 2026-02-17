@@ -84,7 +84,6 @@ require('which-key').setup({
     { '<leader>t', group = 'Toggle', mode = "n" },
     { '<leader>w', group = 'Window', mode = "n" },
     { '<leader>x', group = 'Trouble', mode = "n" },
-    { '<leader>:', group = 'Command', mode = "n" },
 
     { "<leader>", group = "Leader", mode = "v" },
     { "g", group = "Goto", mode = "v" },
