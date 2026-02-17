@@ -57,6 +57,23 @@ snacks.setup({
           { win = "preview", title = "{preview}", width = 0.60, border = "rounded" },
         },
       },
+      files = {
+        layout = {
+          box = "horizontal",
+          width = 0.75,
+          height = 0.8,
+          { win = "preview", title = "{preview}", width = 0.60, border = "rounded" },
+          {
+            box = "vertical",
+            width = 0.40,
+            border = "rounded",
+            title = "{title} {live} {flags}",
+            title_pos = "center",
+            { win = "input", height = 1, border = "bottom" },
+            { win = "list", border = "none" },
+          },
+        },
+      },
     },
   },
 
@@ -108,7 +125,34 @@ snacks.setup({
   win = {
     enabled = true,
   },
+
+  -- Terminal
+  terminal = {
+    enabled = true,
+  },
 })
+
+-- Terminal window style (must be after setup)
+snacks.config.styles.terminal = {
+  width = 0.8,
+  height = 0.8,
+  border = "rounded",
+  bo = {
+    filetype = "snacks_terminal",
+  },
+  wo = {},
+  keys = {
+    q = "hide",
+    term_normal = {
+      "<esc><esc>",
+      function(self)
+        vim.cmd("stopinsert")
+      end,
+      mode = "t",
+      desc = "Escape to normal mode",
+    },
+  },
+}
 
 -- ============================================================================
 -- Navigation Keymaps
@@ -162,9 +206,7 @@ end, { desc = "Show buffer list" })
 -- Find files
 vim.keymap.set("n", "<C-p>", function()
   snacks.picker.files({
-    layout = {
-      preset = "default",
-    },
+    layout = { preset = "files" },
   })
 end, { desc = "Find files" })
 
@@ -209,6 +251,17 @@ end, { desc = "Toggle LazyGit" })
 vim.keymap.set("n", "<leader>gs", function()
   snacks.picker.git_status()
 end, { desc = "Git status" })
+
+-- ============================================================================
+-- Terminal
+-- ============================================================================
+
+vim.keymap.set("n", "<C-S-s>", function()
+  snacks.terminal.toggle(vim.o.shell, {
+    cwd = vim.fn.getcwd(),
+    win = { style = "terminal" },
+  })
+end, { desc = "Toggle floating terminal" })
 
 -- ============================================================================
 -- Global Selection Function
