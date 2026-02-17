@@ -3,17 +3,7 @@ local s = { silent = true }
 local ns = { noremap = true, silent = true }
 local er = { expr = true, replace_keycodes = false }
 
--- Global function for selection dialogs (confirmation dialogs)
--- Uses snacks.picker.select with compact layout configured in plugin_snacks.lua
-_G.fzf_select = function(prompt, choices, callback)
-  require("snacks").picker.select(choices, {
-    prompt = prompt,
-  }, function(choice)
-    if choice then
-      callback(choice)
-    end
-  end)
-end
+
 
 -- Helper function to check if buffer is snacks explorer
 local function is_explorer_buffer(buf)
@@ -150,7 +140,7 @@ _G.close_buffer = function()
   end
 
   if modified then
-    fzf_select("Save changes?", { "Yes", "No" }, function(choice)
+    ui_select("Save changes?", { "Yes", "No" }, function(choice)
       if choice == "Yes" then
         vim.cmd.write()
       end
@@ -190,7 +180,7 @@ _G.close_all_buffers = function()
   end
 
   if #modified > 0 then
-    fzf_select("Unsaved files - save?", { "Save all and close", "Don't save and close", "Cancel" }, function(choice)
+    ui_select("Unsaved files - save?", { "Save all and close", "Don't save and close", "Cancel" }, function(choice)
       if choice == "Save all and close" then
         vim.cmd("wall")
         vim.cmd("bufdo! bdelete!")
@@ -207,7 +197,7 @@ keymap("n", "<C-S-w>", _G.close_all_buffers, { desc = "Close all buffers (Ctrl+S
 
 -- Quit Neovim with Ctrl+Q (with unsaved changes check)
 _G.quit_neovim = function()
-  fzf_select("Quit Neovim?", { "Yes", "No" }, function(choice)
+  ui_select("Quit Neovim?", { "Yes", "No" }, function(choice)
     if choice ~= "Yes" then
       return
     end
@@ -225,7 +215,7 @@ _G.quit_neovim = function()
     end
 
     if #modified_buffers > 0 then
-      fzf_select("Unsaved buffers - save?", { "Save all and quit", "Don't save and quit", "Cancel" }, function(choice2)
+      ui_select("Unsaved buffers - save?", { "Save all and quit", "Don't save and quit", "Cancel" }, function(choice2)
         if choice2 == "Save all and quit" then
           vim.cmd("wall")
           vim.cmd("qa!")

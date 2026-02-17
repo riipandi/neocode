@@ -20,18 +20,26 @@ snacks.setup({
     },
   },
 
-  -- Fuzzy picker (replaces fzf-lua)
+  -- Fuzzy picker
   picker = {
     enabled = true,
-  },
-
-  -- Configure vim.ui.select behavior
-  styles = {
-    select = {
-      width = 25,
-      border = "rounded",
-      min_height = 2,
-      max_height = 8,
+    layouts = {
+      select = {
+        hidden = { "preview" },
+        layout = {
+          backdrop = false,
+          width = 0.20,
+          min_width = 20,
+          height = 0.2,
+          min_height = 3,
+          box = "vertical",
+          border = "rounded",
+          title = "{title}",
+          title_pos = "center",
+          { win = "input", height = 1, border = "bottom" },
+          { win = "list", border = "none" },
+        },
+      },
     },
   },
 
@@ -191,14 +199,15 @@ end, { desc = "Git status" })
 -- Global Selection Function
 -- ============================================================================
 
-_G.fzf_select = function(prompt, choices, callback)
+_G.ui_select = function(prompt, choices, callback)
   if not choices or type(choices) ~= "table" then
-    vim.notify("Invalid choices provided to fzf_select", vim.log.levels.ERROR)
+    vim.notify("Invalid choices provided to ui_select", vim.log.levels.ERROR)
     return
   end
-  
+
   snacks.picker.select(choices, {
     prompt = prompt,
+    layout = { preset = "select" },
   }, function(choice)
     if choice then
       callback(choice)

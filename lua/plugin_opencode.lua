@@ -66,7 +66,7 @@ vim.keymap.set("n", "<leader>oc", function() require("opencode").command() end, 
 vim.keymap.set("n", "<leader>on", function() require("opencode").command("session.new") end, { desc = "OpenCode: New session" })
 vim.keymap.set("n", "<leader>oi", function() require("opencode").command("session.interrupt") end, { desc = "OpenCode: Interrupt session" })
 vim.keymap.set("n", "<leader>ox", function()
-  _G.fzf_select("Exit OpenCode?", { "Yes", "No" }, function(choice)
+  _G.ui_select("Exit OpenCode?", { "Yes", "No" }, function(choice)
     if choice == "Yes" then
       local notify_orig = vim.notify
       vim.notify = function() end
