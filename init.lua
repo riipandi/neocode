@@ -53,7 +53,7 @@ vim.opt.pumblend = 10                              -- Transparency for popup men
 vim.opt.completeopt = "menuone,noinsert,noselect,preview"  -- Completion options
 vim.opt.showmatch = true                           -- Highlight matching brackets
 vim.opt.matchtime = 2                              -- How long to show matching bracket
-vim.opt.cmdheight = 1                              -- Command line height
+vim.opt.cmdheight = 0                              -- Command line height (noice handles UI)
 vim.opt.showmode = false                           -- Don't show the mode, since it's already in the status line
 vim.opt.winblend = 0                               -- Floating window transparency
 vim.opt.conceallevel = 0                           -- Don't hide markup
@@ -133,6 +133,7 @@ require 'plugin_completion'               -- Code completion (blink.cmp)
 require 'plugin_treesitter'               -- Syntax highlighting (nvim-treesitter)
 require 'plugin_filemanager'              -- File marks (miniharp)
 require 'plugin_lualine'                  -- Statusline (lualine)
+require 'plugin_noice'                    -- Cmdline UI replacement (noice)
 require 'plugin_neoscroll'                -- Smooth scrolling (neoscroll)
 require 'plugin_vcs'                      -- Version control (git)
 require 'plugin_whichkey'                 -- Which-key (keybindings helper)

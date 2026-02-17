@@ -47,35 +47,37 @@ rm -fr ~/.cache/nvim
 
 ## Dependencies (Plugins)
 
-| Plugin                        | Description                                                |
-|-------------------------------|------------------------------------------------------------|
-| **snacks.nvim**               | All-in-one UI utilities (picker, explorer, notifier, etc.) |
-| **blink.cmp**                 | Code completion with snippet support                       |
-| **friendly-snippets**         | Snippet collection                                         |
-| **lazydev.nvim**              | Neovim development                                         |
-| **colorful-menu.nvim**        | Colorful completion menus                                  |
-| **nvim-autopairs**            | Auto-close brackets and pairs                              |
-| **todo-comments.nvim**        | Highlight TODO comments                                    |
-| **urlview.nvim**              | Open URLs from text files                                  |
-| **cloak.nvim**                | Blur lines for sensitive info                              |
-| **conform.nvim**              | Slow/conforming async formatting                           |
-| **miniharp.nvim**             | Quick file marks and navigation                            |
-| **plenary.nvim**              | Utility functions                                          |
-| **lualine.nvim**              | Statusline theme                                           |
-| **nvim-web-devicons**         | File type icons                                            |
-| **mini.icons**                | Icon provider                                              |
-| **mason.nvim**                | LSP package manager                                        |
-| **mason-lspconfig.nvim**      | LSP configuration for Mason                                |
-| **mason-tool-installer.nvim** | Tool installer for Mason                                   |
-| **nvim-treesitter**           | Syntax highlighting                                        |
-| **lsp_signature.nvim**        | LSP signature help                                         |
-| **trouble.nvim**              | Pretty diagnostics UI                                      |
-| **fidget.nvim**               | LSP progress indicator                                     |
-| **nvim-lspconfig**            | LSP configuration                                          |
-| **gitsigns.nvim**             | Git signs in gutter                                        |
-| **which-key.nvim**            | Keybinding helper                                          |
-| **opencode.nvim**             | AI code assistant                                          |
-| **serpl**                     | Search & replace TUI (VSCode-like)                         |
+| Plugin                        | Description                                      |
+|-------------------------------|--------------------------------------------------|
+| **snacks.nvim**               | All-in-one UI utilities (picker, explorer, etc.) |
+| **noice.nvim**                | Cmdline UI replacement (floating popup)          |
+| **nui.nvim**                  | UI component library for noice                   |
+| **blink.cmp**                 | Code completion with snippet support             |
+| **friendly-snippets**         | Snippet collection                               |
+| **lazydev.nvim**              | Neovim development                               |
+| **colorful-menu.nvim**        | Colorful completion menus                        |
+| **nvim-autopairs**            | Auto-close brackets and pairs                    |
+| **todo-comments.nvim**        | Highlight TODO comments                          |
+| **urlview.nvim**              | Open URLs from text files                        |
+| **cloak.nvim**                | Blur lines for sensitive info                    |
+| **conform.nvim**              | Slow/conforming async formatting                 |
+| **miniharp.nvim**             | Quick file marks and navigation                  |
+| **plenary.nvim**              | Utility functions                                |
+| **lualine.nvim**              | Statusline for fancy status bar                  |
+| **nvim-web-devicons**         | File type icons                                  |
+| **mini.icons**                | Icon provider                                    |
+| **mason.nvim**                | LSP package manager                              |
+| **mason-lspconfig.nvim**      | LSP configuration for Mason                      |
+| **mason-tool-installer.nvim** | Tool installer for Mason                         |
+| **nvim-treesitter**           | Syntax highlighting                              |
+| **lsp_signature.nvim**        | LSP signature help                               |
+| **trouble.nvim**              | Pretty diagnostics UI                            |
+| **fidget.nvim**               | LSP progress indicator                           |
+| **nvim-lspconfig**            | LSP configuration                                |
+| **gitsigns.nvim**             | Git signs in gutter                              |
+| **which-key.nvim**            | Keybinding helper                                |
+| **opencode.nvim**             | AI code assistant                                |
+| **serpl**                     | Search & replace TUI (VSCode-like)               |
 
 ## OpenCode Theme
 
@@ -95,6 +97,12 @@ Documentation: https://opencode.ai/docs/themes
 | Shortcut       | Action                                         |
 |----------------|------------------------------------------------|
 | `Ctrl+Shift+P` | Command palette (all commands with categories) |
+| `:`            | Native cmdline (noice, with auto-complete)     |
+| `Space + ;;`   | Command palette (snacks, no auto-complete)     |
+
+**Note**:
+- Native cmdline (`:`) will close when backspacing all characters (Neovim default behavior)
+- Use `Space + ;;` for commands that need to stay open while editing
 
 ### Navigation
 
