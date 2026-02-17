@@ -1,2 +1,0 @@
--- Terminal configuration is handled by snacks.nvim
--- See plugin_snacks.lua for terminal keymaps and configuration

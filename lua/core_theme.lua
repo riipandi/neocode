@@ -477,4 +477,40 @@ function M.load()
   vim.g.terminal_color_15 = "#ffffff"
 end
 
+-- ============================================================================
+-- UI tranparent plugin
+-- ============================================================================
+
+vim.pack.add({
+  { src = 'https://github.com/xiyaowong/transparent.nvim' },
+}, { confirm = false })
+
+M.setup({ transparent = true })
+M.load()
+
+require('transparent').setup({
+  extra_groups = {
+    "NormalFloat",
+    "FloatBorder",
+    "FloatTitle",
+    "snacks_explorer",
+    "snacks_picker_list",
+    "snacks_picker_normal",
+    "snacks_picker_input",
+    "snacks_picker_preview",
+    "WhichKeyNormal",
+    "WhichKeyFloat",
+    "WhichKeyFloating",
+    "MasonNormal",
+    "LspInlayHint",
+  },
+  exclude_groups = {
+    "lualine",
+    "CursorLine",
+    "Visual",
+    "Search",
+    "IncSearch",
+  }
+})
+
 return M

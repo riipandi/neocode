@@ -11,7 +11,7 @@ Last updated: 2025-10-12 (nvim 0.11+)
 
 --]]
 
--- theme & transparency (loaded in plugin_themes.lua)
+-- theme & transparency (loaded in core_theme.lua)
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
@@ -145,14 +145,13 @@ vim.opt.splitright = true                          -- Vertical splits go right
 require 'core_health'                              -- Health checks
 require 'core_keymaps'                             -- Key mappings
 require 'core_autocmds'                            -- Autocommands utilities
-require 'core_terminal'                            -- Terminal settings
 require 'core_lsp'                                 -- LSP settings
 
 -- ============================================================================
 -- Load third-party plugins and their configurations in lua/plugins directory.
 -- ============================================================================
 require 'plugin_snacks'                         -- Snacks.nvim (must load first)
-require 'plugin_themes'                         -- Theme configurations
+require 'core_theme'                            -- Theme configurations
 require 'plugin_editor'                         -- Editor configurations
 require 'plugin_completion'                     -- Code completion (blink.cmp)
 require 'plugin_treesitter'                     -- Syntax highlighting (nvim-treesitter)
@@ -162,6 +161,7 @@ require 'plugin_neoscroll'                      -- Smooth scrolling (neoscroll)
 require 'plugin_vcs'                            -- Version control (git)
 require 'plugin_whichkey'                       -- Which-key (keybindings helper)
 require 'plugin_maple'                          -- Notes plugin (maple)
-require 'plugin_rust'                           -- Rust development toolkit
 require 'plugin_mason'                          -- Mason package manager
 require 'plugin_opencode'                       -- AI code assistant (OpenCode)
+
+require 'language_rust'                         -- Rust development toolkit
