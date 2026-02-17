@@ -102,10 +102,12 @@ snacks.setup({
     enabled = true,
     indent = {
       char = "│",
+      hl = "SnacksIndent",
     },
     scope = {
       enabled = true,
       char = "┃",
+      hl = "SnacksIndentScope",
     },
   },
 
