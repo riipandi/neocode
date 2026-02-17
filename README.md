@@ -117,6 +117,22 @@ rm -fr ~/.cache/nvim
 | `q`      | Close explorer  |
 | `Enter`  | Open file       |
 
+### OpenCode (AI Assistant)
+
+| Shortcut       | Action                         |
+|----------------|--------------------------------|
+| `Ctrl+Shift+L` | Toggle OpenCode (right split, 60:40) |
+| `leader` + `oa` | Ask about this                  |
+| `leader` + `os` | Select prompt/command           |
+| `leader` + `oc` | Command                         |
+| `leader` + `on` | New session                     |
+| `leader` + `oi` | Interrupt session               |
+| `leader` + `oA` | Cycle agent                     |
+| `go`           | Add range to opencode (operator) |
+| `goo`          | Add line to opencode            |
+| `Ctrl+Shift+U` | Scroll opencode up              |
+| `Ctrl+Shift+D` | Scroll opencode down            |
+
 ### Search
 
 | Shortcut      | Action                            |

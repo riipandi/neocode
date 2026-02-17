@@ -1,48 +1,70 @@
-vim.pack.add({
-  { src = "https://github.com/nickjvandyke/opencode.nvim" },
-  { src = "https://github.com/folke/snacks.nvim" },
+-- Load required plugins first (snacks must be loaded before opencode)
+vim.cmd("packadd! snacks.nvim")
+vim.cmd("packadd! opencode.nvim")
+
+-- ============================================================================
+-- Snacks configuration (for opencode integration)
+-- ============================================================================
+local snacks = require("snacks")
+snacks.setup({
+  input = {},  -- Enhances opencode.ask()
+  picker = {
+    actions = {
+      opencode_send = function(...) return require('opencode').snacks_picker_send(...) end,
+    },
+    win = {
+      input = {
+        keys = {
+          ['<a-a>'] = { 'opencode_send', mode = { 'n', 'i' } },
+        },
+      },
+    },
+  },
+  terminal = {},  -- Enables the snacks provider for opencode
 })
 
 -- ============================================================================
 -- OpenCode.nvim configuration
 -- ============================================================================
-require('opencode').setup({
-  -- See `https://github.com/NickvanDyke/opencode.nvim/blob/main/lua/opencode/config.lua`
-  -- See https://github.com/folke/snacks.nvim/blob/main/docs/win.md for more window options
-  -- See https://github.com/folke/snacks.nvim/blob/main/docs/terminal.md for more terminal options
-  auto_reload = true,  -- Automatically reload buffers edited by opencode
-  auto_focus = false,   -- Focus the opencode window after prompting
-  command = "opencode", -- Command to launch opencode
-  context = {           -- Context to inject in prompts
-    ["@file"] = require("opencode.context").file,
-    ["@files"] = require("opencode.context").files,
-    ["@cursor"] = require("opencode.context").cursor_position,
-    ["@selection"] = require("opencode.context").visual_selection,
-    ["@diagnostics"] = require("opencode.context").diagnostics,
-  },
+vim.g.opencode_opts = {
+  auto_reload = true,
+  auto_focus = false,
+  command = "opencode",
   win = {
     position = "right",
+    width = 0.4,
   },
-})
-
--- Automatically reload buffers edited by opencode
-vim.g.opencode_opts.auto_reload = true
-
-vim.g.opencode_opts = {
   provider = {
     enabled = "snacks",
-    snacks = {}
-  }
+    snacks = {},
+  },
 }
 
--- Recommended/example keymaps for OpenCode.nvim
-vim.keymap.set({ "n", "x" }, "<leader>oa", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Ask about this" })
-vim.keymap.set({ "n", "x" }, "<leader>o+", function() require("opencode").prompt("@this") end, { desc = "Add this" })
-vim.keymap.set({ "n", "x" }, "<leader>os", function() require("opencode").select() end, { desc = "Select prompt" })
-vim.keymap.set("n", "<leader>ot", function() require("opencode").toggle() end, { desc = "Toggle embedded" })
-vim.keymap.set("n", "<leader>oc", function() require("opencode").command() end, { desc = "Select command" })
-vim.keymap.set("n", "<leader>on", function() require("opencode").command("session_new") end, { desc = "New session" })
-vim.keymap.set("n", "<leader>oi", function() require("opencode").command("session_interrupt") end, { desc = "Interrupt session" })
-vim.keymap.set("n", "<leader>oA", function() require("opencode").command("agent_cycle") end, { desc = "Cycle selected agent" })
-vim.keymap.set("n", "<S-C-u>",    function() require("opencode").command("messages_half_page_up") end, { desc = "Messages half page up" })
-vim.keymap.set("n", "<S-C-d>",    function() require("opencode").command("messages_half_page_down") end, { desc = "Messages half page down" })
+-- ============================================================================
+-- OpenCode keymaps
+-- ============================================================================
+
+-- Toggle opencode (your custom keymap)
+vim.keymap.set("n", "<C-S-l>", function() require("opencode").toggle() end, { desc = "Toggle OpenCode (Ctrl+Shift+L)" })
+
+-- Ask and select (your custom keymaps with <leader> prefix)
+vim.keymap.set({ "n", "x" }, "<leader>oa", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "OpenCode: Ask about this" })
+vim.keymap.set({ "n", "x" }, "<leader>os", function() require("opencode").select() end, { desc = "OpenCode: Select prompt/command" })
+vim.keymap.set("n", "<leader>oc", function() require("opencode").command() end, { desc = "OpenCode: Command" })
+
+-- Session controls
+vim.keymap.set("n", "<leader>on", function() require("opencode").command("session.new") end, { desc = "OpenCode: New session" })
+vim.keymap.set("n", "<leader>oi", function() require("opencode").command("session.interrupt") end, { desc = "OpenCode: Interrupt session" })
+vim.keymap.set("n", "<leader>oA", function() require("opencode").command("agent.cycle") end, { desc = "OpenCode: Cycle agent" })
+
+-- ============================================================================
+-- Operator keymaps (add range/line to opencode)
+-- ============================================================================
+vim.keymap.set({ "n", "x" }, "go", function() return require("opencode").operator("@this ") end, { desc = "Add range to opencode", expr = true })
+vim.keymap.set("n", "goo", function() return require("opencode").operator("@this ") .. "_" end, { desc = "Add line to opencode", expr = true })
+
+-- ============================================================================
+-- Scroll opencode
+-- ============================================================================
+vim.keymap.set("n", "<S-C-u>", function() require("opencode").command("session.half.page.up") end, { desc = "Scroll opencode up" })
+vim.keymap.set("n", "<S-C-d>", function() require("opencode").command("session.half.page.down") end, { desc = "Scroll opencode down" })
