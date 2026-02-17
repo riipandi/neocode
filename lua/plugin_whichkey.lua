@@ -7,58 +7,49 @@ vim.pack.add({
 -- ============================================================================
 require('which-key').setup({
   show_help = false,
-  show_keys = false,
+  show_keys = true,
   preset = "helix",
 
-  -- Keys to ignore (don't show which-key popup)
   ignored_keys = { "<C-w>", "<C-h>", "<C-j>", "<C-k>", "<C-l>" },
-
-  -- delay between pressing a key and opening which-key (milliseconds)
-  -- this setting is independent of vim.o.timeoutlen
   delay = 50,
 
-  -- Window appearance
   win = {
-    border = "rounded", -- Border style
-    padding = { 1, 2 }, -- Padding inside window
+    border = "rounded",
+    padding = { 1, 3, 1, 3 },
     wo = {
-      winblend = 0, -- Slight transparency
+      winblend = 0,
     },
   },
 
-  -- Layout configuration
   layout = {
-    width = { min = 20, max = 50 }, -- Window width
-    height = { min = 4, max = 25 }, -- Window height
-    spacing = 3, -- Spacing between columns
-    align = "left", -- Text alignment
+    width = { min = 45, max = 65 },
+    height = { min = 4, max = 25 },
+    spacing = 5,
+    align = "left",
   },
 
   icons = {
-    breadcrumb = "»", -- Symbol for breadcrumb
-    separator = "➜", -- Symbol between key and description
-    group = "+", -- Symbol for group indicator
-    -- set icon mappings to true if you have a Nerd Font
-    mappings = vim.g.have_nerd_font,
-    -- If you are using a Nerd Font: set icons.keys to an empty table which will use the
-    -- default which-key.nvim defined Nerd Font icons, otherwise define a string table
-    keys = vim.g.have_nerd_font and {} or {
-      Up = '<Up> ',
-      Down = '<Down> ',
-      Left = '<Left> ',
-      Right = '<Right> ',
-      C = '<C-…> ',
-      M = '<M-…> ',
-      D = '<D-…> ',
-      S = '<S-…> ',
-      CR = '<CR> ',
-      Esc = '<Esc> ',
-      ScrollWheelDown = '<ScrollWheelDown> ',
-      ScrollWheelUp = '<ScrollWheelUp> ',
-      NL = '<NL> ',
-      BS = '<BS> ',
-      Space = '<Space> ',
-      Tab = '<Tab> ',
+    breadcrumb = " ",
+    separator = ": ",
+    group = "+",
+    mappings = false,
+    keys = {
+      Up = '<Up>',
+      Down = '<Down>',
+      Left = '<Left>',
+      Right = '<Right>',
+      C = '<C->',
+      M = '<M->',
+      D = '<D->',
+      S = '<S->',
+      CR = '<CR>',
+      Esc = '<Esc>',
+      ScrollWheelDown = '<ScrollWheelDown>',
+      ScrollWheelUp = '<ScrollWheelUp>',
+      NL = '<NL>',
+      BS = '<BS>',
+      Space = '<Space>',
+      Tab = '<Tab>',
       F1 = '<F1>',
       F2 = '<F2>',
       F3 = '<F3>',
@@ -76,27 +67,24 @@ require('which-key').setup({
 
   -- Document existing key chains (alphabetical order with grouping)
   spec = {
-    -- Navigation groups
     { "g", group = "Goto", mode = "n" },
     { "z", group = "Fold", mode = "n" },
     { "[", group = "Prev", mode = "n" },
     { "]", group = "Next", mode = "n" },
 
-    -- Leader groups (alphabetical)
-    { '<leader>b', group = '[B]uffer', mode = "n" },
-    { '<leader>c', group = '[C]ode', mode = "n" },
-    { '<leader>d', group = '[D]ebug', mode = "n" },
-    { '<leader>f', group = '[F]ile', mode = "n" },
-    { '<leader>g', group = '[G]it', mode = "n" },
-    { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
-    { '<leader>l', group = '[L]SP', mode = "n" },
-    { '<leader>q', group = '[Q]uit', mode = "n" },
-    { '<leader>s', group = '[S]earch', mode = "n" },
-    { '<leader>t', group = '[T]oggle', mode = "n" },
-    { '<leader>w', group = '[W]indow', mode = "n" },
-    { '<leader>x', group = '[X]Trouble', mode = "n" },
+    { '<leader>b', group = 'Buffer', mode = "n" },
+    { '<leader>c', group = 'Code', mode = "n" },
+    { '<leader>d', group = 'Debug', mode = "n" },
+    { '<leader>f', group = 'File', mode = "n" },
+    { '<leader>g', group = 'Git', mode = "n" },
+    { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
+    { '<leader>l', group = 'LSP', mode = "n" },
+    { '<leader>q', group = 'Quit', mode = "n" },
+    { '<leader>s', group = 'Search', mode = "n" },
+    { '<leader>t', group = 'Toggle', mode = "n" },
+    { '<leader>w', group = 'Window', mode = "n" },
+    { '<leader>x', group = 'Trouble', mode = "n" },
 
-    -- Visual mode groups
     { "<leader>", group = "Leader", mode = "v" },
     { "g", group = "Goto", mode = "v" },
   },
