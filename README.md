@@ -49,7 +49,6 @@ rm -fr ~/.cache/nvim
 |-----------------|---------------------|
 | nvim-treesitter | Syntax highlighting |
 | gitsigns.nvim   | Git signs in gutter |
-| lazygit.nvim    | LazyGit integration |
 | nvim-tree.lua   | File explorer       |
 | fzf-lua         | Fuzzy finder        |
 | telescope.nvim  | Picker UI           |
@@ -81,6 +80,7 @@ rm -fr ~/.cache/nvim
 | `Ctrl+G`       | Go to line (format: `10` atau `10:5`) |
 | `Ctrl+Shift+G` | Toggle LazyGit                        |
 | `Ctrl+X`       | Close buffer                          |
+| `Ctrl+Shift+W` | Close all buffers                     |
 | `Ctrl+Q`       | Quit Neovim                           |
 | `Ctrl+\`       | Split vertical                        |
 | `Ctrl+Shift+\` | Split horizontal                      |
@@ -96,14 +96,25 @@ rm -fr ~/.cache/nvim
 
 ### Window
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+Alt+[` | Previous window |
-| `Ctrl+Alt+]` | Next window |
-| `Ctrl+Alt+=` | Increase width |
-| `Ctrl+Alt+-` | Decrease width |
+| Shortcut       | Action          |
+|----------------|-----------------|
+| `Ctrl+Alt+[`   | Previous window |
+| `Ctrl+Alt+]`   | Next window     |
+| `Ctrl+Alt+=`   | Increase width  |
+| `Ctrl+Alt+-`   | Decrease width  |
 | `Ctrl+Shift+=` | Increase height |
 | `Ctrl+Shift+-` | Decrease height |
+
+### File Explorer (nvim-tree)
+
+| Shortcut | Action          |
+|----------|-----------------|
+| `h`      | Collapse folder |
+| `l`      | Expand folder   |
+| `Left`   | Collapse folder |
+| `Right`  | Expand folder   |
+| `q`      | Close explorer  |
+| `Enter`  | Open file       |
 
 ### Search
 
