@@ -1,28 +1,35 @@
+-- ============================================================================
+-- Core Autocommands & Editor Settings
+-- ============================================================================
+
+local snacks = require("snacks")
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
 -- ============================================================================
--- USEFUL FUNCTIONS
+-- Keymaps
 -- ============================================================================
 
--- Copy Full File-Path
-vim.keymap.set("n", "<leader>pa", function()
+-- Copy full file path to clipboard
+snacks.keymap.set("n", "<leader>pa", function()
 	local path = vim.fn.expand("%:p")
 	vim.fn.setreg("+", path)
 	vim.notify("file: " .. path, vim.log.levels.INFO)
-end)
+end, { desc = "Copy full file path" })
 
--- Basic autocommands
-local augroup = augroup("UserConfig", {})
+-- ============================================================================
+-- Autocommands
+-- ============================================================================
 
--- Highlight when yanking (copying) text
--- Try it with `yap` in normal mode
--- See `:help vim.hl.on_yank()`
+local augroup = augroup("UserConfig", { clear = true })
+
+-- Highlight yanked text briefly
 autocmd("TextYankPost", {
   group = augroup,
   callback = function()
     vim.hl.on_yank()
   end,
+  desc = "Highlight yanked text",
 })
 
 -- Return to last edit position when opening files
@@ -35,9 +42,10 @@ autocmd("BufReadPost", {
       pcall(vim.api.nvim_win_set_cursor, 0, mark)
     end
   end,
+  desc = "Restore cursor position",
 })
 
--- Set filetype-specific settings
+-- Filetype-specific settings
 autocmd("FileType", {
   group = augroup,
   pattern = { "lua", "python" },
@@ -45,6 +53,7 @@ autocmd("FileType", {
     vim.opt_local.tabstop = 4
     vim.opt_local.shiftwidth = 4
   end,
+  desc = "Set indent to 4 spaces for lua/python",
 })
 
 autocmd("FileType", {
@@ -54,17 +63,18 @@ autocmd("FileType", {
     vim.opt_local.tabstop = 2
     vim.opt_local.shiftwidth = 2
   end,
+  desc = "Set indent to 2 spaces for web/js",
 })
 
--- Disable autoformat for toml files
 autocmd("FileType", {
   pattern = { "toml" },
   callback = function()
     vim.b.autoformat = false
   end,
+  desc = "Disable autoformat for toml",
 })
 
--- Auto-close terminal when process exits
+-- Terminal settings
 autocmd("TermClose", {
   group = augroup,
   callback = function()
@@ -72,9 +82,9 @@ autocmd("TermClose", {
       vim.api.nvim_buf_delete(0, {})
     end
   end,
+  desc = "Auto-close terminal on exit",
 })
 
--- Disable line numbers in terminal
 autocmd("TermOpen", {
   group = augroup,
   callback = function()
@@ -82,17 +92,19 @@ autocmd("TermOpen", {
     vim.opt_local.relativenumber = false
     vim.opt_local.signcolumn = "no"
   end,
+  desc = "Disable line numbers in terminal",
 })
 
--- Auto-resize splits when window is resized
+-- Window management
 autocmd("VimResized", {
   group = augroup,
   callback = function()
     vim.cmd("tabdo wincmd =")
   end,
+  desc = "Equalize splits on resize",
 })
 
--- Create directories when saving files
+-- File operations
 autocmd("BufWritePre", {
   group = augroup,
   callback = function()
@@ -101,21 +113,26 @@ autocmd("BufWritePre", {
       vim.fn.mkdir(dir, 'p')
     end
   end,
+  desc = "Create directories on save",
 })
+
+-- ============================================================================
+-- Editor Settings
+-- ============================================================================
 
 -- Command-line completion
 vim.opt.wildmenu = true
 vim.opt.wildmode = "longest:full,full"
 vim.opt.wildignore:append({ "*.o", "*.obj", "*.pyc", "*.class", "*.jar" })
 
--- Better diff options
+-- Diff options
 vim.opt.diffopt:append("linematch:60")
 
--- Performance improvements
+-- Performance
 vim.opt.redrawtime = 10000
 vim.opt.maxmempattern = 20000
 
--- Create undo directory if it doesn't exist
+-- Create undo directory if not exists
 local undodir = vim.fn.expand("~/.vim/undodir")
 if vim.fn.isdirectory(undodir) == 0 then
   vim.fn.mkdir(undodir, "p")

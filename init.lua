@@ -11,7 +11,7 @@ Last updated: 2025-10-12 (nvim 0.11+)
 
 --]]
 
--- theme & transparency (loaded in plugin_themes.lua)
+-- theme & transparency (loaded in core_theme.lua)
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
@@ -101,67 +101,41 @@ vim.api.nvim_create_autocmd("CmdlineEnter", {
   end,
 })
 
--- Setup cmdline keymaps for popupmenu navigation
-local function map_cmdline_nav(keys, pum_action, fallback)
-  vim.keymap.set("c", keys, function()
-    if vim.fn.pumvisible() == 1 then
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(pum_action, true, true, true), "n", true)
-      return ""
-    else
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(fallback, true, true, true), "n", true)
-      return ""
-    end
-  end, { noremap = true, silent = true })
-end
-
--- Arrow keys for navigation (sesuai preferensi: kiri=up, kanan=down)
-map_cmdline_nav("<Down>", "<C-n>", "<Down>")
-map_cmdline_nav("<Up>", "<C-p>", "<Up>")
-map_cmdline_nav("<Left>", "<C-p>", "<Left>")
-map_cmdline_nav("<Right>", "<C-n>", "<Right>")
-map_cmdline_nav("<Tab>", "<C-n>", "<Tab>")
-map_cmdline_nav("<S-Tab>", "<C-p>", "<S-Tab>")
-
--- Enter for selection, Esc to cancel
-map_cmdline_nav("<CR>", "<C-y>", "<CR>")
-map_cmdline_nav("<Esc>", "<C-e>", "<Esc>")
-
 -- Note: Insert mode completion handled by blink.cmp with preset 'default'
 -- This provides: arrow keys navigation, tab navigation, and enter to accept
 -- Display invisible characters
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Folding settings
-vim.opt.foldmethod = "expr"                        -- Use expression for folding
-vim.opt.foldlevel = 99                             -- Start with all folds open
+vim.opt.foldmethod = "expr"              -- Use expression for folding
+vim.opt.foldlevel = 99                   -- Start with all folds open
 
 -- Split behavior
-vim.opt.splitbelow = true                          -- Horizontal splits go below
-vim.opt.splitright = true                          -- Vertical splits go right
+vim.opt.splitbelow = true                -- Horizontal splits go below
+vim.opt.splitright = true                -- Vertical splits go right
 
 -- ============================================================================
 -- Load core configurations
 -- ============================================================================
-require 'core_health'                              -- Health checks
-require 'core_keymaps'                             -- Key mappings
-require 'core_autocmds'                            -- Autocommands utilities
-require 'core_terminal'                            -- Terminal settings
-require 'core_lsp'                                 -- LSP settings
+require 'core_plugins'                   -- Snacks.nvim (must load first)
+require 'command'                         -- Command palette & history
+require 'core_health'                      -- Health checks
+require 'core_keymaps'                   -- Key mappings
+require 'core_autocmds'                  -- Autocommands utilities
+require 'core_lsp'                       -- LSP settings
 
 -- ============================================================================
 -- Load third-party plugins and their configurations in lua/plugins directory.
 -- ============================================================================
-require 'plugin_themes'                         -- Theme configurations
-require 'plugin_editor'                         -- Editor configurations
-require 'plugin_completion'                     -- Code completion (blink.cmp)
-require 'plugin_treesitter'                     -- Syntax highlighting (nvim-treesitter)
-require 'plugin_filemanager'                    -- File tree and fuzzy finder
-require 'plugin_lualine'                        -- Statusline (lualine)
-require 'plugin_neoscroll'                      -- Smooth scrolling (neoscroll)
-require 'plugin_vcs'                            -- Version control (git)
-require 'plugin_whichkey'                       -- Which-key (keybindings helper)
-require 'plugin_notifier'                       -- Notification system (notify, noice)
-require 'plugin_maple'                          -- Notes plugin (maple)
-require 'plugin_rust'                           -- Rust development toolkit
-require 'plugin_mason'                          -- Mason package manager
-require 'plugin_opencode'                       -- AI code assistant (OpenCode)
+require 'core_theme'                      -- Theme configurations
+require 'plugin_editor'                   -- Editor configurations
+require 'plugin_completion'               -- Code completion (blink.cmp)
+require 'plugin_treesitter'               -- Syntax highlighting (nvim-treesitter)
+require 'plugin_filemanager'              -- File marks (miniharp)
+require 'plugin_lualine'                  -- Statusline (lualine)
+require 'plugin_neoscroll'                -- Smooth scrolling (neoscroll)
+require 'plugin_vcs'                      -- Version control (git)
+require 'plugin_whichkey'                 -- Which-key (keybindings helper)
+require 'plugin_mason'                    -- Mason package manager
+require 'plugin_opencode'                 -- AI code assistant (OpenCode)
+require 'language_rust'                   -- Rust development toolkit

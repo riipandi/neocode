@@ -11,11 +11,9 @@ vim.pack.add({
 -- for you, so that they are available from within Neovim.
 local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
-  "biome",
   "buf_ls",
   "codelldb",
   "cssls",
-  "denols",
   "dockerls",
   "elixirls",
   "intelephense",
@@ -75,7 +73,6 @@ require('mason').setup({
 require('mason-lspconfig').setup({
     automatic_enable = {
       "buf_ls",
-      "biome",
       "elixirls",
       "gopls",
       "html",

@@ -5,33 +5,53 @@ M.options = {
 }
 
 local colors = {
+  -- Base colors (aligned with OpenCode & Ghostty)
   bg = "#181a1d",
   fg = "#bcbec4",
   bg_alt = "#161619",
   fg_dim = "#7a7e85",
+
+  -- Syntax colors (OpenCode palette)
   string = "#6aab73",
   string_alt = "#81CA91",
+  string_bright = "#8ed16a",
   keyword = "#ba8ef7",
   func = "#cf8e6d",
   number = "#56a8f5",
+  number_bright = "#6699ff",
   comment = "#7F838C",
   shebang = "#ff8ad1",
   variable = "#14b8a6",
   constant = "#ffa763",
   operator = "#14b8a6",
-  git_add = "#6A9955",
-  git_del = "#f85149",
-  git_mod = "#336ff1",
+  cyan = "#2aacb8",
+
+  -- Semantic colors (OpenCode theme)
+  primary = "#336ff1",
+  secondary = "#14b8a6",
+  accent = "#336ff1",
   error = "#f85149",
+  error_bright = "#ff8a85",
   warning = "#ff8a00",
+  success = "#6aab73",
   info = "#336ff1",
   hint = "#7a7e85",
+
+  -- Git colors
+  git_add = "#6aab73",
+  git_del = "#f85149",
+  git_mod = "#336ff1",
+
+  -- UI colors
   cursor_bg = "#ffffff",
   selection = "#373b39",
   line_highlight = "#252629",
   float_bg = "#161619",
-  inserted = "#C3E88D",
-  changed = "#C792EA",
+  border = "#3c3f41",
+
+  -- Special purpose colors
+  inserted = "#6aab73",
+  changed = "#336ff1",
   html_tag = "#f85149",
   jsx_component = "#ba8ef7",
   directory = "#56a8f5",
@@ -70,7 +90,7 @@ function M.load()
     SignColumnSB = { bg = colors.float_bg, fg = colors.fg_dim },
     Folded = { fg = colors.info, bg = M.options.transparent and "none" or colors.line_highlight },
     FoldColumn = { fg = colors.fg_dim },
-    DiffAdd = { fg = colors.git_add },
+    DiffAdd = { fg = colors.success },
     DiffChange = { fg = colors.git_mod },
     DiffDelete = { fg = colors.git_del },
     DiffText = { fg = colors.git_mod, bg = "#25324d" },
@@ -117,10 +137,10 @@ function M.load()
     ["@string"] = { fg = colors.string },
     ["@string.regex"] = { fg = "#56adb7" },
     ["@string.escape"] = { fg = colors.number },
-    ["@string.special"] = { fg = colors.interpolation },
-    ["@string.special.path"] = { fg = "#56a8f5", underline = true },
+    ["@string.special"] = { fg = colors.keyword },
+    ["@string.special.path"] = { fg = colors.number, underline = true },
     ["@string.special.symbol"] = { fg = colors.string_alt },
-    ["@string.special.url"] = { fg = "#56a8f5", underline = true },
+    ["@string.special.url"] = { fg = colors.number, underline = true },
     ["@character"] = { fg = colors.number },
     ["@character.special"] = { fg = colors.number },
     ["@number"] = { fg = colors.number },
@@ -183,7 +203,7 @@ function M.load()
     ["@tag.property.css"] = { fg = colors.variable },
     ["@tag.property-name.css"] = { fg = colors.variable },
     ["@tag.attribute.html"] = { fg = colors.constant },
-    ["@tag.yaml"] = { fg = "#f43f5e" },
+    ["@tag.yaml"] = { fg = colors.constant },
     ["@tag.json"] = { fg = "#d4aaff" },
     ["@property.json"] = { fg = "#d4aaff" },
     ["@tag.jsx"] = { fg = colors.jsx_component },
@@ -209,19 +229,18 @@ function M.load()
     ["@markup.heading.6"] = { fg = "#cf8e6d", bold = true },
     ["@markup.quote"] = { fg = colors.variable },
     ["@markup.math"] = { fg = colors.keyword },
-    ["@markup.link"] = { fg = "#56a8f5", underline = true },
-    ["@markup.link.label"] = { fg = "#56a8f5" },
-    ["@markup.link.url"] = { fg = "#56a8f5", underline = true },
+    ["@markup.link"] = { fg = colors.number, underline = true },
+    ["@markup.link.label"] = { fg = colors.number },
+    ["@markup.link.url"] = { fg = colors.number, underline = true },
     ["@markup.raw"] = { fg = "#ba8ef7" },
     ["@markup.raw.block"] = { fg = "#ba8ef7" },
     ["@markup.raw.delimiter"] = { fg = "#3c3f41" },
     ["@markup.list"] = { fg = colors.keyword },
-    ["@markup.list.checked"] = { fg = colors.git_add },
+    ["@markup.list.checked"] = { fg = colors.success },
     ["@markup.list.unchecked"] = { fg = colors.fg_dim },
     ["@diff.plus"] = { fg = colors.inserted },
     ["@diff.minus"] = { fg = colors.git_del },
     ["@diff.delta"] = { fg = colors.changed },
-    ["@lsp.type.class"] = { fg = "#f43f5e" },
     ["@lsp.type.comment"] = { fg = colors.comment, italic = true },
     ["@lsp.type.decorator"] = { fg = "#cf8e6d" },
     ["@lsp.type.enum"] = { fg = "#f43f5e" },
@@ -258,19 +277,19 @@ function M.load()
     DiagnosticError = { fg = colors.error },
     DiagnosticWarn = { fg = colors.warning },
     DiagnosticInfo = { fg = colors.info },
-    DiagnosticHint = { fg = colors.hint },
+    DiagnosticHint = { fg = colors.fg_dim },
     DiagnosticVirtualTextError = { fg = colors.error, italic = true },
     DiagnosticVirtualTextWarn = { fg = colors.warning, italic = true },
     DiagnosticVirtualTextInfo = { fg = colors.info, italic = true },
-    DiagnosticVirtualTextHint = { fg = colors.hint, italic = true },
+    DiagnosticVirtualTextHint = { fg = colors.fg_dim, italic = true },
     DiagnosticUnderlineError = { sp = colors.error, undercurl = true },
     DiagnosticUnderlineWarn = { sp = colors.warning, undercurl = true },
     DiagnosticUnderlineInfo = { sp = colors.info, undercurl = true },
-    DiagnosticUnderlineHint = { sp = colors.hint, undercurl = true },
+    DiagnosticUnderlineHint = { sp = colors.fg_dim, undercurl = true },
     DiagnosticSignError = { fg = colors.error },
     DiagnosticSignWarn = { fg = colors.warning },
     DiagnosticSignInfo = { fg = colors.info },
-    DiagnosticSignHint = { fg = colors.hint },
+    DiagnosticSignHint = { fg = colors.fg_dim },
     LspReferenceText = { bg = "#373b39" },
     LspReferenceRead = { bg = "#373b39" },
     LspReferenceWrite = { bg = "#373b39" },
@@ -296,9 +315,9 @@ function M.load()
     tsxTagName = { fg = colors.html_tag },
     LspCodeLens = { fg = colors.fg_dim },
     LspCodeLensSeparator = { fg = colors.fg_dim },
-    LspInlayHint = { fg = colors.hint, bg = M.options.transparent and "none" or "#3c3f41" },
+    LspInlayHint = { fg = colors.fg_dim, bg = M.options.transparent and "none" or colors.border },
     LspSignatureActiveParameter = { fg = colors.variable, bold = true },
-    GitSignsAdd = { fg = colors.git_add },
+    GitSignsAdd = { fg = colors.success },
     GitSignsChange = { fg = colors.git_mod },
     GitSignsDelete = { fg = colors.git_del },
     GitSignsAddLn = { bg = "#252629" },
@@ -307,43 +326,17 @@ function M.load()
     GitSignsAddPreview = { bg = "#252629" },
     GitSignsDeletePreview = { bg = "#252629" },
     GitSignsCurrentLineBlame = { fg = colors.fg_dim, italic = true },
-    TelescopeNormal = { fg = colors.fg, bg = M.options.transparent and "none" or colors.bg },
-    TelescopeBorder = { fg = "#3c3f41" },
-    TelescopeTitle = { fg = colors.fg },
-    TelescopePromptPrefix = { fg = colors.keyword },
-    TelescopePromptNormal = { fg = colors.fg },
-    TelescopePromptCounter = { fg = colors.fg_dim },
-    TelescopeSelection = { fg = "#bcbec4", bg = "#25324d" },
-    TelescopeSelectionCaret = { fg = colors.keyword },
-    TelescopeMultiSelection = { fg = colors.keyword },
-    TelescopeMatching = { fg = colors.search_match, bold = true },
-    TelescopePreviewLine = { bg = colors.line_highlight },
-    TelescopePreviewMatch = { fg = colors.search_match, bold = true },
-    TelescopePreviewPipe = { fg = colors.constant },
-    TelescopePreviewCharDev = { fg = colors.git_del },
-    TelescopePreviewDirectory = { fg = colors.directory },
-    TelescopePreviewBlock = { fg = colors.warning },
-    TelescopePreviewLink = { fg = colors.search_match, underline = true },
-    TelescopePreviewSocket = { fg = colors.string },
-    TelescopePreviewRead = { fg = colors.git_add },
-    TelescopePreviewWrite = { fg = colors.git_mod },
-    TelescopePreviewExecute = { fg = colors.func },
-    TelescopePreviewSticky = { fg = colors.keyword },
-    TelescopePreviewSize = { fg = colors.number },
-    TelescopePreviewUser = { fg = colors.constant },
-    TelescopePreviewGroup = { fg = colors.constant },
-    TelescopePreviewDate = { fg = colors.variable },
-    TelescopePreviewMessage = { fg = colors.comment },
-    TelescopePreviewMessageFillchar = { fg = colors.comment },
     TreesitterContext = { bg = colors.line_highlight },
     TreesitterContextLineNumber = { fg = "#4e5157" },
-    IndentBlanklineChar = { fg = "#3c3f41", nocombine = true },
-    IndentBlanklineContextChar = { fg = colors.keyword, nocombine = true },
+    IndentBlanklineChar = { fg = "#2a2d30", nocombine = true },
+    IndentBlanklineContextChar = { fg = "#4a4e55", nocombine = true },
     IndentBlanklineContextStart = { bg = "#252629" },
     IndentBlanklineSpaceChar = { fg = "#3c3f41", nocombine = true },
     IndentBlanklineSpaceCharBlankline = { fg = "#3c3f41", nocombine = true },
-    IblIndent = { fg = "#3c3f41", nocombine = true },
-    IblScope = { fg = colors.keyword, nocombine = true },
+    IblIndent = { fg = "#2a2d30", nocombine = true },
+    IblScope = { fg = "#4a4e55", nocombine = true },
+    SnacksIndent = { fg = "#2a2d30", nocombine = true },
+    SnacksIndentScope = { fg = "#4a4e55", nocombine = true },
     CmpItemAbbr = { fg = colors.fg },
     CmpItemAbbrDeprecated = { fg = colors.fg_dim, strikethrough = true },
     CmpItemAbbrMatch = { fg = colors.search_match, bold = true },
@@ -378,25 +371,6 @@ function M.load()
     CmpItemKindCSS = { fg = colors.variable },
     CmpItemKindJSX = { fg = colors.jsx_component },
     CmpItemKindTSX = { fg = colors.jsx_component },
-    NeoTreeNormal = { fg = colors.fg, bg = M.options.transparent and "none" or colors.bg },
-    NeoTreeNormalNC = { fg = colors.fg, bg = M.options.transparent and "none" or colors.bg },
-    NeoTreeCursorLine = { bg = "#252629" },
-    NeoTreeDimText = { fg = colors.fg_dim },
-    NeoTreeDirectoryIcon = { fg = colors.directory },
-    NeoTreeDirectoryName = { fg = colors.fg },
-    NeoTreeRootName = { fg = colors.keyword, bold = true },
-    NeoTreeGitAdded = { fg = colors.git_add },
-    NeoTreeGitConflict = { fg = colors.warning },
-    NeoTreeGitDeleted = { fg = colors.git_del },
-    NeoTreeGitIgnored = { fg = colors.fg_dim },
-    NeoTreeGitModified = { fg = colors.git_mod },
-    NeoTreeGitRenamed = { fg = colors.directory },
-    NeoTreeGitUntracked = { fg = colors.git_add },
-    NeoTreeIndentMarker = { fg = "#3c3f41" },
-    NeoTreeExpander = { fg = colors.fg_dim },
-    NeoTreeModified = { fg = colors.git_mod },
-    NeoTreeFloatTitle = { fg = colors.fg },
-    NeoTreeFloatBorder = { fg = "#3c3f41" },
     WhichKeyNormal = { fg = colors.fg, bg = M.options.transparent and "none" or colors.bg },
     WhichKeyBorder = { fg = "#3c3f41" },
     WhichKeyGroup = { fg = colors.keyword },
@@ -404,41 +378,14 @@ function M.load()
     WhichKeyDesc = { fg = colors.fg },
     WhichKeyFloating = { fg = colors.fg, bg = M.options.transparent and "none" or colors.float_bg },
     WhichKeyValue = { fg = colors.fg_dim },
-    FlashBackdrop = { fg = colors.fg_dim },
-    FlashLabel = { fg = colors.bg, bg = colors.keyword, bold = true },
-    FlashMatch = { bg = colors.search_match, fg = colors.bg },
-    FlashCurrent = { bg = colors.search_match, fg = colors.bg },
-    NoiceCmdlinePopup = { fg = colors.fg, bg = M.options.transparent and "none" or colors.float_bg },
-    NoiceCmdlinePopupBorder = { fg = "#3c3f41" },
-    NoiceCmdlinePopupTitle = { fg = colors.keyword },
-    NoiceCmdlineIcon = { fg = colors.keyword },
-    NoiceConfirm = { fg = colors.fg, bg = M.options.transparent and "none" or colors.float_bg },
-    NoiceConfirmBorder = { fg = "#3c3f41" },
-    NoiceFormatTitle = { fg = colors.keyword },
-    NoiceFormatProgressDone = { fg = colors.git_add },
-    NoiceFormatProgressTodo = { fg = colors.fg_dim },
-    NoiceMini = { fg = colors.fg, bg = M.options.transparent and "none" or colors.float_bg },
-    NotifyBackground = { bg = M.options.transparent and "none" or colors.bg },
-    NotifyERRORBorder = { fg = colors.error },
-    NotifyWARNBorder = { fg = colors.warning },
-    NotifyINFOBorder = { fg = colors.info },
-    NotifyDEBUGBorder = { fg = colors.fg_dim },
-    NotifyTRACEBorder = { fg = colors.keyword },
-    NotifyERRORIcon = { fg = colors.error },
-    NotifyWARNIcon = { fg = colors.warning },
-    NotifyINFOIcon = { fg = colors.info },
-    NotifyDEBUGIcon = { fg = colors.fg_dim },
-    NotifyTRACEIcon = { fg = colors.keyword },
-    NotifyERRORTitle = { fg = colors.error },
-    NotifyWARNTitle = { fg = colors.warning },
-    NotifyINFOTitle = { fg = colors.info },
-    NotifyDEBUGTitle = { fg = colors.fg_dim },
-    NotifyTRACETitle = { fg = colors.keyword },
-    NotifyERRORBody = { fg = colors.fg },
-    NotifyWARNBody = { fg = colors.fg },
-    NotifyINFOBody = { fg = colors.fg },
-    NotifyDEBUGBody = { fg = colors.fg },
-    NotifyTRACEBody = { fg = colors.fg },
+    SnacksPickerMatch = { fg = colors.func },
+    SnacksPickerMatchFuzzy = { fg = colors.func },
+    SnacksPickerNormal = { fg = colors.fg, bg = M.options.transparent and "none" or colors.bg },
+    SnacksPickerList = { fg = colors.fg },
+    SnacksPickerListCursorLine = { bg = colors.line_highlight },
+    SnacksPickerIndicator = { fg = colors.keyword },
+    SnacksPickerBorder = { fg = "#3c3f41" },
+    SnacksPickerPrompt = { fg = colors.keyword },
     MasonNormal = { fg = colors.fg, bg = M.options.transparent and "none" or colors.bg },
     MasonHeader = { fg = colors.bg, bg = colors.keyword, bold = true },
     MasonHeaderSecondary = { fg = colors.bg, bg = colors.info, bold = true },
@@ -457,24 +404,6 @@ function M.load()
     LspInfoTip = { fg = colors.info },
     LspInfoTitle = { fg = colors.keyword },
     LspInfoFiletype = { fg = colors.func },
-    BufferLineTab = { fg = colors.fg_dim, bg = colors.bg_alt },
-    BufferLineTabSelected = { fg = colors.fg, bg = M.options.transparent and "none" or colors.bg },
-    BufferLineTabClose = { fg = colors.git_del },
-    BufferLineIndicatorSelected = { fg = colors.info },
-    DashboardHeader = { fg = colors.keyword },
-    DashboardFooter = { fg = colors.git_add },
-    DashboardShortcut = { fg = colors.git_del },
-    DashboardIcon = { fg = colors.info },
-    DashboardDesc = { fg = colors.fg },
-    DashboardKey = { fg = colors.keyword },
-    DashboardProjectTitle = { fg = colors.keyword },
-    DashboardProjectTitleIcon = { fg = colors.info },
-    DashboardProjectMtime = { fg = colors.fg_dim },
-    DashboardFilesMtime = { fg = colors.fg_dim },
-    AlphaHeader = { fg = colors.keyword },
-    AlphaButtons = { fg = colors.fg },
-    AlphaShortcut = { fg = colors.keyword },
-    AlphaFooter = { fg = colors.git_add },
   }
 
   for group, hl in pairs(highlights) do
@@ -482,21 +411,60 @@ function M.load()
   end
 
   vim.g.terminal_color_0 = "#191a1c"
-  vim.g.terminal_color_1 = "#ff6b66"
-  vim.g.terminal_color_2 = "#8ed16a"
+  vim.g.terminal_color_1 = "#f85149"
+  vim.g.terminal_color_2 = "#6aab73"
   vim.g.terminal_color_3 = "#ffb347"
-  vim.g.terminal_color_4 = "#6699ff"
-  vim.g.terminal_color_5 = "#d4aaff"
-  vim.g.terminal_color_6 = "#4dd0e1"
+  vim.g.terminal_color_4 = "#336ff1"
+  vim.g.terminal_color_5 = "#ba8ef7"
+  vim.g.terminal_color_6 = "#2aacb8"
   vim.g.terminal_color_7 = "#e0e2e8"
   vim.g.terminal_color_8 = "#7a7e85"
   vim.g.terminal_color_9 = "#ff8a85"
-  vim.g.terminal_color_10 = "#a3e635"
-  vim.g.terminal_color_11 = "#ffd966"
-  vim.g.terminal_color_12 = "#9bc4ff"
-  vim.g.terminal_color_13 = "#e8b4ff"
-  vim.g.terminal_color_14 = "#70d4e8"
+  vim.g.terminal_color_10 = "#6aab73"
+  vim.g.terminal_color_11 = "#ffb347"
+  vim.g.terminal_color_12 = "#56a8f5"
+  vim.g.terminal_color_13 = "#ba8ef7"
+  vim.g.terminal_color_14 = "#2aacb8"
   vim.g.terminal_color_15 = "#ffffff"
 end
+
+-- ============================================================================
+-- UI tranparent plugin
+-- ============================================================================
+
+vim.pack.add({
+  { src = 'https://github.com/xiyaowong/transparent.nvim' },
+}, { confirm = false })
+
+M.setup({ transparent = true })
+M.load()
+
+require('transparent').setup({
+  extra_groups = {
+    "NormalFloat",
+    "FloatBorder",
+    "FloatTitle",
+    "snacks_explorer",
+    "snacks_picker_list",
+    "snacks_picker_normal",
+    "snacks_picker_input",
+    "snacks_picker_preview",
+    "snacks_picker_prompt",
+    "snacks_picker_border",
+    "snacks_picker_title",
+    "WhichKeyNormal",
+    "WhichKeyFloat",
+    "WhichKeyFloating",
+    "MasonNormal",
+    "LspInlayHint",
+  },
+  exclude_groups = {
+    "lualine",
+    "CursorLine",
+    "Visual",
+    "Search",
+    "IncSearch",
+  }
+})
 
 return M

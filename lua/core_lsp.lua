@@ -1,17 +1,26 @@
+-- ============================================================================
+-- Core LSP Configuration
+-- ============================================================================
+
+local snacks = require("snacks")
 local autocmd = vim.api.nvim_create_autocmd
 
 -- ============================================================================
--- LSP
+-- Helper Functions
 -- ============================================================================
 
--- Function to find project root
+-- Find project root directory by searching for pattern files
 local function find_root(patterns)
   local path = vim.fn.expand('%:p:h')
   local root = vim.fs.find(patterns, { path = path, upward = true })[1]
   return root and vim.fn.fnamemodify(root, ':h') or path
 end
 
--- Shell LSP setup
+-- ============================================================================
+-- LSP Server Setup Functions
+-- ============================================================================
+
+-- Shell script LSP (bash-language-server)
 local function setup_shell_lsp()
   vim.lsp.start({
     name = 'bashls',
@@ -26,7 +35,7 @@ local function setup_shell_lsp()
   })
 end
 
--- Python LSP setup
+-- Python LSP (pylsp)
 local function setup_python_lsp()
   vim.lsp.start({
     name = 'pylsp',
@@ -51,7 +60,10 @@ local function setup_python_lsp()
   })
 end
 
--- Auto-start LSPs based on filetype
+-- ============================================================================
+-- Auto-start LSP by Filetype
+-- ============================================================================
+
 autocmd('FileType', {
   pattern = 'sh,bash,zsh',
   callback = setup_shell_lsp,
@@ -64,13 +76,16 @@ autocmd('FileType', {
   desc = 'Start Python LSP'
 })
 
--- formatting
+-- ============================================================================
+-- Code Formatting
+-- ============================================================================
+
+-- Format code using external formatters (black for Python, shfmt for shell)
 local function format_code()
   local bufnr = vim.api.nvim_get_current_buf()
   local filename = vim.api.nvim_buf_get_name(bufnr)
   local filetype = vim.bo[bufnr].filetype
 
-  -- Save cursor position
   local cursor_pos = vim.api.nvim_win_get_cursor(0)
 
   if filetype == 'python' or filename:match('%.py$') then
@@ -97,7 +112,7 @@ local function format_code()
     local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
     local content = table.concat(lines, '\n')
 
-    local cmd = {'shfmt', '-i', '2', '-ci', '-sr'}  -- 2 spaces, case indent, space redirects
+    local cmd = {'shfmt', '-i', '2', '-ci', '-sr'}
     local result = vim.fn.system(cmd, content)
 
     if vim.v.shell_error == 0 then
@@ -122,36 +137,39 @@ vim.api.nvim_create_user_command("FormatCode", format_code, {
   desc = "Format current file"
 })
 
-vim.keymap.set('n', '<leader>fm', format_code, { desc = 'Format file' })
+snacks.keymap.set('n', '<leader>fm', format_code, { desc = 'Format file' })
 
--- LSP keymaps
+-- ============================================================================
+-- LSP Keymaps
+-- ============================================================================
+
 autocmd('LspAttach', {
   callback = function(event)
     local opts = {buffer = event.buf}
 
-    -- Navigation
-    vim.keymap.set('n', 'gD', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', 'gs', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    snacks.keymap.set('n', 'gD', vim.lsp.buf.definition, opts)
+    snacks.keymap.set('n', 'gs', vim.lsp.buf.declaration, opts)
+    snacks.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    snacks.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
 
-    -- Information
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+    snacks.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    snacks.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
 
-    -- Code actions
-    vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+    snacks.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+    snacks.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
 
-    -- Diagnostics
-    vim.keymap.set('n', '<leader>nd', vim.diagnostic.goto_next, opts)
-    vim.keymap.set('n', '<leader>pd', vim.diagnostic.goto_prev, opts)
-    vim.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
-    vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
+    snacks.keymap.set('n', '<leader>nd', vim.diagnostic.goto_next, opts)
+    snacks.keymap.set('n', '<leader>pd', vim.diagnostic.goto_prev, opts)
+    snacks.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
+    snacks.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
   end,
+  desc = 'LSP keymaps',
 })
 
--- Better LSP UI
+-- ============================================================================
+-- Diagnostic Configuration
+-- ============================================================================
+
 vim.diagnostic.config({
   virtual_text = { prefix = '●' },
   signs = true,
@@ -171,7 +189,6 @@ vim.diagnostic.config({
   }
 })
 
--- See :help vim.diagnostic.Opts
 vim.diagnostic.config({
   severity_sort = true,
   float = { border = 'rounded', source = 'if_many' },
@@ -199,6 +216,10 @@ vim.diagnostic.config({
   },
 })
 
+-- ============================================================================
+-- Custom Commands
+-- ============================================================================
+
 vim.api.nvim_create_user_command('LspInfo', function()
   local clients = vim.lsp.get_clients({ bufnr = 0 })
   if #clients == 0 then
@@ -210,8 +231,11 @@ vim.api.nvim_create_user_command('LspInfo', function()
   end
 end, { desc = 'Show LSP client info' })
 
+-- ============================================================================
+-- Additional LSP Servers
+-- ============================================================================
 
--- HTML LSP setup using superhtml
+-- HTML LSP (superhtml)
 autocmd("Filetype", {
   pattern = { "html", "shtml", "htm" },
   callback = function()
@@ -220,10 +244,11 @@ autocmd("Filetype", {
       cmd = { "superhtml", "lsp" },
       root_dir = vim.fs.dirname(vim.fs.find({".git"}, { upward = true })[1])
     })
-  end
+  end,
+  desc = 'Start HTML LSP',
 })
 
--- Enable additional LSP servers
+-- Enable default LSP servers
 vim.lsp.enable({
   "bashls",
   "gopls",
