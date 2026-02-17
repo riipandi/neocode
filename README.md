@@ -1,5 +1,7 @@
 # 🎒 Neovim Configuration
 
+<img src="./screenshot1.png" alt="Neocode" height="520" />
+
 This is a personal Neovim configuration for Aris Ripandi ([@riipandi][riipandi]).
 
 This configuration is based on [Kickstart.nvim][kickstart-nvim], a starting point
