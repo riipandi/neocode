@@ -32,7 +32,20 @@ snacks.setup({
       select = {
         hidden = { "preview" },
         layout = {
-          preset = "select",
+          layout = {
+            backdrop = false,
+            width = 0.20,
+            min_width = 20,
+            max_width = 40,
+            height = 0.10,
+            min_height = 2,
+            box = "vertical",
+            border = "rounded",
+            title = "{title}",
+            title_pos = "center",
+            { win = "input", height = 1, border = "bottom" },
+            { win = "list", border = "none" },
+          },
         },
       },
     },
