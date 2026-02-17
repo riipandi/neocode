@@ -266,13 +266,27 @@ keymap("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>", ns)
 
   -- Close all buffers with confirmation
   _G.close_all_buffers = function()
-    local modified = {}
+    -- Count valid buffers (excluding nvim-tree)
+    local valid_buffers = {}
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_get_option(buf, "modified") then
+      if vim.api.nvim_buf_is_valid(buf) then
         local name = vim.api.nvim_buf_get_name(buf)
-        if name ~= "" then
-          table.insert(modified, name)
+        if name and name ~= "" and not name:match("NvimTree") then
+          table.insert(valid_buffers, buf)
         end
+      end
+    end
+
+    if #valid_buffers == 0 then
+      vim.notify("No buffers to close", vim.log.levels.WARN)
+      return
+    end
+
+    local modified = {}
+    for _, buf in ipairs(valid_buffers) do
+      if vim.api.nvim_buf_get_option(buf, "modified") then
+        local name = vim.api.nvim_buf_get_name(buf)
+        table.insert(modified, name)
       end
     end
 
