@@ -94,6 +94,7 @@ snacks.setup({
   notifier = {
     enabled = true,
     timeout = 4000,
+    top_down = false,
   },
 
   -- Indentation guides (replaces indent-blankline.nvim)
