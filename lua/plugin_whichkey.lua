@@ -103,6 +103,6 @@ require('which-key').setup({
 
   -- Disable for certain filetypes
   disable = {
-    ft = { "TelescopePrompt" },
+    ft = { "snacks_picker_input" },
   },
 })

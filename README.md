@@ -2,7 +2,7 @@
 
 This is a personal Neovim configuration for Aris Ripandi ([@riipandi][riipandi]).
 
-This configuration based on [Kickstart.nvim][kickstart-nvim], a starting point
+This configuration is based on [Kickstart.nvim][kickstart-nvim], a starting point
 for your own configuration. The goal is that you can read every line of code,
 top-to-bottom, understand what your configuration is doing, and modify it to
 suit your needs. If you don't know anything about Lua, I recommend taking some
@@ -26,7 +26,7 @@ brew install --cask rio
 brew tap homebrew/cask-fonts
 brew install --cask font-jetbrains-mono font-jetbrains-mono-nerd-font
 brew install --cask font-maple-mono font-maple-mono-nf
-  
+   
 brew install markdownlint-cli viu chafa
 brew install jesseduffield/lazygit/lazygit
 brew install jstkdng/programs/ueberzugpp
@@ -45,19 +45,14 @@ rm -fr ~/.cache/nvim
 
 ## Dependencies (Plugins)
 
-| Plugin          | Description         |
-|-----------------|---------------------|
-| nvim-treesitter | Syntax highlighting |
-| gitsigns.nvim   | Git signs in gutter |
-| nvim-tree.lua   | File explorer       |
-| fzf-lua         | Fuzzy finder        |
-| telescope.nvim  | Picker UI           |
-| blink.cmp       | Code completion     |
-| neoscroll.nvim  | Smooth scrolling    |
-| which-key.nvim  | Keybinding helper   |
-| noice.nvim      | Better cmdline UI   |
-| nvim-notify     | Notification system |
-| miniharp.nvim   | Quick file marks    |
+| Plugin         | Description             |
+|----------------|-------------------------|
+| snacks.nvim    | All-in-one UI utilities |
+| miniharp.nvim  | Quick file marks        |
+| gitsigns.nvim  | Git signs in gutter     |
+| blink.cmp      | Code completion         |
+| neoscroll.nvim | Smooth scrolling        |
+| which-key.nvim | Keybinding helper       |
 
 ## OpenCode Theme
 
@@ -78,8 +73,8 @@ Documentation: https://opencode.ai/docs/themes
 |----------------|----------------------------------------|
 | `Ctrl+E`       | Switch focus between explorer ↔ editor |
 | `Ctrl+Shift+E` | Toggle file explorer                   |
-| `Ctrl+B`       | Show buffer list (Telescope)           |
-| `Ctrl+P`       | Find files (fzf-lua)                   |
+| `Ctrl+B`       | Show buffer list (snacks picker)       |
+| `Ctrl+P`       | Find files (snacks picker)             |
 | `Ctrl+L`       | Show marks list (miniharp)             |
 | `Ctrl+N`       | Next mark                              |
 | `Ctrl+Shift+M` | Previous mark                          |
@@ -117,7 +112,7 @@ Documentation: https://opencode.ai/docs/themes
 | `Ctrl+Shift+=` | Increase height |
 | `Ctrl+Shift+-` | Decrease height |
 
-### File Explorer (nvim-tree)
+### File Explorer (snacks.explorer)
 
 **Note**: 
 - File explorer is restricted to current working directory (cwd) only. Cannot navigate to parent directories.
@@ -180,7 +175,7 @@ Documentation: https://opencode.ai/docs/themes
 | `Ctrl+Shift+D`  | Scroll opencode down                 |
 
 **Note**:
-- Exit OpenCode (`leader+ox`) uses fzf-lua dialog (same as Ctrl+Q for Quit Neovim).
+- Exit OpenCode (`leader+ox`) uses snacks picker dialog (same as Ctrl+Q for Quit Neovim).
 - Use **cursor** for navigation and **Enter** to select Yes/No.
 
 ### Search

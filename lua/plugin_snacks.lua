@@ -1,5 +1,5 @@
 -- Snacks.nvim - Central configuration for all Snacks modules
--- Replaces: nvim-tree.lua, fzf-lua, telescope.nvim, nvim-notify, noice.nvim, indent-blankline.nvim
+-- Replaces: nvim-tree.lua, fzf-lua, nvim-notify, noice.nvim, indent-blankline.nvim
 
 vim.pack.add({
   { src = "https://github.com/folke/snacks.nvim" },
@@ -20,69 +20,34 @@ snacks.setup({
     },
   },
 
-  -- Fuzzy picker (replaces fzf-lua and telescope.nvim)
-  -- Layout: preview on left, input and list on right
+  -- Fuzzy picker (replaces fzf-lua)
   picker = {
     enabled = true,
-    layout = {
-      layout = {
-        box = "horizontal",
-        backdrop = false,
-        width = 0.8,
-        height = 0.8,
-        border = "none",
-        {
-          win = "preview",
-          title = "{preview:Preview}",
-          width = 0.60,
-          border = "rounded",
-          title_pos = "center",
-        },
-        {
-          box = "vertical",
-          width = 0.40,
-          { win = "input", height = 1, border = "rounded", title = " {title} {live} {flags} ", title_pos = "center" },
-          { win = "list", title = " Results ", title_pos = "center", border = "rounded" },
-        },
-      },
-    },
-    sources = {
-      -- Select picker (for confirmation dialogs)
-      select = {
-        hidden = { "preview" },
-        layout = {
-          layout = {
-            backdrop = false,
-            width = 0.20,
-            min_width = 20,
-            max_width = 40,
-            height = 0.10,
-            min_height = 2,
-            box = "vertical",
-            border = "rounded",
-            title = "{title}",
-            title_pos = "center",
-            { win = "input", height = 1, border = "bottom" },
-            { win = "list", border = "none" },
-          },
-        },
-      },
+  },
+
+  -- Configure vim.ui.select behavior
+  styles = {
+    select = {
+      width = 25,
+      border = "rounded",
+      min_height = 2,
+      max_height = 8,
     },
   },
 
-  -- LazyGit integration (replaces custom lazygit implementation)
+  -- LazyGit integration
   lazygit = {
     enabled = true,
     configure = true,
   },
 
-  -- Notification system (replaces nvim-notify and noice.nvim messages)
+  -- Notification system
   notifier = {
     enabled = true,
     timeout = 4000,
   },
 
-  -- Indentation guides (replaces indent-blankline.nvim)
+  -- Indentation guides
   indent = {
     enabled = true,
     indent = {
@@ -94,7 +59,7 @@ snacks.setup({
     },
   },
 
-  -- Enhanced input UI (used for vim.ui.select)
+  -- Enhanced input UI
   input = {
     enabled = true,
   },
@@ -129,7 +94,6 @@ local function is_explorer_open()
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local buf = vim.api.nvim_win_get_buf(win)
     local buf_name = vim.api.nvim_buf_get_name(buf)
-    -- Check for snacks explorer by buffer name pattern
     if buf_name:match("snacks_explorer") or vim.bo[buf].filetype == "snacks_picker_list" then
       return true, win
     end
@@ -150,13 +114,10 @@ vim.keymap.set("n", "<C-e>", function()
   local explorer_open, explorer_win = is_explorer_open()
 
   if in_explorer then
-    -- Currently in explorer, go back to previous window (editor)
     vim.cmd("wincmd p")
   elseif explorer_open then
-    -- Currently in editor and explorer is open, focus explorer
     vim.api.nvim_set_current_win(explorer_win)
   else
-    -- Explorer not open, do nothing
     vim.notify("File explorer is not open. Use Ctrl+Shift+E to open it.", vim.log.levels.INFO)
   end
 end, { desc = "Switch focus explorer <-> editor" })
@@ -168,12 +129,20 @@ end, { desc = "Toggle file explorer" })
 
 -- Show buffer list
 vim.keymap.set("n", "<C-b>", function()
-  snacks.picker.buffers()
+  snacks.picker.buffers({
+    layout = {
+      preset = "default",
+    },
+  })
 end, { desc = "Show buffer list" })
 
 -- Find files
 vim.keymap.set("n", "<C-p>", function()
-  snacks.picker.files()
+  snacks.picker.files({
+    layout = {
+      preset = "default",
+    },
+  })
 end, { desc = "Find files" })
 
 -- ============================================================================
@@ -219,11 +188,10 @@ vim.keymap.set("n", "<leader>gs", function()
 end, { desc = "Git status" })
 
 -- ============================================================================
--- Global Selection Function (replaces fzf_select)
+-- Global Selection Function
 -- ============================================================================
 
 _G.fzf_select = function(prompt, choices, callback)
-  -- Validate choices is a table
   if not choices or type(choices) ~= "table" then
     vim.notify("Invalid choices provided to fzf_select", vim.log.levels.ERROR)
     return
