@@ -50,6 +50,7 @@ vim.g.opencode_opts = {
 
 -- Toggle opencode (your custom keymap)
 vim.keymap.set("n", "<C-S-l>", function() require("opencode").toggle() end, { desc = "Toggle OpenCode (Ctrl+Shift+L)" })
+vim.keymap.set("n", "<leader>oo", function() require("opencode").toggle() end, { desc = "OpenCode: Toggle show/hide" })
 
 -- Focus to opencode panel from editor
 vim.keymap.set("n", "<leader>of", function()
@@ -89,9 +90,20 @@ vim.keymap.set("n", "<leader>oc", function() require("opencode").command() end, 
 vim.keymap.set("n", "<leader>on", function() require("opencode").command("session.new") end, { desc = "OpenCode: New session" })
 vim.keymap.set("n", "<leader>oi", function() require("opencode").command("session.interrupt") end, { desc = "OpenCode: Interrupt session" })
 vim.keymap.set("n", "<leader>ox", function()
-  fzf_select("Exit OpenCode?", { "Yes", "No" }, function(choice)
+  _G.fzf_select("Exit OpenCode?", { "Yes", "No" }, function(choice)
     if choice == "Yes" then
-      require("opencode").toggle()
+      -- Suppress error notifications during exit
+      local notify_orig = vim.notify
+      vim.notify = function() end
+
+      pcall(function()
+        require("opencode").stop()
+      end)
+
+      -- Restore notify after a short delay
+      vim.schedule(function()
+        vim.notify = notify_orig
+      end)
     end
   end)
 end, { desc = "OpenCode: Exit" })
