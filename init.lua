@@ -160,7 +160,6 @@ require 'plugin_lualine'                  -- Statusline (lualine)
 require 'plugin_neoscroll'                -- Smooth scrolling (neoscroll)
 require 'plugin_vcs'                      -- Version control (git)
 require 'plugin_whichkey'                 -- Which-key (keybindings helper)
-require 'plugin_maple'                    -- Notes plugin (maple)
 require 'plugin_mason'                    -- Mason package manager
 require 'plugin_opencode'                 -- AI code assistant (OpenCode)
 require 'language_rust'                   -- Rust development toolkit

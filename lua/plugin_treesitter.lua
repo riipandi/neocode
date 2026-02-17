@@ -1,5 +1,3 @@
--- Treesitter and LSP plugins
-
 vim.pack.add({
   { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
   { src = "https://github.com/ray-x/lsp_signature.nvim" },
@@ -8,10 +6,8 @@ vim.pack.add({
   { src = "https://github.com/neovim/nvim-lspconfig" },
 }, { confirm = false })
 
--- ============================================================================
--- Configuration for Treesitter
--- ============================================================================
--- Defer treesitter setup until module is available
+local snacks = require("snacks")
+
 vim.defer_fn(function()
   local ok, treesitter = pcall(require, 'nvim-treesitter.configs')
   if ok then
@@ -77,14 +73,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
     local map = function(keys, func, desc, mode)
       mode = mode or 'n'
-      vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
+      snacks.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
     end
 
     -- LSP keymaps using snacks picker
     map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
     map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
-    
-    -- Use snacks picker for LSP operations
+
     map('grr', function() require('snacks').picker.lsp_references() end, '[G]oto [R]eferences')
     map('gri', function() require('snacks').picker.lsp_implementations() end, '[G]oto [I]mplementation')
     map('grd', function() require('snacks').picker.lsp_definitions() end, '[G]oto [D]efinition')

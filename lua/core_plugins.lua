@@ -1,4 +1,7 @@
--- Snacks.nvim - Central configuration for all Snacks modules
+-- ============================================================================
+-- Snacks.nvim: Central Plugin Hub
+-- ============================================================================
+
 -- Replaces: nvim-tree.lua, fzf-lua, nvim-notify, noice.nvim, indent-blankline.nvim
 
 vim.pack.add({
@@ -6,6 +9,10 @@ vim.pack.add({
 })
 
 local snacks = require("snacks")
+
+-- ============================================================================
+-- Snacks Setup
+-- ============================================================================
 
 snacks.setup({
   -- File explorer (replaces nvim-tree.lua)
@@ -20,7 +27,7 @@ snacks.setup({
     },
   },
 
-  -- Fuzzy picker
+  -- Fuzzy picker (replaces fzf-lua/telescope)
   picker = {
     enabled = true,
     layouts = {
@@ -83,13 +90,13 @@ snacks.setup({
     configure = true,
   },
 
-  -- Notification system
+  -- Notification system (replaces nvim-notify)
   notifier = {
     enabled = true,
     timeout = 4000,
   },
 
-  -- Indentation guides
+  -- Indentation guides (replaces indent-blankline.nvim)
   indent = {
     enabled = true,
     indent = {
@@ -130,9 +137,29 @@ snacks.setup({
   terminal = {
     enabled = true,
   },
+
+  -- Smooth scrolling
+  scroll = {
+    enabled = true,
+    animate = {
+      duration = { step = 10, total = 200 },
+      easing = "linear",
+    },
+    animate_repeat = {
+      delay = 100,
+      duration = { step = 5, total = 50 },
+      easing = "linear",
+    },
+    filter = function(buf)
+      return vim.g.snacks_scroll ~= false and vim.b[buf].snacks_scroll ~= false and vim.bo[buf].buftype ~= "terminal"
+    end,
+  },
 })
 
--- Terminal window style (must be after setup)
+-- ============================================================================
+-- Custom Window Styles
+-- ============================================================================
+
 snacks.config.styles.terminal = {
   width = 0.8,
   height = 0.8,
@@ -154,7 +181,6 @@ snacks.config.styles.terminal = {
   },
 }
 
--- Input window style (centered)
 snacks.config.styles.input = {
   backdrop = false,
   border = "rounded",
@@ -171,11 +197,13 @@ snacks.config.styles.input = {
   },
 }
 
+-- Enable smooth scrolling
+snacks.scroll.enable()
+
 -- ============================================================================
--- Navigation Keymaps
+-- Helper Functions
 -- ============================================================================
 
--- Helper function to check if explorer is open
 local function is_explorer_open()
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local buf = vim.api.nvim_win_get_buf(win)
@@ -187,15 +215,17 @@ local function is_explorer_open()
   return false, nil
 end
 
--- Helper function to check if current buffer is explorer
 local function is_in_explorer()
   local buf_name = vim.api.nvim_buf_get_name(0)
   local filetype = vim.bo.filetype
   return buf_name:match("snacks_explorer") or filetype == "snacks_picker_list"
 end
 
--- Switch focus between explorer and editor
-vim.keymap.set("n", "<C-e>", function()
+-- ============================================================================
+-- File Explorer Keymaps
+-- ============================================================================
+
+snacks.keymap.set("n", "<C-e>", function()
   local in_explorer = is_in_explorer()
   local explorer_open, explorer_win = is_explorer_open()
 
@@ -208,31 +238,31 @@ vim.keymap.set("n", "<C-e>", function()
   end
 end, { desc = "Switch focus explorer <-> editor" })
 
--- Toggle file explorer
-vim.keymap.set("n", "<C-S-e>", function()
+snacks.keymap.set("n", "<C-S-e>", function()
   snacks.explorer()
 end, { desc = "Toggle file explorer" })
 
--- Show buffer list
-vim.keymap.set("n", "<C-b>", function()
+-- ============================================================================
+-- Picker Keymaps
+-- ============================================================================
+
+snacks.keymap.set("n", "<C-b>", function()
   snacks.picker.buffers({
     layout = { preset = "buffers" },
   })
 end, { desc = "Show buffer list" })
 
--- Find files
-vim.keymap.set("n", "<C-p>", function()
+snacks.keymap.set("n", "<C-p>", function()
   snacks.picker.files({
     layout = { preset = "files" },
   })
 end, { desc = "Find files" })
 
 -- ============================================================================
--- Editor Keymaps
+-- Input & Navigation Keymaps
 -- ============================================================================
 
--- Go to line with input prompt
-vim.keymap.set("n", "<C-g>", function()
+snacks.keymap.set("n", "<C-g>", function()
   local height = vim.o.lines
   local row = math.floor((height - 3) / 2)
   snacks.input.input({
@@ -260,25 +290,23 @@ end, { desc = "Go to line or line:col" })
 -- Git Keymaps
 -- ============================================================================
 
--- Toggle LazyGit
-vim.keymap.set("n", "<C-S-g>", function()
+snacks.keymap.set("n", "<C-S-g>", function()
   snacks.lazygit.open()
 end, { desc = "Toggle LazyGit" })
 
-vim.keymap.set("n", "<leader>gg", function()
+snacks.keymap.set("n", "<leader>gg", function()
   snacks.lazygit.open()
 end, { desc = "Toggle LazyGit" })
 
--- Git status picker
-vim.keymap.set("n", "<leader>gs", function()
+snacks.keymap.set("n", "<leader>gs", function()
   snacks.picker.git_status()
 end, { desc = "Git status" })
 
 -- ============================================================================
--- Terminal
+-- Terminal Keymaps
 -- ============================================================================
 
-vim.keymap.set("n", "<C-S-s>", function()
+snacks.keymap.set("n", "<C-S-s>", function()
   snacks.terminal.toggle(vim.o.shell, {
     cwd = vim.fn.getcwd(),
     win = { style = "terminal" },
@@ -286,7 +314,7 @@ vim.keymap.set("n", "<C-S-s>", function()
 end, { desc = "Toggle floating terminal" })
 
 -- ============================================================================
--- Global Selection Function
+-- Global UI Select Function
 -- ============================================================================
 
 _G.ui_select = function(prompt, choices, callback)

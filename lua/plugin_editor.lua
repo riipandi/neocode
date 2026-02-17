@@ -1,4 +1,6 @@
--- Editor enhancement plugins
+-- ============================================================================
+-- Editor Enhancement Plugins
+-- ============================================================================
 
 vim.pack.add({
   { src = "https://github.com/windwp/nvim-autopairs" },
@@ -8,11 +10,12 @@ vim.pack.add({
   { src = "https://github.com/stevearc/conform.nvim" },
 })
 
--- Indentation guides are now handled by snacks.indent (see plugin_snacks.lua)
+-- Note: Indentation guides are handled by snacks.indent (see plugin_snacks.lua)
 
 -- ============================================================================
--- Auto-pair plugin for brackets, quotes, etc.
+-- Auto-pairs: Automatically close brackets, quotes, etc.
 -- ============================================================================
+
 require('nvim-autopairs').setup({
   enabled = function(bufnr) return true end,
   disable_filetype = { "spectre_panel", "snacks_picker_input" },
@@ -34,15 +37,17 @@ require('nvim-autopairs').setup({
 })
 
 -- ============================================================================
--- Highlight todo, notes, etc in comments
+-- Todo Comments: Highlight TODO, NOTE, FIX, etc. in comments
 -- ============================================================================
+
 require('todo-comments').setup({
   signs = false
 })
 
 -- ============================================================================
--- Show all URLs in a buffer
+-- URL View: Extract and open URLs from buffer
 -- ============================================================================
+
 require('urlview').setup({
   default_title = "Links:",
   default_picker = "default",
@@ -52,8 +57,9 @@ require('urlview').setup({
 })
 
 -- ============================================================================
--- Redact sensitive information in env files
+-- Cloak: Hide sensitive information in .env files
 -- ============================================================================
+
 require('cloak').setup({
   enabled = true,
   cloak_character = '*',
@@ -69,8 +75,9 @@ require('cloak').setup({
 })
 
 -- ============================================================================
--- Code formatter
+-- Conform: Code formatter with LSP integration
 -- ============================================================================
+
 require('conform').setup({
   notify_on_error = false,
   format_on_save = function(bufnr)
