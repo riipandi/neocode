@@ -15,7 +15,7 @@ working-directory = inherit
 adjust-cell-height = "12%"
 adjust-cell-width = "3%"
 background-blur = true
-background-opacity = 0.92
+background-opacity = 0.99
 background-blur-radius = 40
 bold-is-bright = false
 clipboard-paste-bracketed-safe = true
@@ -47,7 +47,7 @@ macos-secure-input-indication = true
 macos-titlebar-proxy-icon = hidden
 
 # hidden|transparent|native|tabs
-macos-titlebar-style = transparent
+macos-titlebar-style = tabs
 
 macos-window-buttons = hidden
 macos-window-shadow = true
@@ -70,7 +70,7 @@ window-inherit-font-size = true
 window-new-tab-position = end
 window-padding-balance = true
 window-padding-x = 6
-window-padding-y = 0
+window-padding-y = 2
 window-padding-balance = true
 window-titlebar-background = #181a1d
 window-titlebar-foreground = #a5a8b0
@@ -107,23 +107,25 @@ selection-background = #336ff1
 selection-foreground = #ffffff
 
 palette = 0=#191a1c
-palette = 1=#f85149
-palette = 2=#6aab73
+palette = 1=#ff6b66
+palette = 2=#8ed16a
 palette = 3=#ffb347
-palette = 4=#336ff1
-palette = 5=#ba8ef7
-palette = 6=#2aacb8
+palette = 4=#6699ff
+palette = 5=#d4aaff
+palette = 6=#4dd0e1
 palette = 7=#e0e2e8
 palette = 8=#7a7e85
 palette = 9=#ff8a85
-palette = 10=#6aab73
-palette = 11=#ffb347
-palette = 12=#56a8f5
-palette = 13=#ba8ef7
-palette = 14=#2aacb8
+palette = 10=#a3e635
+palette = 11=#ffd966
+palette = 12=#9bc4ff
+palette = 13=#e8b4ff
+palette = 14=#70d4e8
 palette = 15=#ffffff
 
 # # keybindings
+keybind = cmd+q=ignore
+keybind = cmd+w=ignore
 keybind = cmd+shift+w=ignore
 # keybind = cmd+shift+p>x=close_surface
 # keybind = cmd+s>r=reload_config

@@ -2,10 +2,13 @@
 -- Snacks.nvim: Central Plugin Hub
 -- ============================================================================
 
--- Replaces: nvim-tree.lua, fzf-lua, nvim-notify, noice.nvim, indent-blankline.nvim
+-- Replaces: nvim-tree.lua, fzf-lua, nvim-notify, dressing.nvim, indent-blankline.nvim
+-- Note: cmdline replacement handled by noice.nvim (plugin_noice.lua)
 
 vim.pack.add({
   { src = "https://github.com/folke/snacks.nvim" },
+  { src = "https://github.com/MunifTanjim/nui.nvim" },
+  { src = "https://github.com/folke/noice.nvim" },
 })
 
 local snacks = require("snacks")
@@ -367,6 +370,21 @@ snacks.keymap.set("n", "<C-g>", function()
     end
   end)
 end, { desc = "Go to line or line:col" })
+
+snacks.keymap.set("n", "<leader>;", function()
+  local height = vim.o.lines
+  local row = math.floor((height - 3) / 2)
+  snacks.input.input({
+    prompt = "Command: ",
+    win = {
+      row = row,
+    },
+  }, function(input)
+    if input and input ~= "" then
+      vim.cmd(input)
+    end
+  end)
+end, { desc = "Command palette (no auto-complete, won't close on backspace)" })
 
 -- ============================================================================
 -- Git Keymaps
