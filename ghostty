@@ -124,6 +124,7 @@ palette = 14=#70d4e8
 palette = 15=#ffffff
 
 # # keybindings
+keybind = cmd+shift+w=ignore
 # keybind = cmd+shift+p>x=close_surface
 # keybind = cmd+s>r=reload_config
 # keybind = cmd+s>x=close_surface

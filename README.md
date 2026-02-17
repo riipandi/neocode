@@ -64,7 +64,7 @@ rm -fr ~/.cache/nvim
 ```sh
 mkdir -p ~/.config/opencode/themes/
 touch ~/.config/opencode/themes/atomizer-island.json
-cat ~/.config/nvim/.opencode/themes/atomizer-island.json \
+cat ~/.config/nvim/opencode-theme.json \
   > ~/.config/opencode/themes/atomizer-island.json
 ```
 
