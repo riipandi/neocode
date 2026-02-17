@@ -39,7 +39,7 @@ local command_categories = {
     "^fold", "^zo", "^zc"
   },
   Terminal = {
-    "^terminal", "^tab"
+    "^terminal$"
   },
   Lua = {
     "^lua", "^luafile", "^source", "^runtime"
@@ -84,16 +84,17 @@ end
 -- Get all Vim commands (built-in + user + plugin), excluding internal-only
 local function get_vim_commands()
   local items = {}
-  local commands = vim.api.nvim_get_commands({})
-  
-  for name, def in pairs(commands) do
+  local commands = vim.fn.getcompletion("", "command")
+  local seen = {}
+
+  for _, name in ipairs(commands) do
     -- Exclude internal-only commands
     local exclude_patterns = {
       "^cabbr?e", "^cunabbr?e",        -- abbreviations
       "^[am]enu", "^unmenu",            -- menus
       "^debug", "^debuggreedy",          -- debug
     }
-    
+
     local is_excluded = false
     for _, pattern in ipairs(exclude_patterns) do
       if name:match(pattern) then
@@ -101,18 +102,19 @@ local function get_vim_commands()
         break
       end
     end
-    
+
     -- Include all other commands with category prefix
-    if not is_excluded then
+    if not is_excluded and not seen[name] then
       local category = get_command_category(name)
       table.insert(items, {
         text = name,
         action = ":" .. name,
         category = category,
       })
+      seen[name] = true
     end
   end
-  
+
   -- Sort by category first, then by command name
   table.sort(items, function(a, b)
     if a.category ~= b.category then
@@ -120,7 +122,7 @@ local function get_vim_commands()
     end
     return a.text < b.text
   end)
-  
+
   return items
 end
 
@@ -175,5 +177,5 @@ end
 
 -- Command palette: fuzzy search all Vim commands with categories
 snacks.keymap.set("n", "<C-S-p>", function()
-  show_commands("Vim Commands", get_vim_commands())
+  show_commands("Commands Center", get_vim_commands())
 end, { desc = "Command palette" })

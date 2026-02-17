@@ -21,7 +21,7 @@ sudo cp -R ./nvim-macos-arm64/* /usr/local/ && rm -fr nvim-macos-arm64
 ```
 
 ```sh
-brew install ripgrep fd luarocks taplo stylua rust-analyzer
+brew install ripgrep fd luarocks taplo stylua rust-analyzer serpl
 brew install bash-language-server yaml-language-server python-lsp-server
 brew install --cask rio
 
