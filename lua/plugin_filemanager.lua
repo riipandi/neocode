@@ -139,9 +139,13 @@ local function custom_on_attach(bufnr)
     return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
   end
 
+  local function is_protected(node)
+    return node.name == ".." or (node.parent == nil)
+  end
+
   local function collapse_folder()
     local node = api.tree.get_node_under_cursor()
-    if node.name == ".." then
+    if is_protected(node) then
       return
     end
     api.node.navigate.parent_close()
@@ -149,9 +153,19 @@ local function custom_on_attach(bufnr)
 
   local function expand_folder()
     local node = api.tree.get_node_under_cursor()
-    if node.nodes then
-      api.node.open.edit()
+    if is_protected(node) then
+      return
     end
+    -- Expand by opening node (works for both files and folders)
+    api.node.open.edit()
+  end
+
+  local function open_file()
+    local node = api.tree.get_node_under_cursor()
+    if is_protected(node) then
+      return
+    end
+    api.node.open.edit()
   end
 
   -- Setup custom mappings (not using default_on_attach)
@@ -159,8 +173,8 @@ local function custom_on_attach(bufnr)
   vim.keymap.set('n', '<Right>', expand_folder,                        opts('Expand'))
   vim.keymap.set('n', 'h',       collapse_folder,                       opts('Collapse'))
   vim.keymap.set('n', 'l',       expand_folder,                        opts('Expand'))
-  vim.keymap.set('n', '<CR>',    api.node.open.edit,                    opts('Open'))
-  vim.keymap.set('n', '<2-LeftMouse>', api.node.open.edit,            opts('Open'))
+  vim.keymap.set('n', '<CR>',    open_file,                               opts('Open'))
+  vim.keymap.set('n', '<2-LeftMouse>', open_file,                    opts('Open'))
   vim.keymap.set('n', 'q',       api.tree.close,                       opts('Close'))
   vim.keymap.set('n', 'g?',      api.tree.toggle_help,                opts('Help'))
 
@@ -220,7 +234,7 @@ require('nvim-tree').setup({
   -- Prevent navigation to parent directories
   actions = {
     change_dir = {
-      enable = false,
+      enable = false,    -- ❌ Prevent cd to parent
       global = false,
     },
     open_file = {

@@ -3,7 +3,9 @@ local s = { silent = true }
 local ns = { noremap = true, silent = true }
 local er = { expr = true, replace_keycodes = false }
 
-local function fzf_select(prompt, choices, callback)
+-- Global function for fzf-lua selection dialogs
+-- Used by core_keymaps and other plugins
+_G.fzf_select = function(prompt, choices, callback)
   local fzf_lua = require("fzf-lua")
   local height = math.max(7, #choices + 2)
   local width = 35
@@ -154,140 +156,130 @@ keymap("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>", ns)
   -- cd current directory of the file
   keymap("n", "<leader>cd", '<cmd>lua vim.fn.chdir(vim.fn.expand("%:p:h"))<CR>', { desc = "Change working directory to current file" })
 
--- Buffer management with Ctrl+X (close/delete)
-local function close_buffer()
-  local current_win = vim.api.nvim_get_current_win()
-  local current_buf = vim.api.nvim_win_get_buf(current_win)
-  local current_name = vim.api.nvim_buf_get_name(current_buf)
+  -- Buffer management with Ctrl+X (close/delete)
+  _G.close_buffer = function()
+    local current_win = vim.api.nvim_get_current_win()
+    local current_buf = vim.api.nvim_win_get_buf(current_win)
+    local current_name = vim.api.nvim_buf_get_name(current_buf)
 
-  -- Prevent closing when focused on nvim-tree
-  if current_name:match("NvimTree") then
-    vim.cmd('echo "Cannot close explorer buffer"')
-    return
-  end
-
-  local buf = vim.api.nvim_get_current_buf()
-  local buf_name = vim.api.nvim_buf_get_name(buf)
-  local modified = vim.api.nvim_buf_get_option(buf, "modified")
-
-  local is_empty = (buf_name == "" and not modified)
-
-  -- Check if nvim-tree is open
-  local nvim_tree_open = false
-  pcall(function()
-    nvim_tree_open = require("nvim-tree.view").is_visible()
-  end)
-
-  -- Count valid buffers (not including nvim-tree)
-  local valid_buffers = 0
-  for _, b in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_is_valid(b) then
-      local name = vim.api.nvim_buf_get_name(b)
-      if name and name ~= "" and not name:match("NvimTree") then
-        valid_buffers = valid_buffers + 1
-      end
-    end
-  end
-
-  if is_empty and nvim_tree_open and valid_buffers <= 1 then
-    vim.cmd('echo "Cannot close last buffer when explorer is open"')
-    return
-  end
-
-  if is_empty then
-    vim.cmd('echo "Cannot close empty buffer"')
-    return
-  end
-
-  local windows = vim.api.nvim_list_wins()
-  local is_last_window = #windows <= 1
-
-  if modified then
-    fzf_select("Save changes?", { "Yes", "No" }, function(choice)
-      if choice == "Yes" then
-        vim.cmd.write()
-      end
-      if is_last_window then
-        vim.cmd("bdelete!")
-      else
-        vim.cmd("close")
-        vim.cmd("bdelete!")
-      end
-    end)
-  else
-    if is_last_window then
-      vim.cmd("bdelete!")
-    else
-      vim.cmd("close")
-      vim.cmd("bdelete!")
-    end
-  end
-end
-
-keymap("n", "<C-x>", close_buffer, { desc = "Close buffer (Ctrl+X)" })
-
--- Close all buffers with confirmation
-local function close_all_buffers()
-  local modified = {}
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_get_option(buf, "modified") then
-      local name = vim.api.nvim_buf_get_name(buf)
-      if name ~= "" then
-        table.insert(modified, name)
-      end
-    end
-  end
-
-  if #modified > 0 then
-    fzf_select("Unsaved files - save?", { "Save all and close", "Don't save and close", "Cancel" }, function(choice)
-      if choice == "Save all and close" then
-        vim.cmd("wall")
-        vim.cmd("bufdo! bdelete!")
-      elseif choice == "Don't save and close" then
-        vim.cmd("bufdo! bdelete!")
-      end
-    end)
-  else
-    vim.cmd("bufdo! bdelete!")
-  end
-end
-
-keymap("n", "<C-S-w>", close_all_buffers, { desc = "Close all buffers (Ctrl+Shift+W)" })
-
--- Quit Neovim with Ctrl+Q (with unsaved changes check)
-local function quit_neovim()
-  fzf_select("Quit Neovim?", { "Yes", "No" }, function(choice)
-    if choice ~= "Yes" then
+    -- Prevent closing when focused on nvim-tree
+    if current_name:match("NvimTree") then
+      vim.cmd('echo "Cannot close explorer buffer"')
       return
     end
 
-    local modified_buffers = {}
-    local buffers = vim.api.nvim_list_bufs()
+    local buf = vim.api.nvim_get_current_buf()
+    local buf_name = vim.api.nvim_buf_get_name(buf)
+    local modified = vim.api.nvim_buf_get_option(buf, "modified")
 
-    for _, buf in ipairs(buffers) do
-      if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_get_option(buf, "modified") then
-        local name = vim.api.nvim_buf_get_name(buf)
-        if name ~= "" then
-          table.insert(modified_buffers, { id = buf, name = vim.fs.basename(name) })
+    local is_empty = (buf_name == "" and not modified)
+
+    -- Check if nvim-tree is open
+    local nvim_tree_open = false
+    pcall(function()
+      nvim_tree_open = require("nvim-tree.view").is_visible()
+    end)
+
+    -- Count valid buffers (not including nvim-tree)
+    local valid_buffers = 0
+    for _, b in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_buf_is_valid(b) then
+        local name = vim.api.nvim_buf_get_name(b)
+        if name and name ~= "" and not name:match("NvimTree") then
+          valid_buffers = valid_buffers + 1
         end
       end
     end
 
-    if #modified_buffers > 0 then
-      fzf_select("Unsaved buffers - save?", { "Save all and quit", "Don't save and quit", "Cancel" }, function(choice2)
-        if choice2 == "Save all and quit" then
+    if is_empty and nvim_tree_open and valid_buffers <= 1 then
+      vim.cmd('echo "Cannot close last buffer when explorer is open"')
+      return
+    end
+
+    if is_empty then
+      vim.cmd('echo "Cannot close empty buffer"')
+      return
+    end
+
+    local windows = vim.api.nvim_list_wins()
+    local is_last_window = #windows <= 1
+
+    if modified then
+      fzf_select("Save changes?", { "Yes", "No" }, function(choice)
+        if choice == "Yes" then
+          vim.cmd.write()
+        end
+        vim.cmd("bdelete!")
+      end)
+    else
+      vim.cmd("bdelete!")
+    end
+  end
+
+  keymap("n", "<C-x>", _G.close_buffer, { desc = "Close buffer (Ctrl+X)" })
+
+  -- Close all buffers with confirmation
+  _G.close_all_buffers = function()
+    local modified = {}
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_get_option(buf, "modified") then
+        local name = vim.api.nvim_buf_get_name(buf)
+        if name ~= "" then
+          table.insert(modified, name)
+        end
+      end
+    end
+
+    if #modified > 0 then
+      fzf_select("Unsaved files - save?", { "Save all and close", "Don't save and close", "Cancel" }, function(choice)
+        if choice == "Save all and close" then
           vim.cmd("wall")
-          vim.cmd("qa!")
-        elseif choice2 == "Don't save and quit" then
-          vim.cmd("qa!")
+          vim.cmd("bufdo! bdelete!")
+        elseif choice == "Don't save and close" then
+          vim.cmd("bufdo! bdelete!")
         end
       end)
     else
-      vim.cmd("qa!")
+      vim.cmd("bufdo! bdelete!")
     end
-  end)
-end
+  end
 
-keymap("n", "<C-q>", quit_neovim, { desc = "Quit Neovim (Ctrl+Q)" })
-keymap("n", "<leader>qq", quit_neovim, { desc = "Quit Neovim (leader+qq)" })
-keymap("n", "<leader>qa", ":qa<CR>", { desc = "Quit all (without checking)" })
+  keymap("n", "<C-S-w>", _G.close_all_buffers, { desc = "Close all buffers (Ctrl+Shift+W)" })
+
+  -- Quit Neovim with Ctrl+Q (with unsaved changes check)
+  _G.quit_neovim = function()
+    fzf_select("Quit Neovim?", { "Yes", "No" }, function(choice)
+      if choice ~= "Yes" then
+        return
+      end
+
+      local modified_buffers = {}
+      local buffers = vim.api.nvim_list_bufs()
+
+      for _, buf in ipairs(buffers) do
+        if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_get_option(buf, "modified") then
+          local name = vim.api.nvim_buf_get_name(buf)
+          if name ~= "" then
+            table.insert(modified_buffers, { id = buf, name = vim.fs.basename(name) })
+          end
+        end
+      end
+
+      if #modified_buffers > 0 then
+        fzf_select("Unsaved buffers - save?", { "Save all and quit", "Don't save and quit", "Cancel" }, function(choice2)
+          if choice2 == "Save all and quit" then
+            vim.cmd("wall")
+            vim.cmd("qa!")
+          elseif choice2 == "Don't save and quit" then
+            vim.cmd("qa!")
+          end
+        end)
+      else
+        vim.cmd("qa!")
+      end
+    end)
+  end
+
+  keymap("n", "<C-q>", _G.quit_neovim, { desc = "Quit Neovim (Ctrl+Q)" })
+  keymap("n", "<leader>qq", _G.quit_neovim, { desc = "Quit Neovim (leader+qq)" })
+  keymap("n", "<leader>qa", ":qa<CR>", { desc = "Quit all (without checking)" })

@@ -27,30 +27,6 @@ snacks.setup({
 })
 
 -- ============================================================================
--- Helper function for fzf-lua selection dialogs (same as core_keymaps)
--- ============================================================================
-local function fzf_select(prompt, choices, callback)
-  local fzf_lua = require("fzf-lua")
-  local height = math.max(7, #choices + 2)
-  local width = 35
-  fzf_lua.fzf_exec(choices, {
-    prompt = prompt .. "> ",
-    winopts = {
-      height = height,
-      width = width,
-      row = 0.5,
-      col = 0.5,
-      border = "rounded",
-    },
-    actions = {
-      ["default"] = function(selected)
-        callback(selected[1])
-      end,
-    },
-  })
-end
-
--- ============================================================================
 -- OpenCode.nvim configuration
 -- ============================================================================
 vim.g.opencode_opts = {

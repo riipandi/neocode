@@ -108,42 +108,46 @@ rm -fr ~/.cache/nvim
 
 ### File Explorer (nvim-tree)
 
-**Note**: File explorer is restricted to current working directory (cwd) only. Cannot navigate to parent directories.
+**Note**: 
+- File explorer is restricted to current working directory (cwd) only. Cannot navigate to parent directories.
+- Parent directory (`..`) is hidden from view.
+- `h`/`Left` keys are disabled on root level to prevent navigating to parent.
+- `Enter` key is disabled on `..` node.
 
-| Shortcut | Action                     |
-|----------|----------------------------|
-| `h`      | Collapse folder            |
-| `l`      | Expand folder              |
-| `Left`   | Collapse folder            |
-| `Right`  | Expand folder              |
-| `Enter`  | Open file                  |
-| `q`      | Close explorer             |
-| `a`      | Create file/folder         |
-| `d`      | Delete                     |
-| `r`      | Rename/move                |
-| `x`      | Cut                        |
-| `p`      | Paste                      |
-| `yy`     | Copy name to clipboard     |
-| `yn`     | Copy filename to clipboard |
-| `yp`     | Copy absolute path         |
-| `y.`     | Copy relative path         |
-| `J`      | Next sibling               |
-| `K`      | Previous sibling           |
-| `Ctrl+V` | Open in vertical split     |
-| `Ctrl+S` | Open in horizontal split   |
-| `Ctrl+T` | Open in new tab            |
-| `Ctrl+E` | Open in place              |
-| `Ctrl+K` | Toggle custom filter       |
-| `f`      | Live filter                |
-| `F`      | Clear filter               |
-| `[c`     | Previous git item          |
-| `]c`     | Next git item              |
-| `s`      | Open with system app       |
-| `u`      | Toggle hidden files        |
-| `W`      | Collapse all               |
-| `E`      | Expand all                 |
-| `R`      | Refresh tree               |
-| `g?`     | Show help                  |
+| Shortcut | Action                        |
+|----------|-------------------------------|
+| `l`      | Expand folder                 |
+| `Right`  | Expand folder                 |
+| `h`      | Collapse folder (not on root) |
+| `Left`   | Collapse folder (not on root) |
+| `Enter`  | Open file (disabled on `..`)  |
+| `q`      | Close explorer                |
+| `a`      | Create file/folder            |
+| `d`      | Delete                        |
+| `r`      | Rename/move                   |
+| `x`      | Cut                           |
+| `p`      | Paste                         |
+| `yy`     | Copy name to clipboard        |
+| `yn`     | Copy filename to clipboard    |
+| `yp`     | Copy absolute path            |
+| `y.`     | Copy relative path            |
+| `J`      | Next sibling                  |
+| `K`      | Previous sibling              |
+| `Ctrl+V` | Open in vertical split        |
+| `Ctrl+S` | Open in horizontal split      |
+| `Ctrl+T` | Open in new tab               |
+| `Ctrl+E` | Open in place                 |
+| `Ctrl+K` | Toggle custom filter          |
+| `f`      | Live filter                   |
+| `F`      | Clear filter                  |
+| `[c`     | Previous git item             |
+| `]c`     | Next git item                 |
+| `s`      | Open with system app          |
+| `u`      | Toggle hidden files           |
+| `W`      | Collapse all                  |
+| `E`      | Expand all                    |
+| `R`      | Refresh tree                  |
+| `g?`     | Show help                     |
 
 ### OpenCode (AI Assistant)
 
@@ -189,6 +193,17 @@ rm -fr ~/.cache/nvim
 ```sh
 npx tiged https://github.com/riipandi/neovim-config ~/.config/nvim
 ```
+
+## OpenCode Theme
+
+```sh
+mkdir -p ~/.config/opencode/themes/
+touch ~/.config/opencode/themes/atomizer-island.json
+cat ~/.config/nvim/.opencode/themes/atomizer-island.json \
+  > ~/.config/opencode/themes/atomizer-island.json
+```
+
+Documentation: https://opencode.ai/docs/themes
 
 ## Inspirations
 
