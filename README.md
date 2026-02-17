@@ -59,6 +59,17 @@ rm -fr ~/.cache/nvim
 | nvim-notify     | Notification system |
 | miniharp.nvim   | Quick file marks    |
 
+## OpenCode Theme
+
+```sh
+mkdir -p ~/.config/opencode/themes/
+touch ~/.config/opencode/themes/atomizer-island.json
+cat ~/.config/nvim/.opencode/themes/atomizer-island.json \
+  > ~/.config/opencode/themes/atomizer-island.json
+```
+
+Documentation: https://opencode.ai/docs/themes
+
 ## Keybindings
 
 ### Navigation
@@ -193,17 +204,6 @@ rm -fr ~/.cache/nvim
 ```sh
 npx tiged https://github.com/riipandi/neovim-config ~/.config/nvim
 ```
-
-## OpenCode Theme
-
-```sh
-mkdir -p ~/.config/opencode/themes/
-touch ~/.config/opencode/themes/atomizer-island.json
-cat ~/.config/nvim/.opencode/themes/atomizer-island.json \
-  > ~/.config/opencode/themes/atomizer-island.json
-```
-
-Documentation: https://opencode.ai/docs/themes
 
 ## Inspirations
 
