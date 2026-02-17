@@ -47,14 +47,34 @@ rm -fr ~/.cache/nvim
 
 ## Dependencies (Plugins)
 
-| Plugin         | Description             |
-|----------------|-------------------------|
-| snacks.nvim    | All-in-one UI utilities |
-| miniharp.nvim  | Quick file marks        |
-| gitsigns.nvim  | Git signs in gutter     |
-| blink.cmp      | Code completion         |
-| neoscroll.nvim | Smooth scrolling        |
-| which-key.nvim | Keybinding helper       |
+| Plugin                        | Description                                                |
+|-------------------------------|------------------------------------------------------------|
+| **snacks.nvim**               | All-in-one UI utilities (picker, explorer, notifier, etc.) |
+| **blink.cmp**                 | Code completion with snippet support                       |
+| **friendly-snippets**         | Snippet collection                                         |
+| **lazydev.nvim**              | Neovim development                                         |
+| **colorful-menu.nvim**        | Colorful completion menus                                  |
+| **nvim-autopairs**            | Auto-close brackets and pairs                              |
+| **todo-comments.nvim**        | Highlight TODO comments                                    |
+| **urlview.nvim**              | Open URLs from text files                                  |
+| **cloak.nvim**                | Blur lines for sensitive info                              |
+| **conform.nvim**              | Slow/conforming async formatting                           |
+| **miniharp.nvim**             | Quick file marks and navigation                            |
+| **plenary.nvim**              | Utility functions                                          |
+| **lualine.nvim**              | Statusline theme                                           |
+| **nvim-web-devicons**         | File type icons                                            |
+| **mini.icons**                | Icon provider                                              |
+| **mason.nvim**                | LSP package manager                                        |
+| **mason-lspconfig.nvim**      | LSP configuration for Mason                                |
+| **mason-tool-installer.nvim** | Tool installer for Mason                                   |
+| **nvim-treesitter**           | Syntax highlighting                                        |
+| **lsp_signature.nvim**        | LSP signature help                                         |
+| **trouble.nvim**              | Pretty diagnostics UI                                      |
+| **fidget.nvim**               | LSP progress indicator                                     |
+| **nvim-lspconfig**            | LSP configuration                                          |
+| **gitsigns.nvim**             | Git signs in gutter                                        |
+| **which-key.nvim**            | Keybinding helper                                          |
+| **opencode.nvim**             | AI code assistant                                          |
 
 ## OpenCode Theme
 
@@ -69,6 +89,12 @@ Documentation: https://opencode.ai/docs/themes
 
 ## Keybindings
 
+### Command Palette
+
+| Shortcut       | Action                                         |
+|----------------|------------------------------------------------|
+| `Ctrl+Shift+P` | Command palette (all commands with categories) |
+
 ### Navigation
 
 | Shortcut       | Action                                  |
@@ -81,6 +107,12 @@ Documentation: https://opencode.ai/docs/themes
 | `Ctrl+L`       | Show marks list (miniharp)              |
 | `Ctrl+N`       | Next mark                               |
 | `Ctrl+Shift+M` | Previous mark                           |
+
+### Command Palette
+
+| Shortcut       | Action                                                                         |
+|----------------|--------------------------------------------------------------------------------|
+| `Ctrl+Shift+P` | Command palette (all commands with categories like File:, Buffer:, LSP:, etc.) |
 
 ### Editor
 
