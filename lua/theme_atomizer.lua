@@ -413,6 +413,7 @@ function M.load()
     SnacksPickerNormal = { fg = colors.fg, bg = colors.bg },
     SnacksPickerList = { fg = colors.fg },
     SnacksPickerListCursorLine = { bg = colors.line_highlight },
+    SnacksPickerIndicator = { fg = colors.keyword },
     NoiceCmdlinePopup = { fg = colors.fg, bg = M.options.transparent and "none" or colors.float_bg },
     NoiceCmdlinePopupBorder = { fg = "#3c3f41" },
     NoiceCmdlinePopupTitle = { fg = colors.keyword },
