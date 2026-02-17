@@ -81,6 +81,34 @@ snacks.setup({
           },
         },
       },
+
+      -- Command palette (list all Vim commands)
+      commands = {
+        layout = {
+          box = "vertical",
+          width = 0.4,
+          height = 0.6,
+          border = "rounded",
+          title = "{title}",
+          title_pos = "center",
+          { win = "input", height = 1, border = "bottom" },
+          { win = "list", border = "none" },
+        },
+      },
+
+      -- Command history (previously executed commands)
+      cmd_history = {
+        layout = {
+          box = "vertical",
+          width = 0.6,
+          height = 0.5,
+          border = "rounded",
+          title = "{title}",
+          title_pos = "center",
+          { win = "input", height = 1, border = "bottom" },
+          { win = "list", border = "none" },
+        },
+      },
     },
   },
 

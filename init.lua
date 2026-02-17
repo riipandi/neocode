@@ -114,18 +114,6 @@ local function map_cmdline_nav(keys, pum_action, fallback)
   end, { noremap = true, silent = true })
 end
 
--- Arrow keys for navigation (sesuai preferensi: kiri=up, kanan=down)
-map_cmdline_nav("<Down>", "<C-n>", "<Down>")
-map_cmdline_nav("<Up>", "<C-p>", "<Up>")
-map_cmdline_nav("<Left>", "<C-p>", "<Left>")
-map_cmdline_nav("<Right>", "<C-n>", "<Right>")
-map_cmdline_nav("<Tab>", "<C-n>", "<Tab>")
-map_cmdline_nav("<S-Tab>", "<C-p>", "<S-Tab>")
-
--- Enter for selection, Esc to cancel
-map_cmdline_nav("<CR>", "<C-y>", "<CR>")
-map_cmdline_nav("<Esc>", "<C-e>", "<Esc>")
-
 -- Note: Insert mode completion handled by blink.cmp with preset 'default'
 -- This provides: arrow keys navigation, tab navigation, and enter to accept
 -- Display invisible characters
@@ -143,7 +131,8 @@ vim.opt.splitright = true                -- Vertical splits go right
 -- Load core configurations
 -- ============================================================================
 require 'core_plugins'                   -- Snacks.nvim (must load first)
-require 'core_health'                    -- Health checks
+require 'command'                         -- Command palette & history
+require 'core_health'                      -- Health checks
 require 'core_keymaps'                   -- Key mappings
 require 'core_autocmds'                  -- Autocommands utilities
 require 'core_lsp'                       -- LSP settings
