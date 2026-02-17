@@ -60,7 +60,7 @@ require('flexoki').setup({
 
  -- Load the colorscheme here. List of available styles:
 -- 'catppuccin-frappe' | 'catppuccin-mocha' | 'tokyonight-moon' | 'everblush' | 'flexoki-dark' | 'atomizer'
-local atomizer = require('themes.atomizer')
+local atomizer = require('theme_atomizer')
 atomizer.setup({ transparent = true })
 atomizer.load()
 
