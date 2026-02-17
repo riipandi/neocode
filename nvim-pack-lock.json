@@ -4,10 +4,6 @@
       "rev": "cd79f57",
       "src": "https://github.com/saghen/blink.cmp"
     },
-    "catppuccin": {
-      "rev": "0a5de4d",
-      "src": "https://github.com/catppuccin/nvim"
-    },
     "cloak.nvim": {
       "rev": "648aca6",
       "src": "https://github.com/laytan/cloak.nvim"
@@ -24,17 +20,9 @@
       "rev": "ac9fa49",
       "src": "https://github.com/saecki/crates.nvim"
     },
-    "everblush": {
-      "rev": "678f808",
-      "src": "https://github.com/Everblush/nvim"
-    },
     "fidget.nvim": {
       "rev": "7fa433a",
       "src": "https://github.com/j-hui/fidget.nvim"
-    },
-    "flexoki": {
-      "rev": "c3e2251",
-      "src": "https://github.com/kepano/flexoki-neovim"
     },
     "friendly-snippets": {
       "rev": "6cd7280",
@@ -56,10 +44,6 @@
       "rev": "47f91c4",
       "src": "https://github.com/nvim-lualine/lualine.nvim"
     },
-    "maple.nvim": {
-      "rev": "6fce52a",
-      "src": "https://github.com/forest-nvim/maple.nvim"
-    },
     "mason-lspconfig.nvim": {
       "rev": "21c2a84",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
@@ -80,10 +64,6 @@
     "miniharp.nvim": {
       "rev": "29c50dd",
       "src": "https://github.com/vieitesss/miniharp.nvim"
-    },
-    "neoscroll.nvim": {
-      "rev": "c8d2997",
-      "src": "https://github.com/karb94/neoscroll.nvim"
     },
     "nvim-autopairs": {
       "rev": "59bce2e",
@@ -112,10 +92,6 @@
     "snacks.nvim": {
       "rev": "fe7cfe9",
       "src": "https://github.com/folke/snacks.nvim"
-    },
-    "techbase.nvim": {
-      "rev": "25f814c",
-      "src": "https://github.com/mcauley-penney/techbase.nvim"
     },
     "todo-comments.nvim": {
       "rev": "31e3c38",

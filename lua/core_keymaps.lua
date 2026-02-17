@@ -5,17 +5,6 @@
 local snacks = require("snacks")
 
 -- ============================================================================
--- Helper Functions
--- ============================================================================
-
--- Check if buffer is snacks explorer or picker
-local function is_explorer_buffer(buf)
-  local name = vim.api.nvim_buf_get_name(buf)
-  local ft = vim.bo[buf].filetype
-  return name:match("snacks_explorer") or ft == "snacks_picker_list"
-end
-
--- ============================================================================
 -- Leader Key
 -- ============================================================================
 
@@ -78,136 +67,28 @@ snacks.keymap.set("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})
 -- Buffer Management
 -- ============================================================================
 
--- Close current buffer (Ctrl+X)
-_G.close_buffer = function()
-  local current_win = vim.api.nvim_get_current_win()
-  local current_buf = vim.api.nvim_win_get_buf(current_win)
-  local current_name = vim.api.nvim_buf_get_name(current_buf)
+-- Close current buffer with snacks
+snacks.keymap.set("n", "<C-x>", function()
+  Snacks.bufdelete()
+end, { desc = "Close buffer" })
 
-  if is_explorer_buffer(current_buf) then
-    vim.notify("Cannot close explorer buffer", vim.log.levels.WARN)
-    return
-  end
+-- Close all buffers with snacks
+snacks.keymap.set("n", "<C-S-w>", function()
+  Snacks.bufdelete.all()
+end, { desc = "Close all buffers" })
 
-  local buf = vim.api.nvim_get_current_buf()
-  local buf_name = vim.api.nvim_buf_get_name(buf)
-  local modified = vim.api.nvim_get_option_value("modified", { buf = buf })
-
-  local is_empty = (buf_name == "" and not modified)
-
-  local valid_buffers = 0
-  for _, b in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_is_valid(b) then
-      local name = vim.api.nvim_buf_get_name(b)
-      if name and name ~= "" and not is_explorer_buffer(b) then
-        valid_buffers = valid_buffers + 1
-      end
-    end
-  end
-
-  if is_empty then
-    vim.notify("Cannot close empty buffer", vim.log.levels.WARN)
-    return
-  end
-
-  local close_action = function()
-    local other_bufs = {}
-    for _, b in ipairs(vim.api.nvim_list_bufs()) do
-      if b ~= buf and vim.api.nvim_buf_is_valid(b) then
-        local name = vim.api.nvim_buf_get_name(b)
-        if name and name ~= "" and not is_explorer_buffer(b) then
-          table.insert(other_bufs, b)
-        end
-      end
-    end
-
-    if #other_bufs > 0 then
-      vim.api.nvim_set_current_buf(other_bufs[1])
-    end
-
-    pcall(function()
-      vim.api.nvim_buf_delete(buf, { force = true })
-    end)
-
-    vim.schedule(function()
-      local remaining = 0
-      for _, b in ipairs(vim.api.nvim_list_bufs()) do
-        if vim.api.nvim_buf_is_valid(b) then
-          local name = vim.api.nvim_buf_get_name(b)
-          if name and name ~= "" and not is_explorer_buffer(b) then
-            remaining = remaining + 1
-          end
-        end
-      end
-
-      if remaining == 0 then
-        vim.cmd("enew")
-      end
-    end)
-  end
-
-  if modified then
-    ui_select("Save changes?", { "Yes", "No" }, function(choice)
-      if choice == "Yes" then
-        vim.cmd.write()
-      end
-      close_action()
-    end)
-  else
-    close_action()
-  end
-end
-
-snacks.keymap.set("n", "<C-x>", _G.close_buffer, { desc = "Close buffer" })
-
--- Close all buffers (Ctrl+Shift+W)
-_G.close_all_buffers = function()
-  local valid_buffers = {}
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_is_valid(buf) then
-      local name = vim.api.nvim_buf_get_name(buf)
-      if name and name ~= "" and not is_explorer_buffer(buf) then
-        table.insert(valid_buffers, buf)
-      end
-    end
-  end
-
-  if #valid_buffers == 0 then
-    vim.notify("No buffers to close", vim.log.levels.WARN)
-    return
-  end
-
-  local modified = {}
-  for _, buf in ipairs(valid_buffers) do
-    if vim.api.nvim_get_option_value("modified", { buf = buf }) then
-      local name = vim.api.nvim_buf_get_name(buf)
-      table.insert(modified, name)
-    end
-  end
-
-  if #modified > 0 then
-    ui_select("Unsaved files - save?", { "Save all and close", "Don't save and close", "Cancel" }, function(choice)
-      if choice == "Save all and close" then
-        vim.cmd("wall")
-        vim.cmd("bufdo! bdelete!")
-      elseif choice == "Don't save and close" then
-        vim.cmd("bufdo! bdelete!")
-      end
-    end)
-  else
-    vim.cmd("bufdo! bdelete!")
-  end
-end
-
-snacks.keymap.set("n", "<C-S-w>", _G.close_all_buffers, { desc = "Close all buffers" })
+-- Close other buffers (keep only current)
+snacks.keymap.set("n", "<leader>bo", function()
+  Snacks.bufdelete.other()
+end, { desc = "Close other buffers" })
 
 -- ============================================================================
 -- Quit
 -- ============================================================================
 
--- Quit Neovim with confirmation for unsaved changes
+-- Quit Neocode with confirmation for unsaved changes
 _G.quit_neovim = function()
-  ui_select("Quit Neovim?", { "Yes", "No" }, function(choice)
+  ui_select("Quit Neocode?", { "Yes", "No" }, function(choice)
     if choice ~= "Yes" then
       return
     end
@@ -239,6 +120,6 @@ _G.quit_neovim = function()
   end)
 end
 
-snacks.keymap.set("n", "<C-q>", _G.quit_neovim, { desc = "Quit Neovim" })
-snacks.keymap.set("n", "<leader>qq", _G.quit_neovim, { desc = "Quit Neovim" })
+snacks.keymap.set("n", "<C-q>", _G.quit_neovim, { desc = "Quit Neocode" })
+snacks.keymap.set("n", "<leader>qq", _G.quit_neovim, { desc = "Quit Neocode" })
 snacks.keymap.set("n", "<leader>qa", ":qa<CR>", { desc = "Quit all" })

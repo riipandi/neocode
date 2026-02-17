@@ -35,8 +35,8 @@ snacks.setup({
         hidden = { "preview" },
         layout = {
           backdrop = false,
-          width = 0.3,
-          min_width = 30,
+          width = 0.2,
+          min_width = 20,
           height = 0.3,
           min_height = 4,
           box = "vertical",
@@ -52,16 +52,16 @@ snacks.setup({
           box = "horizontal",
           width = 0.7,
           height = 0.8,
+          { win = "preview", title = "{preview}", width = 0.65, border = "rounded" },
           {
             box = "vertical",
-            width = 0.40,
+            width = 0.35,
             border = "rounded",
             title = "{title} {live} {flags}",
             title_pos = "center",
             { win = "input", height = 1, border = "bottom" },
             { win = "list", border = "none" },
           },
-          { win = "preview", title = "{preview}", width = 0.60, border = "rounded" },
         },
       },
       files = {
@@ -76,8 +76,8 @@ snacks.setup({
             border = "rounded",
             title = "{title} {live} {flags}",
             title_pos = "center",
-            { win = "input", height = 1, border = "bottom" },
             { win = "list", border = "none" },
+            { win = "input", height = 1, border = "top" },
           },
         },
       },
@@ -120,6 +120,11 @@ snacks.setup({
 
   -- Toggle utilities
   toggle = {
+    enabled = true,
+  },
+
+  -- Buffer deletion (replaces custom buffer delete logic)
+  bufdelete = {
     enabled = true,
   },
 

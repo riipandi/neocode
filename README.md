@@ -69,15 +69,16 @@ Documentation: https://opencode.ai/docs/themes
 
 ### Navigation
 
-| Shortcut       | Action                                 |
-|----------------|----------------------------------------|
-| `Ctrl+E`       | Switch focus between explorer ↔ editor |
-| `Ctrl+Shift+E` | Toggle file explorer                   |
-| `Ctrl+B`       | Show buffer list (snacks picker)       |
-| `Ctrl+P`       | Find files (snacks picker)             |
-| `Ctrl+L`       | Show marks list (miniharp)             |
-| `Ctrl+N`       | Next mark                              |
-| `Ctrl+Shift+M` | Previous mark                          |
+| Shortcut       | Action                                  |
+|----------------|-----------------------------------------|
+| `Ctrl+E`       | Switch focus between explorer ↔ editor  |
+| `Ctrl+Shift+E` | Toggle file explorer                    |
+| `Ctrl+B`       | Show buffer list (snacks picker)        |
+|                | Use `<c-x>` or `dd` in picker to delete |
+| `Ctrl+P`       | Find files (snacks picker)              |
+| `Ctrl+L`       | Show marks list (miniharp)              |
+| `Ctrl+N`       | Next mark                               |
+| `Ctrl+Shift+M` | Previous mark                           |
 
 ### Editor
 
@@ -88,7 +89,8 @@ Documentation: https://opencode.ai/docs/themes
 | `Ctrl+Shift+S` | Toggle floating terminal            |
 | `Ctrl+X`       | Close buffer                        |
 | `Ctrl+Shift+W` | Close all buffers                   |
-| `Ctrl+Q`       | Quit Neovim                         |
+| `Space + bo`   | Close other buffers (keep current)  |
+| `Ctrl+Q`       | Quit Neocode                        |
 | `Ctrl+\`       | Split vertical                      |
 | `Ctrl+Shift+\` | Split horizontal                    |
 
@@ -175,7 +177,7 @@ Documentation: https://opencode.ai/docs/themes
 | `Ctrl+Shift+D`  | Scroll opencode down                 |
 
 **Note**:
-- Exit OpenCode (`leader+ox`) uses snacks picker dialog (same as Ctrl+Q for Quit Neovim).
+- Exit OpenCode (`leader+ox`) uses snacks picker dialog (same as Ctrl+Q for Quit Neocode).
 - Use **cursor** for navigation and **Enter** to select Yes/No.
 
 ### Search
