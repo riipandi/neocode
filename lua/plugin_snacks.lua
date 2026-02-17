@@ -21,11 +21,30 @@ snacks.setup({
   },
 
   -- Fuzzy picker (replaces fzf-lua and telescope.nvim)
-  -- Layout: input at top, preview on right
+  -- Layout: preview on left, input and list on right
   picker = {
     enabled = true,
     layout = {
-      preset = "telescope",
+      layout = {
+        box = "horizontal",
+        backdrop = false,
+        width = 0.8,
+        height = 0.8,
+        border = "none",
+        {
+          win = "preview",
+          title = "{preview:Preview}",
+          width = 0.60,
+          border = "rounded",
+          title_pos = "center",
+        },
+        {
+          box = "vertical",
+          width = 0.40,
+          { win = "input", height = 1, border = "rounded", title = " {title} {live} {flags} ", title_pos = "center" },
+          { win = "list", title = " Results ", title_pos = "center", border = "rounded" },
+        },
+      },
     },
     sources = {
       -- Select picker (for confirmation dialogs)
