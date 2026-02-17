@@ -132,36 +132,35 @@ map_cmdline_nav("<Esc>", "<C-e>", "<Esc>")
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Folding settings
-vim.opt.foldmethod = "expr"                        -- Use expression for folding
-vim.opt.foldlevel = 99                             -- Start with all folds open
+vim.opt.foldmethod = "expr"              -- Use expression for folding
+vim.opt.foldlevel = 99                   -- Start with all folds open
 
 -- Split behavior
-vim.opt.splitbelow = true                          -- Horizontal splits go below
-vim.opt.splitright = true                          -- Vertical splits go right
+vim.opt.splitbelow = true                -- Horizontal splits go below
+vim.opt.splitright = true                -- Vertical splits go right
 
 -- ============================================================================
 -- Load core configurations
 -- ============================================================================
-require 'core_health'                              -- Health checks
-require 'core_keymaps'                             -- Key mappings
-require 'core_autocmds'                            -- Autocommands utilities
-require 'core_lsp'                                 -- LSP settings
+require 'core_plugins'                   -- Snacks.nvim (must load first)
+require 'core_health'                    -- Health checks
+require 'core_keymaps'                   -- Key mappings
+require 'core_autocmds'                  -- Autocommands utilities
+require 'core_lsp'                       -- LSP settings
 
 -- ============================================================================
 -- Load third-party plugins and their configurations in lua/plugins directory.
 -- ============================================================================
-require 'plugin_snacks'                         -- Snacks.nvim (must load first)
-require 'core_theme'                            -- Theme configurations
-require 'plugin_editor'                         -- Editor configurations
-require 'plugin_completion'                     -- Code completion (blink.cmp)
-require 'plugin_treesitter'                     -- Syntax highlighting (nvim-treesitter)
-require 'plugin_filemanager'                    -- File marks (miniharp)
-require 'plugin_lualine'                        -- Statusline (lualine)
-require 'plugin_neoscroll'                      -- Smooth scrolling (neoscroll)
-require 'plugin_vcs'                            -- Version control (git)
-require 'plugin_whichkey'                       -- Which-key (keybindings helper)
-require 'plugin_maple'                          -- Notes plugin (maple)
-require 'plugin_mason'                          -- Mason package manager
-require 'plugin_opencode'                       -- AI code assistant (OpenCode)
-
-require 'language_rust'                         -- Rust development toolkit
+require 'core_theme'                      -- Theme configurations
+require 'plugin_editor'                   -- Editor configurations
+require 'plugin_completion'               -- Code completion (blink.cmp)
+require 'plugin_treesitter'               -- Syntax highlighting (nvim-treesitter)
+require 'plugin_filemanager'              -- File marks (miniharp)
+require 'plugin_lualine'                  -- Statusline (lualine)
+require 'plugin_neoscroll'                -- Smooth scrolling (neoscroll)
+require 'plugin_vcs'                      -- Version control (git)
+require 'plugin_whichkey'                 -- Which-key (keybindings helper)
+require 'plugin_maple'                    -- Notes plugin (maple)
+require 'plugin_mason'                    -- Mason package manager
+require 'plugin_opencode'                 -- AI code assistant (OpenCode)
+require 'language_rust'                   -- Rust development toolkit

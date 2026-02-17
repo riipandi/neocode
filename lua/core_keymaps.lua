@@ -1,7 +1,4 @@
-local keymap = vim.keymap.set
-local s = { silent = true }
-local ns = { noremap = true, silent = true }
-local er = { expr = true, replace_keycodes = false }
+local snacks = require("snacks")
 
 -- Helper function to check if buffer is snacks explorer
 local function is_explorer_buffer(buf)
@@ -14,66 +11,49 @@ end
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Normal mode mappings
-keymap("n", "<leader>c", ":nohlsearch<CR>", { desc = "Clear search highlights" })
+-- Search & Navigation
+snacks.keymap.set("n", "<leader>c", ":nohlsearch<CR>", { desc = "Clear search highlights" })
+snacks.keymap.set("n", "n", "nzzzv", { desc = "Next search result (centered)" })
+snacks.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
+snacks.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- Center screen when jumping
-keymap("n", "n", "nzzzv", { desc = "Next search result (centered)" })
-keymap("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
-
--- Delete without yanking
-keymap({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without yanking" })
-
--- Splitting
-keymap("n", "<C-\\>", ":vsplit<CR>", { desc = "Split vertical" })
-keymap("n", "<C-S-\\>", ":split<CR>", { desc = "Split horizontal" })
-
--- Window navigation (Ctrl+Alt+[/] for next/previous)
-keymap("n", "<C-A-[>", ":wincmd p<CR>", { desc = "Previous window" })
-keymap("n", "<C-A-]>", ":wincmd w<CR>", { desc = "Next window" })
-
--- Window resize
-keymap("n", "<C-A-=>", ":vertical resize +2<CR>", { desc = "Increase width" })
-keymap("n", "<C-A-->", ":vertical resize -2<CR>", { desc = "Decrease width" })
-keymap("n", "<C-S-=>", ":resize +2<CR>", { desc = "Increase height" })
-keymap("n", "<C-S-->", ":resize -2<CR>", { desc = "Decrease height" })
+-- Editing
+snacks.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without yanking" })
+snacks.keymap.set("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position" })
+snacks.keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
+snacks.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
 
 -- Move lines up/down
-keymap("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
-keymap("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
-keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
-keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+snacks.keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
+snacks.keymap.set("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
+snacks.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+snacks.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
--- Better indenting in visual mode
-keymap("v", "<", "<gv", { desc = "Indent left and reselect" })
-keymap("v", ">", ">gv", { desc = "Indent right and reselect" })
+-- Window management
+snacks.keymap.set("n", "<C-\\>", ":vsplit<CR>", { desc = "Split vertical" })
+snacks.keymap.set("n", "<C-S-\\>", ":split<CR>", { desc = "Split horizontal" })
+snacks.keymap.set("n", "<C-A-[>", ":wincmd p<CR>", { desc = "Previous window" })
+snacks.keymap.set("n", "<C-A-]>", ":wincmd w<CR>", { desc = "Next window" })
+snacks.keymap.set("n", "<C-A-=>", ":vertical resize +2<CR>", { desc = "Increase width" })
+snacks.keymap.set("n", "<C-A-->", ":vertical resize -2<CR>", { desc = "Decrease width" })
+snacks.keymap.set("n", "<C-S-=>", ":resize +2<CR>", { desc = "Increase height" })
+snacks.keymap.set("n", "<C-S-->", ":resize -2<CR>", { desc = "Decrease height" })
 
--- Better J behavior
-keymap("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position" })
+-- Config & Plugins
+snacks.keymap.set("n", "<leader>,", ":e ~/.config/nvim<CR>", { desc = "Edit neovim config" })
+snacks.keymap.set("n", "<leader>pu", '<cmd>lua vim.pack.update()<CR>', { desc = "Update plugins" })
+snacks.keymap.set("n", "<leader>cd", '<cmd>lua vim.fn.chdir(vim.fn.expand("%:p:h"))<CR>', { desc = "Change working directory to current file" })
 
--- Quick config editing
-keymap("n", "<leader>,", ":e ~/.config/nvim<CR>", { desc = "Edit neovim config" })
+-- Diagnostics
+snacks.keymap.set("n", "<leader>dn", "<cmd>lua vim.diagnostic.jump({count = 1})<CR>", { desc = "Next diagnostic", silent = true })
+snacks.keymap.set("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>", { desc = "Previous diagnostic", silent = true })
 
--- Update the plugins easily (using vim.pack)
-keymap("n", "<leader>pu", '<cmd>lua vim.pack.update()<CR>')
-
--- Clear highlights on search when pressing <Esc> in normal mode
-keymap('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
--- Diagnostics keymaps
-keymap("n", "<leader>dn", "<cmd>lua vim.diagnostic.jump({count = 1})<CR>", ns)
-keymap("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>", ns)
-
--- cd current directory of the file
-keymap("n", "<leader>cd", '<cmd>lua vim.fn.chdir(vim.fn.expand("%:p:h"))<CR>', { desc = "Change working directory to current file" })
-
--- Buffer management with Ctrl+X (close/delete)
+-- Buffer management
 _G.close_buffer = function()
   local current_win = vim.api.nvim_get_current_win()
   local current_buf = vim.api.nvim_win_get_buf(current_win)
   local current_name = vim.api.nvim_buf_get_name(current_buf)
 
-  -- Prevent closing when focused on snacks explorer
   if is_explorer_buffer(current_buf) then
     vim.notify("Cannot close explorer buffer", vim.log.levels.WARN)
     return
@@ -85,7 +65,6 @@ _G.close_buffer = function()
 
   local is_empty = (buf_name == "" and not modified)
 
-  -- Count valid buffers (not including snacks explorer)
   local valid_buffers = 0
   for _, b in ipairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_is_valid(b) then
@@ -149,11 +128,10 @@ _G.close_buffer = function()
   end
 end
 
-keymap("n", "<C-x>", _G.close_buffer, { desc = "Close buffer (Ctrl+X)" })
+snacks.keymap.set("n", "<C-x>", _G.close_buffer, { desc = "Close buffer" })
 
--- Close all buffers with confirmation
+-- Close all buffers
 _G.close_all_buffers = function()
-  -- Count valid buffers (excluding snacks explorer)
   local valid_buffers = {}
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_is_valid(buf) then
@@ -191,9 +169,9 @@ _G.close_all_buffers = function()
   end
 end
 
-keymap("n", "<C-S-w>", _G.close_all_buffers, { desc = "Close all buffers (Ctrl+Shift+W)" })
+snacks.keymap.set("n", "<C-S-w>", _G.close_all_buffers, { desc = "Close all buffers" })
 
--- Quit Neovim with Ctrl+Q (with unsaved changes check)
+-- Quit Neovim
 _G.quit_neovim = function()
   ui_select("Quit Neovim?", { "Yes", "No" }, function(choice)
     if choice ~= "Yes" then
@@ -227,6 +205,6 @@ _G.quit_neovim = function()
   end)
 end
 
-keymap("n", "<C-q>", _G.quit_neovim, { desc = "Quit Neovim (Ctrl+Q)" })
-keymap("n", "<leader>qq", _G.quit_neovim, { desc = "Quit Neovim (leader+qq)" })
-keymap("n", "<leader>qa", ":qa<CR>", { desc = "Quit all (without checking)" })
+snacks.keymap.set("n", "<C-q>", _G.quit_neovim, { desc = "Quit Neovim" })
+snacks.keymap.set("n", "<leader>qq", _G.quit_neovim, { desc = "Quit Neovim" })
+snacks.keymap.set("n", "<leader>qa", ":qa<CR>", { desc = "Quit all" })
