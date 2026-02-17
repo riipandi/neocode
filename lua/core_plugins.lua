@@ -249,6 +249,20 @@ snacks.config.styles.terminal = {
   },
 }
 
+-- Serpl: Search & Replace TUI (90% size, like VSCode)
+snacks.config.styles.serpl = {
+  width = 0.9,
+  height = 0.9,
+  border = "rounded",
+  bo = {
+    filetype = "snacks_terminal",
+  },
+  wo = {},
+  keys = {
+    q = "hide",
+  },
+}
+
 snacks.config.styles.input = {
   backdrop = false,
   border = "rounded",
@@ -369,6 +383,20 @@ end, { desc = "Toggle LazyGit" })
 snacks.keymap.set("n", "<leader>gs", function()
   snacks.picker.git_status()
 end, { desc = "Git status" })
+
+-- ============================================================================
+-- Serpl Keymaps
+-- ============================================================================
+
+-- Global search & replace (VSCode-style Ctrl+Shift+F)
+snacks.keymap.set("n", "<C-S-f>", function()
+  snacks.serpl.open()
+end, { desc = "Global search & replace (Serpl)" })
+
+-- Alternative keymap for serpl
+snacks.keymap.set("n", "<leader>sr", function()
+  snacks.serpl.open()
+end, { desc = "Global search & replace (Serpl)" })
 
 -- ============================================================================
 -- Terminal Keymaps

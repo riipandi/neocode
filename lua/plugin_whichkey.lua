@@ -81,12 +81,16 @@ require('which-key').setup({
     { '<leader>l', group = 'LSP', mode = "n" },
     { '<leader>q', group = 'Quit', mode = "n" },
     { '<leader>s', group = 'Search', mode = "n" },
+    { '<leader>sr', desc = 'Serpl (search & replace)', mode = "n" },
     { '<leader>t', group = 'Toggle', mode = "n" },
     { '<leader>w', group = 'Window', mode = "n" },
     { '<leader>x', group = 'Trouble', mode = "n" },
 
     { "<leader>", group = "Leader", mode = "v" },
     { "g", group = "Goto", mode = "v" },
+
+    -- Global keymaps
+    { '<C-S-f>', desc = 'Global Search (Serpl)', mode = "n" },
   },
 
   -- Disable for certain filetypes

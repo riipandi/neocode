@@ -75,6 +75,7 @@ rm -fr ~/.cache/nvim
 | **gitsigns.nvim**             | Git signs in gutter                                        |
 | **which-key.nvim**            | Keybinding helper                                          |
 | **opencode.nvim**             | AI code assistant                                          |
+| **serpl**                     | Search & replace TUI (VSCode-like)                         |
 
 ## OpenCode Theme
 
@@ -216,11 +217,29 @@ Documentation: https://opencode.ai/docs/themes
 
 ### Search
 
-| Shortcut      | Action                            |
-|---------------|-----------------------------------|
-| `Space` + `n` | Next search result (centered)     |
-| `Space` + `N` | Previous search result (centered) |
-| `Space` + `c` | Clear search highlights           |
+| Shortcut       | Action                            |
+|----------------|-----------------------------------|
+| `Ctrl+Shift+F` | Global search & replace (Serpl)   |
+| `Space` + `sr` | Global search & replace (Serpl)   |
+| `Space` + `n`  | Next search result (centered)     |
+| `Space` + `N`  | Previous search result (centered) |
+| `Space` + `c`  | Clear search highlights           |
+
+**Serpl** is a VSCode-like search & replace TUI tool:
+- Auto-detects git root as project root
+- Search and replace across entire project
+- Preview results before applying changes
+- Press `q` to close serpl window
+
+**Serpl Keymaps inside TUI:**
+| Key      | Action                |
+|----------|-----------------------|
+| `Tab`    | Switch between tabs   |
+| `r`      | Replace selected/file |
+| `Ctrl+O` | Replace all files     |
+| `d`      | Delete selected/file  |
+| `Enter`  | Execute search        |
+| `Esc`    | Exit pane/dialog      |
 
 ### Git
 
