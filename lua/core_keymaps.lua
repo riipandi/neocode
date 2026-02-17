@@ -204,15 +204,45 @@ keymap("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>", ns)
     local windows = vim.api.nvim_list_wins()
     local is_last_window = #windows <= 1
 
+    local close_action = function()
+      local other_bufs = {}
+      for _, b in ipairs(vim.api.nvim_list_bufs()) do
+        if b ~= buf and vim.api.nvim_buf_is_valid(b) then
+          local name = vim.api.nvim_buf_get_name(b)
+          if name and name ~= "" and not name:match("NvimTree") then
+            table.insert(other_bufs, b)
+          end
+        end
+      end
+
+      if #other_bufs > 0 then
+        vim.api.nvim_set_current_buf(other_bufs[1])
+      end
+
+      pcall(function()
+        vim.api.nvim_buf_delete(buf, { force = true })
+      end)
+    end
+
+    if valid_buffers <= 1 then
+      vim.notify("Cannot close last buffer", vim.log.levels.WARN)
+      return
+    end
+
+    if valid_buffers <= 1 then
+      vim.cmd('echo "Cannot close last buffer"')
+      return
+    end
+
     if modified then
       fzf_select("Save changes?", { "Yes", "No" }, function(choice)
         if choice == "Yes" then
           vim.cmd.write()
         end
-        vim.cmd("bdelete!")
+        close_action()
       end)
     else
-      vim.cmd("bdelete!")
+      close_action()
     end
   end
 
