@@ -111,6 +111,38 @@ snacks.setup({
     },
   },
 
+  -- Scratch buffers for quick testing/notes
+  scratch = {
+    enabled = true,
+    ft = function()
+      if vim.bo.buftype == "" and vim.bo.filetype ~= "" then
+        return vim.bo.filetype
+      end
+      return "markdown"
+    end,
+    autowrite = true,
+  },
+
+  -- Scope-based text objects and navigation
+  scope = {
+    enabled = true,
+    keys = {
+      textobject = {
+        ii = { desc = "inner scope" },
+        ai = { desc = "around scope" },
+      },
+      jump = {
+        ["[i"] = { desc = "jump to scope top" },
+        ["]i"] = { desc = "jump to scope bottom" },
+      },
+    },
+  },
+
+  -- Quick file rendering on startup
+  quickfile = {
+    enabled = true,
+  },
+
   -- Enhanced input UI
   input = {
     enabled = true,

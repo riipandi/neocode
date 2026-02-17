@@ -64,6 +64,20 @@ snacks.keymap.set("n", "<leader>dn", "<cmd>lua vim.diagnostic.jump({count = 1})<
 snacks.keymap.set("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>", { desc = "Previous diagnostic", silent = true })
 
 -- ============================================================================
+-- Scratch Buffers
+-- ============================================================================
+
+-- Toggle scratch buffer for quick testing/notes
+snacks.keymap.set("n", "<leader>.", function()
+  Snacks.scratch()
+end, { desc = "Toggle scratch buffer" })
+
+-- Select from existing scratch buffers
+snacks.keymap.set("n", "<leader>S", function()
+  Snacks.scratch.select()
+end, { desc = "Select scratch buffer" })
+
+-- ============================================================================
 -- Buffer Management
 -- ============================================================================
 
