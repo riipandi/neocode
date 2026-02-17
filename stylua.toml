@@ -1,0 +1,6 @@
+column_width = 80
+call_parentheses = "None"
+indent_type = "Spaces"
+
+[sort_requires]
+enabled = false

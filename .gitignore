@@ -1,0 +1,10 @@
+_site/
+_cache/
+.output/
+node_modules/
+.DS_Store
+.DS_Store?
+.sass-cache/
+.jekyll-metadata
+*.env*
+!*.env.example

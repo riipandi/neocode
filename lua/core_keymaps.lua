@@ -1,0 +1,265 @@
+local keymap = vim.keymap.set
+local s = { silent = true }
+local ns = { noremap = true, silent = true }
+local er = { expr = true, replace_keycodes = false }
+
+local function fzf_select(prompt, choices, callback)
+  local fzf_lua = require("fzf-lua")
+  local height = math.max(7, #choices + 2)
+  local width = 35
+  fzf_lua.fzf_exec(choices, {
+    prompt = prompt .. "> ",
+    winopts = {
+      height = height,
+      width = width,
+      row = 0.5,
+      col = 0.5,
+      border = "rounded",
+    },
+    actions = {
+      ["default"] = function(selected)
+        callback(selected[1])
+      end,
+    },
+  })
+end
+
+-- Switch focus between explorer and editor
+local function switch_focus()
+  local current_win = vim.api.nvim_get_current_win()
+  local current_buf = vim.api.nvim_win_get_buf(current_win)
+  local current_name = vim.api.nvim_buf_get_name(current_buf)
+
+  local is_nvim_tree = current_name:match("NvimTree")
+
+  if is_nvim_tree then
+    -- Currently in explorer, go to previous window
+    vim.cmd("wincmd p")
+  else
+    -- Currently in editor, check if nvim-tree is open
+    local nvim_tree_open = false
+    pcall(function()
+      nvim_tree_open = require("nvim-tree.view").is_visible()
+    end)
+
+    if nvim_tree_open then
+      -- Find and focus nvim-tree window
+      for _, win in ipairs(vim.api.nvim_list_wins()) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        local name = vim.api.nvim_buf_get_name(buf)
+        if name:match("NvimTree") then
+          vim.api.nvim_set_current_win(win)
+          return
+        end
+      end
+    else
+      vim.cmd("NvimTreeOpen")
+    end
+  end
+end
+
+keymap("n", "<C-e>", switch_focus, { desc = "Switch focus explorer <-> editor" })
+keymap("n", "<C-S-e>", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer (Ctrl+Shift+E)" })
+
+-- Key mappings
+vim.g.mapleader = " "               -- Set leader key to space
+vim.g.maplocalleader = " "          -- Set local leader key (NEW)
+
+-- Normal mode mappings
+keymap("n", "<leader>c", ":nohlsearch<CR>", { desc = "Clear search highlights" })
+
+-- Center screen when jumping
+keymap("n", "n", "nzzzv", { desc = "Next search result (centered)" })
+keymap("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
+
+-- Delete without yanking
+keymap({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without yanking" })
+
+-- Buffer navigation
+keymap("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
+keymap("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
+
+-- Better window navigation
+keymap("n", "<C-S-h>", "<C-w>h", { desc = "Move focus to left window" })
+keymap("n", "<C-S-j>", "<C-w>j", { desc = "Move focus to bottom window" })
+keymap("n", "<C-S-k>", "<C-w>k", { desc = "Move focus to top window" })
+keymap("n", "<C-S-l>", "<C-w>l", { desc = "Move focus to right window" })
+
+-- Splitting
+keymap("n", "<C-\\>", ":vsplit<CR>", { desc = "Split vertical" })
+keymap("n", "<C-S-\\>", ":split<CR>", { desc = "Split horizontal" })
+keymap("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase window height" })
+keymap("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease window height" })
+keymap("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
+keymap("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
+
+-- Move lines up/down
+keymap("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
+keymap("n", "<A-k>", ":m .-2<CR>==", { desc = "Move line up" })
+keymap("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+keymap("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+
+-- Better indenting in visual mode
+keymap("v", "<", "<gv", { desc = "Indent left and reselect" })
+keymap("v", ">", ">gv", { desc = "Indent right and reselect" })
+
+-- Quick file navigation
+keymap("n", "<leader>e", ":NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
+
+-- Go to line with Ctrl+G (format: line or line:col)
+keymap("n", "<C-g>", function()
+  -- Check if there's a valid buffer open
+  local buf = vim.api.nvim_get_current_buf()
+  local name = vim.api.nvim_buf_get_name(buf)
+  if name == "" then
+    vim.cmd('echo "No file open"')
+    return
+  end
+
+  vim.ui.input({ prompt = "Go to [line:col]: " }, function(input)
+    if input and input ~= "" then
+      local line, col = input:match("(%d+):(%d+)")
+      if line and col then
+        vim.cmd(line)
+        vim.cmd("normal! " .. col .. "|")
+      else
+        local num = tonumber(input)
+        if num then
+          vim.cmd(tostring(num))
+        end
+      end
+    end
+  end)
+end, { desc = "Go to line or line:col" })
+
+-- Buffer list with Ctrl+B
+keymap("n", "<C-b>", "<cmd>Telescope buffers<CR>", { desc = "Show buffer list" })
+
+-- Better J behavior
+keymap("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position" })
+
+-- Quick config editing
+keymap("n", "<leader>,", ":e ~/.config/nvim<CR>", { desc = "Edit neovim config" })
+
+-- Update the plugins easily (using vim.pack)
+keymap("n", "<leader>pu", '<cmd>lua vim.pack.update()<CR>')
+
+-- Clear highlights on search when pressing <Esc> in normal mode
+keymap('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- Diagnostics keymaps
+keymap("n", "<leader>dn", "<cmd>lua vim.diagnostic.jump({count = 1})<CR>", ns)
+keymap("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>", ns)
+
+  -- cd current directory of the file
+  keymap("n", "<leader>cd", '<cmd>lua vim.fn.chdir(vim.fn.expand("%:p:h"))<CR>', { desc = "Change working directory to current file" })
+
+-- Buffer management with Ctrl+X (close/delete)
+local function close_buffer()
+  local current_win = vim.api.nvim_get_current_win()
+  local current_buf = vim.api.nvim_win_get_buf(current_win)
+  local current_name = vim.api.nvim_buf_get_name(current_buf)
+
+  -- Prevent closing when focused on nvim-tree
+  if current_name:match("NvimTree") then
+    vim.cmd('echo "Cannot close explorer buffer"')
+    return
+  end
+
+  local buf = vim.api.nvim_get_current_buf()
+  local buf_name = vim.api.nvim_buf_get_name(buf)
+  local modified = vim.api.nvim_buf_get_option(buf, "modified")
+
+  local is_empty = (buf_name == "" and not modified)
+
+  -- Check if nvim-tree is open
+  local nvim_tree_open = false
+  pcall(function()
+    nvim_tree_open = require("nvim-tree.view").is_visible()
+  end)
+
+  -- Count valid buffers (not including nvim-tree)
+  local valid_buffers = 0
+  for _, b in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_valid(b) then
+      local name = vim.api.nvim_buf_get_name(b)
+      if name and name ~= "" and not name:match("NvimTree") then
+        valid_buffers = valid_buffers + 1
+      end
+    end
+  end
+
+  if is_empty and nvim_tree_open and valid_buffers <= 1 then
+    vim.cmd('echo "Cannot close last buffer when explorer is open"')
+    return
+  end
+
+  if is_empty then
+    vim.cmd('echo "Cannot close empty buffer"')
+    return
+  end
+
+  local windows = vim.api.nvim_list_wins()
+  local is_last_window = #windows <= 1
+
+  if modified then
+    fzf_select("Save changes?", { "Yes", "No" }, function(choice)
+      if choice == "Yes" then
+        vim.cmd.write()
+      end
+      if is_last_window then
+        vim.cmd("bdelete!")
+      else
+        vim.cmd("close")
+        vim.cmd("bdelete!")
+      end
+    end)
+  else
+    if is_last_window then
+      vim.cmd("bdelete!")
+    else
+      vim.cmd("close")
+      vim.cmd("bdelete!")
+    end
+  end
+end
+
+keymap("n", "<C-x>", close_buffer, { desc = "Close buffer (Ctrl+X)" })
+
+-- Quit Neovim with Ctrl+Q (with unsaved changes check)
+local function quit_neovim()
+  fzf_select("Quit Neovim?", { "Yes", "No" }, function(choice)
+    if choice ~= "Yes" then
+      return
+    end
+
+    local modified_buffers = {}
+    local buffers = vim.api.nvim_list_bufs()
+
+    for _, buf in ipairs(buffers) do
+      if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_get_option(buf, "modified") then
+        local name = vim.api.nvim_buf_get_name(buf)
+        if name ~= "" then
+          table.insert(modified_buffers, { id = buf, name = vim.fs.basename(name) })
+        end
+      end
+    end
+
+    if #modified_buffers > 0 then
+      fzf_select("Unsaved buffers - save?", { "Save all and quit", "Don't save and quit", "Cancel" }, function(choice2)
+        if choice2 == "Save all and quit" then
+          vim.cmd("wall")
+          vim.cmd("qa!")
+        elseif choice2 == "Don't save and quit" then
+          vim.cmd("qa!")
+        end
+      end)
+    else
+      vim.cmd("qa!")
+    end
+  end)
+end
+
+keymap("n", "<C-q>", quit_neovim, { desc = "Quit Neovim (Ctrl+Q)" })
+keymap("n", "<leader>qq", quit_neovim, { desc = "Quit Neovim (leader+qq)" })
+keymap("n", "<leader>qa", ":qa<CR>", { desc = "Quit all (without checking)" })
