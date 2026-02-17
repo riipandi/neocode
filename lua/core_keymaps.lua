@@ -191,18 +191,10 @@ keymap("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>", ns)
       end
     end
 
-    if is_empty and nvim_tree_open and valid_buffers <= 1 then
-      vim.cmd('echo "Cannot close last buffer when explorer is open"')
-      return
-    end
-
     if is_empty then
-      vim.cmd('echo "Cannot close empty buffer"')
+      vim.notify("Cannot close empty buffer", vim.log.levels.WARN)
       return
     end
-
-    local windows = vim.api.nvim_list_wins()
-    local is_last_window = #windows <= 1
 
     local close_action = function()
       local other_bufs = {}
@@ -222,16 +214,22 @@ keymap("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>", ns)
       pcall(function()
         vim.api.nvim_buf_delete(buf, { force = true })
       end)
-    end
 
-    if valid_buffers <= 1 then
-      vim.notify("Cannot close last buffer", vim.log.levels.WARN)
-      return
-    end
+      vim.schedule(function()
+        local remaining = 0
+        for _, b in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.api.nvim_buf_is_valid(b) then
+            local name = vim.api.nvim_buf_get_name(b)
+            if name and name ~= "" and not name:match("NvimTree") then
+              remaining = remaining + 1
+            end
+          end
+        end
 
-    if valid_buffers <= 1 then
-      vim.cmd('echo "Cannot close last buffer"')
-      return
+        if remaining == 0 then
+          vim.cmd("enew")
+        end
+      end)
     end
 
     if modified then
