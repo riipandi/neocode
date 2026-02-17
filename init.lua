@@ -151,16 +151,16 @@ require 'core_lsp'                                 -- LSP settings
 -- ============================================================================
 -- Load third-party plugins and their configurations in lua/plugins directory.
 -- ============================================================================
+require 'plugin_snacks'                         -- Snacks.nvim (must load first)
 require 'plugin_themes'                         -- Theme configurations
 require 'plugin_editor'                         -- Editor configurations
 require 'plugin_completion'                     -- Code completion (blink.cmp)
 require 'plugin_treesitter'                     -- Syntax highlighting (nvim-treesitter)
-require 'plugin_filemanager'                    -- File tree and fuzzy finder
+require 'plugin_filemanager'                    -- File marks (miniharp)
 require 'plugin_lualine'                        -- Statusline (lualine)
 require 'plugin_neoscroll'                      -- Smooth scrolling (neoscroll)
 require 'plugin_vcs'                            -- Version control (git)
 require 'plugin_whichkey'                       -- Which-key (keybindings helper)
-require 'plugin_notifier'                       -- Notification system (notify, noice)
 require 'plugin_maple'                          -- Notes plugin (maple)
 require 'plugin_rust'                           -- Rust development toolkit
 require 'plugin_mason'                          -- Mason package manager

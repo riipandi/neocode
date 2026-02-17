@@ -1,29 +1,8 @@
--- Load required plugins first (snacks must be loaded before opencode)
-vim.cmd("packadd! snacks.nvim")
-vim.cmd("packadd! opencode.nvim")
+-- OpenCode.nvim configuration
+-- Requires snacks.nvim (loaded in plugin_snacks.lua)
 
--- ============================================================================
--- Snacks configuration (for opencode integration)
--- ============================================================================
-local snacks = require("snacks")
-snacks.setup({
-  input = {},  -- Enhances opencode.ask()
-  notifier = {
-    enable = false,  -- Disable to avoid conflict with nvim-notify
-  },
-  picker = {
-    actions = {
-      opencode_send = function(...) return require('opencode').snacks_picker_send(...) end,
-    },
-    win = {
-      input = {
-        keys = {
-          ['<a-a>'] = { 'opencode_send', mode = { 'n', 'i' } },
-        },
-      },
-    },
-  },
-  terminal = {},  -- Enables the snacks provider for opencode
+vim.pack.add({
+  { src = "https://github.com/nickjvandyke/opencode.nvim" },
 })
 
 -- ============================================================================
@@ -38,7 +17,7 @@ vim.g.opencode_opts = {
     snacks = {
       win = {
         position = "right",
-        width = math.floor(vim.o.columns * 0.35),  -- 35% untuk opencode
+        width = math.floor(vim.o.columns * 0.35),
       },
     },
   },
@@ -48,23 +27,21 @@ vim.g.opencode_opts = {
 -- OpenCode keymaps
 -- ============================================================================
 
--- Toggle opencode (your custom keymap)
+-- Toggle opencode
 vim.keymap.set("n", "<C-S-l>", function() require("opencode").toggle() end, { desc = "Toggle OpenCode (Ctrl+Shift+L)" })
 vim.keymap.set("n", "<leader>oo", function() require("opencode").toggle() end, { desc = "OpenCode: Toggle show/hide" })
 
 -- Focus to opencode panel from editor
 vim.keymap.set("n", "<leader>of", function()
-  -- Find opencode panel and focus it
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     local buf = vim.api.nvim_win_get_buf(win)
-    local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+    local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
     local name = vim.api.nvim_buf_get_name(buf)
     if ft == "opencode_terminal" or name:match("opencode") then
       vim.api.nvim_set_current_win(win)
       return
     end
   end
-  -- If opencode not found, open it
   require("opencode").toggle()
 end, { desc = "Focus opencode panel" })
 
@@ -72,16 +49,15 @@ end, { desc = "Focus opencode panel" })
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "opencode_terminal",
   callback = function()
-    -- Set Esc in normal and terminal modes to go back to editor
     vim.keymap.set("n", "<Esc>", function()
-      vim.cmd("wincmd p")  -- Go to previous window (editor)
+      vim.cmd("wincmd p")
     end, { buffer = 0, desc = "Return to editor" })
     vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { buffer = 0, desc = "Exit terminal mode" })
   end,
   once = false,
 })
 
--- Ask and select (your custom keymaps with <leader> prefix)
+-- Ask and select
 vim.keymap.set({ "n", "x" }, "<leader>oa", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "OpenCode: Ask about this" })
 vim.keymap.set({ "n", "x" }, "<leader>os", function() require("opencode").select() end, { desc = "OpenCode: Select prompt/command" })
 vim.keymap.set("n", "<leader>oc", function() require("opencode").command() end, { desc = "OpenCode: Command" })
@@ -92,7 +68,6 @@ vim.keymap.set("n", "<leader>oi", function() require("opencode").command("sessio
 vim.keymap.set("n", "<leader>ox", function()
   _G.fzf_select("Exit OpenCode?", { "Yes", "No" }, function(choice)
     if choice == "Yes" then
-      -- Suppress error notifications during exit
       local notify_orig = vim.notify
       vim.notify = function() end
 
@@ -100,7 +75,6 @@ vim.keymap.set("n", "<leader>ox", function()
         require("opencode").stop()
       end)
 
-      -- Restore notify after a short delay
       vim.schedule(function()
         vim.notify = notify_orig
       end)
