@@ -196,7 +196,7 @@ local function custom_on_attach(bufnr)
   vim.keymap.set('n', '<C-v>',   function() api.node.open.vertical() end, opts('Open: Vertical Split'))
   vim.keymap.set('n', '<C-s>',   function() api.node.open.horizontal() end, opts('Open: Horizontal Split'))
   vim.keymap.set('n', '<C-t>',   function() api.node.open.tab() end, opts('Open: New Tab'))
-  vim.keymap.set('n', '<C-e>',   function() api.node.open.replace_tree_buffer() end, opts('Open: In Place'))
+  -- Ctrl+E is used globally for switch focus (see core_keymaps.lua)
 
   -- Tree operations
   vim.keymap.set('n', '<C-k>',   function() api.tree.toggle_custom_filter() end, opts('Toggle Filter'))

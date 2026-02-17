@@ -26,6 +26,9 @@ _G.fzf_select = function(prompt, choices, callback)
   })
 end
 
+-- Track last editor window for switching back from explorer
+local last_editor_win = nil
+
 -- Switch focus between explorer and editor
 local function switch_focus()
   local current_win = vim.api.nvim_get_current_win()
@@ -35,10 +38,25 @@ local function switch_focus()
   local is_nvim_tree = current_name:match("NvimTree")
 
   if is_nvim_tree then
-    -- Currently in explorer, go to previous window
-    vim.cmd("wincmd p")
+    -- Currently in explorer, go back to last editor window
+    if last_editor_win and vim.api.nvim_win_is_valid(last_editor_win) then
+      vim.api.nvim_set_current_win(last_editor_win)
+    else
+      -- Fallback: find any non-nvim-tree window
+      for _, win in ipairs(vim.api.nvim_list_wins()) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        local name = vim.api.nvim_buf_get_name(buf)
+        if not name:match("NvimTree") then
+          vim.api.nvim_set_current_win(win)
+          last_editor_win = win
+          return
+        end
+      end
+    end
   else
-    -- Currently in editor, check if nvim-tree is open
+    -- Currently in editor, save this window and go to explorer
+    last_editor_win = current_win
+
     local nvim_tree_open = false
     pcall(function()
       nvim_tree_open = require("nvim-tree.view").is_visible()
