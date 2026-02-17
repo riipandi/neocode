@@ -96,16 +96,14 @@ rm -fr ~/.cache/nvim
 
 ### Window
 
-| Shortcut           | Action                 |
-|--------------------|------------------------|
-| `Ctrl+Shift+H`     | Focus window left      |
-| `Ctrl+Shift+J`     | Focus window down      |
-| `Ctrl+Shift+K`     | Focus window up        |
-| `Ctrl+Shift+L`     | Focus window right     |
-| `Ctrl+Arrow Up`    | Increase window height |
-| `Ctrl+Arrow Down`  | Decrease window height |
-| `Ctrl+Arrow Left`  | Decrease window width  |
-| `Ctrl+Arrow Right` | Increase window width  |
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl+Alt+[` | Previous window |
+| `Ctrl+Alt+]` | Next window |
+| `Ctrl+Alt+=` | Increase width |
+| `Ctrl+Alt+-` | Decrease width |
+| `Ctrl+Shift+=` | Increase height |
+| `Ctrl+Shift+-` | Decrease height |
 
 ### Search
 

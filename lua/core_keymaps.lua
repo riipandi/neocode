@@ -79,19 +79,19 @@ keymap({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without yanking" })
 keymap("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
 keymap("n", "<leader>bp", ":bprevious<CR>", { desc = "Previous buffer" })
 
--- Better window navigation
-keymap("n", "<C-S-h>", "<C-w>h", { desc = "Move focus to left window" })
-keymap("n", "<C-S-j>", "<C-w>j", { desc = "Move focus to bottom window" })
-keymap("n", "<C-S-k>", "<C-w>k", { desc = "Move focus to top window" })
-keymap("n", "<C-S-l>", "<C-w>l", { desc = "Move focus to right window" })
-
 -- Splitting
 keymap("n", "<C-\\>", ":vsplit<CR>", { desc = "Split vertical" })
 keymap("n", "<C-S-\\>", ":split<CR>", { desc = "Split horizontal" })
-keymap("n", "<C-Up>", ":resize +2<CR>", { desc = "Increase window height" })
-keymap("n", "<C-Down>", ":resize -2<CR>", { desc = "Decrease window height" })
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", { desc = "Decrease window width" })
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", { desc = "Increase window width" })
+
+-- Window navigation (Ctrl+Alt+[/] for next/previous)
+keymap("n", "<C-A-[>", ":wincmd p<CR>", { desc = "Previous window" })
+keymap("n", "<C-A-]>", ":wincmd w<CR>", { desc = "Next window" })
+
+-- Window resize
+keymap("n", "<C-A-=>", ":vertical resize +2<CR>", { desc = "Increase width" })
+keymap("n", "<C-A-->", ":vertical resize -2<CR>", { desc = "Decrease width" })
+keymap("n", "<C-S-=>", ":resize +2<CR>", { desc = "Increase height" })
+keymap("n", "<C-S-->", ":resize -2<CR>", { desc = "Decrease height" })
 
 -- Move lines up/down
 keymap("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
@@ -225,6 +225,34 @@ local function close_buffer()
 end
 
 keymap("n", "<C-x>", close_buffer, { desc = "Close buffer (Ctrl+X)" })
+
+-- Close all buffers with confirmation
+local function close_all_buffers()
+  local modified = {}
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_get_option(buf, "modified") then
+      local name = vim.api.nvim_buf_get_name(buf)
+      if name ~= "" then
+        table.insert(modified, name)
+      end
+    end
+  end
+
+  if #modified > 0 then
+    fzf_select("Unsaved files - save?", { "Save all and close", "Don't save and close", "Cancel" }, function(choice)
+      if choice == "Save all and close" then
+        vim.cmd("wall")
+        vim.cmd("bufdo! bdelete!")
+      elseif choice == "Don't save and close" then
+        vim.cmd("bufdo! bdelete!")
+      end
+    end)
+  else
+    vim.cmd("bufdo! bdelete!")
+  end
+end
+
+keymap("n", "<C-S-w>", close_all_buffers, { desc = "Close all buffers (Ctrl+Shift+W)" })
 
 -- Quit Neovim with Ctrl+Q (with unsaved changes check)
 local function quit_neovim()
