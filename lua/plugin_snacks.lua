@@ -28,10 +28,10 @@ snacks.setup({
         hidden = { "preview" },
         layout = {
           backdrop = false,
-          width = 0.20,
-          min_width = 20,
-          height = 0.2,
-          min_height = 3,
+          width = 0.3,
+          min_width = 30,
+          height = 0.3,
+          min_height = 4,
           box = "vertical",
           border = "rounded",
           title = "{title}",
@@ -154,6 +154,23 @@ snacks.config.styles.terminal = {
   },
 }
 
+-- Input window style (centered)
+snacks.config.styles.input = {
+  backdrop = false,
+  border = "rounded",
+  title_pos = "center",
+  height = 1,
+  width = 60,
+  wo = {
+    winhighlight = "NormalFloat:SnacksInputNormal,FloatBorder:SnacksInputBorder,FloatTitle:SnacksInputTitle",
+    cursorline = false,
+  },
+  bo = {
+    filetype = "snacks_input",
+    buftype = "prompt",
+  },
+}
+
 -- ============================================================================
 -- Navigation Keymaps
 -- ============================================================================
@@ -216,8 +233,13 @@ end, { desc = "Find files" })
 
 -- Go to line with input prompt
 vim.keymap.set("n", "<C-g>", function()
+  local height = vim.o.lines
+  local row = math.floor((height - 3) / 2)
   snacks.input.input({
     prompt = "Go to [line:col]: ",
+    win = {
+      row = row,
+    },
   }, function(input)
     if input and input ~= "" then
       local line, col = input:match("(%d+):(%d+)")

@@ -3,8 +3,6 @@ local s = { silent = true }
 local ns = { noremap = true, silent = true }
 local er = { expr = true, replace_keycodes = false }
 
-
-
 -- Helper function to check if buffer is snacks explorer
 local function is_explorer_buffer(buf)
   local name = vim.api.nvim_buf_get_name(buf)
