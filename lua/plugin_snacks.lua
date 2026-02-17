@@ -40,6 +40,23 @@ snacks.setup({
           { win = "list", border = "none" },
         },
       },
+      buffers = {
+        layout = {
+          box = "horizontal",
+          width = 0.7,
+          height = 0.8,
+          {
+            box = "vertical",
+            width = 0.40,
+            border = "rounded",
+            title = "{title} {live} {flags}",
+            title_pos = "center",
+            { win = "input", height = 1, border = "bottom" },
+            { win = "list", border = "none" },
+          },
+          { win = "preview", title = "{preview}", width = 0.60, border = "rounded" },
+        },
+      },
     },
   },
 
@@ -138,9 +155,7 @@ end, { desc = "Toggle file explorer" })
 -- Show buffer list
 vim.keymap.set("n", "<C-b>", function()
   snacks.picker.buffers({
-    layout = {
-      preset = "default",
-    },
+    layout = { preset = "buffers" },
   })
 end, { desc = "Show buffer list" })
 
