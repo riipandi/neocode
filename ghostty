@@ -47,7 +47,7 @@ macos-secure-input-indication = true
 macos-titlebar-proxy-icon = hidden
 
 # hidden|transparent|native|tabs
-macos-titlebar-style = transparent
+macos-titlebar-style = tabs
 
 macos-window-buttons = hidden
 macos-window-shadow = true
@@ -125,6 +125,7 @@ palette = 15=#ffffff
 
 # # keybindings
 keybind = cmd+q=ignore
+keybind = cmd+w=ignore
 keybind = cmd+shift+w=ignore
 # keybind = cmd+shift+p>x=close_surface
 # keybind = cmd+s>r=reload_config
