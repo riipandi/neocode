@@ -53,19 +53,37 @@ snacks.keymap.set("n", "<leader>of", function()
     require("opencode").toggle()
 end, { desc = "OpenCode: Focus panel" })
 
--- Auto-escape keymaps for OpenCode terminal
+-- Prevent mode changes in OpenCode terminal (keep focus)
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "opencode_terminal",
     callback = function()
-        snacks.keymap.set("n", "<Esc>", function()
-            vim.cmd "wincmd p"
-        end, { buffer = 0, desc = "Return to editor" })
-        snacks.keymap.set(
-            "t",
-            "<Esc>",
-            [[<C-\><C-n>]],
-            { buffer = 0, desc = "Exit terminal mode" }
-        )
+        local opts = { buffer = 0, silent = true, nowait = true }
+
+        -- Completely block Escape in terminal mode (prevent global keymap from firing)
+        vim.keymap.set("t", "<Esc>", "<Nop>", opts)
+
+        -- Exit terminal mode with Ctrl+\ Ctrl+n (standard Neovim terminal exit)
+        vim.keymap.set("t", "<C-\\><C-n>", "<C-\\><C-n>", opts)
+
+        -- Prevent mode changes that would lose focus
+        local protected_keys = {
+            'd', 'dd', 'dw', 'de', 'd$', 'd0', 'd^',
+            'c', 'cc', 'cw', 'ce', 'c$', 'c0', '^',
+            'x', 's', 'r', 'R',
+            'i', 'a', 'I', 'A', 'o', 'O',
+            'v', 'V', '<C-v>',
+            'y', 'yy', 'yw', 'ye',
+            'p', 'P',
+            'g', 'gg', 'G',
+            'z', 'z.', 'zz',
+            'm', 'n', 'N',
+            '/', '?', '*', '#',
+            'J',
+        }
+
+        for _, key in ipairs(protected_keys) do
+            vim.keymap.set("t", key, "<Nop>", opts)
+        end
     end,
     once = false,
 })

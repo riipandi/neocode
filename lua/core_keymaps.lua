@@ -16,8 +16,18 @@ vim.g.maplocalleader = " "
 -- ============================================================================
 
 vim.keymap.set({ "n", "t" }, "<Esc>", function()
-  -- If in terminal or floating window, close it (like pressing q)
-  if vim.bo.buftype == "terminal" or vim.api.nvim_win_get_config(0).relative ~= "" then
+  -- Skip if in OpenCode terminal (let OpenCode handle Escape)
+  if vim.bo.filetype == "opencode_terminal" then
+    return
+  end
+  -- Don't close if in other terminal buffer
+  if vim.bo.buftype == "terminal" then
+    vim.cmd('close')
+    return
+  end
+  -- Close floating windows
+  local conf = vim.api.nvim_win_get_config(0)
+  if conf.relative ~= "" then
     vim.cmd('close')
     return
   end
