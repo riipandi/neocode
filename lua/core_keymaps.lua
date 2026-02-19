@@ -129,6 +129,13 @@ end, { desc = "Select scratch buffer" })
 
 -- Close current buffer (confirm only if unsaved changes)
 snacks.keymap.set("n", "<C-x>", function()
+  local wins = vim.api.nvim_list_wins()
+
+  if #wins > 1 then
+    vim.cmd('close')
+    return
+  end
+
   if vim.bo.modified then
     vim.ui.select({ 'Save & Close', 'Close without saving', 'Cancel' }, {
       prompt = 'Buffer has unsaved changes:',
@@ -144,7 +151,7 @@ snacks.keymap.set("n", "<C-x>", function()
   else
     vim.api.nvim_buf_delete(0, { force = false })
   end
-end, { desc = 'Close buffer' })
+end, { desc = 'Close buffer or split' })
 
 -- Close all buffers with snacks
 snacks.keymap.set("n", "<C-S-w>", function()
