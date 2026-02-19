@@ -13,7 +13,7 @@ require('mini.icons').setup({})
 -- Custom lualine theme matching atomizer colors
 local custom_theme = {
   normal = {
-    a = { fg = "#ffffff", bg = "#ba8ef7", gui = "bold" },
+    a = { fg = "#ffffff", bg = "#336ff1", gui = "bold" },
     b = { fg = "#bcbec4", bg = "#252629" },
     c = { fg = "#bcbec4", bg = "#181a1d" },
     x = { fg = "#bcbec4", bg = "#181a1d" },
@@ -105,22 +105,22 @@ require('lualine').setup({
         "mode",
         fmt = function(str)
           local mode_map = {
-            ["NORMAL"] = "\n N ",
-            ["INSERT"] = "\n I ",
-            ["VISUAL"] = "\n V ",
-            ["V-LINE"] = "\n VL ",
-            ["V-BLOCK"] = "\n VB ",
-            ["SELECT"] = "\n S ",
-            ["S-LINE"] = "\n SL ",
-            ["S-BLOCK"] = "\n SB ",
-            ["REPLACE"] = "\n R ",
-            ["COMMAND"] = "\n C ",
-            ["TERMINAL"] = "\n T ",
-            ["EX"] = "\n EX ",
-            ["MORE"] = "\n M ",
-            ["CONFIRM"] = "\n Y? ",
+            ["NORMAL"] = "N",
+            ["INSERT"] = "I",
+            ["VISUAL"] = "V",
+            ["V-LINE"] = "VL",
+            ["V-BLOCK"] = "VB",
+            ["SELECT"] = "S",
+            ["S-LINE"] = "SL",
+            ["S-BLOCK"] = "SB",
+            ["REPLACE"] = "R",
+            ["COMMAND"] = "C",
+            ["TERMINAL"] = "T",
+            ["EX"] = "EX",
+            ["MORE"] = "M",
+            ["CONFIRM"] = "Y?",
           }
-          return mode_map[str] or "\n " .. str:sub(1, 1) .. " "
+          return mode_map[str] or str:sub(1, 1)
         end,
         padding = { left = 1, right = 1 },
       },
@@ -128,16 +128,10 @@ require('lualine').setup({
     lualine_b = {
       {
         "branch",
-        fmt = function(str)
-          return "\n" .. str
-        end,
         padding = { left = 1, right = 1 }
       },
       {
         "diff",
-        fmt = function(str)
-          return "\n" .. str
-        end,
         padding = { left = 1, right = 1 }
       },
     },
@@ -154,9 +148,6 @@ require('lualine').setup({
           unnamed = "[No Name]",
           newfile = "[New]",
         },
-        fmt = function(str)
-          return "\n" .. str
-        end,
         padding = { left = 1, right = 1 },
       },
       {
@@ -175,15 +166,12 @@ require('lualine').setup({
     lualine_x = {
       {
         "diagnostics",
-        fmt = function(str)
-          return "\n" .. str
-        end,
         sources = { "nvim_diagnostic" },
         symbols = { error = " ", warn = " ", info = " ", hint = " " },
         diagnostics_color = {
           error = { fg = "#f85149" },
           warn = { fg = "#ff8a00" },
-          info = { fg = "#336ff1" },
+          info = { fg = "#56a8f5" },
           hint = { fg = "#7a7e85" },
         },
         cond = function()
@@ -215,9 +203,6 @@ require('lualine').setup({
           return msg
         end,
         icon = " ",
-        fmt = function(str)
-          return "\n" .. str
-        end,
         color = { gui = "bold" },
         cond = function()
           return vim.fn.winwidth(0) > 100
@@ -227,9 +212,6 @@ require('lualine').setup({
     lualine_y = {
       {
         "encoding",
-        fmt = function(str)
-          return "\n" .. str
-        end,
         cond = function()
           return vim.fn.winwidth(0) > 100
         end,
@@ -242,9 +224,6 @@ require('lualine').setup({
           dos = "",
           mac = "",
         },
-        fmt = function(str)
-          return "\n" .. str
-        end,
         cond = function()
           return vim.fn.winwidth(0) > 100
         end,
@@ -252,26 +231,17 @@ require('lualine').setup({
       },
       {
         "filetype",
-        fmt = function(str)
-          return "\n" .. str
-        end,
         padding = { left = 0, right = 1 }
       },
     },
     lualine_z = {
       {
         "location",
-        fmt = function(str)
-          return "\n" .. str
-        end,
         color = { gui = "bold" },
         padding = { left = 1, right = 1 },
       },
       {
         "progress",
-        fmt = function(str)
-          return "\n" .. str
-        end,
         color = { gui = "bold" },
         padding = { left = 0, right = 1 },
       },
