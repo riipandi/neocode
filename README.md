@@ -94,6 +94,10 @@ Documentation: https://opencode.ai/docs/themes
 
 See [KEYMAP.md](./KEYMAP.md) for complete keybindings reference.
 
+## License
+
+See [LICENSE](./LICENSE) for details.
+
 ## Clone the starter
 
 ```sh
