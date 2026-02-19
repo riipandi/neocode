@@ -11,32 +11,33 @@ vim.pack.add({
 -- for you, so that they are available from within Neovim.
 local ensure_installed = vim.tbl_keys(servers or {})
 vim.list_extend(ensure_installed, {
+  "astro",
+  "buf",
   "buf_ls",
   "codelldb",
   "cssls",
+  "deno",
   "dockerls",
   "elixirls",
-  "intelephense",
   "goimports",
   "golangci-lint",
   "gopls",
+  "gotestsum",
   "html",
   "jsonls",
   "lua_ls",
   "markdownlint",
-  "nginx-config-formatter",
-  "protolint",
+  "oxlint",
   "rust_analyzer",
-  "superhtml",
-  "shfmt",
   "sql-formatter",
+  "sqls",
   "stylua",
-  "tailwindcss",
+  "tailwindcss-language-server",
   "taplo",
   "templ",
   "terraform",
   "ts_ls",
-  "uv",
+  "zls",
 })
 
 require('mason-tool-installer').setup({
@@ -72,26 +73,24 @@ require('mason').setup({
 
 require('mason-lspconfig').setup({
     automatic_enable = {
+      "astro",
       "buf_ls",
       "elixirls",
       "gopls",
       "html",
       "lua_ls",
       "rust_analyzer",
-      "stylua",
-      "taillwindcss",
+      "sqls",
+      "tailwindcss",
       "taplo",
-      "templ",
       "ts_ls",
+      "zls",
     },
     automatic_installation = false,
-    ensure_installed = {}, -- explicitly set to an empty table (installs via mason-tool-installer)
+    ensure_installed = {},
     handlers = {
       function(server_name)
         local server = servers[server_name] or {}
-        -- This handles overriding only values explicitly passed
-        -- by the server configuration above. Useful when disabling
-        -- certain features of an LSP (for example, turning off formatting for ts_ls)
         server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
         require('lspconfig')[server_name].setup(server)
       end,

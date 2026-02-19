@@ -64,6 +64,22 @@ snacks.keymap.set("n", "<leader>pu", '<cmd>lua vim.pack.update()<CR>', { desc = 
 snacks.keymap.set("n", "<leader>cd", '<cmd>lua vim.fn.chdir(vim.fn.expand("%:p:h"))<CR>', { desc = "Change working directory to current file" })
 
 -- ============================================================================
+-- Go Tools
+-- ============================================================================
+
+-- Run gotestsum for current file
+snacks.keymap.set("n", "<leader>gt", function()
+  local filename = vim.fn.expand('%:t')
+  local cmd = string.format('gotestsum --format=standard-verbose -- -run . -count=1 %s', vim.fn.shellescape(filename))
+  require('snacks').terminal(cmd, { title = 'gotestsum' })
+end, { desc = 'Run gotestsum for current file' })
+
+-- Run gotestsum for all tests
+snacks.keymap.set("n", "<leader>gT", function()
+  require('snacks').terminal('gotestsum --format=standard-verbose -- ./...', { title = 'gotestsum all' })
+end, { desc = 'Run gotestsum for all tests' })
+
+-- ============================================================================
 -- Diagnostics
 -- ============================================================================
 

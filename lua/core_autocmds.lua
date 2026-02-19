@@ -7,6 +7,19 @@ local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
 -- ============================================================================
+-- Filetype Detection
+-- ============================================================================
+
+-- Detect Justfile
+autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = { "Justfile", "justfile" },
+  callback = function()
+    vim.filetype.match({ filename = { [".*justfile"] = "just" } })
+  end,
+  desc = "Detect Justfile filetype",
+})
+
+-- ============================================================================
 -- Keymaps
 -- ============================================================================
 

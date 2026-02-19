@@ -255,6 +255,7 @@ vim.lsp.enable({
   "lua_ls",
   "oxlint",
   "rust-analyzer",
+  "tailwindcss",
   "texlab",
   "ts_ls",
   "yamlls",

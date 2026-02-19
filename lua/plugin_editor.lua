@@ -92,15 +92,37 @@ require('conform').setup({
     end
   end,
   formatters_by_ft = {
-    javascript = { "oxfmt" },
-    javascriptreact = { "oxfmt" },
-    typescript = { "oxfmt" },
-    typescriptreact = { "oxfmt" },
-    json = { "oxfmt" },
-    vue = { "oxfmt" },
+    astro = { 'oxfmt' },
+    elixir = { 'mix' },
+    go = { 'gofmt' },
+    hcl = { 'terraform' },
+    javascript = { { 'oxfmt', 'prettierd' } },
+    javascriptreact = { { 'oxfmt', 'prettierd' } },
+    json = { 'oxfmt' },
+    lit = { 'oxfmt' },
+    rust = { 'rustfmt' },
+    svelte = { 'oxfmt' },
+    sql = { 'sql_formatter' },
+    terraform = { 'terraform' },
+    typescript = { 'oxfmt' },
+    typescriptreact = { 'oxfmt' },
+    vue = { 'oxfmt' },
+    zig = { 'zigfmt' },
   },
   format_after_save = {
     lsp_fallback = true,
     quiet = true,
+  },
+  formatters = {
+    mix = {
+      command = 'mix',
+      args = { 'format', '--stdin-filename', '$FILENAME' },
+      stdin = true,
+    },
+    terraform = {
+      command = 'terraform',
+      args = { 'fmt', '-' },
+      stdin = true,
+    },
   },
 })
