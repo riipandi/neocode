@@ -253,6 +253,7 @@ vim.lsp.enable({
   "bashls",
   "gopls",
   "lua_ls",
+  "oxlint",
   "rust-analyzer",
   "texlab",
   "ts_ls",

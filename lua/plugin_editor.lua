@@ -91,7 +91,14 @@ require('conform').setup({
       }
     end
   end,
-  formatters_by_ft = {},
+  formatters_by_ft = {
+    javascript = { "oxfmt" },
+    javascriptreact = { "oxfmt" },
+    typescript = { "oxfmt" },
+    typescriptreact = { "oxfmt" },
+    json = { "oxfmt" },
+    vue = { "oxfmt" },
+  },
   format_after_save = {
     lsp_fallback = true,
     quiet = true,
