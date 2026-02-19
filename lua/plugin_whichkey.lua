@@ -67,25 +67,69 @@ require('which-key').setup({
 
   -- Document existing key chains (alphabetical order with grouping)
   spec = {
+    -- Groups
     { "g", group = "Goto", mode = "n" },
     { "z", group = "Fold", mode = "n" },
     { "[", group = "Prev", mode = "n" },
     { "]", group = "Next", mode = "n" },
 
+    -- Buffer
     { '<leader>b', group = 'Buffer', mode = "n" },
-    { '<leader>c', group = 'Code', mode = "n" },
+    { '<leader>bb', desc = 'Buffer picker', mode = "n" },
+    { '<leader>bd', desc = 'Delete buffer', mode = "n" },
+
+    -- Debug
     { '<leader>d', group = 'Debug', mode = "n" },
+
+    -- File
     { '<leader>f', group = 'File', mode = "n" },
+
+    -- File Explorer
+    { '<leader>e', desc = 'File explorer', mode = "n" },
+
+    -- File Picker
+    { '<leader><space>', desc = 'Find files', mode = "n" },
+
+    -- Git
     { '<leader>g', group = 'Git', mode = "n" },
+    { '<leader>gp', desc = 'Git push', mode = "n" },
+
+    -- Git Hunk
     { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
+
+    -- LSP
     { '<leader>l', group = 'LSP', mode = "n" },
+    { '<leader>la', desc = 'Code action', mode = "n" },
+    { '<leader>lr', desc = 'Rename', mode = "n" },
+
+    -- Action
+    { '<leader>a', group = 'Action', mode = "n" },
+    { '<leader>ac', desc = 'Clear search', mode = "n" },
+    { '<leader>ad', desc = 'Change directory', mode = "n" },
+
+    -- OpenCode
+    { '<leader>o', group = 'OpenCode', mode = "n" },
+
+    -- Tools
+    { '<leader>t', group = 'Tools', mode = "n" },
+    { '<leader>tt', desc = 'Terminal', mode = "n" },
+    { '<leader>tg', desc = 'LazyGit', mode = "n" },
+    { '<leader>tf', desc = 'Serpl', mode = "n" },
+
+    -- Quit
     { '<leader>q', group = 'Quit', mode = "n" },
+
+    -- Search
     { '<leader>s', group = 'Search', mode = "n" },
-    { '<leader>sr', desc = 'Serpl (search & replace)', mode = "n" },
-    { '<leader>t', group = 'Toggle', mode = "n" },
+    { '<leader>sr', desc = 'Serpl', mode = "n" },
+
+    -- Window
     { '<leader>w', group = 'Window', mode = "n" },
+
+    -- Trouble
     { '<leader>x', group = 'Trouble', mode = "n" },
 
+    -- Visual mode
     { "<leader>", group = "Leader", mode = "v" },
     { "g", group = "Goto", mode = "v" },
 

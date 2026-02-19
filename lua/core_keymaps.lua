@@ -21,6 +21,13 @@ snacks.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result (centered)
 snacks.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "Clear search highlights" })
 
 -- ============================================================================
+-- Action
+-- ============================================================================
+
+snacks.keymap.set("n", "<leader>ac", ":nohlsearch<CR>", { desc = "Clear search highlights" })
+snacks.keymap.set("n", "<leader>ad", '<cmd>lua vim.fn.chdir(vim.fn.expand("%:p:h"))<CR>', { desc = "Change directory" })
+
+-- ============================================================================
 -- Editing
 -- ============================================================================
 
@@ -91,6 +98,18 @@ snacks.keymap.set("n", "<C-S-w>", function()
   Snacks.bufdelete.all()
 end, { desc = "Close all buffers" })
 
+-- Delete buffer
+snacks.keymap.set("n", "<leader>bd", function()
+  Snacks.bufdelete()
+end, { desc = "Delete buffer" })
+
+-- Buffer picker
+snacks.keymap.set("n", "<leader>bb", function()
+  Snacks.picker.buffers({
+    layout = { preset = "buffers" },
+  })
+end, { desc = "Buffer picker" })
+
 -- Close other buffers (keep only current)
 snacks.keymap.set("n", "<leader>bo", function()
   Snacks.bufdelete.other()
@@ -100,40 +119,39 @@ end, { desc = "Close other buffers" })
 -- Quit
 -- ============================================================================
 
--- Quit Neocode with confirmation for unsaved changes
-_G.quit_neovim = function()
-  ui_select("Quit Neocode?", { "Yes", "No" }, function(choice)
-    if choice ~= "Yes" then
-      return
-    end
+snacks.keymap.set("n", "<C-q>", ":qa<CR>", { desc = "Quit all" })
+snacks.keymap.set("n", "<leader>q", ":qa<CR>", { desc = "Quit all" })
+snacks.keymap.set("n", "<leader>qq", ":qa<CR>", { desc = "Quit all" })
 
-    local modified_buffers = {}
-    local buffers = vim.api.nvim_list_bufs()
+-- ============================================================================
+-- Tools
+-- ============================================================================
 
-    for _, buf in ipairs(buffers) do
-      if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_get_option_value("modified", { buf = buf }) then
-        local name = vim.api.nvim_buf_get_name(buf)
-        if name ~= "" then
-          table.insert(modified_buffers, { id = buf, name = vim.fs.basename(name) })
-        end
-      end
-    end
+-- Terminal
+snacks.keymap.set("n", "<leader>tt", function()
+  Snacks.terminal.toggle(vim.o.shell, {
+    win = { style = "terminal" },
+  })
+end, { desc = "Toggle terminal" })
 
-    if #modified_buffers > 0 then
-      ui_select("Unsaved buffers - save?", { "Save all and quit", "Don't save and quit", "Cancel" }, function(choice2)
-        if choice2 == "Save all and quit" then
-          vim.cmd("wall")
-          vim.cmd("qa!")
-        elseif choice2 == "Don't save and quit" then
-          vim.cmd("qa!")
-        end
-      end)
-    else
-      vim.cmd("qa!")
-    end
-  end)
-end
+-- LazyGit
+snacks.keymap.set("n", "<leader>tg", function()
+  Snacks.lazygit.open()
+end, { desc = "Open LazyGit" })
 
-snacks.keymap.set("n", "<C-q>", _G.quit_neovim, { desc = "Quit Neocode" })
-snacks.keymap.set("n", "<leader>qq", _G.quit_neovim, { desc = "Quit Neocode" })
-snacks.keymap.set("n", "<leader>qa", ":qa<CR>", { desc = "Quit all" })
+-- Serpl (Search & Replace)
+snacks.keymap.set("n", "<leader>tf", function()
+  Snacks.serpl()
+end, { desc = "Search & Replace" })
+
+-- File Explorer
+snacks.keymap.set("n", "<leader>e", function()
+  Snacks.explorer()
+end, { desc = "Toggle file explorer" })
+
+-- File Picker
+snacks.keymap.set("n", "<leader><space>", function()
+  Snacks.picker.files({
+    layout = { preset = "files" },
+  })
+end, { desc = "Find files" })
