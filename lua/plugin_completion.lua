@@ -21,9 +21,9 @@ require('lazydev').setup({
 -- ============================================================================
 require('blink.cmp').setup({
   keymap = {
-    preset = 'default',  -- 'default' sudah simple
-    ['<Left>'] = { 'select_prev' },
-    ['<Right>'] = { 'select_next' },
+    preset = 'default',
+    ['<Esc>'] = { 'cancel', 'fallback' },
+    ['<CR>'] = { 'accept', 'fallback' },
   },
 
   appearance = {
@@ -33,8 +33,7 @@ require('blink.cmp').setup({
   },
 
   completion = {
-    -- By default, you may press `<c-space>` to show the documentation.
-    -- Optionally, set `auto_show = true` to show the documentation after a delay.
+    auto_insert = false,
     documentation = { auto_show = false, auto_show_delay_ms = 500 },
   },
 

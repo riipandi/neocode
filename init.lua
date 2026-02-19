@@ -22,7 +22,7 @@ vim.opt.number = true                              -- Line numbers
 vim.opt.relativenumber = false                     -- Relative line numbers
 vim.opt.cursorline = true                          -- Highlight current line
 vim.opt.wrap = false                               -- Don't wrap lines
-vim.opt.scrolloff = 0                              -- Keep 10 lines above/below cursor
+vim.opt.scrolloff = 10                             -- Keep 10 lines above/below cursor
 vim.opt.sidescrolloff = 4                          -- Keep 8 columns left/right of cursor
 
 -- Indentation
@@ -94,13 +94,6 @@ vim.opt.encoding = "UTF-8"                         -- Set encoding
 -- Cursor settings
 vim.opt.guicursor = "n-v-c:block,i-ci-ve:block,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175"
 
--- Command line completion with cursor navigation
-vim.api.nvim_create_autocmd("CmdlineEnter", {
-  callback = function()
-    vim.opt.pumheight = 15
-  end,
-})
-
 -- Note: Insert mode completion handled by blink.cmp with preset 'default'
 -- This provides: arrow keys navigation, tab navigation, and enter to accept
 -- Display invisible characters
@@ -134,7 +127,6 @@ require 'plugin_treesitter'               -- Syntax highlighting (nvim-treesitte
 require 'plugin_filemanager'              -- File marks (miniharp)
 require 'plugin_lualine'                  -- Statusline (lualine)
 require 'plugin_noice'                    -- Cmdline UI replacement (noice)
-require 'plugin_neoscroll'                -- Smooth scrolling (neoscroll)
 require 'plugin_vcs'                      -- Version control (git)
 require 'plugin_whichkey'                 -- Which-key (keybindings helper)
 require 'plugin_mason'                    -- Mason package manager

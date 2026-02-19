@@ -82,7 +82,7 @@
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "nvim-treesitter": {
-      "rev": "ca35dc5184327f9e19b70932190a256235acecb1",
+      "rev": "ecdae44baefeffceade8b0c752d80ececad28e76",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "nvim-web-devicons": {
@@ -90,7 +90,7 @@
       "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "opencode.nvim": {
-      "rev": "14e8610a5fc7c246b37f3eaa7b493bde57de4077",
+      "rev": "a841138e056f337c6ee7ad0aad0cc18b36806deb",
       "src": "https://github.com/nickjvandyke/opencode.nvim"
     },
     "plenary.nvim": {

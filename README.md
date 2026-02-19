@@ -17,7 +17,7 @@ time to read [through a guide][learnxinyminutes].
 brew uninstall neovim
 
 curl -#L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz | tar xz
-sudo cp -R ./nvim-macos-arm64/* /usr/local/ && rm -fr nvim-macos-arm64
+xattr -c ./nvim-macos-arm64/ && sudo cp -R ./nvim-macos-arm64/* /usr/local/ && rm -fr nvim-macos-arm64
 ```
 
 ```sh
