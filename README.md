@@ -1,4 +1,4 @@
-# 🎒 Neovim Configuration
+# Neovim Configuration
 
 <img src="./screenshot1.png" alt="Neocode" height="520" />
 
@@ -20,64 +20,47 @@ curl -#L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-a
 xattr -c ./nvim-macos-arm64/ && sudo cp -R ./nvim-macos-arm64/* /usr/local/ && rm -fr nvim-macos-arm64
 ```
 
+### Core Tools
 ```sh
-brew install ripgrep fd luarocks taplo stylua rust-analyzer serpl
-brew install bash-language-server yaml-language-server python-lsp-server
-brew install --cask rio
+# LSP & Formatters
+brew install ripgrep fd luarocks taplo stylua rust-analyzer
+brew install bash-language-server yaml-language-server
+brew install oxlint oxfmt deno
 
+# Dev Tools
+brew install jesseduffield/lazygit/lazygit
+```
+
+### Optional Tools (Recommended)
+```sh
+# Fonts
 brew tap homebrew/cask-fonts
 brew install --cask font-jetbrains-mono font-jetbrains-mono-nerd-font
 brew install --cask font-maple-mono font-maple-mono-nf
-   
-brew install markdownlint-cli viu chafa
-brew install jesseduffield/lazygit/lazygit
-brew install jstkdng/programs/ueberzugpp
+
+# System Monitoring
+brew install mactop     # Apple Silicon Mac
+# brew install btop     # Cross-platform alternative
+
+# Image Preview
+brew install chafa
+
+# Utilities
+brew install markdownlint-cli serpl
 ```
 
-## IDE Setup
-
-### Cleanup previous configuration
+## Quick Start
 
 ```sh
+# Clean previous configuration (if any)
 rm -fr ~/.config/nvim/nvim-pack-lock.json
 rm -fr ~/.local/share/nvim
 rm -fr ~/.local/state/nvim
 rm -fr ~/.cache/nvim
+
+# Clone the starter
+npx tiged https://github.com/riipandi/neocode ~/.config/nvim
 ```
-
-## Dependencies (Plugins)
-
-| Plugin                        | Description                                      |
-|-------------------------------|--------------------------------------------------|
-| **snacks.nvim**               | All-in-one UI utilities (picker, explorer, etc.) |
-| **noice.nvim**                | Cmdline UI replacement (floating popup)          |
-| **nui.nvim**                  | UI component library for noice                   |
-| **blink.cmp**                 | Code completion with snippet support             |
-| **friendly-snippets**         | Snippet collection                               |
-| **lazydev.nvim**              | Neovim development                               |
-| **colorful-menu.nvim**        | Colorful completion menus                        |
-| **nvim-autopairs**            | Auto-close brackets and pairs                    |
-| **todo-comments.nvim**        | Highlight TODO comments                          |
-| **urlview.nvim**              | Open URLs from text files                        |
-| **cloak.nvim**                | Blur lines for sensitive info                    |
-| **conform.nvim**              | Slow/conforming async formatting                 |
-| **miniharp.nvim**             | Quick file marks and navigation                  |
-| **plenary.nvim**              | Utility functions                                |
-| **lualine.nvim**              | Statusline for fancy status bar                  |
-| **nvim-web-devicons**         | File type icons                                  |
-| **mini.icons**                | Icon provider                                    |
-| **mason.nvim**                | LSP package manager                              |
-| **mason-lspconfig.nvim**      | LSP configuration for Mason                      |
-| **mason-tool-installer.nvim** | Tool installer for Mason                         |
-| **nvim-treesitter**           | Syntax highlighting                              |
-| **lsp_signature.nvim**        | LSP signature help                               |
-| **trouble.nvim**              | Pretty diagnostics UI                            |
-| **fidget.nvim**               | LSP progress indicator                           |
-| **nvim-lspconfig**            | LSP configuration                                |
-| **gitsigns.nvim**             | Git signs in gutter                              |
-| **which-key.nvim**            | Keybinding helper                                |
-| **opencode.nvim**             | AI code assistant                                |
-| **serpl**                     | Search & replace TUI (VSCode-like)               |
 
 ## OpenCode Theme
 
@@ -90,6 +73,50 @@ cat ~/.config/nvim/opencode-theme.json \
 
 Documentation: https://opencode.ai/docs/themes
 
+## Supported Languages
+
+| Language         | LSP            | Treesitter   | Formatter     |
+|------------------|----------------|--------------|---------------|
+| TypeScript/React | ts_ls + oxlint | tsx, js      | oxfmt         |
+| Tailwind CSS     | tailwindcss    | css          | oxfmt         |
+| Lit              | ts_ls          | lit          | oxfmt         |
+| Astro            | astro          | astro        | oxfmt         |
+| Rust             | rust-analyzer  | rust         | rustfmt       |
+| Go               | gopls          | go           | gofmt         |
+| Elixir/Phoenix   | elixirls       | elixir, heex | mix           |
+| Zig              | zls            | zig          | zigfmt        |
+| SQL (PG/SQLite)  | sqls           | sql          | sql-formatter |
+| Protobuf         | buf_ls         | proto        | buf           |
+| Terraform        | terraform-ls   | hcl          | terraform     |
+| Justfile         | -              | just         | -             |
+
+## Dependencies (Plugins)
+
+| Plugin                 | Description                                      |
+|------------------------|--------------------------------------------------|
+| **snacks.nvim**        | All-in-one UI utilities (picker, explorer, etc.) |
+| **noice.nvim**         | Cmdline UI replacement (floating popup)          |
+| **nui.nvim**           | UI component library for noice                   |
+| **blink.cmp**          | Code completion with snippet support             |
+| **friendly-snippets**  | Snippet collection                               |
+| **lazydev.nvim**       | Neovim development                               |
+| **colorful-menu.nvim** | Colorful completion menus                        |
+| **nvim-autopairs**     | Auto-close brackets and pairs                    |
+| **todo-comments.nvim** | Highlight TODO comments                          |
+| **urlview.nvim**       | Open URLs from text files                        |
+| **cloak.nvim**         | Blur lines for sensitive info                    |
+| **conform.nvim**       | Async code formatting                            |
+| **nvim-treesitter**    | Syntax highlighting                              |
+| **lsp_signature.nvim** | LSP signature help                               |
+| **trouble.nvim**       | Pretty diagnostics UI                            |
+| **fidget.nvim**        | LSP progress indicator                           |
+| **nvim-lspconfig**     | LSP configuration                                |
+| **mason.nvim**         | LSP package manager                              |
+| **gitsigns.nvim**      | Git signs in gutter                              |
+| **which-key.nvim**     | Keybinding helper                                |
+| **lualine.nvim**       | Statusline                                       |
+| **opencode.nvim**      | AI code assistant                                |
+
 ## Keybindings
 
 See [KEYMAP.md](./KEYMAP.md) for complete keybindings reference.
@@ -97,12 +124,6 @@ See [KEYMAP.md](./KEYMAP.md) for complete keybindings reference.
 ## License
 
 See [LICENSE](./LICENSE) for details.
-
-## Clone the starter
-
-```sh
-npx tiged https://github.com/riipandi/neovim-config ~/.config/nvim
-```
 
 ## Inspirations
 

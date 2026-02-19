@@ -221,6 +221,15 @@ snacks.keymap.set("n", "<leader>tf", function()
   Snacks.serpl()
 end, { desc = "Search & Replace" })
 
+-- Resource Monitor (mactop on Mac, btop on Linux)
+-- Install: brew install mactop (Mac) or brew install btop (cross-platform)
+snacks.keymap.set("n", "<leader>tr", function()
+  Snacks.terminal("mactop", {
+    lazy = false,
+    title = "Resource Monitor",
+  })
+end, { desc = "Resource monitor" })
+
 -- File Explorer
 snacks.keymap.set("n", "<leader>e", function()
   Snacks.explorer()

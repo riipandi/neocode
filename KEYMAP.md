@@ -9,10 +9,16 @@
 | Close buffer          | `b`      | `<C-x>`      |
 | Close all buffers     |          | `<C-S-w>`    |
 | Clear search          | `c`      | `<leader>c`  |
-| Clear search          | `ac`     | `<leader>ac` |
 | Change directory      | `ad`     | `<leader>ad` |
 | Edit neovim config    | `f`      | `<leader>,`  |
 | Toggle scratch buffer | `f`      | `<leader>.`  |
+
+## Escape Key
+
+| Action                | Shortcut | Description                               |
+|-----------------------|----------|-------------------------------------------|
+| Close floating window | `<Esc>`  | Closes terminal, lazygit, picker, etc.    |
+| Clear search          | `<Esc>`  | Clears search highlights in normal buffer |
 
 ## Buffer
 
@@ -28,11 +34,17 @@
 |------------------|-----------|-------------------|
 | Find files       | `<space>` | `<leader><space>` |
 | File explorer    | `e`       | `<leader>e`       |
-| Buffer picker    | `bb`      | `<leader>bb`      |
 | Terminal         | `tt`      | `<leader>tt`      |
 | LazyGit          | `tg`      | `<leader>tg`      |
 | Search & Replace | `tf`      | `<leader>tf`      |
+| Resource Monitor | `tr`      | `<leader>tr`      |
 | Command palette  |           | `<C-S-p>`         |
+
+### Resource Monitor (`<leader>tr`)
+
+Requires installation:
+- macOS: `brew install mactop` (Apple Silicon)
+- Linux: `brew install btop` (cross-platform)
 
 ## Search
 
@@ -77,6 +89,13 @@
 | Previous diagnostic |          | `<leader>pd` |
 | Format file         |          | `<leader>fm` |
 
+## Go Tools
+
+| Action               | Shortcut     |
+|----------------------|--------------|
+| Run gotestsum (file) | `<leader>gt` |
+| Run gotestsum (all)  | `<leader>gT` |
+
 ## OpenCode
 
 | Action              | WhichKey | Shortcut     |
@@ -95,16 +114,16 @@
 
 ## Window
 
-| Action           | WhichKey | Shortcut   |
-|------------------|----------|------------|
-| Split vertical   |          | `<C-\>`    |
-| Split horizontal |          | `<C-S-\>`  |
-| Previous window  |          | `<C-A-[>`  |
-| Next window      |          | `<C-A-]>`  |
-| Increase width   |          | `<C-A-=>`  |
-| Decrease width   |          | `<C-A-->`, |
-| Increase height  |          | `<C-S-=>`  |
-| Decrease height  |          | `<C-S-->`  |
+| Action           | WhichKey | Shortcut  |
+|------------------|----------|-----------|
+| Split vertical   |          | `<C-\>`   |
+| Split horizontal |          | `<C-S-\>` |
+| Previous window  |          | `<C-A-[>` |
+| Next window      |          | `<C-A-]>` |
+| Increase width   |          | `<C-A-=>` |
+| Decrease width   |          | `<C-A-->` |
+| Increase height  |          | `<C-S-=>` |
+| Decrease height  |          | `<C-S-->` |
 
 ## Scrolling
 
