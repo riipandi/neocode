@@ -16,14 +16,7 @@ local function setup_zig_lsp()
 
   vim.lsp.config('zls', {
     capabilities = capabilities,
-    settings = {
-      zls = {
-        enable = true,
-        diagnostics = true,
-        inlayHints = true,
-        semanticTokens = true,
-      },
-    },
+    settings = {},
   })
 
   vim.lsp.enable('zls')

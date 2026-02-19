@@ -20,7 +20,18 @@ local function setup_protobuf_lsp()
     cmd = { 'buf', 'lint', '--format', 'json' },
     filetypes = { 'proto' },
     root_dir = function(fname)
-      return vim.fs.root_pattern('.git', 'buf.yaml', 'buf.gen.yaml', 'buf.work.yaml')(fname)
+      local patterns = { '.git', 'buf.yaml', 'buf.gen.yaml', 'buf.work.yaml' }
+      for _, pattern in ipairs(patterns) do
+        local found = vim.fn.finddir(pattern, fname .. ';')
+        if found ~= '' then
+          return vim.fn.fnamemodify(found, ':h')
+        end
+        found = vim.fn.findfile(pattern, fname .. ';')
+        if found ~= '' then
+          return vim.fn.fnamemodify(found, ':h')
+        end
+      end
+      return nil
     end,
     capabilities = capabilities,
     settings = {},

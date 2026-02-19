@@ -19,7 +19,19 @@ local function setup_terraform_lsp()
     cmd = { 'terraform-ls', 'serve' },
     filetypes = { 'terraform', 'hcl' },
     root_dir = function(fname)
-      return vim.fs.root_pattern('.git', '.terraform', '*.tf', '*.tfvars')(fname)
+      local patterns = { '.git', '.terraform' }
+      for _, pattern in ipairs(patterns) do
+        local found = vim.fn.finddir(pattern, fname .. ';')
+        if found ~= '' then
+          return vim.fn.fnamemodify(found, ':h')
+        end
+      end
+      -- Check for tf files in current directory
+      local tf_file = vim.fn.findfile('*.tf', fname .. ';')
+      if tf_file ~= '' then
+        return vim.fn.fnamemodify(tf_file, ':h')
+      end
+      return nil
     end,
     capabilities = capabilities,
     settings = {

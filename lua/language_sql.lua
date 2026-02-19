@@ -16,25 +16,8 @@ local function setup_sql_lsp()
   end
 
   vim.lsp.config('sqls', {
-    cmd = { 'sqls', '-config', vim.fn.expand('~/.config/sqls/config.yaml') },
     capabilities = capabilities,
-    settings = {
-      sqls = {
-        commands = {
-          executeQuery = {
-            edit = {
-              workDoneProgress = true,
-            },
-          },
-          executeNamedQuery = {
-            edit = {
-              workDoneProgress = true,
-            },
-          },
-        },
-        connections = {},
-      },
-    },
+    settings = {},
   })
 
   vim.lsp.enable('sqls')

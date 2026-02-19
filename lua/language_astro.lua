@@ -19,13 +19,7 @@ local function setup_astro_lsp()
     cmd = { 'astro-ls', '--stdio' },
     filetypes = { 'astro' },
     capabilities = capabilities,
-    settings = {
-      astro = {
-        typescript = {
-          serviceHost = 'ts_ls',
-        },
-      },
-    },
+    settings = {},
   })
 
   vim.lsp.enable('astro')
@@ -36,5 +30,3 @@ autocmd('FileType', {
   callback = setup_astro_lsp,
   desc = 'Start Astro LSP',
 })
-
-vim.lsp.enable('astro')

@@ -84,7 +84,18 @@ local function setup_oxlint_lsp()
       'vue',
     },
     root_dir = function(fname)
-      return vim.fs.root_pattern('.git', '.oxlintrc.json', 'oxlint.config.ts')(fname)
+      local patterns = { '.git', '.oxlintrc.json', 'oxlint.config.ts' }
+      for _, pattern in ipairs(patterns) do
+        local found = vim.fn.finddir(pattern, fname .. ';')
+        if found ~= '' then
+          return vim.fn.fnamemodify(found, ':h')
+        end
+        found = vim.fn.findfile(pattern, fname .. ';')
+        if found ~= '' then
+          return vim.fn.fnamemodify(found, ':h')
+        end
+      end
+      return nil
     end,
     capabilities = capabilities,
     settings = {},
@@ -120,7 +131,18 @@ local function setup_deno_lsp()
       'yaml',
     },
     root_dir = function(fname)
-      return vim.fs.root_pattern('deno.json', 'deno.jsonc', '.git')(fname)
+      local patterns = { '.git', 'deno.json', 'deno.jsonc' }
+      for _, pattern in ipairs(patterns) do
+        local found = vim.fn.finddir(pattern, fname .. ';')
+        if found ~= '' then
+          return vim.fn.fnamemodify(found, ':h')
+        end
+        found = vim.fn.findfile(pattern, fname .. ';')
+        if found ~= '' then
+          return vim.fn.fnamemodify(found, ':h')
+        end
+      end
+      return nil
     end,
     capabilities = capabilities,
     settings = {
@@ -184,16 +206,25 @@ autocmd('FileType', {
   pattern = { 'javascript', 'typescript', 'json', 'jsonc', 'markdown', 'toml', 'yaml' },
   callback = function(args)
     local bufname = vim.api.nvim_buf_get_name(args.buf)
+    if bufname == '' then
+      return
+    end
     local bufdir = vim.fn.fnamemodify(bufname, ':p:h')
-    local root_dir = vim.fs.root_pattern('.git', 'deno.json', 'deno.jsonc')(bufname)
+    local root_dir = vim.fn.finddir('.git', bufdir .. ';')
+    if root_dir == '' then
+      root_dir = vim.fn.findfile('deno.json', bufdir .. ';')
+      if root_dir == '' then
+        root_dir = vim.fn.findfile('deno.jsonc', bufdir .. ';')
+      end
+    end
 
-    if root_dir and vim.fn.isdirectory(root_dir) == 1 then
-      local has_deno = vim.fn.filereadable(root_dir .. '/deno.json') == 1
-                     or vim.fn.filereadable(root_dir .. '/deno.jsonc') == 1
+    if root_dir ~= '' then
+      local has_deno = vim.fn.filereadable(bufdir .. '/deno.json') == 1
+                     or vim.fn.filereadable(bufdir .. '/deno.jsonc') == 1
 
       if has_deno then
         vim.lsp.enable('deno')
-        pcall(vim.lsp.start, { name = 'deno', cmd = { 'deno', 'lsp' }, root_dir = root_dir })
+        pcall(vim.lsp.start, { name = 'deno', cmd = { 'deno', 'lsp' }, root_dir = bufdir })
       end
     end
   end,

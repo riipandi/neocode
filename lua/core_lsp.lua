@@ -12,8 +12,17 @@ local autocmd = vim.api.nvim_create_autocmd
 -- Find project root directory by searching for pattern files
 local function find_root(patterns)
   local path = vim.fn.expand('%:p:h')
-  local root = vim.fs.find(patterns, { path = path, upward = true })[1]
-  return root and vim.fn.fnamemodify(root, ':h') or path
+  for _, pattern in ipairs(patterns) do
+    local found = vim.fn.finddir(pattern, path .. ';')
+    if found ~= '' then
+      return vim.fn.fnamemodify(found, ':h')
+    end
+    found = vim.fn.findfile(pattern, path .. ';')
+    if found ~= '' then
+      return vim.fn.fnamemodify(found, ':h')
+    end
+  end
+  return path
 end
 
 -- ============================================================================
@@ -239,10 +248,17 @@ end, { desc = 'Show LSP client info' })
 autocmd("Filetype", {
   pattern = { "html", "shtml", "htm" },
   callback = function()
+    local path = vim.fn.expand('%:p:h')
+    local root_dir = vim.fn.finddir('.git', path .. ';')
+    if root_dir == '' then
+      root_dir = path
+    else
+      root_dir = vim.fn.fnamemodify(root_dir, ':h')
+    end
     vim.lsp.start({
       name = "superhtml",
       cmd = { "superhtml", "lsp" },
-      root_dir = vim.fs.dirname(vim.fs.find({".git"}, { upward = true })[1])
+      root_dir = root_dir,
     })
   end,
   desc = 'Start HTML LSP',

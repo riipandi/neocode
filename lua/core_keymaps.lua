@@ -104,10 +104,24 @@ end, { desc = "Select scratch buffer" })
 -- Buffer Management
 -- ============================================================================
 
--- Close current buffer with snacks
+-- Close current buffer (confirm only if unsaved changes)
 snacks.keymap.set("n", "<C-x>", function()
-  Snacks.bufdelete()
-end, { desc = "Close buffer" })
+  if vim.bo.modified then
+    vim.ui.select({ 'Save & Close', 'Close without saving', 'Cancel' }, {
+      prompt = 'Buffer has unsaved changes:',
+    }, function(choice)
+      local bufnr = vim.api.nvim_get_current_buf()
+      if choice == 'Save & Close' then
+        vim.cmd('w')
+        vim.api.nvim_buf_delete(bufnr, { force = false })
+      elseif choice == 'Close without saving' then
+        vim.api.nvim_buf_delete(bufnr, { force = true })
+      end
+    end)
+  else
+    vim.api.nvim_buf_delete(0, { force = false })
+  end
+end, { desc = 'Close buffer' })
 
 -- Close all buffers with snacks
 snacks.keymap.set("n", "<C-S-w>", function()
@@ -132,12 +146,46 @@ snacks.keymap.set("n", "<leader>bo", function()
 end, { desc = "Close other buffers" })
 
 -- ============================================================================
--- Quit
+-- Quit (with smart confirmation dialog)
 -- ============================================================================
 
-snacks.keymap.set("n", "<C-q>", ":qa<CR>", { desc = "Quit all" })
-snacks.keymap.set("n", "<leader>q", ":qa<CR>", { desc = "Quit all" })
-snacks.keymap.set("n", "<leader>qq", ":qa<CR>", { desc = "Quit all" })
+local function confirm_quit()
+  -- Check if any buffer has unsaved changes
+  local has_unsaved = false
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.bo[buf].modified then
+      has_unsaved = true
+      break
+    end
+  end
+
+  if has_unsaved then
+    -- Show options: Save & Quit, Quit Without Saving, Cancel
+    vim.ui.select({ 'Save & Quit', 'Quit without saving', 'Cancel' }, {
+      prompt = 'You have unsaved buffers:',
+    }, function(choice)
+      if choice == 'Save & Quit' then
+        vim.cmd('wa')
+        vim.cmd('qa')
+      elseif choice == 'Quit without saving' then
+        vim.cmd('qa!')
+      end
+    end)
+  else
+    -- No unsaved changes: simple Yes/No
+    vim.ui.select({ 'Yes', 'No' }, {
+      prompt = 'Quit Neovim?',
+    }, function(choice)
+      if choice == 'Yes' then
+        vim.cmd('qa')
+      end
+    end)
+  end
+end
+
+snacks.keymap.set("n", "<C-q>", confirm_quit, { desc = 'Quit all' })
+snacks.keymap.set("n", "<leader>q", confirm_quit, { desc = 'Quit all' })
+snacks.keymap.set("n", "<leader>qq", confirm_quit, { desc = 'Quit all' })
 
 -- ============================================================================
 -- Tools

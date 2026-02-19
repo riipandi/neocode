@@ -38,7 +38,18 @@ local function setup_tailwind_lsp()
       'astro',
     },
     root_dir = function(fname)
-      return vim.fs.root_pattern('.git', 'tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs', 'tailwind.config.ts', 'postcss.config.js', 'postcss.config.cjs', 'postcss.config.mjs', 'postcss.config.ts')(fname)
+      local patterns = { '.git', 'tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs', 'tailwind.config.ts', 'postcss.config.js', 'postcss.config.cjs', 'postcss.config.mjs', 'postcss.config.ts' }
+      for _, pattern in ipairs(patterns) do
+        local found = vim.fn.finddir(pattern, fname .. ';')
+        if found ~= '' then
+          return vim.fn.fnamemodify(found, ':h')
+        end
+        found = vim.fn.findfile(pattern, fname .. ';')
+        if found ~= '' then
+          return vim.fn.fnamemodify(found, ':h')
+        end
+      end
+      return nil
     end,
     capabilities = capabilities,
     settings = {
