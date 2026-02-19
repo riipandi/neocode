@@ -286,6 +286,24 @@ snacks.config.styles.input = {
 snacks.scroll.enable()
 
 -- ============================================================================
+-- LazyGit Style (almost full screen, leaving space from statusline)
+-- ============================================================================
+
+snacks.config.styles.lazygit = {
+  width = 0.92,
+  height = 0.90,
+  row = -3,
+  border = "rounded",
+  bo = {
+    filetype = "lazygit",
+  },
+  wo = {},
+  keys = {
+    q = "hide",
+  },
+}
+
+-- ============================================================================
 -- Helper Functions
 -- ============================================================================
 
