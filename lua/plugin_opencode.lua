@@ -14,6 +14,7 @@ local snacks = require "snacks"
 -- OpenCode Configuration
 -- ============================================================================
 
+-- FIXME: invalid render when closed -> reopen
 vim.g.opencode_opts = {
     auto_reload = true,
     auto_focus = false,
@@ -22,6 +23,7 @@ vim.g.opencode_opts = {
         enabled = "snacks",
         snacks = {
             win = {
+                style = "split",
                 position = "right",
                 width = math.floor(vim.o.columns * 0.35),
             },
