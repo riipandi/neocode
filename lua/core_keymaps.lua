@@ -12,13 +12,26 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- ============================================================================
+-- Escape: Close floating windows or clear search
+-- ============================================================================
+
+vim.keymap.set({ "n", "t" }, "<Esc>", function()
+  -- If in terminal or floating window, close it (like pressing q)
+  if vim.bo.buftype == "terminal" or vim.api.nvim_win_get_config(0).relative ~= "" then
+    vim.cmd('close')
+    return
+  end
+  -- Otherwise, clear search highlights
+  vim.cmd('nohlsearch')
+end, { expr = true, silent = true })
+
+-- ============================================================================
 -- Search & Navigation
 -- ============================================================================
 
 snacks.keymap.set("n", "<leader>c", ":nohlsearch<CR>", { desc = "Clear search highlights" })
 snacks.keymap.set("n", "n", "nzzzv", { desc = "Next search result (centered)" })
 snacks.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
-snacks.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>', { desc = "Clear search highlights" })
 
 -- ============================================================================
 -- Action
@@ -193,8 +206,8 @@ snacks.keymap.set("n", "<leader>qq", confirm_quit, { desc = 'Quit all' })
 
 -- Terminal
 snacks.keymap.set("n", "<leader>tt", function()
-  Snacks.terminal.toggle(vim.o.shell, {
-    win = { style = "terminal" },
+  Snacks.terminal(vim.o.shell, {
+    lazy = false,
   })
 end, { desc = "Toggle terminal" })
 
