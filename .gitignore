@@ -6,6 +6,7 @@
 !*.env.example
 _site/
 _cache/
+.memlord/
 .output/
 .tmp/
 temp/
