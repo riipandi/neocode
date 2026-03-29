@@ -12,11 +12,17 @@ time to read [through a guide][learnxinyminutes].
 
 ## Prerequisites
 
-### Neovim 0.12+ nightly
+### Neovim 0.12+
 ```sh
 brew uninstall neovim
 
+# Stable
+curl -#L https://github.com/neovim/neovim/releases/download/v0.12.0/nvim-macos-arm64.tar.gz | tar xz
+
+# Nightly 
 curl -#L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz | tar xz
+
+# Install and clean
 xattr -c ./nvim-macos-arm64/ && sudo cp -R ./nvim-macos-arm64/* /usr/local/ && rm -fr nvim-macos-arm64
 ```
 

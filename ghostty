@@ -7,9 +7,8 @@
 auto-update = check
 auto-update-channel = stable
 
-# Initial command to run, change the initial directory
-command = zsh -c "cd $HOME/Developer && exec zsh"
-working-directory = inherit
+# Initial working directory (inherit|home)
+working-directory = "~/Developer"
 
 # Common configurations.
 adjust-cell-height = "12%"
