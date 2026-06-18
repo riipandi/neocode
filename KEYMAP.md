@@ -96,22 +96,6 @@ Requires installation:
 | Run gotestsum (file) | `<leader>gt` |
 | Run gotestsum (all)  | `<leader>gT` |
 
-## OpenCode
-
-| Action              | WhichKey | Shortcut     |
-|---------------------|----------|--------------|
-| Toggle panel        | `o`      | `<leader>oo` |
-| Focus panel         | `of`     | `<leader>of` |
-| Ask about this      | `oa`     | `<leader>oa` |
-| Select prompt       | `os`     | `<leader>os` |
-| Command             | `oc`     | `<leader>oc` |
-| New session         | `on`     | `<leader>on` |
-| Interrupt           | `oi`     | `<leader>oi` |
-| Exit                | `ox`     | `<leader>ox` |
-| Cycle agent         | `oA`     | `<leader>oA` |
-| Add range to prompt |          | `go`         |
-| Add line to prompt  |          | `goo`        |
-
 ## Window
 
 | Action           | WhichKey | Shortcut  |

@@ -13,9 +13,11 @@ working-directory = "~/Developer"
 # Common configurations.
 adjust-cell-height = "12%"
 adjust-cell-width = "3%"
-background-blur = true
+background-blur = false
 background-opacity = 0.99
 background-blur-radius = 40
+background-opacity-cells = false
+macos-option-as-alt = true
 bold-is-bright = false
 clipboard-paste-bracketed-safe = true
 clipboard-paste-protection = false
@@ -28,7 +30,7 @@ cursor-style-blink = false
 grapheme-width-method = unicode
 freetype-load-flags = hinting,force-autohint,monochrome,autohint
 font-feature = +calt, +liga, +dlig
-font-family = "Maple Mono NF"
+font-family = Maple Mono NF
 font-size = 14
 font-style = normal
 font-thicken = false
@@ -97,6 +99,8 @@ quick-terminal-space-behavior = move
 # Flexoki Dark | Mathias | Catppuccin Frappe
 # theme = Flexoki Dark
 
+theme = 0x96f
+
 # === Atomizer Dark Island Theme (from VS Code) ===
 background = #181a1d
 foreground = #d4d5d9
@@ -126,6 +130,7 @@ palette = 15=#ffffff
 keybind = cmd+q=ignore
 keybind = cmd+w=ignore
 keybind = cmd+shift+w=ignore
+
 # keybind = cmd+shift+p>x=close_surface
 # keybind = cmd+s>r=reload_config
 # keybind = cmd+s>x=close_surface

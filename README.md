@@ -75,17 +75,6 @@ rm -fr ~/.cache/nvim
 npx tiged https://github.com/riipandi/neocode ~/.config/nvim
 ```
 
-## OpenCode Theme
-
-```sh
-mkdir -p ~/.config/opencode/themes/
-touch ~/.config/opencode/themes/atomizer-island.json
-cat ~/.config/nvim/opencode-theme.json \
-  > ~/.config/opencode/themes/atomizer-island.json
-```
-
-Documentation: https://opencode.ai/docs/themes
-
 ## Supported Languages
 
 | Language         | LSP            | Treesitter   | Formatter     |
@@ -128,7 +117,6 @@ Documentation: https://opencode.ai/docs/themes
 | **gitsigns.nvim**      | Git signs in gutter                              |
 | **which-key.nvim**     | Keybinding helper                                |
 | **lualine.nvim**       | Statusline                                       |
-| **opencode.nvim**      | AI code assistant                                |
 
 ## Keybindings
 

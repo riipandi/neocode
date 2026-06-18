@@ -111,8 +111,8 @@ vim.opt.splitright = true                -- Vertical splits go right
 -- Load core configurations
 -- ============================================================================
 require 'core_plugins'                   -- Snacks.nvim (must load first)
-require 'command'                         -- Command palette & history
-require 'core_health'                      -- Health checks
+require 'command'                        -- Command palette & history
+require 'core_health'                    -- Health checks
 require 'core_keymaps'                   -- Key mappings
 require 'core_autocmds'                  -- Autocommands utilities
 require 'core_lsp'                       -- LSP settings
@@ -130,7 +130,6 @@ require 'plugin_noice'                    -- Cmdline UI replacement (noice)
 require 'plugin_vcs'                      -- Version control (git)
 require 'plugin_whichkey'                 -- Which-key (keybindings helper)
 require 'plugin_mason'                    -- Mason package manager
-require 'plugin_opencode'                 -- AI code assistant (OpenCode)
 require 'language_rust'                   -- Rust development toolkit
 require 'language_typescript'              -- TypeScript/React/Lit/Deno
 require 'language_tailwind'               -- Tailwind CSS

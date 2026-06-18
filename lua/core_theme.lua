@@ -5,13 +5,13 @@ M.options = {
 }
 
 local colors = {
-  -- Base colors (aligned with OpenCode & Ghostty)
+  -- Base colors
   bg = "#181a1d",
   fg = "#bcbec4",
   bg_alt = "#161619",
   fg_dim = "#7a7e85",
 
-  -- Syntax colors (OpenCode palette)
+  -- Syntax colors
   string = "#6aab73",
   string_alt = "#81CA91",
   string_bright = "#8ed16a",
@@ -26,7 +26,7 @@ local colors = {
   operator = "#14b8a6",
   cyan = "#2aacb8",
 
-  -- Semantic colors (OpenCode theme)
+  -- Semantic colors
   primary = "#336ff1",
   secondary = "#14b8a6",
   accent = "#336ff1",

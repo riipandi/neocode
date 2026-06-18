@@ -107,8 +107,6 @@ require('which-key').setup({
     { '<leader>ac', desc = 'Clear search', mode = "n" },
     { '<leader>ad', desc = 'Change directory', mode = "n" },
 
-    -- OpenCode
-    { '<leader>o', group = 'OpenCode', mode = "n" },
 
     -- Tools
     { '<leader>t', group = 'Tools', mode = "n" },

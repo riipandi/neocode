@@ -1,5 +1,6 @@
 vim.pack.add({
   { src = "https://github.com/saghen/blink.cmp" },
+  { src = "https://github.com/saghen/blink.lib" },
   { src = "https://github.com/rafamadriz/friendly-snippets" },
   { src = "https://github.com/folke/lazydev.nvim" },
   { src = "https://github.com/xzbdmw/colorful-menu.nvim" },
@@ -33,7 +34,9 @@ require('blink.cmp').setup({
   },
 
   completion = {
-    auto_insert = false,
+    list = {
+      selection = { auto_insert = false }
+    },
     documentation = { auto_show = false, auto_show_delay_ms = 500 },
   },
 

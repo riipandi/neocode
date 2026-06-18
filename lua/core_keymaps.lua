@@ -16,11 +16,7 @@ vim.g.maplocalleader = " "
 -- ============================================================================
 
 vim.keymap.set({ "n", "t" }, "<Esc>", function()
-  -- Skip if in OpenCode terminal (let OpenCode handle Escape)
-  if vim.bo.filetype == "opencode_terminal" then
-    return
-  end
-  -- Don't close if in other terminal buffer
+  -- Don't close if in terminal buffer
   if vim.bo.buftype == "terminal" then
     vim.cmd('close')
     return
