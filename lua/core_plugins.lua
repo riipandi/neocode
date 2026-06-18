@@ -325,26 +325,6 @@ local function is_in_explorer()
     return buf_name:match("snacks_explorer") or filetype == "snacks_picker_list"
 end
 
--- ============================================================================
--- File Explorer Keymaps
--- ============================================================================
-
-snacks.keymap.set("n", "<C-e>", function()
-    local in_explorer = is_in_explorer()
-    local explorer_open, explorer_win = is_explorer_open()
-
-    if in_explorer then
-        vim.cmd("wincmd p")
-    elseif explorer_open then
-        vim.api.nvim_set_current_win(explorer_win)
-    else
-        vim.notify("File explorer is not open. Use Ctrl+Shift+E to open it.", vim.log.levels.INFO)
-    end
-end, { desc = "Switch focus explorer <-> editor" })
-
-snacks.keymap.set("n", "<C-S-e>", function()
-    snacks.explorer()
-end, { desc = "Toggle file explorer" })
 
 -- ============================================================================
 -- Picker Keymaps

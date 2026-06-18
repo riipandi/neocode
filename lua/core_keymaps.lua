@@ -247,6 +247,11 @@ picker_config.win.input.keys = picker_config.win.input.keys or {}
 picker_config.win.list.keys["<C-q>"] = confirm_quit
 picker_config.win.input.keys["<C-q>"] = { confirm_quit, mode = { "i", "n" } }
 
+-- In picker list windows, `e` moves focus to the editor window
+picker_config.win.list.keys["e"] = function(_picker)
+  vim.cmd("wincmd p")
+end
+
 -- ============================================================================
 -- Tools
 -- ============================================================================
@@ -281,6 +286,36 @@ end, { desc = "Resource monitor" })
 snacks.keymap.set("n", "<leader>e", function()
   Snacks.explorer()
 end, { desc = "Toggle file explorer" })
+snacks.keymap.set("n", "E", function()
+  local buf_name = vim.api.nvim_buf_get_name(0)
+  local filetype = vim.bo.filetype
+  local in_explorer = buf_name:match("snacks_explorer") or filetype == "snacks_picker_list"
+
+  if in_explorer then
+    -- Kursor di explorer → hide/tutup explorer
+    local pickers = Snacks.picker.get({ source = "explorer" })
+    if pickers and #pickers > 0 then
+      pickers[1]:close()
+    end
+    return
+  end
+
+  -- Cari explorer window yang sudah terbuka
+  local explorer_win = nil
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    local bname = vim.api.nvim_buf_get_name(buf)
+    if bname:match("snacks_explorer") or vim.bo[buf].filetype == "snacks_picker_list" then
+      explorer_win = win
+      break
+    end
+  end
+  if explorer_win then
+    vim.api.nvim_set_current_win(explorer_win)
+  else
+    Snacks.explorer()
+  end
+end, { desc = "Focus or toggle file explorer" })
 
 -- File Picker
 snacks.keymap.set("n", "<leader><space>", function()
