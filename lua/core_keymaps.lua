@@ -180,6 +180,22 @@ end, { desc = "Close other buffers" })
 -- ============================================================================
 
 local function confirm_quit()
+  -- If cursor is in the file explorer, switch to main editor first
+  local buf_name = vim.api.nvim_buf_get_name(0)
+  local filetype = vim.bo.filetype
+  local was_in_explorer = buf_name:match("snacks_explorer") or filetype == "snacks_picker_list"
+  local prev_win = was_in_explorer and vim.api.nvim_get_current_win() or nil
+  if was_in_explorer then
+    vim.cmd("wincmd p")
+  end
+
+  -- Helper to restore cursor position if quitting is cancelled
+  local function restore()
+    if prev_win and vim.api.nvim_win_is_valid(prev_win) then
+      vim.api.nvim_set_current_win(prev_win)
+    end
+  end
+
   -- Check if any buffer has unsaved changes
   local has_unsaved = false
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -199,6 +215,8 @@ local function confirm_quit()
         vim.cmd('qa')
       elseif choice == 'Quit without saving' then
         vim.cmd('qa!')
+      else
+        restore()
       end
     end)
   else
@@ -208,6 +226,8 @@ local function confirm_quit()
     }, function(choice)
       if choice == 'Yes' then
         vim.cmd('qa')
+      else
+        restore()
       end
     end)
   end
@@ -216,6 +236,16 @@ end
 snacks.keymap.set("n", "<C-q>", confirm_quit, { desc = 'Quit all' })
 snacks.keymap.set("n", "<leader>q", confirm_quit, { desc = 'Quit all' })
 snacks.keymap.set("n", "<leader>qq", confirm_quit, { desc = 'Quit all' })
+
+-- Override <C-q> in picker/explorer buffers to call confirm_quit instead of qflist
+local picker_config = require("snacks").config.picker
+picker_config.win = picker_config.win or {}
+picker_config.win.list = picker_config.win.list or {}
+picker_config.win.input = picker_config.win.input or {}
+picker_config.win.list.keys = picker_config.win.list.keys or {}
+picker_config.win.input.keys = picker_config.win.input.keys or {}
+picker_config.win.list.keys["<C-q>"] = confirm_quit
+picker_config.win.input.keys["<C-q>"] = { confirm_quit, mode = { "i", "n" } }
 
 -- ============================================================================
 -- Tools
