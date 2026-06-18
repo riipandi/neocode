@@ -252,6 +252,48 @@ picker_config.win.list.keys["e"] = function(_picker)
   vim.cmd("wincmd p")
 end
 
+-- Right arrow expands folder, left arrow collapses folder in explorer
+-- Helper: run an action on the current explorer picker
+local function with_explorer(fn)
+  local pickers = require("snacks").picker.get({ source = "explorer" })
+  local picker = pickers and pickers[1]
+  if picker then fn(picker) end
+end
+
+-- `l` or <Right> → expand folder
+local function expand_dir(picker)
+  local item = picker:current()
+  if item and item.dir then
+    local Tree = require("snacks.explorer.tree")
+    local Actions = require("snacks.explorer.actions")
+    Tree:open(item.file)
+    Actions.update(picker, { refresh = true })
+  end
+end
+picker_config.win.list.keys["l"] = function() with_explorer(expand_dir) end
+picker_config.win.list.keys["<Right>"] = function() with_explorer(expand_dir) end
+
+-- `h` or <Left> → collapse folder or navigate up
+local function collapse_or_up(picker)
+  local item = picker:current()
+  if item and item.dir and item.open then
+    -- folder expanded → collapse
+    local Tree = require("snacks.explorer.tree")
+    local Actions = require("snacks.explorer.actions")
+    Tree:close(item.file)
+    Actions.update(picker, { refresh = true })
+  else
+    -- folder collapsed or file → navigate up to parent
+    local parent_dir = vim.fs.dirname(picker:dir())
+    if parent_dir ~= picker:cwd() then
+      picker:set_cwd(parent_dir)
+      picker:find()
+    end
+  end
+end
+picker_config.win.list.keys["h"] = function() with_explorer(collapse_or_up) end
+picker_config.win.list.keys["<Left>"] = function() with_explorer(collapse_or_up) end
+
 -- ============================================================================
 -- Tools
 -- ============================================================================
@@ -300,18 +342,10 @@ snacks.keymap.set("n", "E", function()
     return
   end
 
-  -- Cari explorer window yang sudah terbuka
-  local explorer_win = nil
-  for _, win in ipairs(vim.api.nvim_list_wins()) do
-    local buf = vim.api.nvim_win_get_buf(win)
-    local bname = vim.api.nvim_buf_get_name(buf)
-    if bname:match("snacks_explorer") or vim.bo[buf].filetype == "snacks_picker_list" then
-      explorer_win = win
-      break
-    end
-  end
-  if explorer_win then
-    vim.api.nvim_set_current_win(explorer_win)
+  -- Focus explorer if open, otherwise open it
+  local pickers = Snacks.picker.get({ source = "explorer" })
+  if pickers and #pickers > 0 then
+    pickers[1]:focus()
   else
     Snacks.explorer()
   end
