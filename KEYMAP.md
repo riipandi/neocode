@@ -63,7 +63,8 @@
 | `m` | Move | Move file(s) with confirmation |
 | `d` | Delete | Trash file(s) with confirmation |
 | `D` | Duplicate | Duplicate file with new name |
-| `y` | Yank path | Copy full file path(s) to clipboard |
+| `y` | Yank content | Copy file text content to clipboard |
+| `Y` | Yank path | Copy full file path(s) to clipboard |
 | `r` | Rename | Rename file |
 | `a` | Add file | Create new file |
 | `.` | Focus | Focus current file/dir in view |

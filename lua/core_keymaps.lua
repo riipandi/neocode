@@ -363,31 +363,60 @@ explorer_keys["k"] = "list_up"
 explorer_keys["<S-Down>"] = s_down
 explorer_keys["<S-Up>"] = s_up
 
+-- y: copy file content (cat), Y: copy full file path
+explorer_keys["y"] = function(p)
+  local items = p:selected({ fallback = true })
+  if #items == 0 then return end
+  local contents = {}
+  for _, item in ipairs(items) do
+    local file = Snacks.picker.util.path(item)
+    if file and vim.fn.filereadable(file) == 1 then
+      local f = io.open(file, "r")
+      if f then
+        contents[#contents + 1] = f:read("*a")
+        f:close()
+      end
+    end
+  end
+  if #contents > 0 then
+    vim.fn.setreg("+", table.concat(contents, "\n"), "c")
+    snacks.notify.info("Yanked content from " .. #items .. " file(s)")
+  end
+end
+explorer_keys["Y"] = "explorer_yank"
+
 -- Duplicate file: prompt for new name then copy
 explorer_keys["D"] = function(p)
   local item = p:current()
   if not item or item.dir then
-    Snacks.notify.warn("Cannot duplicate a directory")
+    snacks.notify.warn("Cannot duplicate a directory")
     return
   end
   local file = Snacks.picker.util.path(item)
   local dir = vim.fs.dirname(file)
   local name = vim.fn.fnamemodify(file, ":t")
-  Snacks.input({
+  local input_ok, input_err = pcall(snacks.input, {
     prompt = "Duplicate as:",
     default = name,
   }, function(value)
     if not value or value == "" then return end
     local to = dir .. "/" .. value
     if vim.uv.fs_stat(to) then
-      Snacks.notify.warn("File already exists: " .. to)
+      snacks.notify.warn("File already exists: " .. to)
       return
     end
-    Snacks.picker.util.copy_path(file, to)
+    local copy_ok, copy_err = pcall(Snacks.picker.util.copy_path, file, to)
+    if not copy_ok then
+      snacks.notify.error("Failed to copy: " .. tostring(copy_err))
+      return
+    end
     local Tree = require("snacks.explorer.tree")
     Tree:refresh(dir)
     require("snacks.explorer.actions").update(p, { target = to })
   end)
+  if not input_ok then
+    snacks.notify.error("Duplicate failed: " .. tostring(input_err))
+  end
 end
 -- Navigation keys for all picker list windows (fallback when source has no mapping)
 picker_config.win.list.keys["j"] = "list_down"
