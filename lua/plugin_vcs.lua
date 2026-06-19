@@ -16,7 +16,7 @@ local snacks = require("snacks")
 -- ============================================================================
 
 require('gitsigns').setup({
-  signcolumn = false,
+  signcolumn = true,
   signs = {
     add = { text = '+' },
     change = { text = '~' },
