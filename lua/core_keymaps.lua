@@ -348,11 +348,13 @@ end
 local function scroll_view(p, delta)
   if not p or not p.list then return end
   local list = p.list
-  local step = math.max(3, math.floor(list:height() / 4))
+  -- Use a fixed scroll step that's noticeable but not too aggressive
+  local step = 10
   local maxtop = math.max(1, list:count() - list:height() + 1)
   list.top = math.max(1, math.min(maxtop, list.top + delta * step))
   list.dirty = true
   list:render()
+  Snacks.notify.info("top=" .. list.top .. " / " .. maxtop)
 end
 local function s_down(p) scroll_view(p, 1) end
 local function s_up(p) scroll_view(p, -1) end
