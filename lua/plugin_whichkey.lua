@@ -152,7 +152,6 @@ require('which-key').setup({
 
     -- Explorer
     { '<leader>e', desc = 'File explorer', mode = "n" },
-    { '<leader><space>', desc = 'Find files (FFF)', mode = "n" },
 
     -- Visual mode
     { "<leader>", group = "Leader", mode = "v" },

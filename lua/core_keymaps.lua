@@ -395,28 +395,18 @@ explorer_keys["D"] = function(p)
   local file = Snacks.picker.util.path(item)
   local dir = vim.fs.dirname(file)
   local name = vim.fn.fnamemodify(file, ":t")
-  local input_ok, input_err = pcall(snacks.input, {
-    prompt = "Duplicate as:",
-    default = name,
-  }, function(value)
+  vim.ui.input({ prompt = "Duplicate as: ", default = name }, function(value)
     if not value or value == "" then return end
     local to = dir .. "/" .. value
     if vim.uv.fs_stat(to) then
       snacks.notify.warn("File already exists: " .. to)
       return
     end
-    local copy_ok, copy_err = pcall(Snacks.picker.util.copy_path, file, to)
-    if not copy_ok then
-      snacks.notify.error("Failed to copy: " .. tostring(copy_err))
-      return
-    end
+    Snacks.picker.util.copy_path(file, to)
     local Tree = require("snacks.explorer.tree")
     Tree:refresh(dir)
     require("snacks.explorer.actions").update(p, { target = to })
   end)
-  if not input_ok then
-    snacks.notify.error("Duplicate failed: " .. tostring(input_err))
-  end
 end
 -- Navigation keys for all picker list windows (fallback when source has no mapping)
 picker_config.win.list.keys["j"] = "list_down"
