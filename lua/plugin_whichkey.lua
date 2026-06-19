@@ -151,8 +151,8 @@ require('which-key').setup({
     { '<leader>;', desc = 'Command palette', mode = "n" },
 
     -- Explorer
-    { '<leader>e', desc = 'File explorer', mode = "n" },
-
+    { '<leader>e', desc = 'File explorer (toggle)', mode = "n" },
+    { '<A-e>', desc = 'File explorer (close/focus)', mode = "n" },
     -- Visual mode
     { "<leader>", group = "Leader", mode = "v" },
     { "g", group = "Goto", mode = "v" },

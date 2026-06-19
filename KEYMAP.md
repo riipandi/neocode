@@ -43,13 +43,13 @@
 |-------------------|----------|-------------------|
 | Find files        |          | `<leader><space>` |
 | Find files        |          | `<C-p>`           |
-| File explorer     | `e`      | `<leader>e`       |
+| File explorer (toggle) | `e`      | `<leader>e`       |
 | Live grep         | `fw`     | `<leader>fw`      |
 | Fuzzy grep        | `fz`     | `<leader>fz`      |
 | Grep cursor word  | `fc`     | `<leader>fc`      |
 | Format file       | `fm`     | `<leader>fm`      |
 
-### File Explorer (`<leader>e`)
+### File Explorer (`<leader>e` / `<A-e>`)
 
 | Key | Action | Description |
 |-----|--------|-------------|
@@ -72,6 +72,7 @@
 | `I` | Toggle ignored | Show/hide gitignored files |
 | `H` | Toggle hidden | Show/hide dotfiles |
 
+Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open or focuses if cursor is elsewhere.
 ## Git
 
 | Action               | WhichKey | Shortcut     |

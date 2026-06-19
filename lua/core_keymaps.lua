@@ -449,7 +449,7 @@ end, { desc = "Resource monitor" })
 snacks.keymap.set("n", "<leader>e", function()
   Snacks.explorer()
 end, { desc = "Toggle file explorer" })
-snacks.keymap.set("n", "E", function()
+snacks.keymap.set("n", "<A-e>", function()
   local buf_name = vim.api.nvim_buf_get_name(0)
   local filetype = vim.bo.filetype
   local in_explorer = buf_name:match("snacks_explorer") or filetype == "snacks_picker_list"
@@ -470,7 +470,7 @@ snacks.keymap.set("n", "E", function()
   else
     Snacks.explorer()
   end
-end, { desc = "Focus or toggle file explorer" })
+end, { desc = "File explorer: close/focus (<A-e>)" })
 
 -- File Picker (now handled by fff.nvim, see plugin_fff.lua)
 
