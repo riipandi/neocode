@@ -116,11 +116,7 @@ end
 --- @param item MasonPkgItem
 local function format_pkg(item)
   local icon = item.installed and "✓" or " "
-  local cols = {
-    { icon .. " " .. item.name, "Normal" },
-    { "  [" .. item.category .. "]", "Comment" },
-  }
-  return cols
+  return ("%s %s  [%s]"):format(icon, item.name, item.category)
 end
 
 --- Install/uninstall package
@@ -151,25 +147,24 @@ local function open_picker(filter)
     format = format_pkg,
     preview = preview_pkg,
     actions = {
-      ["install"] = function(p)
-        local selected_items = p:selected()
-        if #selected_items == 0 then
-          snacks.notify.info("Select a package first. Press <Tab> to multi-select.")
-          return
-        end
-        toggle_packages(selected_items, "install")
-        snacks.notify.info(string.format("Installing %d package(s). Check :MasonLog for progress.", #selected_items))
-        p:close()
-      end,
-      ["uninstall"] = function(p)
-        local selected_items = p:selected()
-        if #selected_items == 0 then
-          snacks.notify.info("Select a package first. Press <Tab> to multi-select.")
-          return
-        end
-        toggle_packages(selected_items, "uninstall")
-        snacks.notify.info(string.format("Uninstalling %d package(s).", #selected_items))
-        p:close()
+      confirm = function(p)
+        local item = p:selected()[1]
+        if not item then return end
+        local choices = item.installed and { "Uninstall", "Cancel" } or { "Install", "Cancel" }
+        snacks.picker.select(choices, {
+          prompt = "Package: " .. item.name,
+          layout = { preset = "select" },
+        }, function(choice)
+          if choice == "Install" then
+            toggle_packages({ item }, "install")
+            snacks.notify.info("Installing " .. item.name .. ". Check :MasonLog for progress.")
+            p:close()
+          elseif choice == "Uninstall" then
+            toggle_packages({ item }, "uninstall")
+            snacks.notify.info("Uninstalled " .. item.name .. ".")
+            p:close()
+          end
+        end)
       end,
     },
     win = {
