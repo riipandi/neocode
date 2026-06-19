@@ -326,21 +326,27 @@ local function toggle_dir(picker)
   end
 end
 
--- `h`/`<Left>` → collapse expanded folder, or navigate up (files: no-op)
+-- `h`/`<Left>` → collapse parent for file, or collapse/navigate up for folder
 local function collapse_or_up(picker)
   local item = picker:current()
   if not item then return end
-  -- file → do nothing (stay on file)
-  if not item.dir then return end
-  -- expanded folder → collapse
+  local Tree = require("snacks.explorer.tree")
+  local Actions = require("snacks.explorer.actions")
+  if not item.dir then
+    -- file → collapse parent folder, then move into it
+    local parent = vim.fs.dirname(item.file)
+    Tree:close(parent)
+    picker:set_cwd(parent)
+    Actions.update(picker, { refresh = true, target = parent })
+    return
+  end
   if item.open then
-    local Tree = require("snacks.explorer.tree")
-    local Actions = require("snacks.explorer.actions")
+    -- folder (expanded) → collapse
     Tree:close(item.file)
     Actions.update(picker, { refresh = true })
     return
   end
-  -- collapsed folder → navigate up to parent (but not above original CWD)
+  -- folder (collapsed) → navigate up to parent (but not above original CWD)
   local root_cwd = picker.opts.cwd or vim.fn.getcwd()
   local parent_dir = vim.fs.dirname(picker:dir())
   local function norm(path) return vim.fn.fnamemodify(path, ":p"):gsub("/$", "") end
