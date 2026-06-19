@@ -74,7 +74,7 @@
 | `I` | Toggle ignored | Show/hide gitignored files |
 | `H` | Toggle hidden | Show/hide dotfiles |
 
-Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open or focuses if cursor is elsewhere.
+Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open or focuses if cursor is elsewhere. `<Esc>` and `q` refocus the explorer (don't close it).
 ## Git
 
 | Action               | WhichKey | Shortcut     |

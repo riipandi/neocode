@@ -352,6 +352,9 @@ explorer_keys["h"] = function() with_explorer(collapse_or_up) end
 explorer_keys["l"] = function() with_explorer(toggle_dir) end
 explorer_keys["<Left>"] = function() with_explorer(collapse_or_up) end
 explorer_keys["<Right>"] = function() with_explorer(toggle_dir) end
+-- Prevent <Esc>/<q> from closing explorer (just refocus picker)
+explorer_keys["<Esc>"] = function(p) p:focus() end
+explorer_keys["q"] = function(p) p:focus() end
 explorer_keys["j"] = "list_down"
 explorer_keys["k"] = "list_up"
 -- Buffer-style jump: small step (2 items) for sidebars
