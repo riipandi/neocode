@@ -109,10 +109,6 @@ require('conform').setup({
     vue = { 'oxfmt' },
     zig = { 'zigfmt' },
   },
-  format_after_save = {
-    lsp_fallback = true,
-    quiet = false,
-  },
   formatters = {
     mix = {
       command = 'mix',

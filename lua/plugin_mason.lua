@@ -88,11 +88,8 @@ require('mason-lspconfig').setup({
     },
     automatic_installation = false,
     ensure_installed = {},
-    handlers = {
-      function(server_name)
-        local server = servers[server_name] or {}
-        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-        require('lspconfig')[server_name].setup(server)
-      end,
-    },
+  -- No custom handlers needed; servers are configured in their respective
+  -- language_*.lua files or via vim.lsp.enable(). The default handler
+  -- (require('lspconfig')[name].setup({})) is sufficient.
+  handlers = {},
 })

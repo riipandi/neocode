@@ -11,12 +11,11 @@ local augroup = vim.api.nvim_create_augroup
 -- ============================================================================
 
 -- Detect Justfile
-autocmd({ "BufRead", "BufNewFile" }, {
-  pattern = { "Justfile", "justfile" },
-  callback = function()
-    vim.filetype.match({ filename = { [".*justfile"] = "just" } })
-  end,
-  desc = "Detect Justfile filetype",
+vim.filetype.add({
+  filename = {
+    ['Justfile'] = 'just',
+    ['justfile'] = 'just',
+  },
 })
 
 -- ============================================================================
@@ -34,14 +33,14 @@ end, { desc = "Copy full file path" })
 -- Autocommands
 -- ============================================================================
 
-local augroup = augroup("UserConfig", { clear = true })
+local user_augroup = augroup("UserConfig", { clear = true })
 
 -- (search toast moved to <CR> mapping in core_keymaps.lua)
 
 
 -- Highlight yanked text briefly
 autocmd("TextYankPost", {
-  group = augroup,
+  group = user_augroup,
   callback = function()
     vim.hl.on_yank()
   end,
@@ -50,7 +49,7 @@ autocmd("TextYankPost", {
 
 -- Return to last edit position when opening files
 autocmd("BufReadPost", {
-  group = augroup,
+  group = user_augroup,
   callback = function()
     local mark = vim.api.nvim_buf_get_mark(0, '"')
     local lcount = vim.api.nvim_buf_line_count(0)
@@ -63,7 +62,7 @@ autocmd("BufReadPost", {
 
 -- Filetype-specific settings
 autocmd("FileType", {
-  group = augroup,
+  group = user_augroup,
   pattern = { "lua", "python" },
   callback = function()
     vim.opt_local.tabstop = 4
@@ -73,7 +72,7 @@ autocmd("FileType", {
 })
 
 autocmd("FileType", {
-  group = augroup,
+  group = user_augroup,
   pattern = { "javascript", "typescript", "json", "html", "css" },
   callback = function()
     vim.opt_local.tabstop = 2
@@ -83,7 +82,7 @@ autocmd("FileType", {
 })
 
 autocmd("FileType", {
-  pattern = { "toml" },
+  group = user_augroup,
   callback = function()
     vim.b.autoformat = false
   end,
@@ -92,7 +91,7 @@ autocmd("FileType", {
 
 -- Terminal settings
 autocmd("TermClose", {
-  group = augroup,
+  group = user_augroup,
   callback = function()
     if vim.v.event.status == 0 then
       vim.api.nvim_buf_delete(0, {})
@@ -102,7 +101,7 @@ autocmd("TermClose", {
 })
 
 autocmd("TermOpen", {
-  group = augroup,
+  group = user_augroup,
   callback = function()
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
@@ -113,7 +112,7 @@ autocmd("TermOpen", {
 
 -- Window management
 autocmd("VimResized", {
-  group = augroup,
+  group = user_augroup,
   callback = function()
     vim.cmd("tabdo wincmd =")
   end,
@@ -122,7 +121,7 @@ autocmd("VimResized", {
 
 -- File operations
 autocmd("BufWritePre", {
-  group = augroup,
+  group = user_augroup,
   callback = function()
     local dir = vim.fn.expand('<afile>:p:h')
     if vim.fn.isdirectory(dir) == 0 then
