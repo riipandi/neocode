@@ -156,7 +156,23 @@ vim.api.nvim_create_user_command('CleanNvim', function()
 end, { desc = 'Clean nvim cache and reset lock file' })
 
 -- ============================================================================
+-- Plugin install/update progress notifications
+-- ============================================================================
+-- vim.pack default progress uses nvim_echo() which may be hidden by noice.nvim;
+-- this adds visual notifications through the notifier system.
+vim.api.nvim_create_autocmd('PackChangedPre', {
+  callback = function(ev)
+    local kind = ev.data.kind
+    local name = ev.data.spec.name
+    local msg = ('vim.pack: %s %s'):format(kind, name)
+    vim.notify(msg, vim.log.levels.INFO, { title = 'Plugins' })
+  end,
+  desc = 'Notify plugin install/update progress',
+})
+
+-- ============================================================================
 -- Editor Settings
+-- ============================================================================
 -- ============================================================================
 
 -- Command-line completion
