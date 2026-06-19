@@ -359,9 +359,22 @@ explorer_keys["<Left>"] = function() with_explorer(collapse_or_up) end
 explorer_keys["<Right>"] = function() with_explorer(expand_dir) end
 explorer_keys["j"] = "list_down"
 explorer_keys["k"] = "list_up"
--- Shift+Arrow scroll
-explorer_keys["<S-Down>"] = s_down
-explorer_keys["<S-Up>"] = s_up
+
+-- Shift+Arrow: jump cursor by 10 items (buffer-local, set when picker opens)
+local s_group = vim.api.nvim_create_augroup("explorer_scroll_keys", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = s_group,
+  pattern = "snacks_picker_list",
+  callback = function(ev)
+    local picker
+    for _, p in ipairs(require("snacks").picker.get({ bufnr = ev.buf })) do
+      if p.opts.source == "explorer" then picker = p; break end
+    end
+    if not picker then return end
+    vim.keymap.set("n", "<S-Down>", function() picker.list:move(10) end, { buffer = ev.buf, silent = true })
+    vim.keymap.set("n", "<S-Up>", function() picker.list:move(-10) end, { buffer = ev.buf, silent = true })
+  end,
+})
 
 -- y: copy file content, Y: copy full file path
 explorer_keys["y"] = function(_, _)
