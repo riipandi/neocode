@@ -2,7 +2,7 @@
 -- File Explorer Keymaps
 -- ============================================================================
 -- Custom keymaps for the snacks explorer picker:
---   h/<Left>  : focus parent (visual nav, no CWD change)
+--   h/<Left>  : file→parent / dir→collapse-or-jump (visual nav, no CWD change)
 --   l/<Right> : toggle expand/collapse
 --   y         : yank file content
 --   Y         : yank full file path
@@ -33,17 +33,28 @@ local function toggle_dir(picker)
 end
 
 -- Focus parent in tree (visual navigation, no CWD change)
--- File: collapse parent folder, move cursor to parent
--- Folder: collapse if expanded, move cursor to parent (never change CWD)
+-- File:        collapse parent folder, move cursor to parent
+-- Expanded dir: collapse, KEEP CURSOR on that folder
+-- Collapsed dir: move cursor to parent
 local function collapse_or_up(picker)
   local item = picker:current()
   if not item or not item.file then return end
   local Tree = require("snacks.explorer.tree")
   local Actions = require("snacks.explorer.actions")
   local parent = vim.fs.dirname(item.file)
-  if item.dir and item.open then Tree:close(item.file) end  -- collapse expanded folder
-  -- focus parent in tree (auto-expands if needed, moves cursor)
-  Actions.update(picker, { target = parent, refresh = true })
+  if item.dir then
+    if item.open then
+      -- Expanded folder: collapse it and stay on the same row
+      Tree:close(item.file)
+      Actions.update(picker, { refresh = true })
+    else
+      -- Collapsed folder: jump cursor to parent
+      Actions.update(picker, { target = parent, refresh = true })
+    end
+  else
+    -- File: collapse parent folder, move cursor to parent
+    Actions.update(picker, { target = parent, refresh = true })
+  end
 end
 
 -- y: yank file content (like :cat)
