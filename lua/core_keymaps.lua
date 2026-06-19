@@ -359,8 +359,8 @@ explorer_keys["<Left>"] = function() with_explorer(collapse_or_up) end
 explorer_keys["<Right>"] = function() with_explorer(expand_dir) end
 explorer_keys["j"] = "list_down"
 explorer_keys["k"] = "list_up"
--- Buffer-style jump: <C-d>/<C-u> like half-page jump in normal mode
--- Small step (4 items) so it doesn't jump too far in sidebars
+-- Buffer-style jump: small step (2 items) for sidebars
+-- <C-d>/<C-u> like half-page jump, {/} like paragraph jump
 local s_group = vim.api.nvim_create_augroup("explorer_scroll_keys", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
   group = s_group,
@@ -371,8 +371,11 @@ vim.api.nvim_create_autocmd("FileType", {
       if p.opts.source == "explorer" then picker = p; break end
     end
     if not picker then return end
-    vim.keymap.set("n", "<C-d>", function() picker.list:move(4); picker:update() end, { buffer = ev.buf, silent = true })
-    vim.keymap.set("n", "<C-u>", function() picker.list:move(-4); picker:update() end, { buffer = ev.buf, silent = true })
+    local function jump(delta) picker.list:move(delta); picker:update() end
+    vim.keymap.set("n", "<C-d>", function() jump(2) end, { buffer = ev.buf, silent = true })
+    vim.keymap.set("n", "<C-u>", function() jump(-2) end, { buffer = ev.buf, silent = true })
+    vim.keymap.set("n", "}", function() jump(2) end, { buffer = ev.buf, silent = true })
+    vim.keymap.set("n", "{", function() jump(-2) end, { buffer = ev.buf, silent = true })
   end,
 })
 
