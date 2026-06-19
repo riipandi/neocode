@@ -315,14 +315,13 @@ local function with_explorer(fn)
   local picker = pickers and pickers[1]
   if picker then fn(picker) end
 end
-
--- `l`/`<Right>` → expand folder
-local function expand_dir(picker)
+-- `l`/`<Right>` → toggle folder (expand if collapsed, collapse if expanded)
+local function toggle_dir(picker)
   local item = picker:current()
   if item and item.dir then
     local Tree = require("snacks.explorer.tree")
     local Actions = require("snacks.explorer.actions")
-    Tree:open(item.file)
+    Tree:toggle(item.file)
     Actions.update(picker, { refresh = true })
   end
 end
@@ -362,9 +361,9 @@ local function s_up(p) jump_by(p, -1) end
 local explorer_keys = require("snacks.picker.config.sources").explorer.win.list.keys
 -- hjkl navigation
 explorer_keys["h"] = function() with_explorer(collapse_or_up) end
-explorer_keys["l"] = function() with_explorer(expand_dir) end
+explorer_keys["l"] = function() with_explorer(toggle_dir) end
 explorer_keys["<Left>"] = function() with_explorer(collapse_or_up) end
-explorer_keys["<Right>"] = function() with_explorer(expand_dir) end
+explorer_keys["<Right>"] = function() with_explorer(toggle_dir) end
 explorer_keys["j"] = "list_down"
 explorer_keys["k"] = "list_up"
 -- Buffer-style jump: small step (2 items) for sidebars

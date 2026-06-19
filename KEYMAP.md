@@ -54,7 +54,7 @@
 | Key | Action | Description |
 |-----|--------|-------------|
 | `h` / `<Left>` | Collapse / up | Close folder or go to parent |
-| `l` / `<Right>` | Expand | Open folder or confirm file |
+| `l` / `<Right>` | Toggle folder | Expand if collapsed, collapse if expanded |
 | `j` / `<Down>` | Move down | Navigate list down |
 | `k` / `<Up>` | Move up | Navigate list up |
 | `<C-d>` / `]` | Jump down 2 | Small jump (like section jump) |
