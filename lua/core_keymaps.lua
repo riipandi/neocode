@@ -363,10 +363,10 @@ explorer_keys["k"] = "list_up"
 explorer_keys["<S-Down>"] = s_down
 explorer_keys["<S-Up>"] = s_up
 
--- y: copy file content (cat), Y: copy full file path
-explorer_keys["y"] = function(p)
-  local items = p:selected({ fallback = true })
-  if #items == 0 then return end
+-- y: copy file content, Y: copy full file path
+explorer_keys["y"] = function(picker)
+  local items = picker:selected({ fallback = true })
+  if not items or #items == 0 then return end
   local contents = {}
   for _, item in ipairs(items) do
     local file = Snacks.picker.util.path(item)
@@ -380,32 +380,32 @@ explorer_keys["y"] = function(p)
   end
   if #contents > 0 then
     vim.fn.setreg("+", table.concat(contents, "\n"), "c")
-    snacks.notify.info("Yanked content from " .. #items .. " file(s)")
+    Snacks.notify.info("Yanked content from " .. #items .. " file(s)")
   end
 end
 explorer_keys["Y"] = "explorer_yank"
 
--- Duplicate file: prompt for new name then copy
-explorer_keys["D"] = function(p)
-  local item = p:current()
+-- D: duplicate file (D)
+explorer_keys["D"] = function(picker)
+  local item = picker:current()
   if not item or item.dir then
-    snacks.notify.warn("Cannot duplicate a directory")
+    Snacks.notify.warn("Cannot duplicate a directory")
     return
   end
-  local file = Snacks.picker.util.path(item)
-  local dir = vim.fs.dirname(file)
-  local name = vim.fn.fnamemodify(file, ":t")
-  vim.ui.input({ prompt = "Duplicate as: ", default = name }, function(value)
+  local src = Snacks.picker.util.path(item)
+  if not src then return end
+  local dir = vim.fs.dirname(src)
+  local default_name = vim.fn.fnamemodify(src, ":t")
+  Snacks.input({ prompt = "Duplicate as: ", default = default_name }, function(value)
     if not value or value == "" then return end
-    local to = dir .. "/" .. value
-    if vim.uv.fs_stat(to) then
-      snacks.notify.warn("File already exists: " .. to)
+    local dst = dir .. "/" .. value
+    if vim.uv.fs_stat(dst) then
+      Snacks.notify.warn("File already exists: " .. dst)
       return
     end
-    Snacks.picker.util.copy_path(file, to)
-    local Tree = require("snacks.explorer.tree")
-    Tree:refresh(dir)
-    require("snacks.explorer.actions").update(p, { target = to })
+    Snacks.picker.util.copy_path(src, dst)
+    require("snacks.explorer.tree").refresh(dir)
+    require("snacks.explorer.actions").update(picker, { target = dst })
   end)
 end
 -- Navigation keys for all picker list windows (fallback when source has no mapping)
