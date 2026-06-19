@@ -349,6 +349,10 @@ end
 picker_config.win.list.keys["h"] = function() with_explorer(collapse_or_up) end
 picker_config.win.list.keys["<Left>"] = function() with_explorer(collapse_or_up) end
 
+-- `j`/`k` for list navigation (like arrow keys, which are already mapped)
+picker_config.win.list.keys["j"] = "list_down"
+picker_config.win.list.keys["k"] = "list_up"
+
 -- ============================================================================
 -- Tools
 -- ============================================================================
