@@ -131,6 +131,7 @@ require 'plugin_noice'                    -- Cmdline UI replacement (noice)
 require 'plugin_vcs'                      -- Version control (git)
 require 'plugin_whichkey'                 -- Which-key (keybindings helper)
 require 'plugin_mason'                    -- Mason package manager
+require 'command_mason_pkg'             -- Mason package manager GUI (depends on mason)
 require 'language_rust'                   -- Rust development toolkit
 require 'language_typescript'              -- TypeScript/React/Lit/Deno
 require 'language_tailwind'               -- Tailwind CSS
