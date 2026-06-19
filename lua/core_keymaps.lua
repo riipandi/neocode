@@ -371,8 +371,8 @@ vim.api.nvim_create_autocmd("FileType", {
       if p.opts.source == "explorer" then picker = p; break end
     end
     if not picker then return end
-    vim.keymap.set("n", "<S-Down>", function() picker.list:move(10) end, { buffer = ev.buf, silent = true })
-    vim.keymap.set("n", "<S-Up>", function() picker.list:move(-10) end, { buffer = ev.buf, silent = true })
+    vim.keymap.set("n", "<S-Down>", function() picker.list:move(4); picker:update() end, { buffer = ev.buf, silent = true })
+    vim.keymap.set("n", "<S-Up>", function() picker.list:move(-4); picker:update() end, { buffer = ev.buf, silent = true })
   end,
 })
 
