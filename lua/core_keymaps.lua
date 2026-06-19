@@ -352,10 +352,14 @@ explorer_keys["<Left>"] = function() with_explorer(collapse_or_up) end
 explorer_keys["<Right>"] = function() with_explorer(expand_dir) end
 explorer_keys["j"] = "list_down"
 explorer_keys["k"] = "list_up"
+explorer_keys["<S-Down>"] = "list_scroll_down"
+explorer_keys["<S-Up>"] = "list_scroll_up"
 
--- `j`/`k` for list navigation in all picker windows
+-- Navigation keys for all picker list windows (fallback when source has no mapping)
 picker_config.win.list.keys["j"] = "list_down"
 picker_config.win.list.keys["k"] = "list_up"
+picker_config.win.list.keys["<S-Down>"] = "list_scroll_down"
+picker_config.win.list.keys["<S-Up>"] = "list_scroll_up"
 
 -- ============================================================================
 -- Tools
