@@ -78,7 +78,7 @@ npx tiged https://github.com/riipandi/neocode ~/.config/nvim
 | Lit              | ts_ls          | lit          | oxfmt         |
 | Astro            | astro          | astro        | oxfmt         |
 | Rust             | rust-analyzer  | rust         | rustfmt       |
-| Go               | gopls          | go           | gofmt         |
+| Go               | gopls (go.nvim)  | go           | gofumpt (go.nvim) |
 | Elixir/Phoenix   | elixirls       | elixir, heex | mix           |
 | Zig              | zls            | zig          | zigfmt        |
 | SQL (PG/SQLite)  | sqls           | sql          | sql-formatter |
@@ -104,6 +104,7 @@ npx tiged https://github.com/riipandi/neocode ~/.config/nvim
 | **conform.nvim**       | Async code formatting                            |
 | **nvim-treesitter**    | Syntax highlighting                              |
 | **fff.nvim**           | Ripgrep/fzf replacement for file & grep search   |
+| **ray-x/go.nvim**       | Go development toolkit (LSP, formatting, testing) |
 | **lsp_signature.nvim** | LSP signature help                               |
 | **trouble.nvim**       | Pretty diagnostics UI                            |
 | **fidget.nvim**        | LSP progress indicator                           |
