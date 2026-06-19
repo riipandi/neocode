@@ -62,7 +62,7 @@
 | `p` | Paste | Paste files from clipboard |
 | `m` | Move | Move file(s) with confirmation |
 | `d` | Delete | Trash file(s) with confirmation |
-| `D` | Duplicate | Duplicate file with new name |
+| `D` | Duplicate | Duplicate file or directory with new name |
 | `y` | Yank content | Copy file text content to clipboard |
 | `Y` | Yank path | Copy full file path(s) to clipboard |
 | `r` | Rename | Rename file |

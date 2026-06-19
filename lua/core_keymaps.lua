@@ -391,33 +391,30 @@ explorer_keys["y"] = function(_, _)
 end
 explorer_keys["Y"] = "explorer_yank"
 
--- D: duplicate file (D)
+-- D: duplicate file or directory (D)
 explorer_keys["D"] = function(_, _)
   with_explorer(function(picker)
     local item = picker:current()
     if not item then
-      Snacks.notify.warn("No file selected")
-      return
-    end
-    local is_dir = item.dir == true or item.type == "directory" or (type(item.file) == "string" and item.file:sub(-1) == "/")
-    if is_dir then
-      Snacks.notify.warn("Cannot duplicate a directory")
+      Snacks.notify.warn("Nothing selected")
       return
     end
     local src = Snacks.picker.util.path(item)
     if not src then return end
-    local dir = vim.fs.dirname(src)
+    local is_dir = vim.fn.isdirectory(src) == 1
+    local parent = vim.fs.dirname(src)
     local default_name = vim.fn.fnamemodify(src, ":t")
-    Snacks.input({ prompt = "Duplicate as: ", default = default_name }, function(value)
+    local prompt = is_dir and "Duplicate dir as: " or "Duplicate as: "
+    Snacks.input({ prompt = prompt, default = default_name }, function(value)
       if not value or value == "" then return end
-      local dst = dir .. "/" .. value
+      local dst = parent .. "/" .. value
       if vim.uv.fs_stat(dst) then
         Snacks.notify.warn("File already exists: " .. dst)
         return
       end
       Snacks.picker.util.copy_path(src, dst)
       local Tree = require("snacks.explorer.tree")
-      Tree:refresh(dir)
+      Tree:refresh(parent)
       require("snacks.explorer.actions").update(picker, { target = dst })
     end)
   end)
