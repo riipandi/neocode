@@ -325,30 +325,18 @@ local function toggle_dir(picker)
     Actions.update(picker, { refresh = true })
   end
 end
--- `h`/`<Left>` → file: collapse parent; folder: collapse if expanded, else navigate up
+-- `h`/`<Left>` → focus parent in tree (visual navigation, no CWD change)
+-- File: collapse parent folder, move cursor to parent
+-- Folder: collapse if expanded, move cursor to parent (never change CWD)
 local function collapse_or_up(picker)
   local item = picker:current()
-  if not item then return end
+  if not item or not item.file then return end
   local Tree = require("snacks.explorer.tree")
   local Actions = require("snacks.explorer.actions")
-  if not item.dir then
-    -- file → collapse parent folder, move cursor to it (no CWD change)
-    local parent = vim.fs.dirname(item.file)
-    Tree:close(parent)
-    Actions.update(picker, { refresh = true, target = parent })
-    return
-  end
-  -- folder (expanded) → collapse it first so children are hidden on the way up
-  if item.open then Tree:close(item.file) end
-  -- navigate to parent (but not above original CWD)
-  local root_cwd = picker.opts.cwd or vim.fn.getcwd()
-  local parent_dir = vim.fs.dirname(picker:dir())
-  local function norm(path) return vim.fn.fnamemodify(path, ":p"):gsub("/$", "") end
-  local n_root, n_parent = norm(root_cwd), norm(parent_dir)
-  if n_parent == n_root then return end
-  if n_parent:sub(1, #n_root) ~= n_root then return end
-  picker:set_cwd(parent_dir)
-  picker:find()
+  local parent = vim.fs.dirname(item.file)
+  if item.dir and item.open then Tree:close(item.file) end  -- collapse expanded folder
+  -- focus parent in tree (auto-expands if needed, moves cursor)
+  Actions.update(picker, { target = parent, refresh = true })
 end
 -- Shift+Arrow: jump cursor by N items (auto-scroll follows)
 local function jump_by(p, delta)

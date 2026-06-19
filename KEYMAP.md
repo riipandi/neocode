@@ -53,7 +53,7 @@
 
 | Key | Action | Description |
 |-----|--------|-------------|
-| `h` / `<Left>` | Collapse / up | File: collapse parent folder. Folder: collapse (if expanded) or navigate to parent |
+| `h` / `<Left>` | Focus parent | Visual nav (no CWD change). File: collapse parent. Folder: collapse (if expanded) and move cursor to parent |
 | `l` / `<Right>` | Toggle folder | Expand if collapsed, collapse if expanded |
 | `j` / `<Down>` | Move down | Navigate list down |
 | `k` / `<Up>` | Move up | Navigate list up |
