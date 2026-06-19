@@ -22,6 +22,12 @@ snacks.setup({
     -- File explorer (replaces nvim-tree.lua)
     explorer = {
         enabled = true,
+        -- Show git status (modified/staged/untracked)
+        git_status = true,
+        -- Show recursive git status for open directories
+        git_status_open = true,
+        -- Follow symlinks
+        follow = true,
     },
 
     -- Fuzzy picker (replaces fzf-lua/telescope; file finding replaced by fff.nvim)
@@ -32,84 +38,7 @@ snacks.setup({
                 hidden = true,
             },
         },
-        layouts = {
-            select = {
-                hidden = { "preview" },
-                layout = {
-                    backdrop = false,
-                    width = 0.2,
-                    min_width = 20,
-                    height = 0.3,
-                    min_height = 4,
-                    box = "vertical",
-                    border = "rounded",
-                    title = "{title}",
-                    title_pos = "center",
-                    { win = "list",  border = "none" },
-                    { win = "input", height = 1,     border = "top" },
-                },
-            },
-            buffers = {
-                layout = {
-                    box = "horizontal",
-                    width = 0.78,
-                    height = 0.78,
-                    {
-                        box = "vertical",
-                        width = 0.38,
-                        border = "rounded",
-                        title = "{title} {live} {flags}",
-                        title_pos = "center",
-                        { win = "list",  border = "none" },
-                        { win = "input", height = 1,     border = "top" },
-                    },
-                    { win = "preview", title = "{preview}", width = 0.62, border = "rounded" },
-                },
-            },
-            files = {
-                layout = {
-                    box = "horizontal",
-                    width = 0.78,
-                    height = 0.78,
-                    {
-                        box = "vertical",
-                        width = 0.40,
-                        border = "rounded",
-                        title = "{title} {live} {flags}",
-                        title_pos = "center",
-                        { win = "list",  border = "none" },
-                        { win = "input", height = 1,     border = "top" },
-                    },
-                    { win = "preview", title = "{preview}", width = 0.60, border = "rounded" },
-                },
-            },
-
-            commands = {
-                layout = {
-                    box = "vertical",
-                    width = 0.40,
-                    height = 0.55,
-                    border = "rounded",
-                    title = "{title}",
-                    title_pos = "center",
-                    { win = "list",  border = "none" },
-                    { win = "input", height = 1,     border = "top" },
-                },
-            },
-
-            cmd_history = {
-                layout = {
-                    box = "vertical",
-                    width = 0.40,
-                    height = 0.55,
-                    border = "rounded",
-                    title = "{title}",
-                    title_pos = "center",
-                    { win = "list",  border = "none" },
-                    { win = "input", height = 1,     border = "top" },
-                },
-            },
-        },
+        layouts = require("snacks.layouts"),
         win = {
             input = {
                 keys = {
