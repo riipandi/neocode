@@ -75,7 +75,11 @@ local function show_marks_picker()
     items = items,
     format = function(item)
       local icon = item.current and "● " or "  "
-      return icon .. item.idx .. ". " .. item.text
+      return {
+        { icon, item.current and "String" or "Comment" },
+        { item.idx .. ". ", "NonText" },
+        { item.text, "Function" },
+      }
     end,
     actions = {
       confirm = function(p)
