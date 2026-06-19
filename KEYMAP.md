@@ -48,6 +48,28 @@
 | Grep cursor word  | `fc`     | `<leader>fc`      |
 | Format file       | `fm`     | `<leader>fm`      |
 
+### File Explorer (`<leader>e`)
+
+| Key | Action | Description |
+|-----|--------|-------------|
+| `h` / `<Left>` | Collapse / up | Close folder or go to parent |
+| `l` / `<Right>` | Expand | Open folder or confirm file |
+| `j` / `<Down>` | Move down | Navigate list down |
+| `k` / `<Up>` | Move up | Navigate list up |
+| `<S-Down>` | Scroll down | Move down 3 lines |
+| `<S-Up>` | Scroll up | Move up 3 lines |
+| `c` | Copy | Copy file(s) to target directory |
+| `p` | Paste | Paste files from clipboard |
+| `m` | Move | Move file(s) with confirmation |
+| `d` | Delete | Trash file(s) with confirmation |
+| `D` | Duplicate | Duplicate file with new name |
+| `y` | Yank path | Copy full file path(s) to clipboard |
+| `r` | Rename | Rename file |
+| `a` | Add file | Create new file |
+| `.` | Focus | Focus current file/dir in view |
+| `I` | Toggle ignored | Show/hide gitignored files |
+| `H` | Toggle hidden | Show/hide dotfiles |
+
 ## Git
 
 | Action               | WhichKey | Shortcut     |

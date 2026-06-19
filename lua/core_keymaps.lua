@@ -350,18 +350,45 @@ end
 local function s_up(p)
   if p and p.list then p.list:move(-3) end
 end
-
--- Override source-specific explorer keys (take precedence over global list keys)
+-- Override source-specific explorer keys
 local explorer_keys = require("snacks.picker.config.sources").explorer.win.list.keys
+-- hjkl navigation
 explorer_keys["h"] = function() with_explorer(collapse_or_up) end
 explorer_keys["l"] = function() with_explorer(expand_dir) end
 explorer_keys["<Left>"] = function() with_explorer(collapse_or_up) end
 explorer_keys["<Right>"] = function() with_explorer(expand_dir) end
 explorer_keys["j"] = "list_down"
 explorer_keys["k"] = "list_up"
+-- Shift+Arrow scroll
 explorer_keys["<S-Down>"] = s_down
 explorer_keys["<S-Up>"] = s_up
 
+-- Duplicate file: prompt for new name then copy
+explorer_keys["D"] = function(p)
+  local item = p:current()
+  if not item or item.dir then
+    Snacks.notify.warn("Cannot duplicate a directory")
+    return
+  end
+  local file = Snacks.picker.util.path(item)
+  local dir = vim.fs.dirname(file)
+  local name = vim.fn.fnamemodify(file, ":t")
+  Snacks.input({
+    prompt = "Duplicate as:",
+    default = name,
+  }, function(value)
+    if not value or value == "" then return end
+    local to = dir .. "/" .. value
+    if vim.uv.fs_stat(to) then
+      Snacks.notify.warn("File already exists: " .. to)
+      return
+    end
+    Snacks.picker.util.copy_path(file, to)
+    local Tree = require("snacks.explorer.tree")
+    Tree:refresh(dir)
+    require("snacks.explorer.actions").update(p, { target = to })
+  end)
+end
 -- Navigation keys for all picker list windows (fallback when source has no mapping)
 picker_config.win.list.keys["j"] = "list_down"
 picker_config.win.list.keys["k"] = "list_up"
