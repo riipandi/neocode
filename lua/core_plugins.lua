@@ -47,33 +47,32 @@ snacks.setup({
                     border = "rounded",
                     title = "{title}",
                     title_pos = "center",
-                    { win = "input", height = 1,     border = "bottom" },
                     { win = "list",  border = "none" },
+                    { win = "input", height = 1,     border = "top" },
                 },
             },
             buffers = {
                 layout = {
                     box = "horizontal",
-                    width = 0.7,
-                    height = 0.8,
-                    { win = "preview", title = "{preview}", width = 0.65, border = "rounded" },
+                    width = 0.78,
+                    height = 0.78,
                     {
                         box = "vertical",
-                        width = 0.35,
+                        width = 0.38,
                         border = "rounded",
                         title = "{title} {live} {flags}",
                         title_pos = "center",
-                        { win = "input", height = 1,     border = "bottom" },
                         { win = "list",  border = "none" },
+                        { win = "input", height = 1,     border = "top" },
                     },
+                    { win = "preview", title = "{preview}", width = 0.62, border = "rounded" },
                 },
             },
             files = {
                 layout = {
                     box = "horizontal",
-                    width = 0.75,
-                    height = 0.8,
-                    { win = "preview", title = "{preview}", width = 0.60, border = "rounded" },
+                    width = 0.78,
+                    height = 0.78,
                     {
                         box = "vertical",
                         width = 0.40,
@@ -83,34 +82,45 @@ snacks.setup({
                         { win = "list",  border = "none" },
                         { win = "input", height = 1,     border = "top" },
                     },
+                    { win = "preview", title = "{preview}", width = 0.60, border = "rounded" },
                 },
             },
 
-            -- Command palette (list all Vim commands)
             commands = {
                 layout = {
                     box = "vertical",
-                    width = 0.35,
+                    width = 0.40,
                     height = 0.55,
                     border = "rounded",
                     title = "{title}",
                     title_pos = "center",
-                    { win = "input", height = 1,     border = "bottom" },
                     { win = "list",  border = "none" },
+                    { win = "input", height = 1,     border = "top" },
                 },
             },
 
-            -- Command history (previously executed commands)
             cmd_history = {
                 layout = {
                     box = "vertical",
-                    width = 0.6,
-                    height = 0.5,
+                    width = 0.40,
+                    height = 0.55,
                     border = "rounded",
                     title = "{title}",
                     title_pos = "center",
-                    { win = "input", height = 1,     border = "bottom" },
                     { win = "list",  border = "none" },
+                    { win = "input", height = 1,     border = "top" },
+                },
+            },
+        },
+        win = {
+            input = {
+                keys = {
+                    ["<Esc>"] = { "close", mode = { "n", "i" } },
+                },
+            },
+            list = {
+                keys = {
+                    ["<Esc>"] = "close",
                 },
             },
         },
@@ -234,8 +244,8 @@ snacks.setup({
 -- ============================================================================
 
 snacks.config.styles.terminal = {
-    width = 0.8,
-    height = 0.8,
+    width = 0.82,
+    height = 0.82,
     border = "rounded",
     bo = {
         filetype = "snacks_terminal",
@@ -254,10 +264,10 @@ snacks.config.styles.terminal = {
     },
 }
 
--- Serpl: Search & Replace TUI (90% size, like VSCode)
+-- Serpl: Search & Replace TUI (large, but less than lazygit)
 snacks.config.styles.serpl = {
-    width = 0.9,
-    height = 0.9,
+    width = 0.85,
+    height = 0.85,
     border = "rounded",
     bo = {
         filetype = "snacks_terminal",
@@ -292,9 +302,8 @@ snacks.scroll.enable()
 -- ============================================================================
 
 snacks.config.styles.lazygit = {
-    width = 0.92,
-    height = 0.90,
-    row = -3,
+    width = 0.88,
+    height = 0.88,
     border = "rounded",
     bo = {
         filetype = "lazygit",

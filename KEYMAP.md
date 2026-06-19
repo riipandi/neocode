@@ -33,7 +33,11 @@
 | Action           | WhichKey  | Shortcut          |
 |------------------|-----------|-------------------|
 | Find files       | `<space>` | `<leader><space>` |
+| Find files       |           | `<C-p>`           |
 | File explorer    | `e`       | `<leader>e`       |
+| Live grep        | `fw`      | `<leader>fw`      |
+| Fuzzy grep       | `fz`      | `<leader>fz`      |
+| Grep cursor word | `fc`      | `<leader>fc`      |
 | Terminal         | `tt`      | `<leader>tt`      |
 | LazyGit          | `tg`      | `<leader>tg`      |
 | Search & Replace | `tf`      | `<leader>tf`      |
@@ -48,15 +52,17 @@ Requires installation:
 
 ## Search
 
-| Action           | WhichKey  | Shortcut          |
-|------------------|-----------|-------------------|
-| Find files       | `<space>` | `<leader><space>` |
-| Serpl            | `sr`      | `<leader>sr`      |
-| Serpl            | `tf`      | `<leader>tf`      |
-| Global search    |           | `<C-S-f>`         |
-| Next result      | `s`       | `<leader>n`       |
-| Previous result  | `s`       | `<leader>N`       |
-| Clear highlights | `s/c`     | `<leader>c`       |
+| Action           | WhichKey | Shortcut     |
+|------------------|----------|--------------|
+| Live grep        | `fw`     | `<leader>fw` |
+| Fuzzy grep       | `fz`     | `<leader>fz` |
+| Grep cursor word | `fc`     | `<leader>fc` |
+| Serpl            | `sr`     | `<leader>sr` |
+| Serpl            | `tf`     | `<leader>tf` |
+| Global search    |          | `<C-S-f>`    |
+| Next result      | `s`      | `<leader>n`  |
+| Previous result  | `s`      | `<leader>N`  |
+| Clear highlights | `s/c`    | `<leader>c`  |
 
 ## Git
 

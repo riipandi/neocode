@@ -109,6 +109,7 @@ npx tiged https://github.com/riipandi/neocode ~/.config/nvim
 | **cloak.nvim**         | Blur lines for sensitive info                    |
 | **conform.nvim**       | Async code formatting                            |
 | **nvim-treesitter**    | Syntax highlighting                              |
+| **fff.nvim**           | Ripgrep/fzf replacement for file & grep search   |
 | **lsp_signature.nvim** | LSP signature help                               |
 | **trouble.nvim**       | Pretty diagnostics UI                            |
 | **fidget.nvim**        | LSP progress indicator                           |

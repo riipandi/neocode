@@ -23,7 +23,7 @@ require('lazydev').setup({
 require('blink.cmp').setup({
   keymap = {
     preset = 'default',
-    ['<Esc>'] = { 'cancel', 'fallback' },
+    ['<Esc>'] = { 'fallback' },
     ['<CR>'] = { 'accept', 'fallback' },
   },
 

@@ -27,8 +27,8 @@ require('fff').setup({
     show_scores = false,
   },
   layout = {
-    height = 0.8,
-    width = 0.8,
+    height = 0.78,
+    width = 0.78,
     prompt_position = 'bottom',
     preview_position = 'right',
     preview_size = 0.5,

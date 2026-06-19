@@ -29,7 +29,7 @@ vim.keymap.set({ "n", "t" }, "<Esc>", function()
   end
   -- Otherwise, clear search highlights
   vim.cmd('nohlsearch')
-end, { expr = true, silent = true })
+end, { silent = true })
 
 -- ============================================================================
 -- Search & Navigation
