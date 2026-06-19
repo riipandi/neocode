@@ -333,10 +333,9 @@ local function collapse_or_up(picker)
   local Tree = require("snacks.explorer.tree")
   local Actions = require("snacks.explorer.actions")
   if not item.dir then
-    -- file → collapse parent folder, then move into it
+    -- file → collapse parent folder, move cursor to it (no CWD change)
     local parent = vim.fs.dirname(item.file)
     Tree:close(parent)
-    picker:set_cwd(parent)
     Actions.update(picker, { refresh = true, target = parent })
     return
   end
