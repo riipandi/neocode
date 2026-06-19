@@ -132,6 +132,30 @@ autocmd("BufWritePre", {
 })
 
 -- ============================================================================
+-- Cleanup: clear nvim cache and reset lock file
+-- ============================================================================
+vim.api.nvim_create_user_command('CleanNvim', function()
+  local config_dir = vim.fn.stdpath('config')
+  local cache_dir = vim.fn.stdpath('cache')
+  local lock_file = config_dir .. '/nvim-pack-lock.json'
+
+  -- Remove lock file to force plugin re-pinning
+  local lock_stat = vim.uv.fs_stat(lock_file)
+  if lock_stat then
+    vim.uv.fs_unlink(lock_file)
+    vim.notify('Deleted: nvim-pack-lock.json', vim.log.levels.INFO)
+  end
+
+  -- Clean nvim cache
+  for _, name in ipairs(vim.fn.readdir(cache_dir)) do
+    vim.fn.delete(cache_dir .. '/' .. name, 'rf')
+  end
+  vim.notify('Cleared: ' .. cache_dir, vim.log.levels.INFO)
+
+  vim.notify('Done. Restart Neovim to regenerate.', vim.log.levels.INFO)
+end, { desc = 'Clean nvim cache and reset lock file' })
+
+-- ============================================================================
 -- Editor Settings
 -- ============================================================================
 

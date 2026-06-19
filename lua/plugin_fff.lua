@@ -46,6 +46,14 @@ require('fff').setup({
   },
 })
 
+-- Ensure fff Rust binary is available; download/build if missing
+vim.defer_fn(function()
+  local bin_path = require('fff.download').get_binary_path()
+  if not vim.uv.fs_stat(bin_path) then
+    require('fff.download').download_or_build_binary()
+  end
+end, 500)
+
 -- ============================================================================
 -- Keymaps
 -- ============================================================================
