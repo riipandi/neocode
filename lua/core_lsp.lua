@@ -187,16 +187,6 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
-vim.diagnostic.config({
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = "✗",
-      [vim.diagnostic.severity.WARN] = "⚠",
-      [vim.diagnostic.severity.INFO] = "ℹ",
-      [vim.diagnostic.severity.HINT] = "💡",
-    }
-  }
-})
 
 vim.diagnostic.config({
   severity_sort = true,
@@ -270,7 +260,7 @@ vim.lsp.enable({
   -- "gopls",  -- managed by go.nvim (ray-x/go.nvim)
   "lua_ls",
   "oxlint",
-  "rust-analyzer",
+  -- "rust-analyzer",  -- managed by language_rust.lua (custom clippy settings)
   "tailwindcss",
   "texlab",
   "ts_ls",

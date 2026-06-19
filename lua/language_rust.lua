@@ -62,5 +62,3 @@ autocmd('FileType', {
   callback = setup_rust_analyzer,
   desc = 'Start Rust Analyzer LSP',
 })
-
-vim.lsp.enable('rust_analyzer')
