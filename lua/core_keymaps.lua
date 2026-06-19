@@ -343,21 +343,13 @@ local function collapse_or_up(picker)
     end
   end
 end
--- Shift+Arrow: scroll view like <C-e>/<C-y> in normal buffers
--- The view moves, the cursor stays at the same logical position
-local function scroll_view(p, delta)
+-- Shift+Arrow: jump cursor by N items (auto-scroll follows)
+local function jump_by(p, delta)
   if not p or not p.list then return end
-  local list = p.list
-  -- Use a fixed scroll step that's noticeable but not too aggressive
-  local step = 10
-  local maxtop = math.max(1, list:count() - list:height() + 1)
-  list.top = math.max(1, math.min(maxtop, list.top + delta * step))
-  list.dirty = true
-  list:render()
-  Snacks.notify.info("top=" .. list.top .. " / " .. maxtop)
+  p.list:move(delta * 10)
 end
-local function s_down(p) scroll_view(p, 1) end
-local function s_up(p) scroll_view(p, -1) end
+local function s_down(p) jump_by(p, 1) end
+local function s_up(p) jump_by(p, -1) end
 -- Override source-specific explorer keys
 local explorer_keys = require("snacks.picker.config.sources").explorer.win.list.keys
 -- hjkl navigation
