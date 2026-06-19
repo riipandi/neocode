@@ -364,57 +364,61 @@ explorer_keys["<S-Down>"] = s_down
 explorer_keys["<S-Up>"] = s_up
 
 -- y: copy file content, Y: copy full file path
-explorer_keys["y"] = function(picker, item)
-  local items = {}
-  if picker and picker.selected then
-    local ok, sel = pcall(function() return picker:selected({ fallback = true }) end)
-    if ok and sel then items = sel end
-  end
-  if #items == 0 and item then items = { item } end
-  if not items or #items == 0 then return end
-  local contents = {}
-  for _, item in ipairs(items) do
-    local file = Snacks.picker.util.path(item)
-    if file and vim.fn.filereadable(file) == 1 then
-      local f = io.open(file, "r")
-      if f then
-        contents[#contents + 1] = f:read("*a")
-        f:close()
+explorer_keys["y"] = function(_, _)
+  with_explorer(function(picker)
+    local items = picker:selected({ fallback = true })
+    if not items or #items == 0 then
+      local cur = picker:current()
+      if cur then items = { cur } end
+    end
+    if not items or #items == 0 then return end
+    local contents = {}
+    for _, it in ipairs(items) do
+      local file = Snacks.picker.util.path(it)
+      if file and vim.fn.filereadable(file) == 1 then
+        local f = io.open(file, "r")
+        if f then
+          contents[#contents + 1] = f:read("*a")
+          f:close()
+        end
       end
     end
-  end
-  if #contents > 0 then
-    vim.fn.setreg("+", table.concat(contents, "\n"), "c")
-    Snacks.notify.info("Yanked content from " .. #items .. " file(s)")
-  end
+    if #contents > 0 then
+      vim.fn.setreg("+", table.concat(contents, "\n"), "c")
+      Snacks.notify.info("Yanked content from " .. #items .. " file(s)")
+    end
+  end)
 end
 explorer_keys["Y"] = "explorer_yank"
 
 -- D: duplicate file (D)
-explorer_keys["D"] = function(picker, item)
-  if not item and picker then
-    local ok, ret = pcall(function() return picker:current() end)
-    if ok then item = ret end
-  end
-  if not item then
-    Snacks.notify.warn("No file selected")
-    return
-  end
-  local is_dir = item.dir == true or item.type == "directory" or (type(item.file) == "string" and item.file:sub(-1) == "/")
-  local src = Snacks.picker.util.path(item)
-  if not src then return end
-  local dir = vim.fs.dirname(src)
-  local default_name = vim.fn.fnamemodify(src, ":t")
-  Snacks.input({ prompt = "Duplicate as: ", default = default_name }, function(value)
-    if not value or value == "" then return end
-    local dst = dir .. "/" .. value
-    if vim.uv.fs_stat(dst) then
-      Snacks.notify.warn("File already exists: " .. dst)
+explorer_keys["D"] = function(_, _)
+  with_explorer(function(picker)
+    local item = picker:current()
+    if not item then
+      Snacks.notify.warn("No file selected")
       return
     end
-    Snacks.picker.util.copy_path(src, dst)
-    require("snacks.explorer.tree").refresh(dir)
-    require("snacks.explorer.actions").update(picker, { target = dst })
+    local is_dir = item.dir == true or item.type == "directory" or (type(item.file) == "string" and item.file:sub(-1) == "/")
+    if is_dir then
+      Snacks.notify.warn("Cannot duplicate a directory")
+      return
+    end
+    local src = Snacks.picker.util.path(item)
+    if not src then return end
+    local dir = vim.fs.dirname(src)
+    local default_name = vim.fn.fnamemodify(src, ":t")
+    Snacks.input({ prompt = "Duplicate as: ", default = default_name }, function(value)
+      if not value or value == "" then return end
+      local dst = dir .. "/" .. value
+      if vim.uv.fs_stat(dst) then
+        Snacks.notify.warn("File already exists: " .. dst)
+        return
+      end
+      Snacks.picker.util.copy_path(src, dst)
+      require("snacks.explorer.tree").refresh(dir)
+      require("snacks.explorer.actions").update(picker, { target = dst })
+    end)
   end)
 end
 -- Navigation keys for all picker list windows (fallback when source has no mapping)
