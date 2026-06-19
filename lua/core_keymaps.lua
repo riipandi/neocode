@@ -153,13 +153,43 @@ end, { desc = "Select scratch buffer" })
 -- ============================================================================
 
 -- Close current buffer (confirm only if unsaved changes)
+-- When the file explorer is open, delete buffer instead of closing window
+-- to prevent the explorer from taking full width.
 snacks.keymap.set("n", "<C-x>", function()
   local wins = vim.api.nvim_list_wins()
 
   if #wins > 1 then
+    -- Don't close the explorer/picker window via <C-x>
+    if (vim.bo.filetype or ""):match("snacks_picker") then
+      return
+    end
+
+    -- Check if explorer is open as sidebar
+    local pickers = require("snacks").picker.get({ source = "explorer" })
+    local has_explorer = pickers and #pickers > 0
+
+    if has_explorer then
+      -- Delete buffer instead of closing window, preserves layout
+      if vim.bo.modified then
+        vim.ui.select({ 'Save & Close', 'Close without saving', 'Cancel' }, {
+          prompt = 'Buffer has unsaved changes:',
+        }, function(choice)
+          if choice == 'Save & Close' then
+            vim.cmd('w')
+            vim.api.nvim_buf_delete(0, { force = false })
+          elseif choice == 'Close without saving' then
+            vim.api.nvim_buf_delete(0, { force = true })
+          end
+        end)
+      else
+        vim.api.nvim_buf_delete(0, { force = false })
+      end
+      return
+    end
+
     vim.cmd('close')
     return
-  end
+end
 
   if vim.bo.modified then
     vim.ui.select({ 'Save & Close', 'Close without saving', 'Cancel' }, {
