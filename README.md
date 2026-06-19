@@ -69,6 +69,12 @@ rm -fr ~/.cache/nvim
 npx tiged https://github.com/riipandi/neocode ~/.config/nvim
 ```
 
+### Ghostty Configuration
+
+```sh
+ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
+```
+
 ## Supported Languages
 
 | Language         | LSP            | Treesitter   | Formatter     |

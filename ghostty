@@ -99,8 +99,6 @@ quick-terminal-space-behavior = move
 # Flexoki Dark | Mathias | Catppuccin Frappe
 # theme = Flexoki Dark
 
-theme = 0x96f
-
 # === Atomizer Dark Island Theme (from VS Code) ===
 background = #181a1d
 foreground = #d4d5d9
