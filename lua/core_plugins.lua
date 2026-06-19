@@ -22,18 +22,16 @@ snacks.setup({
     -- File explorer (replaces nvim-tree.lua)
     explorer = {
         enabled = true,
-        layout = {
-            width = 32,
-            position = "left",
-        },
-        filter = {
-            dotfiles = true,
-        },
     },
 
     -- Fuzzy picker (replaces fzf-lua/telescope; file finding replaced by fff.nvim)
     picker = {
         enabled = true,
+        sources = {
+            explorer = {
+                hidden = true,
+            },
+        },
         layouts = {
             select = {
                 hidden = { "preview" },

@@ -111,7 +111,7 @@ require('conform').setup({
   },
   format_after_save = {
     lsp_fallback = true,
-    quiet = true,
+    quiet = false,
   },
   formatters = {
     mix = {

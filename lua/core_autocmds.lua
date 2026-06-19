@@ -36,6 +36,9 @@ end, { desc = "Copy full file path" })
 
 local augroup = augroup("UserConfig", { clear = true })
 
+-- (search toast moved to <CR> mapping in core_keymaps.lua)
+
+
 -- Highlight yanked text briefly
 autocmd("TextYankPost", {
   group = augroup,

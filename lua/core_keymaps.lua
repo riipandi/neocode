@@ -53,7 +53,49 @@ snacks.keymap.set("n", "<leader>ad", '<cmd>lua vim.fn.chdir(vim.fn.expand("%:p:h
 snacks.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without yanking" })
 snacks.keymap.set("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position" })
 snacks.keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
-snacks.keymap.set("v", ">", ">gv", { desc = "Indent right and reselect" })
+
+-- ============================================================================
+-- Undo/Redo with toast notification
+-- ============================================================================
+
+local function notify_undo()
+    local count = vim.v.count > 0 and vim.v.count or nil
+    local seq = vim.fn.undotree().seq_last
+    vim.cmd("silent! undo" .. (count and " " .. count or ""))
+    local actual = seq - vim.fn.undotree().seq_last
+    if actual > 0 then
+        vim.notify("Undo " .. actual .. " change" .. (actual ~= 1 and "s" or ""), vim.log.levels.INFO, {
+            title = "Undo",
+            timeout = 2000,
+        })
+    else
+        vim.notify("Already at oldest change", vim.log.levels.WARN, {
+            title = "Undo",
+            timeout = 2000,
+        })
+    end
+end
+
+local function notify_redo()
+    local count = vim.v.count > 0 and vim.v.count or nil
+    local seq = vim.fn.undotree().seq_last
+    vim.cmd("silent! redo" .. (count and " " .. count or ""))
+    local actual = vim.fn.undotree().seq_last - seq
+    if actual > 0 then
+        vim.notify("Redo " .. actual .. " change" .. (actual ~= 1 and "s" or ""), vim.log.levels.INFO, {
+            title = "Redo",
+            timeout = 2000,
+        })
+    else
+        vim.notify("Already at newest change", vim.log.levels.WARN, {
+            title = "Redo",
+            timeout = 2000,
+        })
+    end
+end
+
+snacks.keymap.set("n", "u", notify_undo, { desc = "Undo with toast" })
+snacks.keymap.set("n", "<C-r>", notify_redo, { desc = "Redo with toast" })
 
 -- Move lines up/down with Alt+J/K
 snacks.keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = "Move line down" })
@@ -348,3 +390,78 @@ snacks.keymap.set("n", "E", function()
 end, { desc = "Focus or toggle file explorer" })
 
 -- File Picker (now handled by fff.nvim, see plugin_fff.lua)
+
+-- ============================================================================
+-- Cmdline <CR>: toast on search failure or command error
+-- ============================================================================
+--
+-- Intercept <CR> in cmdline mode. For / and ? searches: prevent native
+-- E486 `Pattern not found` (avoids the annoying hit-enter prompt) and show
+-- a toast instead. For : commands: execute via vim.cmd() and show command
+-- errors as toast, avoiding the native bottom-of-terminal message.
+
+vim.keymap.set("c", "<CR>", function()
+    local cmdtype = vim.fn.getcmdtype()
+    local cmdline = vim.fn.getcmdline()
+
+    if (cmdtype == "/" or cmdtype == "?") and cmdline ~= "" then
+        -- Add to search history so <Up> works for next search
+        vim.fn.histadd("search", cmdline)
+        vim.fn.setreg("/", cmdline)
+
+        -- Cancel cmdline (prevent native search from executing)
+        vim.api.nvim_feedkeys(
+            vim.api.nvim_replace_termcodes("<C-c>", true, false, true),
+            "n", false
+        )
+
+        -- Execute search ourselves
+        local dir = cmdtype == "?" and "b" or ""
+        local ok, found = pcall(vim.fn.search, cmdline, "w" .. dir)
+
+        if not ok then
+            vim.notify("Search error: " .. tostring(found), vim.log.levels.ERROR, {
+                title = "Search",
+                timeout = 3000,
+            })
+        elseif found == 0 then
+            vim.notify("Pattern not found: " .. cmdline, vim.log.levels.WARN, {
+                title = "Search",
+                timeout = 2500,
+            })
+        end
+
+        return
+    end
+
+    if cmdtype == ":" and cmdline ~= "" then
+        -- Cancel native cmdline so our vim.cmd() takes over
+        vim.api.nvim_feedkeys(
+            vim.api.nvim_replace_termcodes("<C-c>", true, false, true),
+            "n", false
+        )
+
+        -- Execute command and catch errors as toast
+        local ok, err = pcall(vim.cmd, cmdline)
+        if not ok then
+            local msg = tostring(err)
+            -- Strip VimL error prefix (e.g. "Vim:E492:")
+            msg = msg:gsub(".-E%d+:", ""):gsub("[\r\n]", ""):gsub("^%s+", "")
+            if msg == "" then
+                msg = tostring(err):gsub("[\r\n]", "")
+            end
+            vim.notify(msg, vim.log.levels.ERROR, {
+                title = "Cmdline",
+                timeout = 3000,
+            })
+        end
+
+        return
+    end
+
+    -- Default: feed Enter through for non-search, non-: commands (e.g. =, @)
+    vim.api.nvim_feedkeys(
+        vim.api.nvim_replace_termcodes("<CR>", true, false, true),
+        "n", false
+    )
+end, { desc = "Cmdline Enter with toast on error" })

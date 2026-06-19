@@ -2,7 +2,7 @@
 -- Noice.nvim: cmdline replacement with floating UI
 -- ============================================================================
 -- Replaces native cmdline with floating popup, allowing cmdheight=0
--- Keeps statusbar at bottom, freeing up vertical space for editing
+-- Also intercepts messages for toast-like notifications (undo/redo, search)
 
 local noice = require("noice")
 
@@ -42,8 +42,14 @@ noice.setup({
     },
   },
 
+  -- Messages: route undo/redo and search results to mini toast
   messages = {
-    enabled = false,
+    enabled = true,
+    view = "messages",
+    view_search = "mini",
+    view_history = "messages",
+    view_error = "mini",
+    view_warn = "mini",
   },
 
   popupmenu = {
@@ -51,31 +57,43 @@ noice.setup({
   },
 
   lsp = {
-    progress = {
-      enabled = false,
-    },
-    hover = {
-      enabled = false,
-    },
-    signature = {
-      enabled = false,
-    },
-    message = {
-      enabled = false,
-    },
+    progress = { enabled = false },
+    hover = { enabled = false },
+    signature = { enabled = false },
+    message = { enabled = false },
   },
 
+  -- Keep disabled — snacks.notifier handles vim.notify calls
   notify = {
     enabled = false,
   },
 
   routes = {
-    {
-      filter = {
-        event = "msg_show",
-        kind = "",
+    -- Undo/redo: mini toast
+    { filter = { event = "msg_show", find = "change;" }, view = "mini" },
+    { filter = { event = "msg_show", find = "already at" }, view = "mini" },
+    -- Substitute count
+    { filter = { event = "msg_show", find = "substitution" }, view = "mini" },
+    -- Search hit (extra guard beyond view_search)
+    { filter = { event = "msg_show", find = "search hit" }, view = "mini" },
+    -- Save confirmation: mini toast
+    { filter = { event = "msg_show", find = "written" }, view = "mini" },
+    { filter = { event = "msg_show", find = "appended" }, view = "mini" },
+    -- Yank confirmation
+    { filter = { event = "msg_show", find = "yanked" }, view = "mini" },
+    -- Backup: any other error messages → mini toast
+    { filter = { error = true }, view = "mini" },
+  },
+
+  views = {
+    mini = {
+      backend = "mini",
+      relative = "editor",
+      align = "message-right",
+      position = { row = -2, col = -2 },
+      win_options = {
+        winblend = 10,
       },
-      opts = { skip = true },
     },
   },
 
