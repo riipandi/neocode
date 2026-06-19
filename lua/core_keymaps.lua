@@ -343,6 +343,12 @@ local function collapse_or_up(picker)
     end
   end
 end
+-- Move picker cursor by N lines (for Shift+Arrow, smoother than half-page scroll)
+local function move_n(n)
+  return function(p)
+    if p and p.list then p.list:move(n) end
+  end
+end
 
 -- Override source-specific explorer keys (take precedence over global list keys)
 local explorer_keys = require("snacks.picker.config.sources").explorer.win.list.keys
@@ -352,14 +358,14 @@ explorer_keys["<Left>"] = function() with_explorer(collapse_or_up) end
 explorer_keys["<Right>"] = function() with_explorer(expand_dir) end
 explorer_keys["j"] = "list_down"
 explorer_keys["k"] = "list_up"
-explorer_keys["<S-Down>"] = "list_scroll_down"
-explorer_keys["<S-Up>"] = "list_scroll_up"
+explorer_keys["<S-Down>"] = move_n(3)
+explorer_keys["<S-Up>"] = move_n(-3)
 
 -- Navigation keys for all picker list windows (fallback when source has no mapping)
 picker_config.win.list.keys["j"] = "list_down"
 picker_config.win.list.keys["k"] = "list_up"
-picker_config.win.list.keys["<S-Down>"] = "list_scroll_down"
-picker_config.win.list.keys["<S-Up>"] = "list_scroll_up"
+picker_config.win.list.keys["<S-Down>"] = move_n(3)
+picker_config.win.list.keys["<S-Up>"] = move_n(-3)
 
 -- ============================================================================
 -- Tools
