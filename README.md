@@ -1,7 +1,5 @@
 # Neovim Configuration
 
-<img src="./screenshot1.png" alt="Neocode" height="520" />
-
 ```
                             ▄
 █▀▀▄ █▀▀█ █▀▀█ █▀▀▀ █▀▀█ █▀▀█ █▀▀█
@@ -51,12 +49,8 @@ brew tap homebrew/cask-fonts
 brew install --cask font-jetbrains-mono font-jetbrains-mono-nerd-font
 brew install --cask font-maple-mono font-maple-mono-nf
 
-# System Monitoring
-brew install mactop     # Apple Silicon Mac
-# brew install btop     # Cross-platform alternative
-
-# Image Preview
-brew install chafa
+# System Monitoring and image preview
+brew install btop chafa
 
 # Utilities
 brew install markdownlint-cli serpl

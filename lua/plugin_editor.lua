@@ -94,7 +94,7 @@ require('conform').setup({
   formatters_by_ft = {
     astro = { 'oxfmt' },
     elixir = { 'mix' },
-    go = { 'gofmt' },
+    -- go = { 'gofmt' },  -- handled by go.nvim (ray-x/go.nvim)
     hcl = { 'terraform' },
     javascript = { { 'oxfmt', 'prettierd' } },
     javascriptreact = { { 'oxfmt', 'prettierd' } },

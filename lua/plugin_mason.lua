@@ -76,7 +76,7 @@ require('mason-lspconfig').setup({
       "astro",
       "buf_ls",
       "elixirls",
-      "gopls",
+      -- "gopls",  -- managed by go.nvim (ray-x/go.nvim)
       "html",
       "lua_ls",
       "rust_analyzer",

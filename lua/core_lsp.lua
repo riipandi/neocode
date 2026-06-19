@@ -267,7 +267,7 @@ autocmd("Filetype", {
 -- Enable default LSP servers
 vim.lsp.enable({
   "bashls",
-  "gopls",
+  -- "gopls",  -- managed by go.nvim (ray-x/go.nvim)
   "lua_ls",
   "oxlint",
   "rust-analyzer",
