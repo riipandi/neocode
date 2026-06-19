@@ -396,7 +396,8 @@ explorer_keys["D"] = function(picker, item)
     local ok, ret = pcall(function() return picker:current() end)
     if ok then item = ret end
   end
-  if not item or item.dir then
+  local is_dir = item.dir == true or item.type == "directory" or (type(item.file) == "string" and item.file:sub(-1) == "/")
+  if is_dir then
     Snacks.notify.warn("Cannot duplicate a directory")
     return
   end
