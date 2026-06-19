@@ -112,7 +112,7 @@ ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
 | **trouble.nvim**       | Pretty diagnostics UI                            |
 | **fff.nvim**           | Ripgrep/fzf replacement for file & grep search   |
 | **ray-x/go.nvim**      | Go development toolkit (LSP, formatting, testing)|
-| **miniharp.nvim**      | Quick file marks; snacks.picker UI              |
+| **miniharp.nvim**      | Quick file marks; snacks.picker UI; noice notifications |
 | **lsp_signature.nvim** | LSP signature help                               |
 | **fidget.nvim**        | LSP progress indicator                           |
 | **nvim-lspconfig**     | LSP configuration                                |
@@ -124,7 +124,23 @@ ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
 | **lualine.nvim**       | Statusline                                       |
 | **plenary.nvim**       | Lua utility library (dependency)                 |
 
-## Keybindings
+## Custom Commands
+
+| Command | Description |
+|---------|-------------|
+| `:MasonPkg [category]` | Browse and manage Mason packages via snacks.picker (e.g. `:MasonPkg LSP`, `:MasonPkg Formatter`, `:MasonPkg all`) |
+| `:CleanNvim` | Clear nvim cache and `nvim-pack-lock.json` for fresh plugin regeneration |
+
+## Features
+
+- **Custom file explorer** via `snacks.explorer` with hjkl navigation, Shift+Arrow scroll, file operations (c/p/m/d/D/y/Y/r/a), and Vim-style editor focus preservation when closing buffers
+- **MasonPkg picker** for managing LSP/formatter/linter packages with category filtering, preview, and batch install/uninstall
+- **Miniharp file marks** integrated with snacks.picker (no native floating window; noice notifications for all status messages)
+- **Native LSP and Tool installer** via mason-registry, mason-lspconfig, and mason-tool-installer
+- **Consistent UI** through noice.nvim, snacks.notifier, and snacks.picker — all status messages, dialogs, and pickers share the same look
+- **Telescope-style find files** via fff.nvim (Rust binary, ripgrep/fzf replacement)
+
+
 
 See [KEYMAP.md](./KEYMAP.md) for complete keybindings reference.
 

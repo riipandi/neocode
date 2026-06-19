@@ -12,6 +12,7 @@
 | Command palette        | `;`      | `<leader>;`  |
 | Edit config            | `,`      | `<leader>,`  |
 
+> **Note:** `<C-x>` keeps the file explorer open and shows a blank buffer when the last editor buffer is closed, instead of letting the explorer expand to full width.
 ## Escape Key
 
 | Action                | Shortcut | Description                               |
@@ -175,6 +176,17 @@ Inside the marks picker (`<C-l>`):
 Requires installation:
 - macOS: `brew install mactop` (Apple Silicon)
 - Linux: `brew install btop` (cross-platform)
+
+### Mason (`:MasonPkg` / `<leader>tm`)
+
+| Action | Shortcut / Command | Description |
+|--------|---------------------|-------------|
+| Mason: manage packages | `<leader>tm` / `:MasonPkg` | Browse & manage LSP/formatter/linter/DAP/runtime/compiler packages |
+| Mason: TUI (tree view) | `<leader>tM` | Native Mason TUI with expand/collapse navigation |
+| Mason: package category | `:MasonPkg LSP` (etc.) | Open picker filtered to a specific category (LSP, Formatter, Linter, DAP, Runtime, Compiler, or `all`) |
+| Mason: install package | `i` (in picker) | Install the selected package(s) |
+| Mason: uninstall package | `x` (in picker) | Uninstall the selected package(s) |
+| Mason: cycle category | `<Tab>` / `<S-Tab>` (in picker) | Cycle through package categories |
 
 ## Editing
 
