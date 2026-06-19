@@ -112,6 +112,11 @@
 | Next mark           |          | `<C-n>`    |
 | Previous mark       |          | `<C-S-m>`  |
 
+Inside the marks picker (`<C-l>`):
+- `Enter` — jump to selected file
+- `dd` — remove mark
+- `Tab` — select mark for swap, then Tab on another mark to swap order
+
 ## Plugins
 
 | Action                         | Shortcut            |

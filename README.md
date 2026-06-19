@@ -22,7 +22,7 @@ time to read [through a guide][learnxinyminutes].
 brew uninstall neovim
 
 # Stable
-curl -#L https://github.com/neovim/neovim/releases/download/v0.12.0/nvim-macos-arm64.tar.gz | tar xz
+curl -#L https://github.com/neovim/neovim/releases/download/stable/nvim-macos-arm64.tar.gz | tar xz
 
 # Nightly 
 curl -#L https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz | tar xz
@@ -112,7 +112,7 @@ ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
 | **trouble.nvim**       | Pretty diagnostics UI                            |
 | **fff.nvim**           | Ripgrep/fzf replacement for file & grep search   |
 | **ray-x/go.nvim**      | Go development toolkit (LSP, formatting, testing)|
-| **miniharp.nvim**      | Quick file marks (harpoon alternative)           |
+| **miniharp.nvim**      | Quick file marks; snacks.picker UI              |
 | **lsp_signature.nvim** | LSP signature help                               |
 | **fidget.nvim**        | LSP progress indicator                           |
 | **nvim-lspconfig**     | LSP configuration                                |
