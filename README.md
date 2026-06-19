@@ -109,16 +109,20 @@ ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
 | **cloak.nvim**         | Blur lines for sensitive info                    |
 | **conform.nvim**       | Async code formatting                            |
 | **nvim-treesitter**    | Syntax highlighting                              |
-| **fff.nvim**           | Ripgrep/fzf replacement for file & grep search   |
-| **ray-x/go.nvim**       | Go development toolkit (LSP, formatting, testing) |
-| **lsp_signature.nvim** | LSP signature help                               |
 | **trouble.nvim**       | Pretty diagnostics UI                            |
+| **fff.nvim**           | Ripgrep/fzf replacement for file & grep search   |
+| **ray-x/go.nvim**      | Go development toolkit (LSP, formatting, testing)|
+| **miniharp.nvim**      | Quick file marks (harpoon alternative)           |
+| **lsp_signature.nvim** | LSP signature help                               |
 | **fidget.nvim**        | LSP progress indicator                           |
 | **nvim-lspconfig**     | LSP configuration                                |
 | **mason.nvim**         | LSP package manager                              |
+| **mason-lspconfig**    | Mason LSP server config helper                   |
+| **mason-tool-installer** | Automatic tool installation                    |
 | **gitsigns.nvim**      | Git signs in gutter                              |
 | **which-key.nvim**     | Keybinding helper                                |
 | **lualine.nvim**       | Statusline                                       |
+| **plenary.nvim**       | Lua utility library (dependency)                 |
 
 ## Keybindings
 
