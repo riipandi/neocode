@@ -1,62 +1,42 @@
 -- ============================================================================
 -- Buffer Management: <C-x>, <leader>bd/bb/bo, <C-S-w>
 -- ============================================================================
--- Smart <C-x> that keeps the file explorer open with a blank buffer
--- when the last editor buffer is closed.
+-- Smart <C-x>:
+--   • multiple listed buffers → close current, load previous (or most recent) one
+--   • only listed buffer remaining → close current, create empty buffer
+--   • explorer is preserved (it lives in a separate window)
 local snacks = require("snacks")
-
-snacks.keymap.set("n", "<C-x>", function()
-  local wins = vim.api.nvim_list_wins()
-
-  if #wins > 1 then
-    -- Don't close the explorer/picker window via <C-x>
-    if (vim.bo.filetype or ""):match("snacks_picker") then
-      return
-    end
-
-    -- Check if explorer is open as sidebar
-    local pickers = require("snacks").picker.get({ source = "explorer" })
-    local has_explorer = pickers and #pickers > 0
-
-    if has_explorer then
-      -- Delete buffer instead of closing window, preserves layout
-      if vim.bo.modified then
-        vim.ui.select({ 'Save & Close', 'Close without saving', 'Cancel' }, {
-          prompt = 'Buffer has unsaved changes:',
-        }, function(choice)
-          if choice == 'Save & Close' then
-            vim.cmd('w')
-            vim.api.nvim_buf_delete(0, { force = false })
-          elseif choice == 'Close without saving' then
-            vim.api.nvim_buf_delete(0, { force = true })
-          end
-        end)
-      else
-        vim.api.nvim_buf_delete(0, { force = false })
-      end
-      return
-    end
-
-    vim.cmd('close')
+local function smart_close()
+  -- Don't close the explorer/picker window via <C-x>
+  if (vim.bo.filetype or ""):match("snacks_picker") then
     return
+  end
+
+  -- Save prompt for unsaved changes
+  local function do_close(force)
+    -- Snacks.bufdelete replaces the current buffer with the most-recent
+    -- listed buffer (or creates an empty one if none remain). Explorer
+    -- is preserved because it lives in a separate window.
+    Snacks.bufdelete({ buf = 0, force = force })
   end
 
   if vim.bo.modified then
     vim.ui.select({ 'Save & Close', 'Close without saving', 'Cancel' }, {
       prompt = 'Buffer has unsaved changes:',
     }, function(choice)
-      local bufnr = vim.api.nvim_get_current_buf()
       if choice == 'Save & Close' then
         vim.cmd('w')
-        vim.api.nvim_buf_delete(bufnr, { force = false })
+        do_close(false)
       elseif choice == 'Close without saving' then
-        vim.api.nvim_buf_delete(bufnr, { force = true })
+        do_close(true)
       end
     end)
   else
-    vim.api.nvim_buf_delete(0, { force = false })
+    do_close(false)
   end
-end, { desc = 'Close buffer or split' })
+end
+
+snacks.keymap.set("n", "<C-x>", smart_close, { desc = 'Close buffer (smart)' })
 
 -- Close all buffers with snacks
 snacks.keymap.set("n", "<C-S-w>", function()
