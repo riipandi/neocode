@@ -3,7 +3,7 @@
 -- ============================================================================
 
 -- miniharp.nvim: Quick file marks (harpoon-like alternative)
--- UI integration via snacks.picker for consistent look & feel
+-- List UI via snacks.picker for consistent look & feel
 
 vim.pack.add({
   { src = 'https://github.com/vieitesss/miniharp.nvim' },
@@ -14,26 +14,31 @@ local snacks = require("snacks")
 local miniharp = require('miniharp')
 
 -- =============================================================================
--- Mini harpoon configuration
+-- Setup — native floating window disabled, we use snacks.picker instead
 -- =============================================================================
 
 miniharp.setup({
   autoload = true,
   autosave = true,
-  show_on_autoload = false, -- don't open native UI on autoload
+  show_on_autoload = false,
+  notifications = true,
 })
+
+-- Close native UI if it ever opens (e.g. stale state from old version)
+local ui_close = require('miniharp.ui').close
+vim.defer_fn(ui_close, 100)
 
 -- =============================================================================
 -- Keymaps
 -- =============================================================================
 
-snacks.keymap.set('n', '<leader>ma', miniharp.toggle_file, { desc = 'Toggle file mark' })
-snacks.keymap.set('n', '<leader>mc', miniharp.clear,         { desc = 'Clear marks' })
-snacks.keymap.set('n', '<C-n>', miniharp.next,              { desc = 'Next mark' })
-snacks.keymap.set('n', '<C-S-m>', miniharp.prev,            { desc = 'Previous mark' })
+vim.keymap.set('n', '<leader>ma', miniharp.toggle_file, { desc = 'Toggle file mark' })
+vim.keymap.set('n', '<leader>mc', miniharp.clear,         { desc = 'Clear marks' })
+vim.keymap.set('n', '<C-n>', miniharp.next,              { desc = 'Next mark' })
+vim.keymap.set('n', '<C-S-m>', miniharp.prev,            { desc = 'Previous mark' })
 
 -- =============================================================================
--- Marks picker (replaces miniharp native floating UI)
+-- Marks picker via snacks.picker (replaces native miniharp floating UI)
 -- =============================================================================
 
 local marks_mod = require('miniharp.marks')
@@ -41,15 +46,10 @@ local ms = require('miniharp.state')
 local utils = require('miniharp.utils')
 local swap_from = nil
 
----Kembalikan relatif path + line:col
----@param m MiniharpMark
----@return string
-local function mark_label(m)
-  return utils.pretty(m.file) .. ":" .. (m.lnum or 1)
-end
-
----Buka picker marks via snacks.picker
 local function show_marks_picker()
+  -- Close any stale native UI first
+  ui_close()
+
   if #ms.marks == 0 then
     snacks.notify.info("No marks yet. Use <leader>ma to add one.")
     return
@@ -57,30 +57,22 @@ local function show_marks_picker()
 
   local current_idx = ms.idx > 0 and ms.idx or nil
 
-  -- Rebuild items every time (marks may have changed)
-  local function build_items()
-    local items = {}
-    for i, m in ipairs(ms.marks) do
-      table.insert(items, {
-        idx = i,
-        file = m.file,
-        lnum = m.lnum or 1,
-        col = m.col or 0,
-        current = i == current_idx,
-        text = mark_label(m),
-      })
-    end
-    return items
-  end
-
-  local function title()
-    local name = swap_from and "Swap mark " .. swap_from .. " →" or "Marks"
-    return name .. " (" .. #ms.marks .. ")"
+  local items = {}
+  for i, m in ipairs(ms.marks) do
+    local label = utils.pretty(m.file) .. ":" .. (m.lnum or 1)
+    table.insert(items, {
+      idx = i,
+      file = m.file,
+      lnum = m.lnum or 1,
+      col = m.col or 0,
+      current = i == current_idx,
+      text = label,
+    })
   end
 
   snacks.picker.pick({
-    title = title(),
-    items = build_items(),
+    title = (swap_from and ("Swap from #" .. swap_from) or "Marks") .. " (" .. #ms.marks .. ")",
+    items = items,
     format = function(item)
       local icon = item.current and "● " or "  "
       return icon .. item.idx .. ". " .. item.text
@@ -90,8 +82,8 @@ local function show_marks_picker()
       confirm = function(p)
         local sel = p:selected()
         if #sel == 0 then return end
-        local item = sel[1]
-        marks_mod.jump_to(item.idx)
+        swap_from = nil
+        marks_mod.jump_to(sel[1].idx)
         p:close()
       end,
     },
@@ -101,8 +93,7 @@ local function show_marks_picker()
           ["dd"] = function(p)
             local sel = p:selected()
             if #sel == 0 then return end
-            local item = sel[1]
-            marks_mod.remove_at(item.idx)
+            marks_mod.remove_at(sel[1].idx)
             swap_from = nil
             p:close()
             vim.schedule(function() show_marks_picker() end)
@@ -110,16 +101,13 @@ local function show_marks_picker()
           ["<Tab>"] = function(p)
             local sel = p:selected()
             if #sel == 0 then return end
-            local item = sel[1]
+            local idx = sel[1].idx
             if not swap_from then
-              -- First selection: mark for swap
-              swap_from = item.idx
-              snacks.notify.info("Swap from #" .. item.idx .. ". Tab another mark to complete.")
+              swap_from = idx
+              snacks.notify.info("Swap from #" .. idx .. ". Tab another mark to complete.")
             else
-              -- Second selection: complete swap
-              local other = swap_from
+              marks_mod.swap(swap_from, idx)
               swap_from = nil
-              marks_mod.swap(other, item.idx)
               p:close()
               vim.schedule(function() show_marks_picker() end)
             end
@@ -130,4 +118,4 @@ local function show_marks_picker()
   })
 end
 
-snacks.keymap.set('n', '<C-l>', show_marks_picker, { desc = 'List marks' })
+vim.keymap.set('n', '<C-l>', show_marks_picker, { desc = 'List marks' })
