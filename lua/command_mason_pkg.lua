@@ -160,8 +160,13 @@ end
 -- ============================================================================
 
 vim.api.nvim_create_user_command("MasonPkg", function(opts)
-  local filter = opts.args
-  if filter and filter ~= "" then
+  local raw = opts.args or ""
+  -- Normalize "all" (any case) to nil (no filter)
+  local filter = raw ~= "" and raw or nil
+  if filter and filter:lower() == "all" then
+    filter = nil
+  end
+  if filter then
     open_selector(filter)
     return
   end
