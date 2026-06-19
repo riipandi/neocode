@@ -352,21 +352,11 @@ explorer_keys["h"] = function() with_explorer(collapse_or_up) end
 explorer_keys["l"] = function() with_explorer(toggle_dir) end
 explorer_keys["<Left>"] = function() with_explorer(collapse_or_up) end
 explorer_keys["<Right>"] = function() with_explorer(toggle_dir) end
--- Prevent <Esc>/<q> from closing explorer (just refocus picker)
-explorer_keys["<Esc>"] = function(p) p:focus() end
-explorer_keys["q"] = function(p) p:focus() end
--- same for input window (search field) — set via source config directly
-local sources = require("snacks.picker.config.sources")
-sources.explorer.win = sources.explorer.win or {}
-sources.explorer.win.input = sources.explorer.win.input or { keys = {} }
-sources.explorer.win.input.keys = sources.explorer.win.input.keys or {}
-sources.explorer.win.input.keys["<Esc>"] = function(p) p:focus() end
-sources.explorer.win.input.keys["q"] = function(p) p:focus() end
-explorer_keys["j"] = "list_down"
+-- <Esc>/<q> handled in FileType autocmd below (different behavior per window)
 explorer_keys["k"] = "list_up"
 -- Buffer-style jump: small step (2 items) for sidebars
 -- <C-d>/<C-u> like half-page jump, {/} like paragraph jump
-local s_group = vim.api.nvim_create_augroup("explorer_scroll_keys", { clear = true })
+local s_group = vim.api.nvim_create_augroup("explorer_keys", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
   group = s_group,
   pattern = { "snacks_picker_list", "snacks_picker_input" },
@@ -376,20 +366,25 @@ vim.api.nvim_create_autocmd("FileType", {
       if p.opts.source == "explorer" then picker = p; break end
     end
     if not picker then return end
-    local function jump(delta) picker.list:move(delta); picker:update() end
-    -- jump keys only in list window
-    if ev.match == "snacks_picker_list" then
-      vim.keymap.set("n", "<C-d>", function() jump(2) end, { buffer = ev.buf, silent = true })
-      vim.keymap.set("n", "<C-u>", function() jump(-2) end, { buffer = ev.buf, silent = true })
-      vim.keymap.set("n", "]", function() jump(2) end, { buffer = ev.buf, silent = true })
-      vim.keymap.set("n", "[", function() jump(-2) end, { buffer = ev.buf, silent = true })
-      vim.keymap.set("n", "}", function() jump(4) end, { buffer = ev.buf, silent = true })
-      vim.keymap.set("n", "{", function() jump(-4) end, { buffer = ev.buf, silent = true })
-    end
-    -- both list and input: prevent <Esc>/<q> from closing, just refocus
-    local function refocus() picker:focus() end
-    vim.keymap.set("n", "<Esc>", refocus, { buffer = ev.buf, silent = true })
-    vim.keymap.set("n", "q", refocus, { buffer = ev.buf, silent = true })
+    -- defer so it runs after snacks registers its own keymaps
+    vim.schedule(function()
+      local function jump(delta) picker.list:move(delta); picker:update() end
+      local function refocus() picker:focus() end
+      if ev.match == "snacks_picker_list" then
+        vim.keymap.set("n", "<C-d>", function() jump(2) end, { buffer = ev.buf, silent = true })
+        vim.keymap.set("n", "<C-u>", function() jump(-2) end, { buffer = ev.buf, silent = true })
+        vim.keymap.set("n", "]", function() jump(2) end, { buffer = ev.buf, silent = true })
+        vim.keymap.set("n", "[", function() jump(-2) end, { buffer = ev.buf, silent = true })
+        vim.keymap.set("n", "}", function() jump(4) end, { buffer = ev.buf, silent = true })
+        vim.keymap.set("n", "{", function() jump(-4) end, { buffer = ev.buf, silent = true })
+        vim.keymap.set("n", "<Esc>", refocus, { buffer = ev.buf, silent = true })
+        vim.keymap.set("n", "q", refocus, { buffer = ev.buf, silent = true })
+      else  -- input window (search field)
+        -- <Esc> clears the search and returns focus to list
+        vim.keymap.set({ "n", "i" }, "<Esc>", function() picker.input:set(""); picker:focus() end, { buffer = ev.buf, silent = true })
+        vim.keymap.set("n", "q", refocus, { buffer = ev.buf, silent = true })
+      end
+    end)
   end,
 })
 
