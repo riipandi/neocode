@@ -343,13 +343,14 @@ local function collapse_or_up(picker)
     end
   end
 end
--- Shift+Arrow: move by 3 lines (between j/k and half-page scroll)
-local function s_down(p)
-  if p and p.list then p.list:move(3) end
+-- Shift+Arrow: scroll view by ~1/4 of visible height (3..N rows)
+local function scroll_by(p, delta)
+  if not p or not p.list then return end
+  local step = math.max(3, math.floor(p.list:height() / 4))
+  p.list:scroll(delta * step, false, true)
 end
-local function s_up(p)
-  if p and p.list then p.list:move(-3) end
-end
+local function s_down(p) scroll_by(p, 1) end
+local function s_up(p) scroll_by(p, -1) end
 -- Override source-specific explorer keys
 local explorer_keys = require("snacks.picker.config.sources").explorer.win.list.keys
 -- hjkl navigation

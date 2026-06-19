@@ -57,8 +57,8 @@
 | `l` / `<Right>` | Expand | Open folder or confirm file |
 | `j` / `<Down>` | Move down | Navigate list down |
 | `k` / `<Up>` | Move up | Navigate list up |
-| `<S-Down>` | Scroll down | Move down 3 lines |
-| `<S-Up>` | Scroll up | Move up 3 lines |
+| `<S-Down>` | Scroll down | Scroll view by ~1/4 of visible height |
+| `<S-Up>` | Scroll up | Scroll view by ~1/4 of visible height |
 | `c` | Copy | Copy file(s) to target directory |
 | `p` | Paste | Paste files from clipboard |
 | `m` | Move | Move file(s) with confirmation |
