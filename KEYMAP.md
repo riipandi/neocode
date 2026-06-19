@@ -6,7 +6,7 @@
 |------------------------|----------|--------------|
 | Quit all               | `q`      | `<leader>q`  |
 | Quit all               | `qq`     | `<leader>qq` |
-| Quit all               |          | `<C-q>`      |
+| Quit all               |          | `<C-q>` / `<A-q>` |
 | Close buffer or split  |          | `<C-x>`      |
 | Close all buffers      |          | `<C-S-w>`    |
 | Command palette        | `;`      | `<leader>;`  |

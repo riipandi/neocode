@@ -287,8 +287,8 @@ local function confirm_quit()
     end)
   end
 end
-
 snacks.keymap.set("n", "<C-q>", confirm_quit, { desc = 'Quit all' })
+snacks.keymap.set("n", "<A-q>", confirm_quit, { desc = 'Quit all' })
 snacks.keymap.set("n", "<leader>q", confirm_quit, { desc = 'Quit all' })
 snacks.keymap.set("n", "<leader>qq", confirm_quit, { desc = 'Quit all' })
 
@@ -300,7 +300,9 @@ picker_config.win.input = picker_config.win.input or {}
 picker_config.win.list.keys = picker_config.win.list.keys or {}
 picker_config.win.input.keys = picker_config.win.input.keys or {}
 picker_config.win.list.keys["<C-q>"] = confirm_quit
+picker_config.win.list.keys["<A-q>"] = confirm_quit
 picker_config.win.input.keys["<C-q>"] = { confirm_quit, mode = { "i", "n" } }
+picker_config.win.input.keys["<A-q>"] = { confirm_quit, mode = { "i", "n" } }
 
 -- In picker list windows, `e` moves focus to the editor window
 picker_config.win.list.keys["e"] = function(_picker)
