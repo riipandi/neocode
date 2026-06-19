@@ -4,9 +4,15 @@
 local snacks = require("snacks")
 
 -- Escape: Close floating windows or clear search
+-- Skips snacks picker/input/select windows — they handle Escape themselves
 vim.keymap.set({ "n", "t" }, "<Esc>", function()
   if vim.bo.buftype == "terminal" then
     vim.cmd('close')
+    return
+  end
+  -- Let snacks picker/input/select handle their own Escape
+  local ft = vim.bo.filetype or ""
+  if ft:match("^snacks_picker") or ft == "snacks_input" then
     return
   end
   local conf = vim.api.nvim_win_get_config(0)

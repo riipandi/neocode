@@ -359,10 +359,8 @@ snacks.keymap.set("n", "<C-S-s>", function()
     })
 end, { desc = "Toggle floating terminal" })
 
--- ============================================================================
--- Global UI Select Function
--- ============================================================================
-
+-- Override vim.ui.select with snacks picker for consistent UI
+-- Ensures Escape properly cancels (calls callback with nil)
 _G.ui_select = function(prompt, choices, callback)
     if not choices or type(choices) ~= "table" then
         vim.notify("Invalid choices provided to ui_select", vim.log.levels.ERROR)
@@ -373,8 +371,28 @@ _G.ui_select = function(prompt, choices, callback)
         prompt = prompt,
         layout = { preset = "select" },
     }, function(choice)
-        if choice then
-            callback(choice)
-        end
+        -- Always call callback, even on cancel (choice=nil)
+        callback(choice)
     end)
 end
+
+vim.ui.select = _G.ui_select
+
+-- ============================================================================
+-- Snacks Input: Escape in normal mode
+-- ============================================================================
+-- snacks.input maps <Esc> only in insert mode. In normal mode the global
+-- <Esc> would close the floating window without triggering the cancel
+-- callback. This autocmd adds a normal-mode <Esc> that properly closes
+-- the snacks input window, which fires its WinClosed handler -> callback(nil).
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "snacks_input",
+    callback = function(ev)
+        vim.keymap.set("n", "<Esc>", function()
+            local win = vim.api.nvim_get_current_win()
+            if vim.api.nvim_win_is_valid(win) then
+                vim.api.nvim_win_close(win, true)
+            end
+        end, { buffer = ev.buf, silent = true })
+    end,
+})
