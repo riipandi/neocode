@@ -113,51 +113,53 @@ local function preview_item(ctx)
   return table.concat(lines, "\n")
 end
 
---- Buka picker dengan category cycling
---- @param start_cat string|nil
-local function open_picker(start_cat)
-  local cat_idx = #CATEGORIES -- default: "All"
+local _picker_instance = nil --- @type snacks.Picker|nil
 
-  if start_cat then
-    for i, c in ipairs(CATEGORIES) do
-      if c:lower() == start_cat:lower() then
-        cat_idx = i
-        break
-      end
-    end
+--- Buka picker untuk kategori tertentu
+--- @param cat_name string|nil (nil = All)
+--- @param prev_picker snacks.Picker|nil picker sebelumnya (untuk close)
+local function open_picker(cat_name, prev_picker)
+  if prev_picker and not prev_picker.closed then
+    prev_picker:close()
+  end
+  if _picker_instance and not _picker_instance.closed then
+    _picker_instance:close()
   end
 
-  local function current_cat()
-    return cat_idx == #CATEGORIES and nil or CATEGORIES[cat_idx]
+  local items = get_items(cat_name)
+  if #items == 0 then
+    vim.notify("No packages found for this category.", vim.log.levels.WARN, { title = "Mason" })
+    return
   end
 
-  local function title()
-    local name = current_cat() or "All Packages"
-    return "Mason: " .. name
-  end
+  local current_name = cat_name or "All Packages"
 
-  snacks.picker.pick({
-    title = title(),
-    finder = function()
-      return get_items(current_cat())
-    end,
-    layout = {
-      preset = "default",
-    },
+  _picker_instance = snacks.picker.pick({
+    title = "Mason: " .. current_name .. " (" .. #items .. ")",
+    items = items,
+    layout = { preset = "default" },
     format = format_item,
     preview = preview_item,
     actions = {
       tab_next = function(p)
-        cat_idx = cat_idx % #CATEGORIES + 1
-        p.opts.title = title()
-        p:update_titles()
-        p:refresh()
+        local idx = 1
+        if cat_name then
+          for i, c in ipairs(CATEGORIES) do
+            if c == cat_name then idx = i; break end
+          end
+        end
+        idx = idx % #CATEGORIES + 1
+        open_picker(idx >= #CATEGORIES and nil or CATEGORIES[idx], p)
       end,
       tab_prev = function(p)
-        cat_idx = (cat_idx - 2 + #CATEGORIES) % #CATEGORIES + 1
-        p.opts.title = title()
-        p:update_titles()
-        p:refresh()
+        local idx = #CATEGORIES - 1
+        if cat_name then
+          for i, c in ipairs(CATEGORIES) do
+            if c == cat_name then idx = i - 1; break end
+          end
+        end
+        if idx < 1 then idx = #CATEGORIES - 1 end
+        open_picker(idx >= 1 and idx < #CATEGORIES and CATEGORIES[idx] or nil, p)
       end,
       install = function(p)
         local sel = p:selected()
