@@ -77,7 +77,6 @@ local function show_marks_picker()
       local icon = item.current and "● " or "  "
       return icon .. item.idx .. ". " .. item.text
     end,
-    preview = "file",
     actions = {
       confirm = function(p)
         local sel = p:selected()
