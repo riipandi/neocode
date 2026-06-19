@@ -170,7 +170,7 @@ autocmd('LspAttach', {
     snacks.keymap.set('n', '<leader>nd', vim.diagnostic.goto_next, opts)
     snacks.keymap.set('n', '<leader>pd', vim.diagnostic.goto_prev, opts)
     snacks.keymap.set('n', '<leader>d', vim.diagnostic.open_float, opts)
-    snacks.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
+    snacks.keymap.set('n', '<leader>dl', vim.diagnostic.setloclist, opts)
   end,
   desc = 'LSP keymaps',
 })

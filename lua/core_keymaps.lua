@@ -39,12 +39,6 @@ snacks.keymap.set("n", "<leader>c", ":nohlsearch<CR>", { desc = "Clear search hi
 snacks.keymap.set("n", "n", "nzzzv", { desc = "Next search result (centered)" })
 snacks.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
 
--- ============================================================================
--- Action
--- ============================================================================
-
-snacks.keymap.set("n", "<leader>ac", ":nohlsearch<CR>", { desc = "Clear search highlights" })
-snacks.keymap.set("n", "<leader>ad", '<cmd>lua vim.fn.chdir(vim.fn.expand("%:p:h"))<CR>', { desc = "Change directory" })
 
 -- ============================================================================
 -- Editing
@@ -139,13 +133,6 @@ end, { desc = 'Run gotestsum for current file' })
 snacks.keymap.set("n", "<leader>gT", function()
   require('snacks').terminal('gotestsum --format=standard-verbose -- ./...', { title = 'gotestsum all' })
 end, { desc = 'Run gotestsum for all tests' })
-
--- ============================================================================
--- Diagnostics
--- ============================================================================
-
-snacks.keymap.set("n", "<leader>dn", "<cmd>lua vim.diagnostic.jump({count = 1})<CR>", { desc = "Next diagnostic", silent = true })
-snacks.keymap.set("n", "<leader>dp", "<cmd>lua vim.diagnostic.jump({count = -1})<CR>", { desc = "Previous diagnostic", silent = true })
 
 -- ============================================================================
 -- Scratch Buffers
@@ -343,15 +330,6 @@ snacks.keymap.set("n", "<leader>tt", function()
   })
 end, { desc = "Toggle terminal" })
 
--- LazyGit
-snacks.keymap.set("n", "<leader>tg", function()
-  Snacks.lazygit.open()
-end, { desc = "Open LazyGit" })
-
--- Serpl (Search & Replace)
-snacks.keymap.set("n", "<leader>tf", function()
-  Snacks.serpl()
-end, { desc = "Search & Replace" })
 
 -- Resource Monitor (mactop on Mac, btop on Linux)
 -- Install: brew install mactop (Mac) or brew install btop (cross-platform)
