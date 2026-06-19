@@ -13,7 +13,6 @@ vim.pack.add({
 local snacks = require("snacks")
 local miniharp = require('miniharp')
 
--- =============================================================================
 -- Setup — native floating window disabled, we use snacks.picker instead
 -- =============================================================================
 
@@ -23,6 +22,17 @@ miniharp.setup({
   show_on_autoload = false,
   notifications = true,
 })
+
+-- Route miniharp status messages through vim.notify (intercepted by noice)
+-- instead of vim.api.nvim_echo which writes to the command line
+local miniharp_notify = require('miniharp.notify')
+miniharp_notify.echo = function(chunks, _history, _opts)
+  local msg = {}
+  for _, c in ipairs(chunks) do
+    msg[#msg + 1] = type(c) == "table" and c[1] or tostring(c)
+  end
+  vim.notify(table.concat(msg), vim.log.levels.INFO, { title = "Marks", timeout = 1500 })
+end
 
 -- Close native UI if it ever opens (e.g. stale state from old version)
 local ui_close = require('miniharp.ui').close
