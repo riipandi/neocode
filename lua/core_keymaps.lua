@@ -381,7 +381,7 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.keymap.set("n", "q", refocus, { buffer = ev.buf, silent = true })
       else  -- input window (search field)
         -- <Esc> clears the search and returns focus to list
-        vim.keymap.set({ "n", "i" }, "<Esc>", function() picker.input:set(""); picker:focus() end, { buffer = ev.buf, silent = true })
+        vim.keymap.set({ "n", "i" }, "<Esc>", function() picker.input:set(""); picker:find(); picker:focus() end, { buffer = ev.buf, silent = true })
         vim.keymap.set("n", "q", refocus, { buffer = ev.buf, silent = true })
       end
     end)
