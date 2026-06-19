@@ -32,24 +32,20 @@ local function get_items(filter_cat)
     if ok and pkg then
       local cats = pkg.spec.categories or {}
       local cat = "Other"
-      local is_formatter = cats.Formatter
-      local is_linter = cats.Linter
-      local is_lsp = cats.LSP
-      local is_dap = cats.DAP
-      local is_runtime = cats.Runtime
-      local is_compiler = cats.Compiler
-      if is_lsp then
-        cat = "LSP"
-      elseif is_dap then
-        cat = "DAP"
-      elseif is_formatter then
-        cat = "Formatter"
-      elseif is_linter then
-        cat = "Linter"
-      elseif is_compiler then
-        cat = "Compiler"
-      elseif is_runtime then
-        cat = "Runtime"
+      for _, c in ipairs(cats) do
+        if c == "LSP" then
+          cat = "LSP"; break
+        elseif c == "DAP" then
+          cat = "DAP"; break
+        elseif c == "Formatter" then
+          cat = "Formatter"; break
+        elseif c == "Linter" then
+          cat = "Linter"; break
+        elseif c == "Compiler" then
+          cat = "Compiler"; break
+        elseif c == "Runtime" then
+          cat = "Runtime"; break
+        end
       end
 
       if filter_cat and cat ~= filter_cat then
