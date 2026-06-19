@@ -396,11 +396,11 @@ explorer_keys["D"] = function(picker, item)
     local ok, ret = pcall(function() return picker:current() end)
     if ok then item = ret end
   end
-  local is_dir = item.dir == true or item.type == "directory" or (type(item.file) == "string" and item.file:sub(-1) == "/")
-  if is_dir then
-    Snacks.notify.warn("Cannot duplicate a directory")
+  if not item then
+    Snacks.notify.warn("No file selected")
     return
   end
+  local is_dir = item.dir == true or item.type == "directory" or (type(item.file) == "string" and item.file:sub(-1) == "/")
   local src = Snacks.picker.util.path(item)
   if not src then return end
   local dir = vim.fs.dirname(src)
