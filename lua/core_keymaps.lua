@@ -343,14 +343,19 @@ local function collapse_or_up(picker)
     end
   end
 end
--- Shift+Arrow: scroll view by ~1/4 of visible height (3..N rows)
-local function scroll_by(p, delta)
+-- Shift+Arrow: scroll view like <C-e>/<C-y> in normal buffers
+-- The view moves, the cursor stays at the same logical position
+local function scroll_view(p, delta)
   if not p or not p.list then return end
-  local step = math.max(3, math.floor(p.list:height() / 4))
-  p.list:scroll(delta * step, false, true)
+  local list = p.list
+  local step = math.max(3, math.floor(list:height() / 4))
+  local maxtop = math.max(1, list:count() - list:height() + 1)
+  list.top = math.max(1, math.min(maxtop, list.top + delta * step))
+  list.dirty = true
+  list:render()
 end
-local function s_down(p) scroll_by(p, 1) end
-local function s_up(p) scroll_by(p, -1) end
+local function s_down(p) scroll_view(p, 1) end
+local function s_up(p) scroll_view(p, -1) end
 -- Override source-specific explorer keys
 local explorer_keys = require("snacks.picker.config.sources").explorer.win.list.keys
 -- hjkl navigation
