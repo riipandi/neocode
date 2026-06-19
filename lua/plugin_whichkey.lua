@@ -99,6 +99,16 @@ require('which-key').setup({
     { '<leader>gt', desc = 'Go: test (file)', mode = "n" },
     { '<leader>gT', desc = 'Go: test (all)', mode = "n" },
 
+    -- AI / Mistral Codestral (prefix <leader>i = "intelligence")
+    { '<leader>i', group = 'AI / Mistral', mode = "n" },
+    { '<leader>ic', desc = 'Manual complete', mode = "n" },
+    { '<leader>it', desc = 'Toggle AI on/off', mode = "n" },
+    { '<leader>iv', desc = 'Trigger ghost preview', mode = "n" },
+    { '<leader>ix', desc = 'Clear ghost preview', mode = "n" },
+    { '<leader>iA', desc = 'Auth manager', mode = "n" },
+    { '<leader>ih', desc = 'Health check', mode = "n" },
+    { '<leader>ig', desc = 'Generate commit message', mode = "n" },
+
     -- Git Hunk
     { '<leader>h', group = 'Git Hunk', mode = { 'n', 'v' } },
     { '<leader>hb', desc = 'Blame line', mode = "n" },

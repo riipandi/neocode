@@ -124,7 +124,7 @@ require 'core_commands'                  -- User commands
 -- ============================================================================
 require 'core_theme'                      -- Theme configurations
 require 'plugin_editor'                   -- Editor configurations
-require 'plugin_completion'               -- Code completion (blink.cmp)
+require 'plugin_completion'               -- Code completion (blink.cmp + mistral-codestral fork)
 require 'plugin_treesitter'               -- Syntax highlighting (nvim-treesitter)
 require 'plugin_filemanager'              -- File marks (miniharp)
 require 'plugin_fff'                       -- File search (fff)
@@ -145,3 +145,4 @@ require 'language_zig'                    -- Zig language
 require 'language_sql'                    -- SQL (PostgreSQL/SQLite)
 require 'language_protobuf'              -- Protobuf/gRPC
 require 'language_terraform'             -- Terraform/HCL
+require 'plugin_mistral_codestral'        -- AI autocompletion (Codestral via blink.cmp)

@@ -13,4 +13,5 @@ require("core_keymaps.quit")
 require("core_keymaps.tools")
 require("core_keymaps.cmdline")
 require("core_keymaps.explorer")
+require("core_keymaps.ai")                  -- Mistral Codestral AI
 require("core_keymaps.picker")
