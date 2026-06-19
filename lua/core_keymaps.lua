@@ -347,9 +347,4 @@ snacks.keymap.set("n", "E", function()
   end
 end, { desc = "Focus or toggle file explorer" })
 
--- File Picker
-snacks.keymap.set("n", "<leader><space>", function()
-  Snacks.picker.files({
-    layout = { preset = "files" },
-  })
-end, { desc = "Find files" })
+-- File Picker (now handled by fff.nvim, see plugin_fff.lua)

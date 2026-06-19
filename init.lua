@@ -125,6 +125,7 @@ require 'plugin_editor'                   -- Editor configurations
 require 'plugin_completion'               -- Code completion (blink.cmp)
 require 'plugin_treesitter'               -- Syntax highlighting (nvim-treesitter)
 require 'plugin_filemanager'              -- File marks (miniharp)
+require 'plugin_fff'                       -- File search (fff)
 require 'plugin_lualine'                  -- Statusline (lualine)
 require 'plugin_noice'                    -- Cmdline UI replacement (noice)
 require 'plugin_vcs'                      -- Version control (git)

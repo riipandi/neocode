@@ -2,11 +2,12 @@
 -- Snacks.nvim: Central Plugin Hub
 -- ============================================================================
 
--- Replaces: nvim-tree.lua, fzf-lua, nvim-notify, dressing.nvim, indent-blankline.nvim
+-- Replaces: nvim-tree.lua, fzf-lua, telescope (file picker now handled by fff.nvim)
 -- Note: cmdline replacement handled by noice.nvim (plugin_noice.lua)
 
 vim.pack.add({
     { src = "https://github.com/folke/snacks.nvim" },
+    { src = "https://github.com/dmtrKovalenko/fff" },
     { src = "https://github.com/MunifTanjim/nui.nvim" },
     { src = "https://github.com/folke/noice.nvim" },
 })
@@ -30,7 +31,7 @@ snacks.setup({
         },
     },
 
-    -- Fuzzy picker (replaces fzf-lua/telescope)
+    -- Fuzzy picker (replaces fzf-lua/telescope; file finding replaced by fff.nvim)
     picker = {
         enabled = true,
         layouts = {
@@ -336,11 +337,7 @@ snacks.keymap.set("n", "<C-b>", function()
     })
 end, { desc = "Show buffer list" })
 
-snacks.keymap.set("n", "<C-p>", function()
-    snacks.picker.files({
-        layout = { preset = "files" },
-    })
-end, { desc = "Find files" })
+-- NOTE: <C-p> file finding is now handled by fff.nvim (see plugin_fff.lua)
 
 -- ============================================================================
 -- Input & Navigation Keymaps
