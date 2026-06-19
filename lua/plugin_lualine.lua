@@ -233,6 +233,47 @@ require('lualine').setup({
         "filetype",
         padding = { left = 0, right = 1 }
       },
+      -- Mistral Codestral AI status
+      --   idle      ─ codestral-latest          (dim gray)
+      --   waiting   ◐ waiting 1.2s (function)  (orange)
+      --   ready     ● ready • function body    (green)
+      --   error     ✖ error: <message>         (red)
+      {
+        function()
+          local ok, vt = pcall(require, "mistral-codestral.virtual_text")
+          if not ok then return "" end
+          local label = vt.status_label()
+          -- "icon text" — icon first, then a space, then the label
+          if label.icon and label.icon ~= "" then
+            return label.icon .. " " .. label.text
+          end
+          return label.text
+        end,
+        -- Always show so the user knows the model is wired
+        cond = function()
+          return pcall(require, "mistral-codestral.virtual_text")
+        end,
+        color = function()
+          local ok, vt = pcall(require, "mistral-codestral.virtual_text")
+          if not ok then return { fg = "#7a7e85" } end
+          local label = vt.status_label()
+          return { fg = label.color }
+        end,
+        -- Tooltip on hover (lualine supports this)
+        on_click = function()
+          local ok, m = pcall(require, "mistral-codestral")
+          if ok and m and m.config and m.config().enabled then
+            vim.cmd("MistralCodestralToggle")
+          end
+        end,
+        on_click_statusline = function()
+          local ok, vt = pcall(require, "mistral-codestral.virtual_text")
+          if not ok then return "" end
+          return vt.status_label().tooltip
+        end,
+        separator = { left = "" },
+        padding = { left = 0, right = 1 },
+      },
     },
     lualine_z = {
       {
