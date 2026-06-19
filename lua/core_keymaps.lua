@@ -307,7 +307,6 @@ picker_config.win.list.keys["e"] = function(_picker)
   vim.cmd("wincmd p")
 end
 
--- Right arrow expands folder, left arrow collapses folder in explorer
 -- Helper: run an action on the current explorer picker
 local function with_explorer(fn)
   local pickers = require("snacks").picker.get({ source = "explorer" })
@@ -315,7 +314,7 @@ local function with_explorer(fn)
   if picker then fn(picker) end
 end
 
--- `l` or <Right> → expand folder
+-- `l`/`<Right>` → expand folder
 local function expand_dir(picker)
   local item = picker:current()
   if item and item.dir then
@@ -325,10 +324,8 @@ local function expand_dir(picker)
     Actions.update(picker, { refresh = true })
   end
 end
-picker_config.win.list.keys["l"] = function() with_explorer(expand_dir) end
-picker_config.win.list.keys["<Right>"] = function() with_explorer(expand_dir) end
 
--- `h` or <Left> → collapse folder or navigate up
+-- `h`/`<Left>` → collapse folder or navigate up to parent
 local function collapse_or_up(picker)
   local item = picker:current()
   if item and item.dir and item.open then
@@ -346,10 +343,17 @@ local function collapse_or_up(picker)
     end
   end
 end
-picker_config.win.list.keys["h"] = function() with_explorer(collapse_or_up) end
-picker_config.win.list.keys["<Left>"] = function() with_explorer(collapse_or_up) end
 
--- `j`/`k` for list navigation (like arrow keys, which are already mapped)
+-- Override source-specific explorer keys (take precedence over global list keys)
+local explorer_keys = require("snacks.picker.config.sources").explorer.win.list.keys
+explorer_keys["h"] = function() with_explorer(collapse_or_up) end
+explorer_keys["l"] = function() with_explorer(expand_dir) end
+explorer_keys["<Left>"] = function() with_explorer(collapse_or_up) end
+explorer_keys["<Right>"] = function() with_explorer(expand_dir) end
+explorer_keys["j"] = "list_down"
+explorer_keys["k"] = "list_up"
+
+-- `j`/`k` for list navigation in all picker windows
 picker_config.win.list.keys["j"] = "list_down"
 picker_config.win.list.keys["k"] = "list_up"
 
