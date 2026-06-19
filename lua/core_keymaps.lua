@@ -325,7 +325,7 @@ local function expand_dir(picker)
   end
 end
 
--- `h`/`<Left>` → collapse folder or navigate up to parent
+-- `h`/`<Left>` → collapse folder or navigate up to parent (stop at CWD)
 local function collapse_or_up(picker)
   local item = picker:current()
   if item and item.dir and item.open then
@@ -334,14 +334,17 @@ local function collapse_or_up(picker)
     local Actions = require("snacks.explorer.actions")
     Tree:close(item.file)
     Actions.update(picker, { refresh = true })
-  else
-    -- folder collapsed or file → navigate up to parent
-    local parent_dir = vim.fs.dirname(picker:dir())
-    if parent_dir ~= picker:cwd() then
-      picker:set_cwd(parent_dir)
-      picker:find()
-    end
+    return
   end
+  -- folder collapsed or file → navigate up to parent (but not above original CWD)
+  local root_cwd = picker.opts.cwd or vim.fn.getcwd()
+  local parent_dir = vim.fs.dirname(picker:dir())
+  local function norm(path) return vim.fn.fnamemodify(path, ":p"):gsub("/$", "") end
+  local n_root, n_parent = norm(root_cwd), norm(parent_dir)
+  if n_parent == n_root then return end  -- already at root CWD
+  if n_parent:sub(1, #n_root) ~= n_root then return end  -- parent is outside CWD
+  picker:set_cwd(parent_dir)
+  picker:find()
 end
 -- Shift+Arrow: jump cursor by N items (auto-scroll follows)
 local function jump_by(p, delta)
