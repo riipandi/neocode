@@ -5,19 +5,17 @@
 -- Lazy load: on FileType go/gomod (project detection via filetype)
 -- AI features: disabled
 -- Formatter: goimports via gopls (on save)
--- Dependencies: ray-x/guihua.lua (optional, for UI components)
 -- Tools: gopls, goimports, golangci-lint, gotestsum (via Mason)
 -- =============================================================================
 
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
--- Register go.nvim (and optional guihua.lua for better UI).
--- During init processing, vim.pack.add defaults to load=false, so the plugin
--- is installed on disk and added to runtimepath but not yet configured.
+-- Register go.nvim. During init processing, vim.pack.add defaults to
+-- load=false, so the plugin is installed on disk and added to runtimepath
+-- but not yet configured.
 vim.pack.add({
   { src = "https://github.com/ray-x/go.nvim" },
-  { src = "https://github.com/ray-x/guihua.lua" }, -- optional: float term, codelens GUI
 })
 
 -- Guard: run go.setup() only once per session
