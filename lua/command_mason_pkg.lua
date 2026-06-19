@@ -193,3 +193,11 @@ end, {
     return { "LSP", "Formatter", "Linter", "DAP", "Runtime", "Compiler", "All" }
   end,
 })
+
+-- ============================================================================
+-- Keymaps
+-- ============================================================================
+local snacks = require("snacks")
+snacks.keymap.set("n", "<leader>tm", function()
+  vim.cmd("MasonPkg")
+end, { desc = "Mason: manage packages" })

@@ -113,6 +113,7 @@ require('which-key').setup({
     { '<leader>tt', desc = 'Terminal', mode = "n" },
     { '<leader>tg', desc = 'LazyGit', mode = "n" },
     { '<leader>tf', desc = 'Serpl', mode = "n" },
+    { '<leader>tm', desc = 'Mason: manage packages', mode = "n" },
 
     -- Quit
     { '<leader>q', group = 'Quit', mode = "n" },
