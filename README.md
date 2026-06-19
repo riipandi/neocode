@@ -130,6 +130,17 @@ ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
 |---------|-------------|
 | `:MasonPkg [category]` | Browse and manage Mason packages via snacks.picker (e.g. `:MasonPkg LSP`, `:MasonPkg Formatter`, `:MasonPkg all`) |
 | `:CleanNvim` | Clear nvim cache and `nvim-pack-lock.json` for fresh plugin regeneration |
+| `:CleanNvim` | Clear nvim cache and `nvim-pack-lock.json` for fresh plugin regeneration |
+
+| `:Format [N]` | Format the current buffer (optionally to line N) |
+
+| `:Update` | Update all plugins via `vim.pack.update()` |
+
+| `:LspRestart` | Restart all attached LSP clients |
+
+| `:HealthCheck` | Run health check (Neovim version, required tools, LSP, pack-lock) |
+
+| `:ReloadConfig` | Reload Neovim config without restarting |
 
 ## Features
 
@@ -138,7 +149,12 @@ ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
 - **Miniharp file marks** integrated with snacks.picker (no native floating window; noice notifications for all status messages)
 - **Native LSP and Tool installer** via mason-registry, mason-lspconfig, and mason-tool-installer
 - **Consistent UI** through noice.nvim, snacks.notifier, and snacks.picker — all status messages, dialogs, and pickers share the same look
-- **Telescope-style find files** via fff.nvim (Rust binary, ripgrep/fzf replacement)
+- **Telescope-style find files** via fff.nvim (Rust binary, ripgrep/fzf replacement) |
+
+- **LSP action toggles** (`<leader>li/ld/lf/ls/lI`) for inlay hints, diagnostics, format on save, smooth scroll, and client info |
+
+- **Modular architecture** — each file under `lua/` has single responsibility (e.g. `core_keymaps/explorer.lua` only handles file explorer keymaps) |
+
 
 
 

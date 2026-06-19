@@ -191,6 +191,27 @@ Requires installation:
 | Mason: uninstall package | `x` (in picker) | Uninstall the selected package(s) |
 | Mason: cycle category | `<Tab>` / `<S-Tab>` (in picker) | Cycle through package categories |
 
+
+## LSP Toggles (`<leader>l`)
+
+| Action | Shortcut | Description |
+|--------|----------|-------------|
+| Toggle inlay hints | `<leader>li` | Show/hide LSP inlay hints |
+| Toggle diagnostics | `<leader>ld` | Enable/disable diagnostics display |
+| Toggle format on save | `<leader>lf` | Enable/disable auto-format on save |
+| Toggle smooth scroll | `<leader>ls` | Enable/disable smooth scroll animation |
+| LSP client info | `<leader>lI` | Show attached LSP clients and their config |
+
+## User Commands
+
+| Command | Description |
+|---------|-------------|
+| `:Format` | Format the current buffer (`:N Format` formats lines 1-N) |
+| `:Update` | Update all plugins (alias for `vim.pack.update()`) |
+| `:LspRestart` | Restart all attached LSP clients |
+| `:HealthCheck` | Run health check (Neovim version, tools, LSP, pack-lock) |
+| `:ReloadConfig` | Reload Neovim config without restarting |
+
 ## Editing
 
 | Action              | WhichKey | Shortcut    |
