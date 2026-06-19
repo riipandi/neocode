@@ -374,8 +374,10 @@ vim.api.nvim_create_autocmd("FileType", {
     local function jump(delta) picker.list:move(delta); picker:update() end
     vim.keymap.set("n", "<C-d>", function() jump(2) end, { buffer = ev.buf, silent = true })
     vim.keymap.set("n", "<C-u>", function() jump(-2) end, { buffer = ev.buf, silent = true })
-    vim.keymap.set("n", "}", function() jump(2) end, { buffer = ev.buf, silent = true })
-    vim.keymap.set("n", "{", function() jump(-2) end, { buffer = ev.buf, silent = true })
+    vim.keymap.set("n", "]", function() jump(2) end, { buffer = ev.buf, silent = true })
+    vim.keymap.set("n", "[", function() jump(-2) end, { buffer = ev.buf, silent = true })
+    vim.keymap.set("n", "}", function() jump(4) end, { buffer = ev.buf, silent = true })
+    vim.keymap.set("n", "{", function() jump(-4) end, { buffer = ev.buf, silent = true })
   end,
 })
 

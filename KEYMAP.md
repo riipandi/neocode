@@ -57,8 +57,10 @@
 | `l` / `<Right>` | Expand | Open folder or confirm file |
 | `j` / `<Down>` | Move down | Navigate list down |
 | `k` / `<Up>` | Move up | Navigate list up |
-| `<C-d>` / `}` | Jump down | Move cursor down 2 items (like paragraph jump) |
-| `<C-u>` / `{` | Jump up | Move cursor up 2 items (like paragraph jump) |
+| `<C-d>` / `]` | Jump down 2 | Small jump (like section jump) |
+| `<C-u>` / `[` | Jump up 2 | Small jump |
+| `}` | Jump down 4 | Medium jump (like paragraph jump) |
+| `{` | Jump up 4 | Medium jump |
 | `c` | Copy | Copy file(s) to target directory |
 | `p` | Paste | Paste files from clipboard |
 | `m` | Move | Move file(s) with confirmation |
