@@ -1,55 +1,42 @@
 -- ============================================================================
--- Mason Pkg: Kelola Mason packages via snacks.picker.select
+-- Mason Pkg: Kelola Mason packages via snacks.picker
 -- ============================================================================
--- Tanpa custom source/format/preview — hanya nested select calls.
--- Ini menghindari error dari snacks.picker.pick() dengan raw items.
+-- Tampilan tabular dengan columns: status icon, name, category, languages
+-- Keymaps:
+--   i / I  → install selected package(s)
+--   x / X  → uninstall selected package(s)
+--   u / U  → update Mason registries & check for updates
+--   Enter  → action sub-menu (install/uninstall/details)
+--   <C-s>  → toggle category filter
+--   Tab    → multi-select
+--
+-- Untuk tree navigation (expand/collapse) seperti Mason native:
+--   :Mason  → Mason built-in TUI (via <leader>tM)
 -- ============================================================================
 
 local registry = require("mason-registry")
+local snacks = require("snacks")
 
---- Kategorikan satu package Mason berdasarkan spec.categories[]
---- @param cats string[]|nil
---- @return string
+--- Kategorikan package berdasarkan spec.categories[]
 local function get_category(cats)
-  if not cats then
-    return "Other"
-  end
+  if not cats then return "Other" end
   for _, c in ipairs(cats) do
-    if c == "LSP" then
-      return "LSP"
-    elseif c == "DAP" then
-      return "DAP"
-    elseif c == "Formatter" then
-      return "Formatter"
-    elseif c == "Linter" then
-      return "Linter"
-    elseif c == "Compiler" then
-      return "Compiler"
-    elseif c == "Runtime" then
-      return "Runtime"
-    end
+    if c == "LSP" then return "LSP"
+    elseif c == "DAP" then return "DAP"
+    elseif c == "Formatter" then return "Formatter"
+    elseif c == "Linter" then return "Linter"
+    elseif c == "Compiler" then return "Compiler"
+    elseif c == "Runtime" then return "Runtime" end
   end
   return "Other"
 end
 
---- Format satu baris item package untuk ditampilkan di select
---- @param name string
---- @param cat string
---- @param installed boolean
---- @return string
-local function format_line(name, cat, installed)
-  local icon = installed and "✓" or " "
-  local cat_tag = "[" .. cat .. "]"
-  return icon .. " " .. name .. "  " .. cat_tag
-end
-
---- Ambil daftar packages, filter by category, return sebagai array of string
+--- Bangun daftar items untuk picker
 --- @param filter_cat string|nil
---- @return string[], table<string, table>
-local function get_package_list(filter_cat)
+--- @return snacks.picker.finder.Item[]
+local function get_items(filter_cat)
   local names = registry.get_all_package_names()
-  local lines = {}
-  local meta = {} --- @type table<string, {name:string, cat:string, installed:boolean, pkg:any}>
+  local items = {}
 
   for _, name in ipairs(names) do
     local ok, pkg = pcall(registry.get_package, name)
@@ -57,102 +44,190 @@ local function get_package_list(filter_cat)
       local cat = get_category(pkg.spec.categories)
       if not filter_cat or cat == filter_cat then
         local installed = pkg:is_installed()
-        table.insert(lines, format_line(name, cat, installed))
-        meta[lines[#lines]] = {
+        local langs = vim.tbl_keys(pkg.spec.languages or {})
+        local lang_str = #langs > 0 and table.concat(langs, ", ") or ""
+        local icon = installed and "✓" or " "
+
+        table.insert(items, {
           name = name,
           cat = cat,
           installed = installed,
+          installed_num = installed and 1 or 0,
+          languages = lang_str,
           pkg = pkg,
-        }
+          description = (pkg.spec.description or ""):gsub("%s+", " "):sub(1, 120),
+          homepage = pkg.spec.homepage or "",
+          -- Display text (digunakan untuk pencarian)
+          text = name .. " " .. cat .. " " .. lang_str,
+        })
       end
     end
   end
 
   -- Urut: installed first, lalu alfabetis
-  table.sort(lines, function(a, b)
-    local ma, mb = meta[a], meta[b]
-    if ma.installed ~= mb.installed then
-      return ma.installed
-    end
-    return ma.name < mb.name
+  table.sort(items, function(a, b)
+    if a.installed ~= b.installed then return a.installed end
+    return a.name < b.name
   end)
 
-  return lines, meta
+  return items
 end
 
---- Tampilkan daftar package via snacks.picker.select, lalu aksi
---- @param filter_cat string|nil
-local function open_selector(filter_cat)
-  local lines, meta = get_package_list(filter_cat)
+--- Install/uninstall packages
+--- @param items table[]
+--- @param action "install"|"uninstall"
+local function toggle_packages(items, action)
+  for _, item in ipairs(items) do
+    local ok, pkg = pcall(registry.get_package, item.name)
+    if ok and pkg then
+      if action == "install" then
+        pkg:install()
+      else
+        pkg:uninstall()
+      end
+    end
+  end
+end
 
-  -- vim.ui.select is already backed by snacks.picker (ui_select = true)
+--- Tampilan tabular: columns [✓/ ] name [category] languages
+local function format_item(item)
+  local icon = item.installed and "✓" or " "
+  local pad = (" "):rep(math.max(0, 30 - #item.name))
+  local cols = {
+    { icon .. " " .. item.name .. pad, item.installed and "String" or "NonText" },
+    { "[" .. item.cat .. "]", "Comment" },
+    { "  " .. item.languages, "DiagnosticHint" },
+  }
+  return cols
+end
+
+--- Preview: detail package
+local function preview_item(ctx)
+  local item = ctx.item
+  if not item then return "" end
+
+  local lines = {}
+  table.insert(lines, "# " .. item.name)
+  table.insert(lines, "")
+  table.insert(lines, "**Category:** " .. item.cat)
+  table.insert(lines, "**Status:** " .. (item.installed and "✅ Installed" or "⬜ Not installed"))
+  if item.languages and item.languages ~= "" then
+    table.insert(lines, "**Languages:** " .. item.languages)
+  end
+  if item.description and item.description ~= "" then
+    table.insert(lines, "")
+    table.insert(lines, item.description)
+  end
+  if item.homepage and item.homepage ~= "" then
+    table.insert(lines, "")
+    table.insert(lines, "**Homepage:** " .. item.homepage)
+  end
+  table.insert(lines, "")
+  table.insert(lines, "---")
+  table.insert(lines, "i  install  |  x  uninstall  |  u  update")
+  table.insert(lines, "Enter  actions  |  Tab  multi-select")
+  return table.concat(lines, "\n")
+end
+
+--- Buka picker Mason
+--- @param filter_cat string|nil
+local function open_picker(filter_cat)
+  local items = get_items(filter_cat)
+  if #items == 0 then
+    vim.notify("No packages found for this category.", vim.log.levels.WARN, { title = "Mason" })
+    return
+  end
 
   local title = filter_cat and ("Mason: " .. filter_cat) or "Mason: All Packages"
+  local cat_filter = filter_cat -- mutable untuk toggle <C-s>
 
-  vim.ui.select(lines, {
-    prompt = title .. " (" .. #lines .. " packages)",
-    format_item = function(line)
-      return line
-    end,
-  }, function(line)
-    if not line then
-      return
-    end
-
-    local m = meta[line]
-    if not m then
-      return
-    end
-
-    local pkg, name = m.pkg, m.name
-    local actions = m.installed and { "Uninstall", "Details", "Cancel" } or { "Install", "Details", "Cancel" }
-
-    vim.ui.select(actions, {
-      prompt = name .. "  [" .. m.cat .. "]",
-      format_item = function(a)
-        return a
+  snacks.picker.pick({
+    title = title .. " (" .. #items .. ")",
+    items = items,
+    format = format_item,
+    preview = preview_item,
+    actions = {
+      install = function(p)
+        local sel = p:selected()
+        if #sel == 0 then
+          snacks.notify.info("Select packages first. Use <Tab> for multi-select.")
+          return
+        end
+        toggle_packages(sel, "install")
+        local names = vim.tbl_map(function(i) return i.name end, sel)
+        snacks.notify.info("Installing: " .. table.concat(names, ", ") .. ". Check :MasonLog.")
+        p:close()
       end,
-    }, function(action)
-      if action == "Install" then
-        local ok_install, err = pcall(function()
-          pkg:install()
+      uninstall = function(p)
+        local sel = p:selected()
+        if #sel == 0 then
+          snacks.notify.info("Select packages first. Use <Tab> for multi-select.")
+          return
+        end
+        toggle_packages(sel, "uninstall")
+        local names = vim.tbl_map(function(i) return i.name end, sel)
+        snacks.notify.info("Uninstalled: " .. table.concat(names, ", "))
+        p:close()
+      end,
+      update = function(_p)
+        pcall(registry.update)
+        snacks.notify.info("Mason registries updated.")
+      end,
+      confirm = function(p)
+        local sel = p:selected()
+        if #sel == 0 then return end
+        local item = sel[1]
+        local choices = item.installed and { "Uninstall", "Details", "Cancel" } or { "Install", "Details", "Cancel" }
+        vim.ui.select(choices, {
+          prompt = item.name .. "  [" .. item.cat .. "]",
+        }, function(choice)
+          if choice == "Install" then
+            local ok, err = pcall(function() item.pkg:install() end)
+            if ok then snacks.notify.info("Installing " .. item.name .. ". Check :MasonLog.")
+            else vim.notify("Failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Mason" }) end
+            p:close()
+          elseif choice == "Uninstall" then
+            pcall(function() item.pkg:uninstall() end)
+            snacks.notify.info("Uninstalled " .. item.name .. ".")
+            p:close()
+          elseif choice == "Details" then
+            local info = {
+              "## " .. item.name,
+              "",
+              "  **Category:** " .. item.cat,
+              "  **Status:** " .. (item.installed and "✅ Installed" or "⬜ Not installed"),
+            }
+            if item.languages ~= "" then
+              table.insert(info, "  **Languages:** " .. item.languages)
+            end
+            if item.description ~= "" then
+              table.insert(info, "")
+              table.insert(info, "  " .. item.description)
+            end
+            if item.homepage ~= "" then
+              table.insert(info, "")
+              table.insert(info, "  **Homepage:** " .. item.homepage)
+            end
+            vim.notify(table.concat(info, "\n"), vim.log.levels.INFO, {
+              title = "Mason: " .. item.name, timeout = 8000,
+            })
+          end
         end)
-        if ok_install then
-          vim.notify('Installing ' .. name .. '. Check :MasonLog.', vim.log.levels.INFO, { title = "Mason" })
-        else
-          vim.notify('Failed: ' .. tostring(err), vim.log.levels.ERROR, { title = "Mason" })
-        end
-      elseif action == "Uninstall" then
-        pcall(function()
-          pkg:uninstall()
-        end)
-        vim.notify('Uninstalled ' .. name .. '.', vim.log.levels.INFO, { title = "Mason" })
-      elseif action == "Details" then
-        local info = {
-          (m.installed and "✅" or "⬜") .. " " .. name,
-          "",
-          "  Category:    " .. m.cat,
-          "  Status:     " .. (m.installed and "Installed" or "Not installed"),
-        }
-        local langs = vim.tbl_keys(pkg.spec.languages or {})
-        if #langs > 0 then
-          table.insert(info, "  Languages:  " .. table.concat(langs, ", "))
-        end
-        if pkg.spec.description and pkg.spec.description ~= "" then
-          table.insert(info, "")
-          table.insert(info, "  Description: " .. pkg.spec.description)
-        end
-        if pkg.spec.homepage and pkg.spec.homepage ~= "" then
-          table.insert(info, "")
-          table.insert(info, "  Homepage:   " .. pkg.spec.homepage)
-        end
-        vim.notify(table.concat(info, "\n"), vim.log.levels.INFO, {
-          title = "Mason: " .. name,
-          timeout = 8000,
-        })
-      end
-    end)
-  end)
+      end,
+    },
+    win = {
+      input = {
+        keys = {
+          ["i"] = { "install", mode = { "n", "i" } },
+          ["I"] = { "install", mode = { "n", "i" } },
+          ["x"] = { "uninstall", mode = { "n", "i" } },
+          ["X"] = { "uninstall", mode = { "n", "i" } },
+          ["u"] = { "update", mode = { "n", "i" } },
+          ["U"] = { "update", mode = { "n", "i" } },
+        },
+      },
+    },
+  })
 end
 
 -- ============================================================================
@@ -161,33 +236,11 @@ end
 
 vim.api.nvim_create_user_command("MasonPkg", function(opts)
   local raw = opts.args or ""
-  -- Normalize "all" (any case) to nil (no filter)
   local filter = raw ~= "" and raw or nil
-  if filter and filter:lower() == "all" then
-    filter = nil
-  end
-  if filter then
-    open_selector(filter)
-    return
-  end
-
-  -- Tanpa argumen: pilih kategori dulu
-  local categories = { "LSP", "Formatter", "Linter", "DAP", "Runtime", "Compiler", "All" }
-
-  -- vim.ui.select is already backed by snacks.picker (ui_select = true)
-
-  vim.ui.select(categories, {
-    prompt = "Mason: Select category",
-    format_item = function(c)
-      return c
-    end,
-  }, function(choice)
-    if choice then
-      open_selector(choice == "All" and nil or choice)
-    end
-  end)
+  if filter and filter:lower() == "all" then filter = nil end
+  open_picker(filter)
 end, {
-  desc = "Browse and manage Mason packages",
+  desc = "Browse & manage Mason packages",
   nargs = "?",
   complete = function()
     return { "LSP", "Formatter", "Linter", "DAP", "Runtime", "Compiler", "All" }
@@ -197,7 +250,11 @@ end, {
 -- ============================================================================
 -- Keymaps
 -- ============================================================================
-local snacks = require("snacks")
+
 snacks.keymap.set("n", "<leader>tm", function()
   vim.cmd("MasonPkg")
 end, { desc = "Mason: manage packages" })
+
+snacks.keymap.set("n", "<leader>tM", function()
+  vim.cmd("Mason")
+end, { desc = "Mason: open TUI (tree view)" })

@@ -114,6 +114,7 @@ require('which-key').setup({
     { '<leader>tg', desc = 'LazyGit', mode = "n" },
     { '<leader>tf', desc = 'Serpl', mode = "n" },
     { '<leader>tm', desc = 'Mason: manage packages', mode = "n" },
+    { '<leader>tM', desc = 'Mason: TUI (tree view)', mode = "n" },
 
     -- Quit
     { '<leader>q', group = 'Quit', mode = "n" },
