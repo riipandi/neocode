@@ -416,7 +416,8 @@ explorer_keys["D"] = function(_, _)
         return
       end
       Snacks.picker.util.copy_path(src, dst)
-      require("snacks.explorer.tree").refresh(dir)
+      local Tree = require("snacks.explorer.tree")
+      Tree:refresh(dir)
       require("snacks.explorer.actions").update(picker, { target = dst })
     end)
   end)
