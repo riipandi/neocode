@@ -1,9 +1,9 @@
 -- ============================================================================
--- Serpl Integration: Search & Replace TUI
+-- swpui Integration: Search & Replace TUI
 -- ============================================================================
 
----@class snacks.serpl
----@overload fun(opts?: snacks.serpl.Config): snacks.win
+---@class snacks.swpui
+---@overload fun(opts?: snacks.swpui.Config): snacks.win
 local M = setmetatable({}, {
   __call = function(t, ...)
     return t.open(...)
@@ -11,23 +11,23 @@ local M = setmetatable({}, {
 })
 
 M.meta = {
-  desc = "Open Serpl (VSCode-like search & replace TUI) in a floating window",
+  desc = "Open swpui (VSCode-like search & replace TUI) in a floating window",
 }
 
----@class snacks.serpl.Config: snacks.terminal.Opts
----@field args? string[] Custom arguments for serpl
+---@class snacks.swpui.Config: snacks.terminal.Opts
+---@field args? string[] Custom arguments for swpui
 ---@field auto_cwd? boolean Automatically detect project root (default: true)
 local defaults = {
   auto_cwd = true,
   args = nil,
-  win = { style = "serpl" },
+  win = { style = "swpui" },
 }
 
 -- ============================================================================
 -- Custom Window Style
 -- ============================================================================
 
-Snacks.config.style("serpl", {
+Snacks.config.style("swpui", {
   width = 0.9,
   height = 0.9,
   border = "rounded",
@@ -59,25 +59,19 @@ end
 -- Main Functions
 -- ============================================================================
 
---- Open serpl in a floating window
+--- Open swpui in a floating window
 --- Auto-detects git root as project root
----@param opts? snacks.serpl.Config
+---@param opts? snacks.swpui.Config
 function M.open(opts)
-  opts = Snacks.config.get("serpl", defaults, opts)
+  opts = Snacks.config.get("swpui", defaults, opts)
 
-  local cmd = { "serpl" }
+  local cmd = { "swp" }
   vim.list_extend(cmd, opts.args or {})
 
   -- Detect working directory
   local cwd = opts.cwd
   if not cwd then
     cwd = opts.auto_cwd and get_git_root() or vim.fn.getcwd()
-  end
-
-  -- Add project root argument if not already specified
-  if not (opts.args and (vim.tbl_contains(opts.args, "--project-root") or vim.tbl_contains(opts.args, "-p"))) then
-    table.insert(cmd, "--project-root")
-    table.insert(cmd, cwd)
   end
 
   opts.cwd = cwd
@@ -90,15 +84,15 @@ end
 
 ---@private
 function M.health()
-  local ok = vim.fn.executable("serpl") == 1
-  Snacks.health[ok and "ok" or "error"]("{serpl} %sinstalled", ok and "" or "not ")
+  local ok = vim.fn.executable("swp") == 1
+  Snacks.health[ok and "ok" or "error"]("{swpui} %sinstalled", ok and "" or "not ")
 
   if ok then
-    local handle = io.popen("serpl --version 2>&1")
+    local handle = io.popen("swp --version 2>&1")
     if handle then
       local version = handle:read("*a")
       handle:close()
-      Snacks.health.ok("serpl version: %s", vim.trim(version))
+      Snacks.health.ok("swpui version: %s", vim.trim(version))
     end
   end
 end

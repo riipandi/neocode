@@ -21,6 +21,7 @@ require('lazydev').setup({
 -- Configuration for Rust crates management plugin
 -- ============================================================================
 require('blink.cmp').setup({
+  term = { enabled = false },
   keymap = {
     preset = 'default',
     ['<Esc>'] = { 'fallback' },

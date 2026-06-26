@@ -140,7 +140,7 @@ require('which-key').setup({
 
     -- Search
     { '<leader>s', group = 'Search', mode = "n" },
-    { '<leader>sr', desc = 'Serpl', mode = "n" },
+    { '<leader>sr', desc = 'swpui', mode = "n" },
     { '<leader>c', desc = 'Clear search', mode = "n" },
 
     -- Tools
@@ -168,7 +168,7 @@ require('which-key').setup({
     { "g", group = "Goto", mode = "v" },
 
     -- Global
-    { '<C-S-f>', desc = 'Global Search (Serpl)', mode = "n" },
+    { '<C-S-f>', desc = 'Global Search (swpui)', mode = "n" },
   },
 
   -- Disable for certain filetypes

@@ -49,7 +49,7 @@ brew install oxlint oxfmt deno
 brew tap homebrew/cask-fonts
 brew install --cask font-jetbrains-mono font-jetbrains-mono-nerd-font
 brew install --cask font-maple-mono font-maple-mono-nf
-brew install btop chafa markdownlint-cli serpl
+brew install btop chafa markdownlint-cli swpui
 brew install jesseduffield/lazygit/lazygit
 ```
 

@@ -157,8 +157,8 @@ Inside the marks picker (`<C-l>`):
 
 | Action               | WhichKey | Shortcut     |
 |----------------------|----------|--------------|
-| Serpl (search/replace)| `sr`    | `<leader>sr` |
-| Global search (Serpl)|          | `<C-S-f>`    |
+| swpui (search/replace)| `sr`    | `<leader>sr` |
+| Global search (swpui)|          | `<C-S-f>`    |
 | Live grep            | `fw`     | `<leader>fw` |
 | Fuzzy grep           | `fz`     | `<leader>fz` |
 | Grep cursor word     | `fc`     | `<leader>fc` |

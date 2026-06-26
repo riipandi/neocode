@@ -191,8 +191,8 @@ snacks.config.styles.terminal = {
     },
 }
 
--- Serpl: Search & Replace TUI (large, but less than lazygit)
-snacks.config.styles.serpl = {
+-- swpui: Search & Replace TUI
+snacks.config.styles.swpui = {
     width = 0.85,
     height = 0.85,
     border = "rounded",
@@ -335,18 +335,18 @@ snacks.keymap.set("n", "<leader>gs", function()
 end, { desc = "Git status" })
 
 -- ============================================================================
--- Serpl Keymaps
+-- swpui Keymaps
 -- ============================================================================
 
 -- Global search & replace (VSCode-style Ctrl+Shift+F)
 snacks.keymap.set("n", "<C-S-f>", function()
-    snacks.serpl.open()
-end, { desc = "Global search & replace (Serpl)" })
+    snacks.swpui.open()
+end, { desc = "Global search & replace (swpui)" })
 
--- Alternative keymap for serpl
+-- Alternative keymap for swpui
 snacks.keymap.set("n", "<leader>sr", function()
-    snacks.serpl.open()
-end, { desc = "Global search & replace (Serpl)" })
+    snacks.swpui.open()
+end, { desc = "Global search & replace (swpui)" })
 
 -- ============================================================================
 -- Terminal Keymaps
