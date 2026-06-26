@@ -263,7 +263,7 @@ The status is driven by three functions on `mistral-codestral.virtual_text`:
 - **snacks:** Auth manager picker (`Status` / `Set` / `Clear` / `Validate`)
 - **blink.cmp:** Source provider registered via `add_source_provider`; the `<C-g>` keymap in insert mode triggers AI explain on the selected item
 - **noice:** All `vim.notify` calls go through the existing noice integration automatically
-```
+
 ## Features
 
 - **Custom file explorer** via `snacks.explorer` with hjkl navigation, Shift+Arrow scroll, file operations (c/p/m/d/D/y/Y/r/a), and Vim-style editor focus preservation when closing buffers
