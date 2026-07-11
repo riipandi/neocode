@@ -77,6 +77,10 @@
       "rev": "a8fd9dadba00119f1d610936ef694515c448a47c",
       "src": "https://github.com/vieitesss/miniharp.nvim"
     },
+    "multicursor.nvim": {
+      "rev": "704b99f10a72cc05d370cfeb294ff83412a8ab55",
+      "src": "https://github.com/jake-stewart/multicursor.nvim"
+    },
     "noice.nvim": {
       "rev": "7bfd942445fb63089b59f97ca487d605e715f155",
       "src": "https://github.com/folke/noice.nvim"

@@ -96,53 +96,54 @@ ln -s ~/.config/nvim/starship.toml ~/.config/starship.toml
 
 ## Dependencies (Plugins)
 
-| Plugin                   | Description                                             |
-|--------------------------|---------------------------------------------------------|
-| **snacks.nvim**          | All-in-one UI utilities (picker, explorer, etc.)        |
-| **noice.nvim**           | Cmdline UI replacement (floating popup)                 |
-| **nui.nvim**             | UI component library for noice                          |
-| **blink.cmp**            | Code completion with snippet support                    |
+| Plugin                       | Description                                                   |
+|------------------------------|---------------------------------------------------------------|
+| **snacks.nvim**              | All-in-one UI utilities (picker, explorer, etc.)              |
+| **noice.nvim**               | Cmdline UI replacement (floating popup)                       |
+| **nui.nvim**                 | UI component library for noice                                |
+| **blink.cmp**                | Code completion with snippet support                          |
 | **mistral-codestral (fork)** | AI autocompletion via Mistral Codestral (FIM, blink.cmp only) |
-| **lazydev.nvim**         | Neovim development                                      |
-| **colorful-menu.nvim**   | Colorful completion menus                               |
-| **nvim-autopairs**       | Auto-close brackets and pairs                           |
-| **todo-comments.nvim**   | Highlight TODO comments                                 |
-| **urlview.nvim**         | Open URLs from text files                               |
-| **cloak.nvim**           | Blur lines for sensitive info                           |
-| **conform.nvim**         | Async code formatting                                   |
-| **nvim-treesitter**      | Syntax highlighting                                     |
-| **trouble.nvim**         | Pretty diagnostics UI                                   |
-| **fff.nvim**             | Ripgrep/fzf replacement for file & grep search          |
-| **ray-x/go.nvim**        | Go development toolkit (LSP, formatting, testing)       |
-| **miniharp.nvim**        | Quick file marks; snacks.picker UI; noice notifications |
-| **lsp_signature.nvim**   | LSP signature help                                      |
-| **fidget.nvim**          | LSP progress indicator                                  |
-| **nvim-lspconfig**       | LSP configuration                                       |
-| **mason.nvim**           | LSP package manager                                     |
-| **mason-lspconfig**      | Mason LSP server config helper                          |
-| **mason-tool-installer** | Automatic tool installation                             |
-| **gitsigns.nvim**        | Git signs in gutter                                     |
-| **which-key.nvim**       | Keybinding helper                                       |
-| **lualine.nvim**         | Statusline                                              |
-| **plenary.nvim**         | Lua utility library (dependency)                        |
+| **lazydev.nvim**             | Neovim development                                            |
+| **colorful-menu.nvim**       | Colorful completion menus                                     |
+| **nvim-autopairs**           | Auto-close brackets and pairs                                 |
+| **todo-comments.nvim**       | Highlight TODO comments                                       |
+| **urlview.nvim**             | Open URLs from text files                                     |
+| **cloak.nvim**               | Blur lines for sensitive info                                 |
+| **conform.nvim**             | Async code formatting                                         |
+| **nvim-treesitter**          | Syntax highlighting                                           |
+| **trouble.nvim**             | Pretty diagnostics UI                                         |
+| **fff.nvim**                 | Ripgrep/fzf replacement for file & grep search                |
+| **ray-x/go.nvim**            | Go development toolkit (LSP, formatting, testing)             |
+| **miniharp.nvim**            | Quick file marks; snacks.picker UI; noice notifications       |
+| **lsp_signature.nvim**       | LSP signature help                                            |
+| **fidget.nvim**              | LSP progress indicator                                        |
+| **nvim-lspconfig**           | LSP configuration                                             |
+| **mason.nvim**               | LSP package manager                                           |
+| **mason-lspconfig**          | Mason LSP server config helper                                |
+| **mason-tool-installer**     | Automatic tool installation                                   |
+| **gitsigns.nvim**            | Git signs in gutter                                           |
+| **which-key.nvim**           | Keybinding helper                                             |
+| **lualine.nvim**             | Statusline                                                    |
+| **plenary.nvim**             | Lua utility library (dependency)                              |
+| **multicursor.nvim**         | VS Code-style multiple cursors (jake-stewart fork)            |
 
 ## Custom Commands
 
-| Command                              | Description                                                                                                       |
-|--------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| `:MasonPkg [category]`               | Browse and manage Mason packages via snacks.picker (e.g. `:MasonPkg LSP`, `:MasonPkg Formatter`, `:MasonPkg all`) |
-| `:MistralCodestralComplete`          | Request an inline Codestral completion (FIM) for the current cursor position                                      |
-| `:MistralCodestralToggle`            | Globally enable/disable Codestral completions                                                                      |
-| `:MistralCodestralAuth ...`          | Manage the API key (`status`, `set`, `clear`, `validate`)                                                          |
-| `:MistralCodestralVirtualComplete`   | Manually trigger the ghost-text preview                                                                            |
-| `:MistralCodestralVirtualClear`      | Clear any active ghost-text preview                                                                                |
-| `:MistralCodestralHealth`            | Run the fork's :checkhealth-style report                                                                            |
-| `:CleanNvim`                         | Clear nvim cache and `nvim-pack-lock.json` for fresh plugin regeneration                                          |
-| `:Format [N]`                        | Format the current buffer (optionally to line N)                                                                  |
-| `:Update`                            | Update all plugins via `vim.pack.update()`                                                                        |
-| `:LspRestart`                        | Restart all attached LSP clients                                                                                  |
-| `:HealthCheck`                       | Run health check (Neovim version, required tools, LSP, pack-lock)                                                 |
-| `:ReloadConfig`                      | Reload Neovim config without restarting                                                                           |
+| Command                            | Description                                                                                                       |
+|------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| `:MasonPkg [category]`             | Browse and manage Mason packages via snacks.picker (e.g. `:MasonPkg LSP`, `:MasonPkg Formatter`, `:MasonPkg all`) |
+| `:MistralCodestralComplete`        | Request an inline Codestral completion (FIM) for the current cursor position                                      |
+| `:MistralCodestralToggle`          | Globally enable/disable Codestral completions                                                                     |
+| `:MistralCodestralAuth ...`        | Manage the API key (`status`, `set`, `clear`, `validate`)                                                         |
+| `:MistralCodestralVirtualComplete` | Manually trigger the ghost-text preview                                                                           |
+| `:MistralCodestralVirtualClear`    | Clear any active ghost-text preview                                                                               |
+| `:MistralCodestralHealth`          | Run the fork's :checkhealth-style report                                                                          |
+| `:CleanNvim`                       | Clear nvim cache and `nvim-pack-lock.json` for fresh plugin regeneration                                          |
+| `:Format [N]`                      | Format the current buffer (optionally to line N)                                                                  |
+| `:Update`                          | Update all plugins via `vim.pack.update()`                                                                        |
+| `:LspRestart`                      | Restart all attached LSP clients                                                                                  |
+| `:HealthCheck`                     | Run health check (Neovim version, required tools, LSP, pack-lock)                                                 |
+| `:ReloadConfig`                    | Reload Neovim config without restarting                                                                           |
 
 ## AI Autocompletion (Mistral Codestral)
 
@@ -184,30 +185,30 @@ require("mistral-codestral").setup({
 
 ### Keymaps (which-key `<leader>i`)
 
-| Key | Action |
-|-----|--------|
-| `<leader>ic` | Manual complete (`:MistralCodestralComplete`) |
-| `<leader>it` | Toggle AI completions on/off |
-| `<leader>iv` | Trigger ghost-text preview |
-| `<leader>ix` | Clear ghost-text preview |
-| `<leader>iA` | Auth manager (snacks picker) |
-| `<leader>ih` | Health check |
-| `<leader>ig` | Generate commit message from `git diff` |
-| `<C-g>` (in insert mode, blink menu open) | AI-explain the selected item |
+| Key                                       | Action                                        |
+|-------------------------------------------|-----------------------------------------------|
+| `<leader>ic`                              | Manual complete (`:MistralCodestralComplete`) |
+| `<leader>it`                              | Toggle AI completions on/off                  |
+| `<leader>iv`                              | Trigger ghost-text preview                    |
+| `<leader>ix`                              | Clear ghost-text preview                      |
+| `<leader>iA`                              | Auth manager (snacks picker)                  |
+| `<leader>ih`                              | Health check                                  |
+| `<leader>ig`                              | Generate commit message from `git diff`       |
+| `<C-g>` (in insert mode, blink menu open) | AI-explain the selected item                  |
 
 `<leader>i` was chosen because `<leader>m` is taken by miniharp file marks.
 
 ### Commands
 
-| Command | Description |
-|---------|-------------|
-| `:MistralCodestralComplete` | Request an inline FIM completion for the current cursor position |
-| `:MistralCodestralToggle` | Globally enable/disable Codestral completions |
-| `:MistralCodestralAuth [sub]` | Open the snacks picker (no arg) or run a subcommand (`status`, `set`, `clear`, `validate`) |
-| `:MistralCodestralVirtualComplete` / `:MistralCodestralVirtualClear` | Manually trigger/clear the ghost-text preview |
-| `:MistralCodestralHealth` | Run the fork's :checkhealth-style report |
-| `:MistralCodestralCommitMsg[!]` | Generate a Conventional Commit message from staged (default) or working-tree (`!`) changes |
-| `:MistralExplainCompletion` | Ask Codestral to explain the currently selected blink.cmp item (opens floating markdown window) |
+| Command                                                              | Description                                                                                     |
+|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| `:MistralCodestralComplete`                                          | Request an inline FIM completion for the current cursor position                                |
+| `:MistralCodestralToggle`                                            | Globally enable/disable Codestral completions                                                   |
+| `:MistralCodestralAuth [sub]`                                        | Open the snacks picker (no arg) or run a subcommand (`status`, `set`, `clear`, `validate`)      |
+| `:MistralCodestralVirtualComplete` / `:MistralCodestralVirtualClear` | Manually trigger/clear the ghost-text preview                                                   |
+| `:MistralCodestralHealth`                                            | Run the fork's :checkhealth-style report                                                        |
+| `:MistralCodestralCommitMsg[!]`                                      | Generate a Conventional Commit message from staged (default) or working-tree (`!`) changes      |
+| `:MistralExplainCompletion`                                          | Ask Codestral to explain the currently selected blink.cmp item (opens floating markdown window) |
 
 ### Integrations
 
@@ -215,12 +216,12 @@ require("mistral-codestral").setup({
 
 A custom lualine component shows what Mistral Codestral is doing right now. The label uses plain words and a colored icon so it is readable at a glance:
 
-| State | Display (icon + text) | Color | Meaning |
-|-------|------------------------|-------|---------|
-| idle | `─ codestral-latest` | dim gray | plugin loaded, no request in flight |
-| waiting | `◐ waiting 1.2s (function body)` | orange | API call in progress; `(...)` shows the inferred strategy |
-| ready | `● ready` (or `● ready (2 of 3)`) | green | ghost-text completion is showing |
-| error | `✖ error: <message>` | red | last request failed |
+| State   | Display (icon + text)             | Color    | Meaning                                                   |
+|---------|-----------------------------------|----------|-----------------------------------------------------------|
+| idle    | `─ codestral-latest`              | dim gray | plugin loaded, no request in flight                       |
+| waiting | `◐ waiting 1.2s (function body)`  | orange   | API call in progress; `(...)` shows the inferred strategy |
+| ready   | `● ready` (or `● ready (2 of 3)`) | green    | ghost-text completion is showing                          |
+| error   | `✖ error: <message>`              | red      | last request failed                                       |
 
 The component is also clickable: clicking it runs `:MistralCodestralToggle` to enable/disable completions, and the hover tooltip shows the full status (e.g. `Mistral Codestral: 1 completion(s) available [strategy: normal]`).
 
@@ -231,30 +232,30 @@ The status is driven by three functions on `mistral-codestral.virtual_text`:
 
 ### Keymaps (which-key `<leader>i`)
 
-| Key | Action |
-|-----|--------|
-| `<leader>ic` | Manual complete (`:MistralCodestralComplete`) |
-| `<leader>it` | Toggle AI completions on/off |
-| `<leader>iv` | Trigger ghost-text preview |
-| `<leader>ix` | Clear ghost-text preview |
-| `<leader>iA` | Auth manager (snacks picker) |
-| `<leader>ih` | Health check |
-| `<leader>ig` | Generate commit message from `git diff` |
-| `<C-g>` (in insert mode, blink menu open) | AI-explain the selected item |
+| Key                                       | Action                                        |
+|-------------------------------------------|-----------------------------------------------|
+| `<leader>ic`                              | Manual complete (`:MistralCodestralComplete`) |
+| `<leader>it`                              | Toggle AI completions on/off                  |
+| `<leader>iv`                              | Trigger ghost-text preview                    |
+| `<leader>ix`                              | Clear ghost-text preview                      |
+| `<leader>iA`                              | Auth manager (snacks picker)                  |
+| `<leader>ih`                              | Health check                                  |
+| `<leader>ig`                              | Generate commit message from `git diff`       |
+| `<C-g>` (in insert mode, blink menu open) | AI-explain the selected item                  |
 
 `<leader>i` was chosen because `<leader>m` is taken by miniharp file marks.
 
 ### Commands
 
-| Command | Description |
-|---------|-------------|
-| `:MistralCodestralComplete` | Request an inline FIM completion for the current cursor position |
-| `:MistralCodestralToggle` | Globally enable/disable Codestral completions |
-| `:MistralCodestralAuth [sub]` | Open the snacks picker (no arg) or run a subcommand (`status`, `set`, `clear`, `validate`) |
-| `:MistralCodestralVirtualComplete` / `:MistralCodestralVirtualClear` | Manually trigger/clear the ghost-text preview |
-| `:MistralCodestralHealth` | Run the fork's :checkhealth-style report |
-| `:MistralCodestralCommitMsg[!]` | Generate a Conventional Commit message from staged (default) or working-tree (`!`) changes |
-| `:MistralExplainCompletion` | Ask Codestral to explain the currently selected blink.cmp item (opens floating markdown window) |
+| Command                                                              | Description                                                                                     |
+|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| `:MistralCodestralComplete`                                          | Request an inline FIM completion for the current cursor position                                |
+| `:MistralCodestralToggle`                                            | Globally enable/disable Codestral completions                                                   |
+| `:MistralCodestralAuth [sub]`                                        | Open the snacks picker (no arg) or run a subcommand (`status`, `set`, `clear`, `validate`)      |
+| `:MistralCodestralVirtualComplete` / `:MistralCodestralVirtualClear` | Manually trigger/clear the ghost-text preview                                                   |
+| `:MistralCodestralHealth`                                            | Run the fork's :checkhealth-style report                                                        |
+| `:MistralCodestralCommitMsg[!]`                                      | Generate a Conventional Commit message from staged (default) or working-tree (`!`) changes      |
+| `:MistralExplainCompletion`                                          | Ask Codestral to explain the currently selected blink.cmp item (opens floating markdown window) |
 
 ### Integrations
 
@@ -273,6 +274,7 @@ The status is driven by three functions on `mistral-codestral.virtual_text`:
 - **Consistent UI** through noice.nvim, snacks.notifier, and snacks.picker — all status messages, dialogs, and pickers share the same look
 - **Telescope-style find files** via fff.nvim (Rust binary, ripgrep/fzf replacement) |
 - **LSP action toggles** (`<leader>li/ld/lf/ls/lI`) for inlay hints, diagnostics, format on save, smooth scroll, and client info |
+- **Multicursor** via `multicursor.nvim` — `mc` select word, `<leader>n` next match, `<leader><up>`/`<leader><down>` add cursor line, `<C-leftmouse>` click cursor, `I`/`A` block edit visual |
 - **Modular architecture** — each file under `lua/` has single responsibility (e.g. `core_keymaps/explorer.lua` only handles file explorer keymaps) |
 
 See [KEYMAP.md](./KEYMAP.md) for complete keybindings reference.

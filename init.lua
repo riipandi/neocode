@@ -127,15 +127,15 @@ require 'plugin_editor'                   -- Editor configurations
 require 'plugin_completion'               -- Code completion (blink.cmp + mistral-codestral fork)
 require 'plugin_treesitter'               -- Syntax highlighting (nvim-treesitter)
 require 'plugin_filemanager'              -- File marks (miniharp)
-require 'plugin_fff'                       -- File search (fff)
+require 'plugin_fff'                      -- File search (fff)
 require 'plugin_lualine'                  -- Statusline (lualine)
 require 'plugin_noice'                    -- Cmdline UI replacement (noice)
 require 'plugin_vcs'                      -- Version control (git)
 require 'plugin_whichkey'                 -- Which-key (keybindings helper)
 require 'plugin_mason'                    -- Mason package manager
-require 'command_mason_pkg'             -- Mason package manager GUI (depends on mason)
+require 'command_mason_pkg'               -- Mason package manager GUI (depends on mason)
 require 'language_rust'                   -- Rust development toolkit
-require 'language_typescript'              -- TypeScript/React/Lit/Deno
+require 'language_typescript'             -- TypeScript/React/Lit/Deno
 require 'language_tailwind'               -- Tailwind CSS
 require 'language_lit'                    -- Lit Web Component
 require 'language_astro'                  -- Astro framework
@@ -143,6 +143,7 @@ require 'language_go'                     -- Go language
 require 'language_elixir'                 -- Elixir/Phoenix
 require 'language_zig'                    -- Zig language
 require 'language_sql'                    -- SQL (PostgreSQL/SQLite)
-require 'language_protobuf'              -- Protobuf/gRPC
-require 'language_terraform'             -- Terraform/HCL
+require 'language_protobuf'               -- Protobuf/gRPC
+require 'language_terraform'              -- Terraform/HCL
+require 'plugin_multicursor'              -- Multiple cursors (jake-stewart/multicursor.nvim)
 require 'plugin_mistral_codestral'        -- AI autocompletion (Codestral via blink.cmp)
