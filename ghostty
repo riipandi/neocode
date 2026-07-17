@@ -38,7 +38,7 @@ fullscreen = false
 macos-auto-secure-input = true
 
 # official|blueprint|chalkboard|microchip|glass|holographic|paper|retro|xray|custom-style
-macos-icon = xray
+macos-icon = holographic
 
 # aluminum|beige|plastic|chrome
 macos-icon-frame = plastic
@@ -60,7 +60,7 @@ scrollback-limit = 524288000
 shell-integration = zsh
 shell-integration-features = no-cursor,sudo,no-title,ssh-terminfo,ssh-env
 term = xterm-256color
-title = "Neocode"
+title = "Ghosterm"
 unfocused-split-opacity = 0.6
 split-divider-color = #032333
 window-colorspace = display-p3
