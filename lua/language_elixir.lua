@@ -9,31 +9,31 @@
 local autocmd = vim.api.nvim_create_autocmd
 
 local function setup_elixir_lsp()
-  local capabilities = {}
-  local ok, blink = pcall(require, 'blink.cmp')
-  if ok then
-    capabilities = blink.get_lsp_capabilities()
-  end
+    local capabilities = {}
+    local ok, blink = pcall(require, 'blink.cmp')
+    if ok then
+        capabilities = blink.get_lsp_capabilities()
+    end
 
-  vim.lsp.config('elixirls', {
-    cmd = { 'elixir-ls' },
-    capabilities = capabilities,
-    settings = {
-      elixirLS = {
-        dialyzerEnabled = true,
-        fetchDeps = true,
-        formatter = "mix format",
-      },
-    },
-  })
+    vim.lsp.config('elixirls', {
+        cmd = { 'elixir-ls' },
+        capabilities = capabilities,
+        settings = {
+            elixirLS = {
+                dialyzerEnabled = true,
+                fetchDeps = true,
+                formatter = "mix format",
+            },
+        },
+    })
 
-  vim.lsp.enable('elixirls')
+    vim.lsp.enable('elixirls')
 end
 
 autocmd('FileType', {
-  pattern = { 'elixir', 'eex', 'heex', 'surface' },
-  callback = setup_elixir_lsp,
-  desc = 'Start Elixir LSP',
+    pattern = { 'elixir', 'eex', 'heex', 'surface' },
+    callback = setup_elixir_lsp,
+    desc = 'Start Elixir LSP',
 })
 
 vim.lsp.enable('elixirls')

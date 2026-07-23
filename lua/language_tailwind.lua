@@ -12,72 +12,74 @@ local autocmd = vim.api.nvim_create_autocmd
 -- =============================================================================
 
 local function setup_tailwind_lsp()
-  local capabilities = {}
-  local ok, blink = pcall(require, 'blink.cmp')
-  if ok then
-    capabilities = blink.get_lsp_capabilities()
-  end
+    local capabilities = {}
+    local ok, blink = pcall(require, 'blink.cmp')
+    if ok then
+        capabilities = blink.get_lsp_capabilities()
+    end
 
-  vim.lsp.config('tailwindcss', {
-    cmd = { 'tailwindcss-language-server', '--stdio' },
-    filetypes = {
-      'html',
-      'css',
-      'scss',
-      'sass',
-      'less',
-      'postcss',
-      'javascript',
-      'javascriptreact',
-      'javascript.jsx',
-      'typescript',
-      'typescriptreact',
-      'typescript.tsx',
-      'svelte',
-      'vue',
-      'astro',
-    },
-    root_dir = function(fname)
-      local patterns = { '.git', 'tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs', 'tailwind.config.ts', 'postcss.config.js', 'postcss.config.cjs', 'postcss.config.mjs', 'postcss.config.ts' }
-      for _, pattern in ipairs(patterns) do
-        local found = vim.fn.finddir(pattern, fname .. ';')
-        if found ~= '' then
-          return vim.fn.fnamemodify(found, ':h')
-        end
-        found = vim.fn.findfile(pattern, fname .. ';')
-        if found ~= '' then
-          return vim.fn.fnamemodify(found, ':h')
-        end
-      end
-      return nil
-    end,
-    capabilities = capabilities,
-    settings = {
-      tailwindCSS = {
-        classAttributes = { 'class', 'className', 'class:list', 'classList', 'ngClass', '[klasse]' },
-        validate = true,
-        lint = {
-          cssConflict = 'warning',
-          invalidApply = 'error',
+    vim.lsp.config('tailwindcss', {
+        cmd = { 'tailwindcss-language-server', '--stdio' },
+        filetypes = {
+            'html',
+            'css',
+            'scss',
+            'sass',
+            'less',
+            'postcss',
+            'javascript',
+            'javascriptreact',
+            'javascript.jsx',
+            'typescript',
+            'typescriptreact',
+            'typescript.tsx',
+            'svelte',
+            'vue',
+            'astro',
         },
-        experimental = {
-          classRegex = {
-            { 'class:list="([^"]*)"', '[\'"]?([^\'">]+)' },
-            { 'class\\{([^}]*)\\}', "'([^']+)'" },
-            { 'tw`([^`]*)`', '[\'"]?([^\'">]+)' },
-            { 'tw\\.join\\(([^)]*)\\)', '[\'"]?([^\'">]+)' },
-          },
+        root_dir = function(fname)
+            local patterns = { '.git', 'tailwind.config.js', 'tailwind.config.cjs', 'tailwind.config.mjs',
+                'tailwind.config.ts', 'postcss.config.js', 'postcss.config.cjs', 'postcss.config.mjs',
+                'postcss.config.ts' }
+            for _, pattern in ipairs(patterns) do
+                local found = vim.fn.finddir(pattern, fname .. ';')
+                if found ~= '' then
+                    return vim.fn.fnamemodify(found, ':h')
+                end
+                found = vim.fn.findfile(pattern, fname .. ';')
+                if found ~= '' then
+                    return vim.fn.fnamemodify(found, ':h')
+                end
+            end
+            return nil
+        end,
+        capabilities = capabilities,
+        settings = {
+            tailwindCSS = {
+                classAttributes = { 'class', 'className', 'class:list', 'classList', 'ngClass', '[klasse]' },
+                validate = true,
+                lint = {
+                    cssConflict = 'warning',
+                    invalidApply = 'error',
+                },
+                experimental = {
+                    classRegex = {
+                        { 'class:list="([^"]*)"',   '[\'"]?([^\'">]+)' },
+                        { 'class\\{([^}]*)\\}',     "'([^']+)'" },
+                        { 'tw`([^`]*)`',            '[\'"]?([^\'">]+)' },
+                        { 'tw\\.join\\(([^)]*)\\)', '[\'"]?([^\'">]+)' },
+                    },
+                },
+                includeLanguages = {
+                    astro = 'html',
+                    svelte = 'html',
+                    vue = 'html',
+                },
+            },
         },
-        includeLanguages = {
-          astro = 'html',
-          svelte = 'html',
-          vue = 'html',
-        },
-      },
-    },
-  })
+    })
 
-  vim.lsp.enable('tailwindcss')
+    vim.lsp.enable('tailwindcss')
 end
 
 -- =============================================================================
@@ -85,25 +87,25 @@ end
 -- =============================================================================
 
 autocmd('FileType', {
-  pattern = {
-    'html',
-    'css',
-    'scss',
-    'sass',
-    'less',
-    'postcss',
-    'javascript',
-    'javascriptreact',
-    'javascript.jsx',
-    'typescript',
-    'typescriptreact',
-    'typescript.tsx',
-    'svelte',
-    'vue',
-    'astro',
-  },
-  callback = setup_tailwind_lsp,
-  desc = 'Start Tailwind CSS LSP',
+    pattern = {
+        'html',
+        'css',
+        'scss',
+        'sass',
+        'less',
+        'postcss',
+        'javascript',
+        'javascriptreact',
+        'javascript.jsx',
+        'typescript',
+        'typescriptreact',
+        'typescript.tsx',
+        'svelte',
+        'vue',
+        'astro',
+    },
+    callback = setup_tailwind_lsp,
+    desc = 'Start Tailwind CSS LSP',
 })
 
 -- =============================================================================

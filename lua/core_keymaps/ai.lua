@@ -16,7 +16,7 @@
 local M = {}
 
 local function setmap(lhs, desc)
-	vim.keymap.set("n", lhs, "<Cmd>" .. desc .. "<CR>", { desc = desc, silent = true })
+    vim.keymap.set("n", lhs, "<Cmd>" .. desc .. "<CR>", { desc = desc, silent = true })
 end
 
 -- Manual: force a FIM completion at the cursor

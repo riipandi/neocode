@@ -1,5 +1,5 @@
 vim.pack.add({
-  { src = "https://github.com/jake-stewart/multicursor.nvim" },
+    { src = "https://github.com/jake-stewart/multicursor.nvim" },
 })
 
 -- ============================================================================
@@ -53,21 +53,21 @@ set("x", "A", mc.appendVisual)
 -- Keymap layer: only active when multiple cursors exist
 -- ============================================================================
 mc.addKeymapLayer(function(layerSet)
-  -- Navigate between cursors
-  layerSet({ "n", "x" }, "<left>", mc.prevCursor)
-  layerSet({ "n", "x" }, "<right>", mc.nextCursor)
+    -- Navigate between cursors
+    layerSet({ "n", "x" }, "<left>", mc.prevCursor)
+    layerSet({ "n", "x" }, "<right>", mc.nextCursor)
 
-  -- Delete main cursor
-  layerSet({ "n", "x" }, "<leader>x", mc.deleteCursor)
+    -- Delete main cursor
+    layerSet({ "n", "x" }, "<leader>x", mc.deleteCursor)
 
-  -- Escape: enable disabled cursors, or clear if already enabled
-  layerSet("n", "<esc>", function()
-    if not mc.cursorsEnabled() then
-      mc.enableCursors()
-    else
-      mc.clearCursors()
-    end
-  end)
+    -- Escape: enable disabled cursors, or clear if already enabled
+    layerSet("n", "<esc>", function()
+        if not mc.cursorsEnabled() then
+            mc.enableCursors()
+        else
+            mc.clearCursors()
+        end
+    end)
 end)
 
 -- ============================================================================

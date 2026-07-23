@@ -80,7 +80,7 @@ ln -s ~/.config/nvim/starship.toml ~/.config/starship.toml
 ## Supported Languages
 
 | Language         | LSP             | Treesitter   | Formatter         |
-|------------------|-----------------|--------------|-------------------|
+| ---------------- | --------------- | ------------ | ----------------- |
 | TypeScript/React | ts_ls + oxlint  | tsx, js      | oxfmt             |
 | Tailwind CSS     | tailwindcss     | css          | oxfmt             |
 | Lit              | ts_ls           | lit          | oxfmt             |
@@ -97,7 +97,7 @@ ln -s ~/.config/nvim/starship.toml ~/.config/starship.toml
 ## Dependencies (Plugins)
 
 | Plugin                       | Description                                                   |
-|------------------------------|---------------------------------------------------------------|
+| ---------------------------- | ------------------------------------------------------------- |
 | **snacks.nvim**              | All-in-one UI utilities (picker, explorer, etc.)              |
 | **noice.nvim**               | Cmdline UI replacement (floating popup)                       |
 | **nui.nvim**                 | UI component library for noice                                |
@@ -130,7 +130,7 @@ ln -s ~/.config/nvim/starship.toml ~/.config/starship.toml
 ## Custom Commands
 
 | Command                            | Description                                                                                                       |
-|------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
 | `:MasonPkg [category]`             | Browse and manage Mason packages via snacks.picker (e.g. `:MasonPkg LSP`, `:MasonPkg Formatter`, `:MasonPkg all`) |
 | `:MistralCodestralComplete`        | Request an inline Codestral completion (FIM) for the current cursor position                                      |
 | `:MistralCodestralToggle`          | Globally enable/disable Codestral completions                                                                     |
@@ -166,7 +166,7 @@ Minimal setup (already wired in `plugin_mistral_codestral.lua`):
 export CODESTRAL_API_KEY="your-key-here"
 ```
 
-```lua
+````lua
 -- Plugin already loaded by init.lua; override defaults here if needed:
 require("mistral-codestral").setup({
   model = "codestral-latest",
@@ -181,12 +181,12 @@ require("mistral-codestral").setup({
   max_items = 3,        -- one full + first-line variant
   virtual_text = { enabled = true, idle_delay = 800, min_chars = 3 },
 })
-```
+````
 
 ### Keymaps (which-key `<leader>i`)
 
 | Key                                       | Action                                        |
-|-------------------------------------------|-----------------------------------------------|
+| ----------------------------------------- | --------------------------------------------- |
 | `<leader>ic`                              | Manual complete (`:MistralCodestralComplete`) |
 | `<leader>it`                              | Toggle AI completions on/off                  |
 | `<leader>iv`                              | Trigger ghost-text preview                    |
@@ -201,7 +201,7 @@ require("mistral-codestral").setup({
 ### Commands
 
 | Command                                                              | Description                                                                                     |
-|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | `:MistralCodestralComplete`                                          | Request an inline FIM completion for the current cursor position                                |
 | `:MistralCodestralToggle`                                            | Globally enable/disable Codestral completions                                                   |
 | `:MistralCodestralAuth [sub]`                                        | Open the snacks picker (no arg) or run a subcommand (`status`, `set`, `clear`, `validate`)      |
@@ -217,7 +217,7 @@ require("mistral-codestral").setup({
 A custom lualine component shows what Mistral Codestral is doing right now. The label uses plain words and a colored icon so it is readable at a glance:
 
 | State   | Display (icon + text)             | Color    | Meaning                                                   |
-|---------|-----------------------------------|----------|-----------------------------------------------------------|
+| ------- | --------------------------------- | -------- | --------------------------------------------------------- |
 | idle    | `─ codestral-latest`              | dim gray | plugin loaded, no request in flight                       |
 | waiting | `◐ waiting 1.2s (function body)`  | orange   | API call in progress; `(...)` shows the inferred strategy |
 | ready   | `● ready` (or `● ready (2 of 3)`) | green    | ghost-text completion is showing                          |
@@ -226,6 +226,7 @@ A custom lualine component shows what Mistral Codestral is doing right now. The 
 The component is also clickable: clicking it runs `:MistralCodestralToggle` to enable/disable completions, and the hover tooltip shows the full status (e.g. `Mistral Codestral: 1 completion(s) available [strategy: normal]`).
 
 The status is driven by three functions on `mistral-codestral.virtual_text`:
+
 - `M.status()` — raw table (state, strategy, model, current, total, last_error, …)
 - `M.status_string()` — short single-token label (e.g. `◐ 1.2s`, `●`, `─`)
 - `M.status_label()` — rich `{ text, icon, color, tooltip }` for statuslines
@@ -233,7 +234,7 @@ The status is driven by three functions on `mistral-codestral.virtual_text`:
 ### Keymaps (which-key `<leader>i`)
 
 | Key                                       | Action                                        |
-|-------------------------------------------|-----------------------------------------------|
+| ----------------------------------------- | --------------------------------------------- |
 | `<leader>ic`                              | Manual complete (`:MistralCodestralComplete`) |
 | `<leader>it`                              | Toggle AI completions on/off                  |
 | `<leader>iv`                              | Trigger ghost-text preview                    |
@@ -248,7 +249,7 @@ The status is driven by three functions on `mistral-codestral.virtual_text`:
 ### Commands
 
 | Command                                                              | Description                                                                                     |
-|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
 | `:MistralCodestralComplete`                                          | Request an inline FIM completion for the current cursor position                                |
 | `:MistralCodestralToggle`                                            | Globally enable/disable Codestral completions                                                   |
 | `:MistralCodestralAuth [sub]`                                        | Open the snacks picker (no arg) or run a subcommand (`status`, `set`, `clear`, `validate`)      |
@@ -260,7 +261,7 @@ The status is driven by three functions on `mistral-codestral.virtual_text`:
 ### Integrations
 
 - **which-key:** `<leader>i` group in `plugin_whichkey.lua`
-- **lualine:** Status component in `lualine_y` showing AI state (` * ` waiting, `1/1` completions) with orange/green color
+- **lualine:** Status component in `lualine_y` showing AI state (`*` waiting, `1/1` completions) with orange/green color
 - **snacks:** Auth manager picker (`Status` / `Set` / `Clear` / `Validate`)
 - **blink.cmp:** Source provider registered via `add_source_provider`; the `<C-g>` keymap in insert mode triggers AI explain on the selected item
 - **noice:** All `vim.notify` calls go through the existing noice integration automatically

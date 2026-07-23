@@ -15,7 +15,7 @@ local augroup = vim.api.nvim_create_augroup
 -- load=false, so the plugin is installed on disk and added to runtimepath
 -- but not yet configured.
 vim.pack.add({
-  { src = "https://github.com/ray-x/go.nvim" },
+    { src = "https://github.com/ray-x/go.nvim" },
 })
 
 -- Guard: run go.setup() only once per session
@@ -23,78 +23,78 @@ local go_setup_done = false
 
 -- Setup go.nvim with AI features disabled
 local function setup_go_plugin()
-  if go_setup_done then
-    return
-  end
-  go_setup_done = true
+    if go_setup_done then
+        return
+    end
+    go_setup_done = true
 
-  require('go').setup({
-    go = 'go',
-    goimports = 'gopls',
-    gofmt = 'gopls',
+    require('go').setup({
+        go = 'go',
+        goimports = 'gopls',
+        gofmt = 'gopls',
 
-    -- AI features: explicitly disabled
-    ai = {
-      enable = false,
-    },
+        -- AI features: explicitly disabled
+        ai = {
+            enable = false,
+        },
 
-    -- LSP: use go.nvim's gopls configuration
-    lsp_cfg = true,
-    lsp_gofumpt = true,
-    lsp_keymaps = true,
-    lsp_codelens = true,
-    lsp_document_formatting = true,
-    lsp_inlay_hints = {
-      enable = true,
-    },
-    lsp_semantic_highlights = false,
+        -- LSP: use go.nvim's gopls configuration
+        lsp_cfg = true,
+        lsp_gofumpt = true,
+        lsp_keymaps = true,
+        lsp_codelens = true,
+        lsp_document_formatting = true,
+        lsp_inlay_hints = {
+            enable = true,
+        },
+        lsp_semantic_highlights = false,
 
-    -- Lint (golangci-lint v2)
-    golangci_lint = {
-      default = 'standard',
-    },
+        -- Lint (golangci-lint v2)
+        golangci_lint = {
+            default = 'standard',
+        },
 
-    -- Test runner
-    test_runner = 'go',
-    verbose_tests = true,
-    run_in_floaterm = false,
-    test_efm = false,
+        -- Test runner
+        test_runner = 'go',
+        verbose_tests = true,
+        run_in_floaterm = false,
+        test_efm = false,
 
-    -- Debug (disabled by default; enable via dap_debug = true if needed)
-    dap_debug = false,
-    dap_debug_keymap = false,
-    dap_debug_gui = false,
-    dap_debug_vt = false,
+        -- Debug (disabled by default; enable via dap_debug = true if needed)
+        dap_debug = false,
+        dap_debug_keymap = false,
+        dap_debug_gui = false,
+        dap_debug_vt = false,
 
-    -- Format: gofumpt via gopls
-    fillstruct = 'gopls',
-    max_line_len = 0,
-    tag_transform = false,
-    tag_options = 'json=omitempty',
+        -- Format: gofumpt via gopls
+        fillstruct = 'gopls',
+        max_line_len = 0,
+        tag_transform = false,
+        tag_options = 'json=omitempty',
 
-    -- Text objects handled by nvim-treesitter-textobjects externally
-    textobjects = false,
+        -- Text objects handled by nvim-treesitter-textobjects externally
+        textobjects = false,
 
-    -- Snippets: using luasnip from elsewhere
-    luasnip = false,
+        -- Snippets: using luasnip from elsewhere
+        luasnip = false,
 
-    -- Troubles: not using trouble.nvim for this
-    trouble = false,
+        -- Troubles: not using trouble.nvim for this
+        trouble = false,
 
-    -- Icons
-    icons = { breakpoint = '🧘', currentpos = '🏃' },
-  })
+        -- Icons
+        icons = { breakpoint = '🧘', currentpos = '🏃' },
+    })
 
-  -- Format on save: goimports via gopls
-  local format_group = augroup('GoFormat', { clear = true })
-  autocmd('BufWritePre', {
-    pattern = '*.go',
-    group = format_group,
-    callback = function()
-      pcall(require('go.format').goimports)
-    end,
-    desc = 'goimports on save',
-  })
+    -- Format on save: goimports via gopls
+    local format_group = augroup('GoFormat', { clear = true })
+    autocmd('BufWritePre', {
+        pattern = '*.go',
+        group = format_group,
+        callback = function()
+            pcall(require('go.format').goimports)
+        end,
+        desc = 'goimports on save',
+    })
 end
 
 -- Lazy load: setup go.nvim when a Go file is opened.
@@ -102,9 +102,9 @@ end
 -- we need Go tooling. No go.mod check needed since gopls handles project root
 -- discovery internally.
 autocmd('FileType', {
-  pattern = { 'go', 'gomod', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl' },
-  callback = function()
-    setup_go_plugin()
-  end,
-  desc = 'Lazy load go.nvim on Go filetype',
+    pattern = { 'go', 'gomod', 'gosum', 'gotmpl', 'gohtmltmpl', 'gotexttmpl' },
+    callback = function()
+        setup_go_plugin()
+    end,
+    desc = 'Lazy load go.nvim on Go filetype',
 })

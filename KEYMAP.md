@@ -3,7 +3,7 @@
 ## General
 
 | Action                | WhichKey | Shortcut          |
-|-----------------------|----------|-------------------|
+| --------------------- | -------- | ----------------- |
 | Quit all              | `q`      | `<leader>q`       |
 | Quit all              | `qq`     | `<leader>qq`      |
 | Quit all              |          | `<C-q>` / `<A-q>` |
@@ -13,17 +13,18 @@
 | Edit config           | `,`      | `<leader>,`       |
 
 > **Note:** `<C-x>` keeps the file explorer open and shows a blank buffer when the last editor buffer is closed, instead of letting the explorer expand to full width.
+
 ## Escape Key
 
 | Action                | Shortcut | Description                               |
-|-----------------------|----------|-------------------------------------------|
+| --------------------- | -------- | ----------------------------------------- |
 | Close floating window | `<Esc>`  | Closes terminal, lazygit, picker, etc.    |
 | Clear search          | `<Esc>`  | Clears search highlights in normal buffer |
 
 ## Buffer
 
 | Action              | WhichKey | Shortcut     |
-|---------------------|----------|--------------|
+| ------------------- | -------- | ------------ |
 | Buffer picker       | `bb`     | `<leader>bb` |
 | Delete buffer       | `bd`     | `<leader>bd` |
 | Close other buffers | `bo`     | `<leader>bo` |
@@ -31,7 +32,7 @@
 ## Diagnostic
 
 | Action              | WhichKey | Shortcut     |
-|---------------------|----------|--------------|
+| ------------------- | -------- | ------------ |
 | Open float          | `d`      | `<leader>d`  |
 | Set loclist         | `dl`     | `<leader>dl` |
 | Next diagnostic     | `nd`     | `<leader>nd` |
@@ -40,19 +41,19 @@
 ## File
 
 | Action                 | WhichKey | Shortcut          |
-|------------------------|----------|-------------------|
+| ---------------------- | -------- | ----------------- |
 | Find files             |          | `<leader><space>` |
 | Find files             |          | `<C-p>`           |
 | File explorer (toggle) | `e`      | `<leader>e`       |
 | Live grep              | `fw`     | `<leader>fw`      |
 | Fuzzy grep             | `fz`     | `<leader>fz`      |
-| Grep cursor word       | `fc`     | `<leader>fc`      |
+| Grep cursor word       | `ff`     | `<leader>ff`      |
 | Format file            | `fm`     | `<leader>fm`      |
 
 ### File Explorer (`<leader>e` / `<A-e>`)
 
 | Key             | Action         | Description                                                                                                 |
-|-----------------|----------------|-------------------------------------------------------------------------------------------------------------|
+| --------------- | -------------- | ----------------------------------------------------------------------------------------------------------- |
 | `h` / `<Left>`  | Focus parent   | Visual nav (no CWD change). File: collapse parent. Folder: collapse (if expanded) and move cursor to parent |
 | `l` / `<Right>` | Toggle folder  | Expand if collapsed, collapse if expanded                                                                   |
 | `j` / `<Down>`  | Move down      | Navigate list down                                                                                          |
@@ -75,10 +76,11 @@
 | `H`             | Toggle hidden  | Show/hide dotfiles                                                                                          |
 
 Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open or focuses if cursor is elsewhere. `<Esc>` and `q` refocus the explorer (don't close it).
+
 ## Git
 
 | Action        | WhichKey | Shortcut     |
-|---------------|----------|--------------|
+| ------------- | -------- | ------------ |
 | LazyGit       | `gg`     | `<leader>gg` |
 | Push          | `gp`     | `<leader>gp` |
 | Status        | `gs`     | `<leader>gs` |
@@ -88,7 +90,7 @@ Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open
 ### Git Hunk
 
 | Action          | WhichKey | Shortcut     |
-|-----------------|----------|--------------|
+| --------------- | -------- | ------------ |
 | Stage hunk      | `hs`     | `<leader>hs` |
 | Reset hunk      | `hr`     | `<leader>hr` |
 | Stage buffer    | `hS`     | `<leader>hS` |
@@ -104,14 +106,14 @@ Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open
 ## Go
 
 | Action               | Shortcut     |
-|----------------------|--------------|
+| -------------------- | ------------ |
 | Run gotestsum (file) | `<leader>gt` |
 | Run gotestsum (all)  | `<leader>gT` |
 
 ## LSP
 
 | Action                  | WhichKey | Shortcut     |
-|-------------------------|----------|--------------|
+| ----------------------- | -------- | ------------ |
 | Code action             | `ca`     | `<leader>ca` |
 | Rename                  | `rn`     | `<leader>rn` |
 | Definition              |          | `gD`         |
@@ -132,7 +134,7 @@ Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open
 ## Marks
 
 | Action           | WhichKey | Shortcut     |
-|------------------|----------|--------------|
+| ---------------- | -------- | ------------ |
 | Toggle file mark | `ma`     | `<leader>ma` |
 | Clear marks      | `mc`     | `<leader>mc` |
 | List marks       |          | `<C-l>`      |
@@ -140,6 +142,7 @@ Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open
 | Previous mark    |          | `<C-S-m>`    |
 
 Inside the marks picker (`<C-l>`):
+
 - `Enter` — jump to selected file
 - `dd` — remove mark
 - `Tab` — select mark for swap, then Tab on another mark to swap order
@@ -147,7 +150,7 @@ Inside the marks picker (`<C-l>`):
 ## Plugins
 
 | Action                 | Shortcut     |
-|------------------------|--------------|
+| ---------------------- | ------------ |
 | Update plugins         | `<leader>pu` |
 | Clear cache & restart  | `:CleanNvim` |
 | Mason: manage packages | `<leader>tm` |
@@ -156,12 +159,12 @@ Inside the marks picker (`<C-l>`):
 ## Search
 
 | Action                 | WhichKey | Shortcut     |
-|------------------------|----------|--------------|
+| ---------------------- | -------- | ------------ |
 | swpui (search/replace) | `sr`     | `<leader>sr` |
 | Global search (swpui)  |          | `<C-S-f>`    |
 | Live grep              | `fw`     | `<leader>fw` |
 | Fuzzy grep             | `fz`     | `<leader>fz` |
-| Grep cursor word       | `fc`     | `<leader>fc` |
+| Grep cursor word       | `ff`     | `<leader>ff` |
 | Clear search           | `c`      | `<leader>c`  |
 | Next result            |          | `n`          |
 | Previous result        |          | `N`          |
@@ -169,7 +172,7 @@ Inside the marks picker (`<C-l>`):
 ## Tools
 
 | Action           | WhichKey | Shortcut     |
-|------------------|----------|--------------|
+| ---------------- | -------- | ------------ |
 | Terminal         | `tt`     | `<leader>tt` |
 | LazyGit          | `gg`     | `<leader>gg` |
 | Resource Monitor | `tr`     | `<leader>tr` |
@@ -177,13 +180,14 @@ Inside the marks picker (`<C-l>`):
 ### Resource Monitor (`<leader>tr`)
 
 Requires installation:
+
 - macOS: `brew install mactop` (Apple Silicon)
 - Linux: `brew install btop` (cross-platform)
 
 ### Mason (`:MasonPkg` / `<leader>tm`)
 
 | Action                   | Shortcut / Command              | Description                                                                                            |
-|--------------------------|---------------------------------|--------------------------------------------------------------------------------------------------------|
+| ------------------------ | ------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | Mason: manage packages   | `<leader>tm` / `:MasonPkg`      | Browse & manage LSP/formatter/linter/DAP/runtime/compiler packages                                     |
 | Mason: TUI (tree view)   | `<leader>tM`                    | Native Mason TUI with expand/collapse navigation                                                       |
 | Mason: package category  | `:MasonPkg LSP` (etc.)          | Open picker filtered to a specific category (LSP, Formatter, Linter, DAP, Runtime, Compiler, or `all`) |
@@ -191,11 +195,10 @@ Requires installation:
 | Mason: uninstall package | `x` (in picker)                 | Uninstall the selected package(s)                                                                      |
 | Mason: cycle category    | `<Tab>` / `<S-Tab>` (in picker) | Cycle through package categories                                                                       |
 
-
 ## LSP Toggles (`<leader>l`)
 
 | Action                | Shortcut     | Description                                |
-|-----------------------|--------------|--------------------------------------------|
+| --------------------- | ------------ | ------------------------------------------ |
 | Toggle inlay hints    | `<leader>li` | Show/hide LSP inlay hints                  |
 | Toggle diagnostics    | `<leader>ld` | Enable/disable diagnostics display         |
 | Toggle format on save | `<leader>lf` | Enable/disable auto-format on save         |
@@ -205,7 +208,7 @@ Requires installation:
 ## User Commands
 
 | Command         | Description                                               |
-|-----------------|-----------------------------------------------------------|
+| --------------- | --------------------------------------------------------- |
 | `:Format`       | Format the current buffer (`:N Format` formats lines 1-N) |
 | `:Update`       | Update all plugins (alias for `vim.pack.update()`)        |
 | `:LspRestart`   | Restart all attached LSP clients                          |
@@ -215,7 +218,7 @@ Requires installation:
 ## Editing
 
 | Action              | WhichKey | Shortcut    |
-|---------------------|----------|-------------|
+| ------------------- | -------- | ----------- |
 | Delete without yank | `d`      | `<leader>d` |
 | Join lines          |          | `J`         |
 | Indent left         |          | `<`         |
@@ -230,7 +233,7 @@ Requires installation:
 Trigger eksplisit — tidak aktif di normal mode sampai dipanggil.
 
 | Action           | Key              | Description                                             |
-|------------------|------------------|---------------------------------------------------------|
+| ---------------- | ---------------- | ------------------------------------------------------- |
 | Select word      | `mc`             | Select word under cursor, repeat to add next occurrence |
 | Next match       | `<leader>n`      | Add cursor to next match of word/selection              |
 | Prev match       | `<leader>N`      | Add cursor to previous match                            |
@@ -246,17 +249,16 @@ Trigger eksplisit — tidak aktif di normal mode sampai dipanggil.
 **Keymap layer** (hanya aktif saat multi-cursor):
 
 | Action          | Key         |
-|-----------------|-------------|
+| --------------- | ----------- |
 | Previous cursor | `<left>`    |
 | Next cursor     | `<right>`   |
 | Delete cursor   | `<leader>x` |
 | Clear cursors   | `<esc>`     |
 
-
 ## Window
 
 | Action           | WhichKey | Shortcut  |
-|------------------|----------|-----------|
+| ---------------- | -------- | --------- |
 | Split vertical   |          | `<C-\>`   |
 | Split horizontal |          | `<C-S-\>` |
 | Previous window  |          | `<C-A-[>` |
@@ -269,6 +271,6 @@ Trigger eksplisit — tidak aktif di normal mode sampai dipanggil.
 ## Insert Mode
 
 | Action      | Shortcut |
-|-------------|----------|
+| ----------- | -------- |
 | Delete word | `<C-w>`  |
 | Delete line | `<C-u>`  |

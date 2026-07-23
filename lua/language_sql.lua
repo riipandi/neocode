@@ -9,24 +9,24 @@
 local autocmd = vim.api.nvim_create_autocmd
 
 local function setup_sql_lsp()
-  local capabilities = {}
-  local ok, blink = pcall(require, 'blink.cmp')
-  if ok then
-    capabilities = blink.get_lsp_capabilities()
-  end
+    local capabilities = {}
+    local ok, blink = pcall(require, 'blink.cmp')
+    if ok then
+        capabilities = blink.get_lsp_capabilities()
+    end
 
-  vim.lsp.config('sqls', {
-    capabilities = capabilities,
-    settings = {},
-  })
+    vim.lsp.config('sqls', {
+        capabilities = capabilities,
+        settings = {},
+    })
 
-  vim.lsp.enable('sqls')
+    vim.lsp.enable('sqls')
 end
 
 autocmd('FileType', {
-  pattern = { 'sql', 'mysql', 'pgsql' },
-  callback = setup_sql_lsp,
-  desc = 'Start SQL LSP',
+    pattern = { 'sql', 'mysql', 'pgsql' },
+    callback = setup_sql_lsp,
+    desc = 'Start SQL LSP',
 })
 
 vim.lsp.enable('sqls')

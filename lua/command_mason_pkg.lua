@@ -21,22 +21,22 @@ local util = require("mason_pkg.util")
 
 -- :MasonPkg [category]
 vim.api.nvim_create_user_command("MasonPkg", function(opts)
-  local raw = opts.args or ""
-  local filter = raw ~= "" and raw or nil
-  -- "all" is treated as no filter
-  if filter and filter:lower() == "all" then filter = nil end
-  picker.open(filter)
+    local raw = opts.args or ""
+    local filter = raw ~= "" and raw or nil
+    -- "all" is treated as no filter
+    if filter and filter:lower() == "all" then filter = nil end
+    picker.open(filter)
 end, {
-  desc = "Browse & manage Mason packages",
-  nargs = "?",
-  complete = function() return util.CATEGORIES end,
+    desc = "Browse & manage Mason packages",
+    nargs = "?",
+    complete = function() return util.CATEGORIES end,
 })
 
 -- Keymaps
 snacks.keymap.set("n", "<leader>tm", function()
-  vim.cmd("MasonPkg")
+    vim.cmd("MasonPkg")
 end, { desc = "Mason: manage packages" })
 
 snacks.keymap.set("n", "<leader>tM", function()
-  vim.cmd("Mason")
+    vim.cmd("Mason")
 end, { desc = "Mason: open TUI (tree view)" })

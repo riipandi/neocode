@@ -9,24 +9,24 @@
 local autocmd = vim.api.nvim_create_autocmd
 
 local function setup_astro_lsp()
-  local capabilities = {}
-  local ok, blink = pcall(require, 'blink.cmp')
-  if ok then
-    capabilities = blink.get_lsp_capabilities()
-  end
+    local capabilities = {}
+    local ok, blink = pcall(require, 'blink.cmp')
+    if ok then
+        capabilities = blink.get_lsp_capabilities()
+    end
 
-  vim.lsp.config('astro', {
-    cmd = { 'astro-ls', '--stdio' },
-    filetypes = { 'astro' },
-    capabilities = capabilities,
-    settings = {},
-  })
+    vim.lsp.config('astro', {
+        cmd = { 'astro-ls', '--stdio' },
+        filetypes = { 'astro' },
+        capabilities = capabilities,
+        settings = {},
+    })
 
-  vim.lsp.enable('astro')
+    vim.lsp.enable('astro')
 end
 
 autocmd('FileType', {
-  pattern = { 'astro' },
-  callback = setup_astro_lsp,
-  desc = 'Start Astro LSP',
+    pattern = { 'astro' },
+    callback = setup_astro_lsp,
+    desc = 'Start Astro LSP',
 })

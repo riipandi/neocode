@@ -5,22 +5,22 @@
 ---@class snacks.swpui
 ---@overload fun(opts?: snacks.swpui.Config): snacks.win
 local M = setmetatable({}, {
-  __call = function(t, ...)
-    return t.open(...)
-  end,
+    __call = function(t, ...)
+        return t.open(...)
+    end,
 })
 
 M.meta = {
-  desc = "Open swpui (VSCode-like search & replace TUI) in a floating window",
+    desc = "Open swpui (VSCode-like search & replace TUI) in a floating window",
 }
 
 ---@class snacks.swpui.Config: snacks.terminal.Opts
 ---@field args? string[] Custom arguments for swpui
 ---@field auto_cwd? boolean Automatically detect project root (default: true)
 local defaults = {
-  auto_cwd = true,
-  args = nil,
-  win = { style = "swpui" },
+    auto_cwd = true,
+    args = nil,
+    win = { style = "swpui" },
 }
 
 -- ============================================================================
@@ -28,16 +28,16 @@ local defaults = {
 -- ============================================================================
 
 Snacks.config.style("swpui", {
-  width = 0.9,
-  height = 0.9,
-  border = "rounded",
-  bo = {
-    filetype = "snacks_terminal",
-  },
-  wo = {},
-  keys = {
-    q = "hide",
-  },
+    width = 0.9,
+    height = 0.9,
+    border = "rounded",
+    bo = {
+        filetype = "snacks_terminal",
+    },
+    wo = {},
+    keys = {
+        q = "hide",
+    },
 })
 
 -- ============================================================================
@@ -47,12 +47,12 @@ Snacks.config.style("swpui", {
 --- Get git root directory or fallback to cwd
 ---@return string
 local function get_git_root()
-  local cwd = vim.fn.getcwd()
-  local root = vim.fn.system({ "git", "rev-parse", "--show-toplevel" })
-  if vim.v.shell_error == 0 then
-    return vim.trim(root)
-  end
-  return cwd
+    local cwd = vim.fn.getcwd()
+    local root = vim.fn.system({ "git", "rev-parse", "--show-toplevel" })
+    if vim.v.shell_error == 0 then
+        return vim.trim(root)
+    end
+    return cwd
 end
 
 -- ============================================================================
@@ -63,19 +63,19 @@ end
 --- Auto-detects git root as project root
 ---@param opts? snacks.swpui.Config
 function M.open(opts)
-  opts = Snacks.config.get("swpui", defaults, opts)
+    opts = Snacks.config.get("swpui", defaults, opts)
 
-  local cmd = { "swp" }
-  vim.list_extend(cmd, opts.args or {})
+    local cmd = { "swp" }
+    vim.list_extend(cmd, opts.args or {})
 
-  -- Detect working directory
-  local cwd = opts.cwd
-  if not cwd then
-    cwd = opts.auto_cwd and get_git_root() or vim.fn.getcwd()
-  end
+    -- Detect working directory
+    local cwd = opts.cwd
+    if not cwd then
+        cwd = opts.auto_cwd and get_git_root() or vim.fn.getcwd()
+    end
 
-  opts.cwd = cwd
-  return Snacks.terminal(cmd, opts)
+    opts.cwd = cwd
+    return Snacks.terminal(cmd, opts)
 end
 
 -- ============================================================================
@@ -84,17 +84,17 @@ end
 
 ---@private
 function M.health()
-  local ok = vim.fn.executable("swp") == 1
-  Snacks.health[ok and "ok" or "error"]("{swpui} %sinstalled", ok and "" or "not ")
+    local ok = vim.fn.executable("swp") == 1
+    Snacks.health[ok and "ok" or "error"]("{swpui} %sinstalled", ok and "" or "not ")
 
-  if ok then
-    local handle = io.popen("swp --version 2>&1")
-    if handle then
-      local version = handle:read("*a")
-      handle:close()
-      Snacks.health.ok("swpui version: %s", vim.trim(version))
+    if ok then
+        local handle = io.popen("swp --version 2>&1")
+        if handle then
+            local version = handle:read("*a")
+            handle:close()
+            Snacks.health.ok("swpui version: %s", vim.trim(version))
+        end
     end
-  end
 end
 
 return M
