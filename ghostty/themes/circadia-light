@@ -1,0 +1,30 @@
+# Circadia — Warm Parchment (Daylight Reading)
+# Canvas #f7f2e6, accent #0048b3. Maps the Circadia light 16-color terminal
+# matrix (spec/token-map.md) to Ghostty's palette slots.
+background = "#f7f2e6"
+foreground = "#28323a"
+cursor-color = "#0048b3"
+cursor-text = "#f7f2e6"
+selection-background = "#0048b3"
+selection-foreground = "#f7f2e6"
+
+# ANSI 0-15 (Circadia light matrix)
+palette = 0=#e5dcc6
+palette = 1=#843900
+palette = 2=#005f2f
+palette = 3=#843900
+palette = 4=#0048b3
+palette = 5=#7a1f7a
+palette = 6=#095b62
+palette = 7=#28323a
+palette = 8=#5f6d7a
+palette = 9=#843900
+palette = 10=#005f2f
+palette = 11=#843900
+palette = 12=#0048b3
+palette = 13=#4b1fa3
+palette = 14=#095b62
+palette = 15=#28323a
+
+# UI accents (parchment) — applied when this light theme is active
+split-divider-color = #e5dcc6

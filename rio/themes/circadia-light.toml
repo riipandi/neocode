@@ -1,0 +1,64 @@
+# Circadia — Warm Parchment (Daylight Reading)
+# Canvas #f7f2e6, accent #0048b3. Maps the Circadia light 16-color terminal
+# matrix (spec/token-map.md) plus UI tokens to Rio's color slots.
+[colors]
+# Regular colors (ANSI 0-7)
+background = '#f7f2e6'
+black = '#e5dcc6'
+red = '#843900'
+green = '#005f2f'
+yellow = '#843900'
+blue = '#0048b3'
+magenta = '#7a1f7a'
+cyan = '#095b62'
+white = '#28323a'
+foreground = '#28323a'
+
+# Cursor
+cursor = '#0048b3'
+vi-cursor = '#095b62'
+
+# Navigation
+tabs = '#e5dcc6'
+tabs-foreground = '#46535f'
+tabs-active = '#e5dcc6'
+tabs-active-highlight = '#0048b3'
+tabs-active-foreground = '#1c4470'
+bar = '#eee7d6'
+split = '#d7cdb7'
+
+# Search
+search-match-background = '#0048b3'
+search-match-foreground = '#f7f2e6'
+search-focused-match-background = '#1c4470'
+search-focused-match-foreground = '#f7f2e6'
+
+# Hints
+hint-foreground = '#f7f2e6'
+hint-background = '#0048b3'
+
+# Selection
+selection-foreground = '#f7f2e6'
+selection-background = '#0048b3'
+
+# Dim colors
+dim-black = '#eee7d6'
+dim-blue = '#20538a'
+dim-cyan = '#095b62'
+dim-foreground = '#43505c'
+dim-green = '#005f2f'
+dim-magenta = '#7a1f7a'
+dim-red = '#843900'
+dim-white = '#43505c'
+dim-yellow = '#843900'
+
+# Light colors (ANSI bright 8-15 — Circadia bright matrix)
+light-black = '#5f6d7a'
+light-blue = '#0048b3'
+light-cyan = '#095b62'
+light-foreground = '#28323a'
+light-green = '#005f2f'
+light-magenta = '#4b1fa3'
+light-red = '#843900'
+light-white = '#28323a'
+light-yellow = '#843900'

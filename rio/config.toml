@@ -1,0 +1,203 @@
+# mkdir -p ~/.config/rio/themes
+# touch ~/.config/rio/themes/circadia-dark.toml
+# touch ~/.config/rio/themes/circadia-light.toml
+# theme = "circadia-dark"
+
+copy-on-select = false
+grapheme-clustering = true
+hide-cursor-when-typing = false
+ignore-selection-foreground-color = false
+line-height = 1.1
+option-as-alt = 'both'
+padding = [4, 8, 4, 8]
+working-dir = "/Users/me"
+
+env-vars = []
+use-fork = false
+confirm-before-quit = true
+
+[cursor]
+shape = 'block'
+blinking = false
+blinking-interval = 600
+
+[bell]
+audio = true
+
+[editor]
+# program = "/usr/local/bin/nvim"
+program = "/opt/homebrew/bin/nvim"
+args = []
+
+[window]
+width = 1140
+height = 720
+mode = "Windowed"
+opacity = 0.98
+blur = true
+decorations = "transparent"
+colorspace = "display-p3"
+
+[renderer]
+backend = "Metal"
+disable-unfocused-render = false
+performance = "High"
+level = 1
+filters = []
+
+[fonts]
+family = "Maple Mono NF"
+extras = [{ family = "JetBrainsMono Nerd Font" }, { family = "RecMonoSmCasual Nerd Font" }]
+features = ["ss02", "ss03", "ss05", "ss19"]
+disable-warnings-not-found = false
+hinting = true
+size = 13
+
+[fonts.regular]
+family = "JetBrainsMono Nerd Font"
+style = "Normal"
+weight = 400
+
+[fonts.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Normal"
+weight = 800
+
+[fonts.italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+weight = 400
+
+[fonts.bold-italic]
+family = "JetBrainsMono Nerd Font"
+style = "Italic"
+weight = 800
+
+[scroll]
+multiplier = 3.0
+divider = 1.0
+
+# Navigation
+#
+# "mode" - Define navigation mode
+#   • NativeTab (MacOS only)
+#   • Plain
+#   • Tab
+#
+# "hide-if-single" - Hide navigation UI if is single.
+# "clickable" - Enable click on tabs to switch.
+# "use-current-path" - Use same path whenever a new tab is created (Note: requires `use-fork` to be set to false).
+# "color-automation" - Set a specific color for the tab whenever a specific program is running, or in a specific directory.
+[navigation]
+mode = "Tab"
+clickable = false
+hide-if-single = true
+use-current-path = true
+use-split = true
+unfocused-split-opacity = 0.7
+max-tab-width = 240
+color-automation = [{ program = "nvim", color = "#FFFF00" }]
+
+# Platform
+#
+# Rio now allows you to have different configurations per OS
+# You can write ovewrite properties like `Shell`, `Navigation`
+# and `Window`.
+#
+[shell]
+program = "/opt/homebrew/bin/herdr"
+args = ["--session", "default"]
+
+[platform]
+# Microsoft Windows overwrite
+windows.shell.program = "pwsh"
+windows.shell.args = ["-l"]
+
+# Linux overwrite
+linux.shell.program = "tmux"
+linux.shell.args = ["new-session", "-c", "/home/me"]
+
+[adaptive-theme]
+light = "circadia-light"
+dark = "circadia-dark"
+
+# Circadia — Dark Classic (Warm Ember & Espresso)
+# Canvas #17130f, accent #e89a49. Maps the Circadia 16-color terminal
+# matrix (spec/token-map.md) plus UI tokens to Rio's color slots.
+[colors]
+# Regular colors (ANSI 0-7)
+background = '#17130f' # bg_canvas
+black = '#17130f' # ANSI 0  bg_canvas
+red = '#db8935' # ANSI 1  headings.h4
+green = '#8cbb62' # ANSI 2  syntax.string
+yellow = '#d99148' # ANSI 3  syntax.number
+blue = '#66abc6' # ANSI 4  syntax.keyword
+magenta = '#b991db' # ANSI 5  syntax.function
+cyan = '#66abc6' # ANSI 6  syntax.keyword
+white = '#c9c0b1' # ANSI 7  text_primary
+foreground = '#c9c0b1' # text_primary
+
+# Cursor
+cursor = '#e89a49' # accent (warm amber)
+vi-cursor = '#66abc6' # syntax.keyword (cyan)
+
+# Navigation
+tabs = '#29241e' # bg_element
+tabs-foreground = '#aba195' # text_muted
+tabs-active = '#29241e' # bg_element
+tabs-active-highlight = '#e89a49' # accent
+tabs-active-foreground = '#eae3d8' # bright white
+bar = '#1e1a15' # bg_surface
+
+# Search
+search-match-background = '#e89a49' # accent
+search-match-foreground = '#17130f' # bg_canvas
+search-focused-match-background = '#f8c88f' # headings.h1
+search-focused-match-foreground = '#17130f' # bg_canvas
+
+# Selection
+selection-foreground = '#17130f' # bg_canvas
+selection-background = '#e89a49' # accent
+
+# Dim colors
+dim-black = '#1e1a15'
+dim-blue = '#4a7d92'
+dim-cyan = '#4a7d92'
+dim-foreground = '#91887d'
+dim-green = '#6e9452'
+dim-magenta = '#8a6a9e'
+dim-red = '#b56f2b'
+dim-white = '#91887d'
+dim-yellow = '#a8742f'
+
+# Light colors (ANSI bright 8-15 — Circadia bright matrix)
+light-black = '#91887d' # ANSI 8  text_faint
+light-blue = '#66abc6' # ANSI 12 syntax.keyword
+light-cyan = '#66abc6' # ANSI 14 syntax.keyword
+light-foreground = '#eae3d8' # bright white
+light-green = '#8cbb62' # ANSI 10 syntax.string
+light-magenta = '#de88a6' # ANSI 13 syntax.property
+light-red = '#ea9d49' # ANSI 9  headings.h3
+light-white = '#eae3d8' # ANSI 15 bright white
+light-yellow = '#f8c88f' # ANSI 11 headings.h1
+
+# Bindings
+#
+# Create custom Key bindings for Rio terminal
+# More information in: https://raphamorim.io/rio/docs/key-bindings
+#
+# Example:
+# [bindings]
+# keys = [
+#   { key = "q", with = "super", action = "Quit" },
+#   # Send escape sequence to clear screen
+#   { key = "l", with = "control", esc = "\u001b[2J\u001b[H" }
+# ]
+
+# Log level
+#
+# This property enables log level filter and file.
+# The default level is "OFF" and the logs are not logged to a file as default.
+[developer]
+log-level = "ERROR"
+enable-log-file = true

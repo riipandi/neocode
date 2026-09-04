@@ -1,0 +1,30 @@
+# Circadia — Dark Classic (Warm Ember & Espresso)
+# Canvas #17130f, accent #e89a49. Maps the Circadia dark 16-color terminal
+# matrix (spec/token-map.md) to Ghostty's palette slots.
+background = "#17130f"
+foreground = "#c9c0b1"
+cursor-color = "#e89a49"
+cursor-text = "#17130f"
+selection-background = "#e89a49"
+selection-foreground = "#17130f"
+
+# ANSI 0-15 (Circadia dark matrix)
+palette = 0=#17130f
+palette = 1=#db8935
+palette = 2=#8cbb62
+palette = 3=#d99148
+palette = 4=#66abc6
+palette = 5=#b991db
+palette = 6=#66abc6
+palette = 7=#c9c0b1
+palette = 8=#91887d
+palette = 9=#ea9d49
+palette = 10=#8cbb62
+palette = 11=#f8c88f
+palette = 12=#66abc6
+palette = 13=#de88a6
+palette = 14=#66abc6
+palette = 15=#eae3d8
+
+# UI accents (ember) — applied when this dark theme is active
+split-divider-color = #032333

@@ -1,0 +1,26 @@
+# Atomizer Soft Light — pairs with 0x96f (dark) for auto-switching.
+# Light counterpart of 0x96f: high-contrast dark text on off-white.
+# Contrast on bg #fafaf8: fg 15.9:1 (AAA), all accent colors >= 4.5:1 (AA).
+# Auto-loaded by `theme = dark:0x96f,light:atomizer-soft-light` in config.
+palette = 0=#1f1e1f
+palette = 1=#b8494e
+palette = 2=#5d741e
+palette = 3=#85671e
+palette = 4=#007b8b
+palette = 5=#7569a7
+palette = 6=#527a80
+palette = 7=#fafaf8
+palette = 8=#545452
+palette = 9=#ad5659
+palette = 10=#637731
+palette = 11=#856c31
+palette = 12=#0f7784
+palette = 13=#716896
+palette = 14=#537277
+palette = 15=#1f1e1f
+background = #fafaf8
+foreground = #1f1e1f
+cursor-color = #1f1e1f
+cursor-text = #fafaf8
+selection-background = #d0d0ce
+selection-foreground = #1f1e1f

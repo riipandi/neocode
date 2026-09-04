@@ -3,6 +3,9 @@
 # Reference: https://ghostty.org/docs/config/reference
 # mkdir -p ~/.config/ghostty ; touch $_/config2
 
+# touch ~/.config/ghostty/themes/circadia-dark
+# touch ~/.config/ghostty/themes/circadia-light
+
 # Only check for updates, don't auto-update.
 auto-update = check
 auto-update-channel = stable
@@ -27,6 +30,7 @@ copy-on-select = false
 cursor-style = block
 cursor-style-blink = false
 font-family = Maple Mono NF
+# font-family = DepartureMono Nerd Font
 font-feature = +calt, +liga, +dlig
 font-size = 14
 font-style = normal
@@ -41,7 +45,7 @@ quit-after-last-window-closed = true
 scrollback-limit = 524288000
 shell-integration = zsh
 shell-integration-features = no-cursor,sudo,no-title,ssh-terminfo,ssh-env
-split-divider-color = #032333
+# split-divider-color is set per-variant inside the Circadia theme files
 term = xterm-256color
 title = "Ghosterm"
 unfocused-split-opacity = 0.6
@@ -61,10 +65,11 @@ window-position-x = 380
 window-position-y = 158
 window-save-state = default
 window-subtitle = working-directory
-window-theme = auto
+window-theme = dark
 window-title-font-family = Seravek
-window-titlebar-background = #181a1d
-window-titlebar-foreground = #a5a8b0
+# window-titlebar-background / foreground don't accept the light:...,dark:... form
+# (only background, foreground, palette, cursor-*, selection-* do). The per-variant
+# values are set inside the Circadia theme files (circadia-dark / circadia-light).
 window-width = 13200
 
 # macOS icons: official|blueprint|chalkboard|microchip|glass|holographic|paper|retro|xray|custom-style
@@ -95,31 +100,33 @@ quick-terminal-size = 25%,100%
 
 # ghostty +list-themes
 # Flexoki Dark | Mathias | Catppuccin Frappe
-# theme = Flexoki Dark
+theme = "light:circadia-light,dark:circadia-dark"
 
-# === Atomizer Dark Island Theme ===
-background = #181a1d
-foreground = #d4d5d9
-cursor-color = #ffffff
-cursor-text = #181a1d
-selection-background = #336ff1
-selection-foreground = #ffffff
-palette = 0=#191a1c
-palette = 1=#ff6b66
-palette = 2=#8ed16a
-palette = 3=#ffb347
-palette = 4=#6699ff
-palette = 5=#d4aaff
-palette = 6=#4dd0e1
-palette = 7=#e0e2e8
-palette = 8=#7a7e85
-palette = 9=#ff8a85
-palette = 10=#a3e635
-palette = 11=#ffd966
-palette = 12=#9bc4ff
-palette = 13=#e8b4ff
-palette = 14=#70d4e8
-palette = 15=#ffffff
+# Colors are now provided by the Circadia theme (see `theme` below).
+# The previous Atomizer Dark Island palette is commented out so it does
+# not override the theme (Ghostty: config colors win over theme colors).
+# background = #181a1d
+# foreground = #d4d5d9
+# cursor-color = #ffffff
+# cursor-text = #181a1d
+# selection-background = #336ff1
+# selection-foreground = #ffffff
+# palette = 0=#191a1c
+# palette = 1=#ff6b66
+# palette = 2=#8ed16a
+# palette = 3=#ffb347
+# palette = 4=#6699ff
+# palette = 5=#d4aaff
+# palette = 6=#4dd0e1
+# palette = 7=#e0e2e8
+# palette = 8=#7a7e85
+# palette = 9=#ff8a85
+# palette = 10=#a3e635
+# palette = 11=#ffd966
+# palette = 12=#9bc4ff
+# palette = 13=#e8b4ff
+# palette = 14=#70d4e8
+# palette = 15=#ffffff
 
 # keybindings
 keybind = cmd+q=ignore
