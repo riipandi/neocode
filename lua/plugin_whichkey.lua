@@ -82,7 +82,7 @@ require('which-key').setup({
         { '<leader>d',  group = 'Diagnostic',                 mode = "n" },
         { '<leader>dl', desc = 'Set loclist',                 mode = "n" },
         { '<leader>nd', desc = 'Next diagnostic',             mode = "n" },
-        { '<leader>pd', desc = 'Previous diagnostic',         dmode = "n" },
+        { '<leader>pd', desc = 'Previous diagnostic',         mode = "n" },
 
         -- File
         { '<leader>f',  group = 'File',                       mode = "n" },
