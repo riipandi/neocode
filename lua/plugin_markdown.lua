@@ -85,22 +85,28 @@ vim.keymap.set("n", "<C-m>", function()
 end, { desc = "Markdown: Toggle inline render" })
 
 -- Wrap text for markdown buffers
+local md_group = vim.api.nvim_create_augroup("markdown_wrap", { clear = true })
+
 vim.api.nvim_create_autocmd("FileType", {
+    group = md_group,
     pattern = "markdown",
     callback = function()
         vim.opt_local.wrap = true
         vim.opt_local.linebreak = true
         vim.opt_local.breakindent = true
         vim.opt_local.breakindentopt = "list:2,shift:0"
+    end,
+})
 
--- Reduce bullet boldness
+-- Reduce bullet boldness (registered once at load; previously it sat inside
+-- the FileType callback next to the VimResized autocmd, so both leaked a new
+-- autocmd per opened markdown buffer)
 vim.api.nvim_set_hl(0, "RenderMarkdownBullet", { bold = false })
 
 -- Re-render markdown tables on terminal resize
 vim.api.nvim_create_autocmd("VimResized", {
+    group = md_group,
     callback = function()
         pcall(vim.cmd, "RenderMarkdown enable")
-    end,
-})
     end,
 })

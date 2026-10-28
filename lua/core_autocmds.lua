@@ -94,9 +94,9 @@ autocmd("FileType", {
 -- Terminal settings
 autocmd("TermClose", {
     group = user_augroup,
-    callback = function()
-        if vim.v.event.status == 0 then
-            vim.api.nvim_buf_delete(0, {})
+    callback = function(ev)
+        if vim.v.event.status == 0 and vim.api.nvim_buf_is_valid(ev.buf) then
+            vim.api.nvim_buf_delete(ev.buf, { force = true })
         end
     end,
     desc = "Auto-close terminal on exit",
