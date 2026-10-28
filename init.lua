@@ -22,7 +22,7 @@ vim.opt.number = true          -- Line numbers
 vim.opt.relativenumber = false -- Relative line numbers
 vim.opt.cursorline = true      -- Highlight current line
 vim.opt.wrap = false           -- Don't wrap lines
-vim.opt.scrolloff = 999        -- Keep cursor centered, allow scroll beyond last line
+vim.opt.scrolloff = 10         -- Keep 10 lines above/below cursor
 vim.opt.sidescrolloff = 4      -- Keep 8 columns left/right of cursor
 
 -- Indentation
