@@ -287,25 +287,21 @@ terminals, so window actions use the `<leader>w` group.
 
 ## Scrolling
 
-| Action                     | Shortcut                                            |
-| -------------------------- | --------------------------------------------------- |
-| Scroll one line            | `<C-e>` / `<C-y>`, `<C-Down>` / `<C-Up>`            |
-| Half page                  | `<C-d>` / `<C-u>`, `<S-Down>` / `<S-Up>` (normal)   |
-| Page down                  | `<C-f>`                                             |
-| Mouse wheel                | `<ScrollWheelDown>` / `<ScrollWheelUp>`             |
+Native Neovim behaviour (no scroll overrides):
 
-All of them go through `lua/core_scroll.lua`: both directions scroll the same
-amount, and they stop as soon as the last buffer line reaches the bottom of the
-window, so the area below EOF is never reachable by scrolling. The end-of-buffer
-fill character is a blank (no `~`).
+| Action          | Shortcut                     |
+| --------------- | ---------------------------- |
+| One line        | `<C-e>` / `<C-y>`            |
+| Half page       | `<C-d>` / `<C-u>`            |
+| Page            | `<C-f>` / `<C-b>`            |
+| Mouse wheel     | `<ScrollWheelUp/Down>`       |
 
-`<S-Up>`/`<S-Down>` keep their native selection-extending action in visual mode.
-`<C-b>` is not page up here — it opens the buffer list.
+`<C-b>` is remapped to the buffer picker in this config, so page up is
+`<C-u>` ×2 or `<C-y>`.
 
-Smooth scrolling is provided by `snacks.scroll` (`lua/core_plugins.lua`):
-`animate.total = 120ms`, `animate_repeat.delay = 80ms`. `:lua vim.g.snacks_scroll = false`
-turns it off for the session; `<leader>ls` toggles the unrelated `smoothscroll`
-option.
+Smooth scrolling comes from `snacks.scroll` (`lua/core_plugins.lua`):
+45 ms per scrolled line, 240 ms cap, 16 ms/line once a key is held for 130 ms.
+Set `vim.g.snacks_scroll = false` to disable it for the session.
 
 ## Insert Mode
 
