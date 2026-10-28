@@ -47,6 +47,8 @@ local ensure_installed = {
     "sql-formatter",
     "stylua",
     "terraform",
+    -- nvim-treesitter (main branch) compiles parsers with the tree-sitter CLI
+    "tree-sitter-cli",
 }
 
 require('mason-tool-installer').setup({

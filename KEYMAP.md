@@ -8,18 +8,22 @@
 | Quit all              | `qq`     | `<leader>qq`      |
 | Quit all              |          | `<C-q>` / `<A-q>` |
 | Close buffer or split |          | `<C-x>`           |
-| Close all buffers     |          | `<C-S-w>`         |
+| Close all buffers     |          | `<leader>bW`      |
 | Command palette       | `;`      | `<leader>;`       |
+| Command palette (all) | `:`      | `<leader>:`       |
 | Edit config           | `,`      | `<leader>,`       |
 
 > **Note:** `<C-x>` keeps the file explorer open and shows a blank buffer when the last editor buffer is closed, instead of letting the explorer expand to full width.
 
 ## Escape Key
 
-| Action                | Shortcut | Description                               |
-| --------------------- | -------- | ----------------------------------------- |
-| Close floating window | `<Esc>`  | Closes terminal, lazygit, picker, etc.    |
-| Clear search          | `<Esc>`  | Clears search highlights in normal buffer |
+| Action                | Shortcut | Description                                            |
+| --------------------- | -------- | ------------------------------------------------------ |
+| Close floating window | `<Esc>`  | Closes lazygit, picker, etc. (normal mode only)        |
+| Clear search          | `<Esc>`  | Clears search highlights in a normal buffer            |
+
+`<Esc>` is **not** mapped in terminal mode, so terminal programs (fzf, htop,
+lazygit, ...) receive it. In a snacks terminal use `<Esc><Esc>` to leave.
 
 ## Buffer
 
@@ -28,6 +32,7 @@
 | Buffer picker       | `bb`     | `<leader>bb` |
 | Delete buffer       | `bd`     | `<leader>bd` |
 | Close other buffers | `bo`     | `<leader>bo` |
+| Close all buffers   | `bW`     | `<leader>bW` |
 
 ## Diagnostic
 
@@ -37,6 +42,9 @@
 | Set loclist         | `dl`     | `<leader>dl` |
 | Next diagnostic     | `nd`     | `<leader>nd` |
 | Previous diagnostic | `pd`     | `<leader>pd` |
+
+`<leader>d` is the diagnostic group; delete-without-yank is `<leader>D` (see
+Editing).
 
 ## File
 
@@ -75,7 +83,7 @@
 | `I`             | Toggle ignored | Show/hide gitignored files                                                                                  |
 | `H`             | Toggle hidden  | Show/hide dotfiles                                                                                          |
 
-Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open or focuses if cursor is elsewhere. `<Esc>` and `q` refocus the explorer (don't close it).
+Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open or focuses if cursor is elsewhere. `q` closes the explorer; `<Esc>` clears the search first and closes on a second press.
 
 ## Git
 
@@ -95,7 +103,7 @@ Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open
 | Reset hunk      | `hr`     | `<leader>hr` |
 | Stage buffer    | `hS`     | `<leader>hS` |
 | Reset buffer    | `hR`     | `<leader>hR` |
-| Undo stage hunk | `hu`     | `<leader>hu` |
+| Unstage/reset   | `hu`     | `<leader>hu` |
 | Preview hunk    | `hp`     | `<leader>hp` |
 | Blame line      | `hb`     | `<leader>hb` |
 | Diff (index)    | `hd`     | `<leader>hd` |
@@ -139,7 +147,7 @@ Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open
 | Clear marks      | `mc`     | `<leader>mc` |
 | List marks       |          | `<C-l>`      |
 | Next mark        |          | `<C-n>`      |
-| Previous mark    |          | `<C-S-m>`    |
+| Previous mark    | `mp`     | `<leader>mp` |
 
 Inside the marks picker (`<C-l>`):
 
@@ -161,11 +169,11 @@ Inside the marks picker (`<C-l>`):
 | Action                 | WhichKey | Shortcut     |
 | ---------------------- | -------- | ------------ |
 | swpui (search/replace) | `sr`     | `<leader>sr` |
-| Global search (swpui)  |          | `<C-S-f>`    |
 | Live grep              | `fw`     | `<leader>fw` |
 | Fuzzy grep             | `fz`     | `<leader>fz` |
 | Grep cursor word       | `ff`     | `<leader>ff` |
-| Clear search           | `c`      | `<leader>c`  |
+| Clear search           | `sc`     | `<leader>sc` |
+| Skip match (multicursor) | `ss`   | `<leader>ss` |
 | Next result            |          | `n`          |
 | Previous result        |          | `N`          |
 
@@ -174,10 +182,13 @@ Inside the marks picker (`<C-l>`):
 | Action           | WhichKey | Shortcut     |
 | ---------------- | -------- | ------------ |
 | Terminal         | `tt`     | `<leader>tt` |
+| Terminal (cwd)   | `tT`     | `<leader>tT` |
 | LazyGit          | `gg`     | `<leader>gg` |
 | Resource Monitor | `tr`     | `<leader>tr` |
 
 ### Resource Monitor (`<leader>tr`)
+
+Uses the first available of `mactop`, `btop`, `htop`; warns when none exist.
 
 Requires installation:
 
@@ -209,7 +220,8 @@ Requires installation:
 
 | Command         | Description                                               |
 | --------------- | --------------------------------------------------------- |
-| `:Format`       | Format the current buffer (`:N Format` formats lines 1-N) |
+| `:Format`       | Format the current buffer with conform.nvim (range ignored) |
+| `:FormatCode`   | Alias of `:Format` (same conform pipeline)                   |
 | `:Update`       | Update all plugins (alias for `vim.pack.update()`)        |
 | `:LspRestart`   | Restart all attached LSP clients                          |
 | `:HealthCheck`  | Run health check (Neovim version, tools, LSP, pack-lock)  |
@@ -219,7 +231,7 @@ Requires installation:
 
 | Action              | WhichKey | Shortcut    |
 | ------------------- | -------- | ----------- |
-| Delete without yank | `d`      | `<leader>d` |
+| Delete without yank | `D`      | `<leader>D` |
 | Join lines          |          | `J`         |
 | Indent left         |          | `<`         |
 | Indent right        |          | `>`         |
@@ -237,7 +249,7 @@ Trigger eksplisit — tidak aktif di normal mode sampai dipanggil.
 | Select word      | `mc`             | Select word under cursor, repeat to add next occurrence |
 | Next match       | `<leader>n`      | Add cursor to next match of word/selection              |
 | Prev match       | `<leader>N`      | Add cursor to previous match                            |
-| Skip match       | `<leader>s`      | Skip next match without adding cursor                   |
+| Skip match       | `<leader>ss`     | Skip next match without adding cursor                   |
 | Skip prev        | `<leader>M`      | Skip previous match                                     |
 | Add cursor above | `<leader><up>`   | Add cursor on line above                                |
 | Add cursor below | `<leader><down>` | Add cursor on line below                                |
@@ -257,16 +269,21 @@ Trigger eksplisit — tidak aktif di normal mode sampai dipanggil.
 
 ## Window
 
-| Action           | WhichKey | Shortcut  |
-| ---------------- | -------- | --------- |
-| Split vertical   |          | `<C-\>`   |
-| Split horizontal |          | `<C-S-\>` |
-| Previous window  |          | `<C-A-[>` |
-| Next window      |          | `<C-A-]>` |
-| Increase width   |          | `<C-A-=>` |
-| Decrease width   |          | `<C-A-->` |
-| Increase height  |          | `<C-S-=>` |
-| Decrease height  |          | `<C-S-->` |
+`<C-S-...>` and `<C-A-...>` combinations are not transmitted by most
+terminals, so window actions use the `<leader>w` group.
+
+| Action           | WhichKey | Shortcut     |
+| ---------------- | -------- | ------------ |
+| Split vertical   | `wv`     | `<leader>wv` |
+| Split vertical   |          | `<C-\>`     |
+| Split horizontal | `ws`     | `<leader>ws` |
+| Previous window  | `ww`     | `<leader>ww` |
+| Close window     | `wq`     | `<leader>wq` |
+| Equalize splits  | `w=`     | `<leader>w=` |
+| Increase width   | `w+`     | `<leader>w+` |
+| Decrease width   | `w-`     | `<leader>w-` |
+| Increase height  | `w>`     | `<leader>w>` |
+| Decrease height  | `w<`     | `<leader>w<` |
 
 ## Insert Mode
 
