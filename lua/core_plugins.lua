@@ -151,12 +151,12 @@ snacks.setup({
     scroll = {
         enabled = true,
         animate = {
-            duration = { step = 10, total = 200 },
+            duration = { step = 8, total = 120 },
             easing = "linear",
         },
         animate_repeat = {
-            delay = 100,
-            duration = { step = 5, total = 50 },
+            delay = 80,
+            duration = { step = 4, total = 40 },
             easing = "linear",
         },
         filter = function(buf)
