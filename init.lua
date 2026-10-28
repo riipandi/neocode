@@ -133,6 +133,7 @@ require 'plugin_lualine'           -- Statusline (lualine)
 require 'plugin_noice'             -- Cmdline UI replacement (noice)
 require 'plugin_vcs'               -- Version control (git)
 require 'plugin_whichkey'          -- Which-key (keybindings helper)
+require 'plugin_markdown'          -- Markdown preview (mdkite.nvim)
 require 'plugin_mason'             -- Mason package manager
 require 'command_mason_pkg'        -- Mason package manager GUI (depends on mason)
 require 'language_rust'            -- Rust development toolkit
