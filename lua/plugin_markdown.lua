@@ -46,8 +46,8 @@ require("render-markdown").setup({
     bullet = {
         enabled = true,
         icons = { "●", "○", "◆", "◇" },
-        left_pad = 0,
-        right_pad = 0,
+        left_pad = 1,
+        right_pad = 1,
         highlight = "RenderMarkdownBullet",
     },
     checkbox = {
