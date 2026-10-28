@@ -6,17 +6,21 @@ local snacks = require("snacks")
 local function notify_undo()
     local count = vim.v.count > 0 and vim.v.count or nil
     local seq = vim.fn.undotree().seq_last
-    vim.cmd("silent! undo" .. (count and " " .. count or ""))
+    local ok, err = pcall(vim.cmd, "undo" .. (count and " " .. count or ""))
+    if not ok then
+        vim.notify("Undo failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Undo" })
+        return
+    end
     local actual = seq - vim.fn.undotree().seq_last
     if actual > 0 then
         vim.notify("Undo " .. actual .. " change" .. (actual ~= 1 and "s" or ""), vim.log.levels.INFO, {
             title = "Undo",
-            timeout = 2000,
+            timeout = 1200,
         })
     else
-        vim.notify("Already at oldest change", vim.log.levels.WARN, {
+        vim.notify_once("Already at oldest change", vim.log.levels.WARN, {
             title = "Undo",
-            timeout = 2000,
+            timeout = 1200,
         })
     end
 end
@@ -24,17 +28,21 @@ end
 local function notify_redo()
     local count = vim.v.count > 0 and vim.v.count or nil
     local seq = vim.fn.undotree().seq_last
-    vim.cmd("silent! redo" .. (count and " " .. count or ""))
+    local ok, err = pcall(vim.cmd, "redo" .. (count and " " .. count or ""))
+    if not ok then
+        vim.notify("Redo failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Redo" })
+        return
+    end
     local actual = vim.fn.undotree().seq_last - seq
     if actual > 0 then
         vim.notify("Redo " .. actual .. " change" .. (actual ~= 1 and "s" or ""), vim.log.levels.INFO, {
             title = "Redo",
-            timeout = 2000,
+            timeout = 1200,
         })
     else
-        vim.notify("Already at newest change", vim.log.levels.WARN, {
+        vim.notify_once("Already at newest change", vim.log.levels.WARN, {
             title = "Redo",
-            timeout = 2000,
+            timeout = 1200,
         })
     end
 end

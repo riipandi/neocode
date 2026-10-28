@@ -1,43 +1,16 @@
 -- ============================================================================
--- Cmdline <CR>: toast on search failure or command error
+-- Cmdline <CR>: toast on command error
 -- ============================================================================
--- Intercept <CR> in cmdline mode:
--- For / and ? searches: prevent native E486 `Pattern not found` and show
---   a toast instead.
--- For : commands: execute via vim.cmd() and show command errors as toast,
---   avoiding the native bottom-of-terminal message.
+-- Only `:` (ex) commands are intercepted: they run through vim.cmd() so errors
+-- show up as a toast instead of the bottom-of-screen message.
+--
+-- Searches (/ and ?) are deliberately NOT intercepted: re-implementing them
+-- with vim.fn.search() dropped search offsets (/pat/e, /pat/+2) and recursed
+-- whenever a plugin used `:normal! /pat`. They now run natively; noice.nvim
+-- routes the E486 message to the mini toast view (view_error = "mini").
 vim.keymap.set("c", "<CR>", function()
     local cmdtype = vim.fn.getcmdtype()
     local cmdline = vim.fn.getcmdline()
-
-    if (cmdtype == "/" or cmdtype == "?") and cmdline ~= "" then
-        -- Add to search history so <Up> works for next search
-        vim.fn.histadd("search", cmdline)
-        vim.fn.setreg("/", cmdline)
-
-        -- Cancel cmdline (prevent native search from executing)
-        vim.api.nvim_feedkeys(
-            vim.api.nvim_replace_termcodes("<C-c>", true, false, true),
-            "n", false
-        )
-
-        -- Execute search ourselves
-        local dir = cmdtype == "?" and "b" or ""
-        local ok, found = pcall(vim.fn.search, cmdline, "w" .. dir)
-
-        if not ok then
-            vim.notify("Search error: " .. tostring(found), vim.log.levels.ERROR, {
-                title = "Search",
-                timeout = 3000,
-            })
-        elseif found == 0 then
-            vim.notify("Pattern not found: " .. cmdline, vim.log.levels.WARN, {
-                title = "Search",
-                timeout = 2500,
-            })
-        end
-        return
-    end
 
     if cmdtype == ":" and cmdline ~= "" then
         -- Cancel native cmdline so our vim.cmd() takes over
@@ -63,11 +36,9 @@ vim.keymap.set("c", "<CR>", function()
         return
     end
 
-    -- Default: feed Enter through for non-search, non-: commands (e.g. =, @)
+    -- Default: feed Enter through for searches and non-: cmdline types
     vim.api.nvim_feedkeys(
         vim.api.nvim_replace_termcodes("<CR>", true, false, true),
         "n", false
     )
-end, { desc = "Cmdline Enter with toast on error" })
-
-return M
+end, { desc = "Cmdline Enter with toast on command error" })

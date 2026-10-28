@@ -27,12 +27,26 @@ end, { desc = "Update all plugins" })
 -- :LspRestart - Restart LSP clients (for all attached clients)
 vim.api.nvim_create_user_command("LspRestart", function()
     local clients = vim.lsp.get_clients()
-    for _, client in ipairs(clients) do
-        client.stop()
+    if #clients == 0 then
+        vim.notify("No LSP clients running", vim.log.levels.WARN, { title = "LSP" })
+        return
     end
-    vim.cmd("doautocmd User LSPAttach") -- trigger LspAttach to re-attach
-    -- Alternative: vim.cmd("edit") to reload current buffer
-    Snacks.notify.info("Restarted " .. #clients .. " LSP clients")
+
+    local names = {}
+    for _, client in ipairs(clients) do
+        names[client.name] = true
+        client:stop(true)
+    end
+
+    -- vim.lsp.enable() re-triggers the attach logic for buffers whose
+    -- filetype matches, which is the supported way to restart a client.
+    vim.defer_fn(function()
+        for name in pairs(names) do
+            pcall(vim.lsp.enable, name)
+        end
+    end, 100)
+
+    vim.notify("Restarting " .. #clients .. " LSP client(s)", vim.log.levels.INFO, { title = "LSP" })
 end, { desc = "Restart all LSP clients" })
 
 -- :HealthCheck - Run a comprehensive health check
