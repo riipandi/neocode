@@ -183,12 +183,7 @@ require('lualine').setup({
                     local msg = "No LSP"
                     local buf_ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
 
-                    local clients = {}
-                    if vim.lsp.get_clients then
-                        clients = vim.lsp.get_clients({ bufnr = 0 })
-                    else
-                        clients = vim.lsp.get_active_clients({ bufnr = 0 })
-                    end
+                    local clients = vim.lsp.get_clients({ bufnr = 0 })
 
                     if next(clients) == nil then
                         return msg

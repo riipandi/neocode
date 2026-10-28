@@ -292,8 +292,8 @@ local function ai_explain_selected()
             local lines = vim.split(explanation, "\n", { plain = true })
             local buf = vim.api.nvim_create_buf(false, true)
             vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-            vim.api.nvim_buf_set_option(buf, "filetype", "markdown")
-            vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
+            vim.bo[buf].filetype = "markdown"
+            vim.bo[buf].bufhidden = "wipe"
 
             local width = math.min(80, math.max(40, vim.o.columns - 20))
             local height = math.min(#lines + 2, math.floor(vim.o.lines * 0.4))
@@ -469,8 +469,8 @@ local function generate_commit_message(opts)
             -- Open the COMMIT_EDITMSG-equivalent scratch buffer
             local buf = vim.api.nvim_create_buf(true, false)
             vim.api.nvim_buf_set_lines(buf, 0, -1, false, vim.split(message, "\n", { plain = true }))
-            vim.api.nvim_buf_set_option(buf, "filetype", "gitcommit")
-            vim.api.nvim_buf_set_option(buf, "buftype", "acwrite")
+            vim.bo[buf].filetype = "gitcommit"
+            vim.bo[buf].buftype = "acwrite"
             vim.api.nvim_set_current_buf(buf)
             vim.cmd("file COMMIT_EDITMSG")
             vim.notify(

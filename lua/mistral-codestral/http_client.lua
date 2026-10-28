@@ -23,6 +23,21 @@ local function json_decode(text)
     return vim.fn.json_decode(text)
 end
 
+-- Write sensitive content to a private temp file (0600) for curl.
+-- Request bodies and headers go through files so the API key never shows up
+-- in the process list (`ps aux` would expose `-H "Authorization: Bearer ..."`).
+local function write_private_temp(content)
+    local file = vim.fn.tempname()
+    local f = io.open(file, "w")
+    if not f then
+        return nil
+    end
+    f:write(content)
+    f:close()
+    pcall(uv.fs_chmod, file, 384) -- 0600
+    return file
+end
+
 -- POST a JSON request. Callback signature: function(response, error)
 function M.post(url, options, callback)
     options = options or {}
@@ -38,17 +53,30 @@ function M.post(url, options, callback)
     end
 
     -- Write body to a temp file (avoids argv size limits + quoting issues)
-    local temp_file = vim.fn.tempname()
-    local f = io.open(temp_file, "w")
-    if not f then
+    local temp_file = write_private_temp(json_data)
+    if not temp_file then
         errors.error(errors.CATEGORY.INTERNAL, "Cannot create temp file for request body")
         callback(nil, "Failed to create temp file")
         return
     end
-    f:write(json_data)
-    f:close()
 
-    -- Build curl argv (avoids shell injection — no string interpolation)
+    -- Headers (incl. the bearer token) go to their own private file.
+    local header_file
+    local header_lines = {}
+    for key, value in pairs(headers) do
+        table.insert(header_lines, key .. ": " .. value)
+    end
+    if #header_lines > 0 then
+        header_file = write_private_temp(table.concat(header_lines, "\n") .. "\n")
+        if not header_file then
+            pcall(vim.fn.delete, temp_file)
+            errors.error(errors.CATEGORY.INTERNAL, "Cannot create temp file for request headers")
+            callback(nil, "Failed to create temp file")
+            return
+        end
+    end
+
+    -- Build curl argv (no shell, no secret in argv)
     local curl_cmd = {
         "curl",
         "-s",
@@ -60,21 +88,32 @@ function M.post(url, options, callback)
         "--max-time",
         tostring(math.max(1, math.floor(timeout / 1000))),
     }
-
-    for key, value in pairs(headers) do
+    if header_file then
         table.insert(curl_cmd, "-H")
-        table.insert(curl_cmd, key .. ": " .. value)
+        table.insert(curl_cmd, "@" .. header_file)
     end
     table.insert(curl_cmd, url)
+
+    local finished = false
+    local function finish(response, err)
+        if finished then
+            return
+        end
+        finished = true
+        pcall(vim.fn.delete, temp_file)
+        if header_file then
+            pcall(vim.fn.delete, header_file)
+        end
+        callback(response, err)
+    end
 
     -- Fire the request
     local job_id = vim.fn.jobstart(curl_cmd, {
         on_exit = function(_, exit_code)
-            pcall(vim.fn.delete, temp_file)
             if exit_code ~= 0 then
                 local error_msg = errors.parse_http_error(exit_code, timeout)
                 errors.warning(errors.CATEGORY.NETWORK, error_msg, { exit_code = exit_code })
-                callback(nil, error_msg)
+                finish(nil, error_msg)
             end
         end,
         stdout_buffered = true,
@@ -87,23 +126,22 @@ function M.post(url, options, callback)
             if not ok_decode or not response then
                 errors.error(errors.CATEGORY.API, "Failed to parse JSON response",
                     { snippet = response_text:sub(1, 200) })
-                callback(nil, "Failed to parse JSON response")
+                finish(nil, "Failed to parse JSON response")
                 return
             end
             local api_error = errors.parse_api_error(response)
             if api_error then
                 errors.error(errors.CATEGORY.API, api_error)
-                callback(nil, api_error)
+                finish(nil, api_error)
             else
-                callback(response, nil)
+                finish(response, nil)
             end
         end,
     })
 
     if job_id <= 0 then
-        pcall(vim.fn.delete, temp_file)
         errors.error(errors.CATEGORY.INTERNAL, "Failed to start HTTP job", { job_id = job_id })
-        callback(nil, "Failed to start HTTP request")
+        finish(nil, "Failed to start HTTP request")
     end
 end
 

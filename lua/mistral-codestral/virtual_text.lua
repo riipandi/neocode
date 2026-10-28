@@ -556,8 +556,18 @@ function M.setup(mistral_config)
             end, { desc = "Previous Codestral completion", silent = true })
         end
         if b.clear then
-            vim.keymap.set("i", b.clear, clear_virtual_text, { desc = "Clear Codestral completion", silent = true })
-            vim.keymap.set("n", b.clear, clear_virtual_text, { desc = "Clear Codestral completion", silent = true })
+            -- expr mapping: clear the ghost preview and still let the key
+            -- through. A plain global map on <C-c> would shadow "abort insert"
+            -- (and the Esc-alike in normal mode) for the whole editor.
+            vim.keymap.set("i", b.clear, function()
+                clear_virtual_text()
+                return b.clear
+            end, {
+                desc = "Clear Codestral completion",
+                expr = true,
+                replace_keycodes = true,
+                silent = true,
+            })
         end
     end
 
