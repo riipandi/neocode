@@ -147,16 +147,21 @@ snacks.setup({
         enabled = true,
     },
 
-    -- Smooth scrolling
+    -- Smooth scrolling.
+    -- `step` is the duration per scrolled line in ms, `total` caps the whole
+    -- animation. 8ms/line made single-line scrolls finish in one frame (looked
+    -- like no animation at all), while long jumps were capped at 120ms.
     scroll = {
         enabled = true,
         animate = {
-            duration = { step = 8, total = 120 },
+            duration = { step = 45, total = 240 },
             easing = "linear",
         },
         animate_repeat = {
-            delay = 80,
-            duration = { step = 4, total = 40 },
+            -- after holding a scroll key this long, switch to the shorter
+            -- profile so the view keeps up with the repeats
+            delay = 130,
+            duration = { step = 16, total = 90 },
             easing = "linear",
         },
         filter = function(buf)

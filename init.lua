@@ -61,9 +61,9 @@ vim.opt.conceallevel = 0                                  -- Don't hide markup
 vim.opt.concealcursor = ""                                -- Don't hide cursor line markup
 vim.opt.lazyredraw = false                                -- Don't redraw during macros
 vim.opt.synmaxcol = 300                                   -- Syntax highlighting limit
--- Keep the default `~` marker at the end of the buffer: rendering it as a
--- blank makes the area below EOF look like more empty lines.
-vim.opt.fillchars:append({ eob = "~" })
+-- Blank end-of-buffer area (no `~` marker). Safe now that core_scroll.lua
+-- stops <C-e>/<C-f>/wheel from scrolling past the last line.
+vim.opt.fillchars:append({ eob = " " })
 vim.opt.winborder = "rounded"                             -- Set window border style to rounded
 vim.g.border_style = "rounded"                            -- Set global border style for floating windows
 vim.g.markdown_recommended_style = 0                      -- Fix markdown indentation settings
