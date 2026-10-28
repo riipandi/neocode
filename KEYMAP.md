@@ -287,15 +287,20 @@ terminals, so window actions use the `<leader>w` group.
 
 ## Scrolling
 
-| Action                     | Shortcut                                |
-| -------------------------- | --------------------------------------- |
-| Scroll one line            | `<C-e>` / `<C-y>`                       |
-| Page down / up             | `<C-f>` / `<C-b>`                       |
-| Mouse wheel                | `<ScrollWheelUp>` / `<ScrollWheelDown>` |
+| Action                     | Shortcut                                            |
+| -------------------------- | --------------------------------------------------- |
+| Scroll one line            | `<C-e>` / `<C-y>`, `<C-Down>` / `<C-Up>`            |
+| Half page                  | `<C-d>` / `<C-u>`, `<S-Down>` / `<S-Up>` (normal)   |
+| Page down                  | `<C-f>`                                             |
+| Mouse wheel                | `<ScrollWheelDown>` / `<ScrollWheelUp>`             |
 
-`<C-e>`, `<C-f>` and the wheel stop as soon as the last buffer line reaches the
-bottom of the window (`lua/core_scroll.lua`), so the area below EOF is never
-reachable by scrolling. The default `~` marker is kept at the end of the buffer.
+All of them go through `lua/core_scroll.lua`: both directions scroll the same
+amount, and they stop as soon as the last buffer line reaches the bottom of the
+window, so the area below EOF is never reachable by scrolling. The end-of-buffer
+fill character is a blank (no `~`).
+
+`<S-Up>`/`<S-Down>` keep their native selection-extending action in visual mode.
+`<C-b>` is not page up here — it opens the buffer list.
 
 Smooth scrolling is provided by `snacks.scroll` (`lua/core_plugins.lua`):
 `animate.total = 120ms`, `animate_repeat.delay = 80ms`. `:lua vim.g.snacks_scroll = false`
