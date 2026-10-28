@@ -5,6 +5,7 @@
 
 -- Load sub-modules in order
 require("core_keymaps.general")
+require("core_keymaps.scroll")
 require("core_keymaps.undo")
 require("core_keymaps.buffer")
 require("core_keymaps.quit")

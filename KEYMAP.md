@@ -287,14 +287,18 @@ terminals, so window actions use the `<leader>w` group.
 
 ## Scrolling
 
-Native Neovim behaviour (no scroll overrides):
+Native Neovim behaviour, with one exception for `<S-Up>`/`<S-Down>`:
 
-| Action          | Shortcut                     |
-| --------------- | ---------------------------- |
-| One line        | `<C-e>` / `<C-y>`            |
-| Half page       | `<C-d>` / `<C-u>`            |
-| Page            | `<C-f>` / `<C-b>`            |
-| Mouse wheel     | `<ScrollWheelUp/Down>`       |
+| Action          | Shortcut                                  |
+| --------------- | ----------------------------------------- |
+| One line        | `<C-e>` / `<C-y>`                         |
+| Half page       | `<C-d>` / `<C-u>`, `<S-Down>` / `<S-Up>`  |
+| Page            | `<C-f>` / `<C-b>`                         |
+| Mouse wheel     | `<ScrollWheelUp/Down>`                    |
+
+`<S-Up>`/`<S-Down>` use the same builtin as `<C-u>`/`<C-d>` (normal mode only —
+insert mode and visual-mode selection keep the native arrows). Scrolling past
+the last line is allowed again; only scroll *keys* are consistent, not clamped.
 
 `<C-b>` is remapped to the buffer picker in this config, so page up is
 `<C-u>` ×2 or `<C-y>`.
