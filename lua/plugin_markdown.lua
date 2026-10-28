@@ -13,11 +13,64 @@ require("render-markdown").setup({
     render_modes = { "n", "c", "t", "i", "v", "V", "\22" },
     heading = {
         enabled = true,
+        sign = true,
         icons = { "# ", "## ", "### ", "#### ", "##### ", "###### " },
+        position = "overlay",
+        width = "block",
+        border = false,
+    },
+    code = {
+        enabled = true,
+        sign = true,
+        style = "full",
+        position = "left",
+        width = "full",
+        border = "thin",
+    },
+    dash = {
+        enabled = true,
+        icon = "─",
+        width = "full",
     },
     bullet = {
         enabled = true,
         icons = { "●", "○", "◆", "◇" },
+        left_pad = 0,
+        right_pad = 1,
+    },
+    checkbox = {
+        enabled = true,
+        unchecked = { icon = "󰄱 " },
+        checked = { icon = "󰱒 " },
+    },
+    quote = {
+        enabled = true,
+        icon = "▋",
+        repeat_linebreak = false,
+    },
+    pipe_table = {
+        enabled = true,
+        style = "full",
+        cell = "padded",
+        border = {
+            "┌", "┬", "┐",
+            "├", "┼", "┤",
+            "└", "┴", "┘",
+            "│", "─",
+        },
+        alignment_indicator = "━",
+    },
+    link = {
+        enabled = true,
+        image = "󰥶 ",
+        email = "󰀓 ",
+        hyperlink = "󰌹 ",
+    },
+    win_options = {
+        conceallevel = {
+            default = 2,
+            rendered = 3,
+        },
     },
 })
 
