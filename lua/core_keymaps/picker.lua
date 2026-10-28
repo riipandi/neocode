@@ -23,11 +23,20 @@ local function apply_overrides()
     picker_config.win.list.keys = picker_config.win.list.keys or {}
     picker_config.win.input.keys = picker_config.win.input.keys or {}
 
-    -- <C-q>/<A-q> confirm quit in picker buffers
-    picker_config.win.list.keys["<C-q>"] = get_confirm_quit()
-    picker_config.win.list.keys["<A-q>"] = get_confirm_quit()
-    picker_config.win.input.keys["<C-q>"] = { get_confirm_quit(), mode = { "i", "n" } }
-    picker_config.win.input.keys["<A-q>"] = { get_confirm_quit(), mode = { "i", "n" } }
+    -- <C-q>/<A-q> confirm quit in picker buffers.
+    -- Close the picker first: confirm_quit opens a vim.ui.select (snacks
+    -- picker), and stacking a picker inside a picker breaks input handling.
+    local function quit_from_picker(picker)
+        if picker and not picker.closed then
+            picker:close()
+        end
+        vim.schedule(get_confirm_quit())
+    end
+
+    picker_config.win.list.keys["<C-q>"] = quit_from_picker
+    picker_config.win.list.keys["<A-q>"] = quit_from_picker
+    picker_config.win.input.keys["<C-q>"] = { quit_from_picker, mode = { "i", "n" } }
+    picker_config.win.input.keys["<A-q>"] = { quit_from_picker, mode = { "i", "n" } }
 
     -- `e` moves focus to editor window from picker
     picker_config.win.list.keys["e"] = function(_picker)

@@ -352,24 +352,49 @@ snacks.keymap.set("n", "<leader>tT", function()
     })
 end, { desc = "Toggle floating terminal (cwd)" })
 
--- Override vim.ui.select with snacks picker for consistent UI
--- Ensures Escape properly cancels (calls callback with nil)
-_G.ui_select = function(prompt, choices, callback)
-    if not choices or type(choices) ~= "table" then
-        vim.notify("Invalid choices provided to ui_select", vim.log.levels.ERROR)
+-- Override vim.ui.select with snacks picker for consistent UI.
+-- The vim.ui.select contract is (items, opts, on_choice); callers rely on
+-- opts.format_item, so it must be forwarded — without it snacks crashes on
+-- table items ("attempt to call method 'gsub'"). Escape cancels with nil.
+vim.ui.select = function(items, opts, on_choice)
+    opts = opts or {}
+
+    if type(items) ~= "table" then
+        vim.notify("Invalid items passed to vim.ui.select", vim.log.levels.ERROR)
+        on_choice(nil)
         return
     end
 
-    snacks.picker.select(choices, {
-        prompt = prompt,
+    if type(on_choice) ~= "function" then
+        on_choice = function() end
+    end
+
+    local format_item = opts.format_item
+    if type(format_item) ~= "function" then
+        format_item = function(item)
+            if type(item) == "string" then
+                return item
+            end
+            if type(item) == "table" then
+                return item.label or item.name or item.text or vim.inspect(item):gsub("%s+", " ")
+            end
+            return tostring(item)
+        end
+    end
+
+    local ok, err = pcall(snacks.picker.select, items, {
+        prompt = opts.prompt or "Select",
+        format_item = function(item) return tostring(format_item(item)) end,
         layout = { preset = "select" },
     }, function(choice)
-        -- Always call callback, even on cancel (choice=nil)
-        callback(choice)
+        on_choice(choice)
     end)
-end
 
-vim.ui.select = _G.ui_select
+    if not ok then
+        vim.notify("vim.ui.select failed: " .. tostring(err), vim.log.levels.ERROR)
+        on_choice(nil)
+    end
+end
 
 -- ============================================================================
 -- Snacks Input: Escape in normal mode

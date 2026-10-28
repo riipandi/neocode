@@ -148,12 +148,31 @@ vim.api.nvim_create_autocmd("FileType", {
                 vim.keymap.set("n", "[", function() jump(-2) end, { buffer = ev.buf, silent = true })
                 vim.keymap.set("n", "}", function() jump(4) end, { buffer = ev.buf, silent = true })
                 vim.keymap.set("n", "{", function() jump(-4) end, { buffer = ev.buf, silent = true })
-                vim.keymap.set("n", "<Esc>", refocus, { buffer = ev.buf, silent = true })
-                vim.keymap.set("n", "q", refocus, { buffer = ev.buf, silent = true })
+                -- q closes the explorer (native picker behaviour)
+                vim.keymap.set("n", "q", function() picker:close() end, { buffer = ev.buf, silent = true })
+                -- <Esc>: clear the search when it has text, otherwise close
+                vim.keymap.set("n", "<Esc>", function()
+                    local query = picker.input and picker.input:get() or ""
+                    if query ~= "" then
+                        picker.input:set("")
+                        picker:find()
+                        picker:focus()
+                    else
+                        picker:close()
+                    end
+                end, { buffer = ev.buf, silent = true })
             else -- input window (search field)
-                -- <Esc> clears the search and returns focus to list
+                -- <Esc> clears the search and returns focus to the list;
+                -- a second <Esc> (empty search) closes the explorer.
                 vim.keymap.set({ "n", "i" }, "<Esc>", function()
-                    picker.input:set(""); picker:find(); picker:focus()
+                    local query = picker.input and picker.input:get() or ""
+                    if query ~= "" then
+                        picker.input:set("")
+                        picker:find()
+                        picker:focus()
+                    else
+                        picker:close()
+                    end
                 end, { buffer = ev.buf, silent = true })
                 vim.keymap.set("n", "q", refocus, { buffer = ev.buf, silent = true })
             end
