@@ -17,7 +17,7 @@ require("render-markdown").setup({
     },
     bullet = {
         enabled = true,
-        icons = { "•", "◦", "▸", "▹" },
+        icons = { "●", "○", "◆", "◇" },
     },
 })
 
