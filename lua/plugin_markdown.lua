@@ -50,6 +50,7 @@ require("render-markdown").setup({
     },
     pipe_table = {
         enabled = true,
+        render_modes = { "n", "c", "t", "i", "v", "V", "\22" },
         style = "full",
         cell = "padded",
         border = {
