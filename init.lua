@@ -61,7 +61,9 @@ vim.opt.conceallevel = 0                                  -- Don't hide markup
 vim.opt.concealcursor = ""                                -- Don't hide cursor line markup
 vim.opt.lazyredraw = false                                -- Don't redraw during macros
 vim.opt.synmaxcol = 300                                   -- Syntax highlighting limit
-vim.opt.fillchars:append({ eob = " " })                   -- Hide tilde character (~) on empty lines
+-- Keep the default `~` marker at the end of the buffer: rendering it as a
+-- blank makes the area below EOF look like more empty lines.
+vim.opt.fillchars:append({ eob = "~" })
 vim.opt.winborder = "rounded"                             -- Set window border style to rounded
 vim.g.border_style = "rounded"                            -- Set global border style for floating windows
 vim.g.markdown_recommended_style = 0                      -- Fix markdown indentation settings
@@ -116,6 +118,7 @@ require 'command'          -- Command palette & history
 require 'core_health'      -- Health checks
 require 'core_keymaps'     -- Key mappings
 require 'core_autocmds'    -- Autocommands utilities
+require 'core_scroll'      -- Keep the viewport from scrolling past EOF
 require 'core_lsp'         -- LSP settings
 require 'core_lsp_toggles' -- LSP action toggles
 require 'core_commands'    -- User commands

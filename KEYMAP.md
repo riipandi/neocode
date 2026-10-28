@@ -285,6 +285,23 @@ terminals, so window actions use the `<leader>w` group.
 | Increase height  | `w>`     | `<leader>w>` |
 | Decrease height  | `w<`     | `<leader>w<` |
 
+## Scrolling
+
+| Action                     | Shortcut                                |
+| -------------------------- | --------------------------------------- |
+| Scroll one line            | `<C-e>` / `<C-y>`                       |
+| Page down / up             | `<C-f>` / `<C-b>`                       |
+| Mouse wheel                | `<ScrollWheelUp>` / `<ScrollWheelDown>` |
+
+`<C-e>`, `<C-f>` and the wheel stop as soon as the last buffer line reaches the
+bottom of the window (`lua/core_scroll.lua`), so the area below EOF is never
+reachable by scrolling. The default `~` marker is kept at the end of the buffer.
+
+Smooth scrolling is provided by `snacks.scroll` (`lua/core_plugins.lua`):
+`animate.total = 120ms`, `animate_repeat.delay = 80ms`. `:lua vim.g.snacks_scroll = false`
+turns it off for the session; `<leader>ls` toggles the unrelated `smoothscroll`
+option.
+
 ## Insert Mode
 
 | Action      | Shortcut |
