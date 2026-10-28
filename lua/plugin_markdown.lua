@@ -28,7 +28,6 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.wrap = true
         vim.opt_local.linebreak = true
         vim.opt_local.breakindent = true
-        vim.opt_local.breakindentopt = "shift:2,sbr"
-        vim.opt_local.showbreak = ""
+        vim.opt_local.breakindentopt = "shift:0"
     end,
 })
