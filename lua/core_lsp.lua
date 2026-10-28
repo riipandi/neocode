@@ -89,64 +89,36 @@ autocmd('FileType', {
 -- Code Formatting
 -- ============================================================================
 
--- Format code using external formatters (black for Python, shfmt for shell)
-local function format_code()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local filename = vim.api.nvim_buf_get_name(bufnr)
-    local filetype = vim.bo[bufnr].filetype
-
-    local cursor_pos = vim.api.nvim_win_get_cursor(0)
-
-    if filetype == 'python' or filename:match('%.py$') then
-        if filename == '' then
-            vim.notify("Save the file first before formatting Python", vim.log.levels.WARN)
-            return
-        end
-
-        local black_cmd = "black --quiet " .. vim.fn.shellescape(filename)
-        local black_result = vim.fn.system(black_cmd)
-
-        if vim.v.shell_error == 0 then
-            vim.cmd('checktime')
-            vim.api.nvim_win_set_cursor(0, cursor_pos)
-            vim.notify("Formatted with black", vim.log.levels.INFO)
-            return
-        else
-            vim.notify("No Python formatter available (install black)", vim.log.levels.WARN)
-            return
-        end
+-- Manual format of the current buffer through conform.nvim (same formatters
+-- as format-on-save, including the LSP fallback).
+local function format_buffer(opts)
+    local conform = require('conform')
+    local ok, err = pcall(conform.format, vim.tbl_extend('force', {
+        async = false,
+        timeout_ms = 2000,
+        lsp_format = 'fallback',
+    }, opts or {}))
+    local filetype = vim.bo.filetype
+    if not ok then
+        vim.notify('Format failed: ' .. tostring(err), vim.log.levels.ERROR, { title = 'Format' })
+        return
     end
-
-    if filetype == 'sh' or filetype == 'bash' or filename:match('%.sh$') then
-        local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-        local content = table.concat(lines, '\n')
-
-        local cmd = { 'shfmt', '-i', '2', '-ci', '-sr' }
-        local result = vim.fn.system(cmd, content)
-
-        if vim.v.shell_error == 0 then
-            local formatted_lines = vim.split(result, '\n')
-            if formatted_lines[#formatted_lines] == '' then
-                table.remove(formatted_lines)
-            end
-            vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, formatted_lines)
-            vim.api.nvim_win_set_cursor(0, cursor_pos)
-            vim.notify("Shell script formatted with shfmt", vim.log.levels.INFO)
-            return
-        else
-            vim.notify("shfmt error: " .. result, vim.log.levels.ERROR)
-            return
-        end
+    local available = conform.list_formatters_to_run(0)
+    if #available == 0 and not (filetype == 'go' or filetype == 'python') then
+        vim.notify('No formatter available for ' .. (filetype ~= '' and filetype or 'this buffer'),
+            vim.log.levels.WARN, { title = 'Format' })
     end
-
-    vim.notify("No formatter available for " .. filetype, vim.log.levels.WARN)
 end
 
-vim.api.nvim_create_user_command("FormatCode", format_code, {
-    desc = "Format current file"
+vim.api.nvim_create_user_command("FormatCode", function()
+    format_buffer()
+end, {
+    desc = "Format current buffer with conform.nvim",
 })
 
-snacks.keymap.set('n', '<leader>fm', format_code, { desc = 'Format file' })
+snacks.keymap.set('n', '<leader>fm', function()
+    format_buffer()
+end, { desc = 'Format file' })
 
 -- ============================================================================
 -- LSP Keymaps

@@ -83,8 +83,10 @@ autocmd("FileType", {
 
 autocmd("FileType", {
     group = user_augroup,
+    pattern = { "toml" },
     callback = function()
-        vim.b.autoformat = false
+        -- conform checks this flag in format_on_save (see plugin_editor.lua)
+        vim.b.disable_autoformat = true
     end,
     desc = "Disable autoformat for toml",
 })

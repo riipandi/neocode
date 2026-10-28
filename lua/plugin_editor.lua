@@ -82,7 +82,7 @@ require('conform').setup({
     notify_on_error = false,
     format_on_save = function(bufnr)
         local disable_filetypes = { c = true, cpp = true }
-        if disable_filetypes[vim.bo[bufnr].filetype] then
+        if disable_filetypes[vim.bo[bufnr].filetype] or vim.b[bufnr].disable_autoformat then
             return nil
         else
             return {
@@ -91,22 +91,30 @@ require('conform').setup({
             }
         end
     end,
+    -- Note: a plain list runs every formatter; `stop_after_first` makes it a
+    -- fallback chain. The nested `{ { "a", "b" } }` form is rejected by
+    -- conform and aborts BufWritePre (i.e. the file is never written).
     formatters_by_ft = {
-        astro = { 'oxfmt' },
+        astro = { 'oxfmt', 'prettier', stop_after_first = true },
         elixir = { 'mix' },
         -- go = { 'gofmt' },  -- handled by go.nvim (ray-x/go.nvim)
         hcl = { 'terraform' },
-        javascript = { { 'oxfmt', 'prettierd' } },
-        javascriptreact = { { 'oxfmt', 'prettierd' } },
-        json = { 'oxfmt' },
-        lit = { 'oxfmt' },
+        javascript = { 'oxfmt', 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreact = { 'oxfmt', 'prettierd', 'prettier', stop_after_first = true },
+        json = { 'oxfmt', 'prettier', stop_after_first = true },
+        lit = { 'oxfmt', 'prettier', stop_after_first = true },
+        lua = { 'stylua' },
+        python = { 'black' },
         rust = { 'rustfmt' },
-        svelte = { 'oxfmt' },
+        sh = { 'shfmt' },
+        bash = { 'shfmt' },
+        zsh = { 'shfmt' },
+        svelte = { 'oxfmt', 'prettier', stop_after_first = true },
         sql = { 'sql_formatter' },
         terraform = { 'terraform' },
-        typescript = { 'oxfmt' },
-        typescriptreact = { 'oxfmt' },
-        vue = { 'oxfmt' },
+        typescript = { 'oxfmt', 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'oxfmt', 'prettierd', 'prettier', stop_after_first = true },
+        vue = { 'oxfmt', 'prettier', stop_after_first = true },
         zig = { 'zigfmt' },
     },
     formatters = {

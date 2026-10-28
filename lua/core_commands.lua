@@ -5,16 +5,19 @@
 -- ============================================================================
 local M = {}
 
--- :Format - Format the current buffer with the conform plugin
-vim.api.nvim_create_user_command("Format", function(args)
-    if args.count > 0 then
-        -- :3Format → format range from line 1 to current
-        vim.cmd(string.format("silent! normal! %dG=g", args.count))
-    else
-        -- :Format → format the whole buffer
-        vim.cmd("silent! normal! gg=G")
+-- :Format - Format the current buffer with conform.nvim
+-- :3Format / :%Format - same, kept for muscle memory (range is ignored, the
+-- whole buffer is formatted).
+vim.api.nvim_create_user_command("Format", function()
+    local ok, err = pcall(require("conform").format, {
+        async = false,
+        timeout_ms = 2000,
+        lsp_format = "fallback",
+    })
+    if not ok then
+        vim.notify("Format failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Format" })
     end
-end, { desc = "Format current buffer (use :N Format for range)" })
+end, { desc = "Format current buffer (conform.nvim)", range = true })
 
 -- :Update - Update all plugins via vim.pack
 vim.api.nvim_create_user_command("Update", function()
