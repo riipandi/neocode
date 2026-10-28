@@ -10,6 +10,7 @@ require("render-markdown").setup({
     anti_conceal = {
         enabled = false,
     },
+    render_modes = { "n", "c", "t", "i", "v", "V", "\22" },
 })
 
 -- ============================================================================
