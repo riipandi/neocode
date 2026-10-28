@@ -147,15 +147,7 @@ autocmd('LspAttach', {
 -- ============================================================================
 
 vim.diagnostic.config({
-    virtual_text = { prefix = '●' },
-    signs = true,
-    underline = true,
     update_in_insert = false,
-    severity_sort = true,
-})
-
-
-vim.diagnostic.config({
     severity_sort = true,
     float = { border = 'rounded', source = 'if_many' },
     underline = { severity = vim.diagnostic.severity.ERROR },

@@ -10,7 +10,7 @@ vim.pack.add({
     { src = "https://github.com/stevearc/conform.nvim" },
 })
 
--- Note: Indentation guides are handled by snacks.indent (see plugin_snacks.lua)
+-- Note: Indentation guides are handled by snacks.indent (see core_plugins.lua)
 
 -- ============================================================================
 -- Auto-pairs: Automatically close brackets, quotes, etc.

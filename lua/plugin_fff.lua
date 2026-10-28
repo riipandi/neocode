@@ -46,11 +46,14 @@ require('fff').setup({
     },
 })
 
--- Ensure fff Rust binary is available; download/build if missing
+-- The Rust binary is fetched by the PackChanged handler above (install/update)
+-- and can be rebuilt on demand with :FFFHealth. Downloading it 500ms after
+-- startup would do network I/O on every launch when the binary is missing.
 vim.defer_fn(function()
     local bin_path = require('fff.download').get_binary_path()
     if not vim.uv.fs_stat(bin_path) then
-        require('fff.download').download_or_build_binary()
+        vim.notify("fff: native binary missing — run :FFFHealth or restart Neovim to install it",
+            vim.log.levels.WARN, { title = "fff" })
     end
 end, 500)
 

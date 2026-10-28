@@ -436,7 +436,10 @@ vim.pack.add({
     { src = 'https://github.com/xiyaowong/transparent.nvim' },
 }, { confirm = false })
 
-M.setup({ transparent = true })
+-- Transparency stays on by default (matches init.lua's intent), but an
+-- explicit `vim.g.transparent_enabled = false` is respected instead of being
+-- overwritten here.
+M.setup({ transparent = vim.g.transparent_enabled ~= false })
 M.load()
 
 require('transparent').setup({

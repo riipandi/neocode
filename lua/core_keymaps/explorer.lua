@@ -182,5 +182,3 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Migration note: <leader>tm now uses the custom MasonPkg picker (see core_lsp.lua)
 -- Old snacks mason picker keymap is removed.
-
-return M

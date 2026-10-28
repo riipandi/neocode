@@ -177,9 +177,7 @@ vim.api.nvim_create_autocmd('PackChangedPre', {
 -- ============================================================================
 -- ============================================================================
 
--- Command-line completion
-vim.opt.wildmenu = true
-vim.opt.wildmode = "longest:full,full"
+-- Command-line completion ('wildmenu'/'wildmode' are set in init.lua)
 vim.opt.wildignore:append({ "*.o", "*.obj", "*.pyc", "*.class", "*.jar" })
 
 -- Diff options

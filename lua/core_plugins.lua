@@ -191,19 +191,7 @@ snacks.config.styles.terminal = {
     },
 }
 
--- swpui: Search & Replace TUI
-snacks.config.styles.swpui = {
-    width = 0.85,
-    height = 0.85,
-    border = "rounded",
-    bo = {
-        filetype = "snacks_terminal",
-    },
-    wo = {},
-    keys = {
-        q = "hide",
-    },
-}
+-- swpui: window style lives in lua/snacks/swpui.lua (single definition)
 
 snacks.config.styles.input = {
     backdrop = false,

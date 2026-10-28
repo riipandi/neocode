@@ -16,11 +16,8 @@ Last updated: 2025-10-12 (nvim 0.11+)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- theme & transparency (loaded in core_theme.lua)
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
-vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "none" })
-vim.api.nvim_set_hl(0, "FloatBorder", { link = "Normal" })
+-- Theme/highlights are owned by core_theme.lua. Setting highlight groups here
+-- had no effect: the colourscheme calls `hi clear` and re-defines them.
 
 -- Basic settings
 vim.opt.number = true          -- Line numbers
@@ -28,7 +25,7 @@ vim.opt.relativenumber = false -- Relative line numbers
 vim.opt.cursorline = true      -- Highlight current line
 vim.opt.wrap = false           -- Don't wrap lines
 vim.opt.scrolloff = 10         -- Keep 10 lines above/below cursor
-vim.opt.sidescrolloff = 4      -- Keep 8 columns left/right of cursor
+vim.opt.sidescrolloff = 4      -- Keep 4 columns left/right of cursor
 
 -- Indentation
 vim.opt.tabstop = 2        -- Tab width
@@ -47,7 +44,6 @@ vim.opt.incsearch = true  -- Show matches as you type
 -- Visual settings
 vim.opt.termguicolors = true -- Enable 24-bit colors
 vim.opt.signcolumn = "yes:1" -- Always show sign column
-vim.opt.colorcolumn = "0"    -- Show column ruler (n characters)
 
 -- Completion menu settings
 vim.opt.wildmenu = true                                   -- Enable wildmenu for command completion
@@ -94,7 +90,6 @@ vim.opt.selection = "exclusive"         -- Selection behavior
 vim.opt.mouse = "a"                     -- Enable mouse support
 vim.opt.clipboard:append("unnamedplus") -- Use system clipboard
 vim.opt.modifiable = true               -- Allow buffer modifications
-vim.opt.encoding = "UTF-8"              -- Set encoding
 
 -- Cursor settings
 vim.opt.guicursor =

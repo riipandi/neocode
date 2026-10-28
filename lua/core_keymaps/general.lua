@@ -80,5 +80,3 @@ end, { desc = "Toggle scratch buffer" })
 snacks.keymap.set("n", "<leader>S", function()
     Snacks.scratch.select()
 end, { desc = "Select scratch buffer" })
-
-return M
