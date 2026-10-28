@@ -8,57 +8,72 @@ vim.pack.add({
 
 local snacks = require("snacks")
 
+-- nvim-treesitter (main branch) no longer ships a `configs` module: the old
+-- nvim-treesitter.configs.setup() block was wrapped in pcall and silently did
+-- nothing, so parsers were never installed and indent/highlight options were
+-- dead. Highlighting and indentation are provided per filetype by the plugin
+-- itself; this only installs the parsers.
+local parsers = {
+    'astro',
+    'bash',
+    'css',
+    'diff',
+    'eex',
+    'elixir',
+    'go',
+    'hcl',
+    'heex',
+    'html',
+    'javascript',
+    'jsdoc',
+    'json',
+    'json5',
+    'just',
+    'lua',
+    'luadoc',
+    'luap',
+    'markdown_inline',
+    'markdown',
+    'python',
+    'query',
+    'rust',
+    'regex',
+    'sql',
+    'svelte',
+    'toml',
+    'tsx',
+    'typescript',
+    'vim',
+    'vimdoc',
+    'xml',
+    'yaml',
+    'zig',
+}
+
 vim.defer_fn(function()
-    local ok, treesitter = pcall(require, 'nvim-treesitter.configs')
-    if ok then
-        treesitter.setup({
-            ensure_installed = {
-                'astro',
-                'bash',
-                'css',
-                'diff',
-                'eex',
-                'elixir',
-                'go',
-                'hcl',
-                'heex',
-                'html',
-                'javascript',
-                'jsdoc',
-                'json',
-                'json5',
-                'jsonc',
-                'just',
-                'lua',
-                'luadoc',
-                'luap',
-                'markdown_inline',
-                'markdown',
-                'python',
-                'query',
-                'rust',
-                'regex',
-                'sql',
-                'svelte',
-                'toml',
-                'tsx',
-                'typescript',
-                'vim',
-                'vimdoc',
-                'xml',
-                'yaml',
-                'zig',
-            },
-            auto_install = true,
-            sync_install = false,
-            highlight = {
-                enable = true,
-                additional_vim_regex_highlighting = { 'ruby' },
-            },
-            indent = { enable = true, disable = { 'ruby' } },
-        })
+    local ok, ts = pcall(require, 'nvim-treesitter')
+    if not (ok and type(ts.install) == 'function') then
+        return
     end
-end, 100)
+
+    -- Filter against the parsers this treesitter release actually knows about
+    -- (e.g. jsonc is covered by json and no longer shipped).
+    local available = {}
+    if type(ts.get_available) == 'function' then
+        for _, lang in ipairs(ts.get_available()) do
+            available[lang] = true
+        end
+    end
+
+    local wanted = {}
+    for _, lang in ipairs(parsers) do
+        if next(available) == nil or available[lang] then
+            wanted[#wanted + 1] = lang
+        end
+    end
+
+    ts.install(wanted)
+end, 300)
 
 -- ============================================================================
 -- Show function signature when you type
