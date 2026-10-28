@@ -32,5 +32,12 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Reduce bullet boldness
 vim.api.nvim_set_hl(0, "RenderMarkdownBullet", { bold = false })
+
+-- Re-render markdown tables on terminal resize
+vim.api.nvim_create_autocmd("VimResized", {
+    callback = function()
+        pcall(vim.cmd, "RenderMarkdown enable")
+    end,
+})
     end,
 })
