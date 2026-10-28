@@ -25,7 +25,11 @@ local function smart_close()
             prompt = 'Buffer has unsaved changes:',
         }, function(choice)
             if choice == 'Save & Close' then
-                vim.cmd('w')
+                local ok, err = pcall(vim.cmd, 'w')
+                if not ok then
+                    vim.notify('Save failed: ' .. tostring(err), vim.log.levels.ERROR, { title = 'Buffer' })
+                    return
+                end
                 do_close(false)
             elseif choice == 'Close without saving' then
                 do_close(true)
@@ -59,5 +63,3 @@ end, { desc = "Buffer picker" })
 snacks.keymap.set("n", "<leader>bo", function()
     Snacks.bufdelete.other()
 end, { desc = "Close other buffers" })
-
-return M

@@ -13,7 +13,19 @@ end, { desc = "Toggle terminal" })
 -- Resource Monitor (mactop on Mac, btop on Linux)
 -- Install: brew install mactop (Mac) or brew install btop (cross-platform)
 snacks.keymap.set("n", "<leader>tr", function()
-    Snacks.terminal("mactop", {
+    local monitor
+    for _, candidate in ipairs({ "mactop", "btop", "htop" }) do
+        if vim.fn.executable(candidate) == 1 then
+            monitor = candidate
+            break
+        end
+    end
+    if not monitor then
+        vim.notify("No resource monitor found. Install mactop (macOS) or btop.", vim.log.levels.WARN,
+            { title = "Tools" })
+        return
+    end
+    Snacks.terminal(monitor, {
         lazy = false,
         title = "Resource Monitor",
     })
@@ -46,5 +58,3 @@ snacks.keymap.set("n", "<A-e>", function()
         Snacks.explorer()
     end
 end, { desc = "File explorer: close/focus (<A-e>)" })
-
-return M

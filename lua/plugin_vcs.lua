@@ -62,7 +62,7 @@ require('gitsigns').setup({
         map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'Git: Stage hunk' })
         map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'Git: Reset hunk' })
         map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'Git: Stage buffer' })
-        map('n', '<leader>hu', gitsigns.stage_hunk, { desc = 'Git: Undo stage hunk' })
+        map('n', '<leader>hu', gitsigns.reset_hunk, { desc = 'Git: Unstage/reset hunk' })
         map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'Git: Reset buffer' })
         map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'Git: Preview hunk' })
         map('n', '<leader>hb', gitsigns.blame_line, { desc = 'Git: Blame line' })
@@ -81,4 +81,8 @@ require('gitsigns').setup({
 -- Git Commands
 -- ============================================================================
 
-snacks.keymap.set("n", "<leader>gp", '<cmd>Git push<CR>', { desc = "Git: Push" })
+-- There is no :Git command in this setup (no fugitive), so `<cmd>Git push<CR>`
+-- only produced E492. Push through a terminal running git directly.
+snacks.keymap.set("n", "<leader>gp", function()
+    snacks.terminal({ "git", "push" }, { title = "git push" })
+end, { desc = "Git: Push" })

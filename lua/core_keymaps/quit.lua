@@ -37,7 +37,12 @@ local function confirm_quit()
             prompt = 'You have unsaved buffers:',
         }, function(choice)
             if choice == 'Save & Quit' then
-                vim.cmd('wa')
+                local ok, err = pcall(vim.cmd, 'wa')
+                if not ok then
+                    vim.notify('Save failed: ' .. tostring(err), vim.log.levels.ERROR, { title = 'Quit' })
+                    restore()
+                    return
+                end
                 vim.cmd('qa')
             elseif choice == 'Quit without saving' then
                 vim.cmd('qa!')
