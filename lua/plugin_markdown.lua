@@ -28,7 +28,7 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.wrap = true
         vim.opt_local.linebreak = true
         vim.opt_local.breakindent = true
-        vim.opt_local.breakindentopt = "shift:0"
+        vim.opt_local.breakindentopt = "list:2,shift:0"
 
 -- Reduce bullet boldness
 vim.api.nvim_set_hl(0, "RenderMarkdownBullet", { bold = false })
