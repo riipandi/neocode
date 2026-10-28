@@ -55,8 +55,6 @@ local function setup_typescript_lsp()
             },
         },
     })
-
-    vim.lsp.enable('ts_ls')
 end
 
 -- =============================================================================
@@ -100,8 +98,6 @@ local function setup_oxlint_lsp()
         capabilities = capabilities,
         settings = {},
     })
-
-    vim.lsp.enable('oxlint')
 end
 
 -- =============================================================================
@@ -166,10 +162,24 @@ local function setup_deno_lsp()
 end
 
 -- =============================================================================
--- Auto-start LSP servers by filetype
+-- Configure once, enable once
 -- =============================================================================
+-- Re-running vim.lsp.enable()/vim.lsp.start() per FileType event spawned a
+-- second client for the same buffer (deno#1 + deno#2). Configuration happens
+-- here; buffer-level decisions only toggle clients that already attached.
+
+setup_typescript_lsp()
+setup_oxlint_lsp()
+setup_deno_lsp()
+
+vim.lsp.enable({ 'ts_ls', 'oxlint' })
+
+-- Deno projects: enable the Deno LSP for that root and stop the ts_ls/oxlint
+-- clients that already attached to this buffer.
+local deno_group = vim.api.nvim_create_augroup('ts_deno_detect', { clear = true })
 
 autocmd('FileType', {
+    group = deno_group,
     pattern = {
         'javascript',
         'javascriptreact',
@@ -182,57 +192,25 @@ autocmd('FileType', {
         'vue',
     },
     callback = function(args)
-        local bufname = vim.api.nvim_buf_get_name(args.buf)
-        local is_deno = vim.fn.filereadable(vim.fn.expand('%:p:h') .. '/deno.json') == 1
-            or vim.fn.filereadable(vim.fn.expand('%:p:h') .. '/deno.jsonc') == 1
-
-        -- Use deno if deno.json exists, otherwise use ts_ls + oxlint
-        if is_deno then
-            vim.lsp.enable('deno')
-            pcall(vim.lsp.start, { name = 'deno', cmd = { 'deno', 'lsp' } })
-        else
-            setup_typescript_lsp()
-            setup_oxlint_lsp()
-        end
-    end,
-    desc = 'Start TypeScript/JS LSP (ts_ls + oxlint or deno)',
-})
-
--- =============================================================================
--- Auto-start Deno LSP when deno.json is present
--- =============================================================================
-
-autocmd('FileType', {
-    pattern = { 'javascript', 'typescript', 'json', 'jsonc', 'markdown', 'toml', 'yaml' },
-    callback = function(args)
-        local bufname = vim.api.nvim_buf_get_name(args.buf)
-        if bufname == '' then
+        local name = vim.api.nvim_buf_get_name(args.buf)
+        if name == '' then
             return
         end
-        local bufdir = vim.fn.fnamemodify(bufname, ':p:h')
-        local root_dir = vim.fn.finddir('.git', bufdir .. ';')
-        if root_dir == '' then
-            root_dir = vim.fn.findfile('deno.json', bufdir .. ';')
-            if root_dir == '' then
-                root_dir = vim.fn.findfile('deno.jsonc', bufdir .. ';')
-            end
+
+        local deno_root = vim.fs.find({ 'deno.json', 'deno.jsonc' }, {
+            upward = true,
+            path = vim.fs.dirname(name),
+        })[1]
+        if not deno_root then
+            return
         end
 
-        if root_dir ~= '' then
-            local has_deno = vim.fn.filereadable(bufdir .. '/deno.json') == 1
-                or vim.fn.filereadable(bufdir .. '/deno.jsonc') == 1
-
-            if has_deno then
-                vim.lsp.enable('deno')
-                pcall(vim.lsp.start, { name = 'deno', cmd = { 'deno', 'lsp' }, root_dir = bufdir })
+        vim.lsp.enable('deno')
+        for _, client in ipairs(vim.lsp.get_clients({ bufnr = args.buf })) do
+            if client.name == 'ts_ls' or client.name == 'oxlint' then
+                client:stop()
             end
         end
     end,
-    desc = 'Auto-start Deno LSP when deno.json exists',
+    desc = 'Use the Deno LSP inside deno projects',
 })
-
--- =============================================================================
--- Enable LSP servers (available but not auto-started unless triggered)
--- =============================================================================
-
-vim.lsp.enable({ 'ts_ls', 'oxlint', 'deno' })

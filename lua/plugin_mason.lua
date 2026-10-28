@@ -9,36 +9,45 @@ vim.pack.add({
 -- ============================================================================
 -- You can add other tools here that you want Mason to install
 -- for you, so that they are available from within Neovim.
-local ensure_installed = vim.tbl_keys(servers or {})
-vim.list_extend(ensure_installed, {
+local ensure_installed = {
+    -- LSP servers
     "astro",
     "buf",
     "buf_ls",
-    "codelldb",
     "cssls",
     "deno",
     "dockerls",
     "elixirls",
-    "goimports",
-    "golangci-lint",
     "gopls",
-    "gotestsum",
     "html",
     "jsonls",
     "lua_ls",
-    "markdownlint",
     "oxlint",
     "rust_analyzer",
-    "sql-formatter",
     "sqls",
-    "stylua",
+    "superhtml",
     "tailwindcss-language-server",
     "taplo",
     "templ",
-    "terraform",
+    "terraform-ls",
+    "texlab",
     "ts_ls",
     "zls",
-})
+    -- Formatters / linters / tools referenced by conform, go.nvim and keymaps
+    "black",
+    "codelldb",
+    "goimports",
+    "golangci-lint",
+    "gotestsum",
+    "markdownlint",
+    "oxfmt",
+    "prettier",
+    "prettierd",
+    "shfmt",
+    "sql-formatter",
+    "stylua",
+    "terraform",
+}
 
 require('mason-tool-installer').setup({
     ensure_installed = ensure_installed
@@ -72,24 +81,17 @@ require('mason').setup({
 })
 
 require('mason-lspconfig').setup({
+    -- Only servers that are not enabled explicitly in core_lsp.lua or
+    -- language_*.lua. Everything else would be enabled twice.
     automatic_enable = {
-        "astro",
-        "buf_ls",
-        "elixirls",
-        -- "gopls",  -- managed by go.nvim (ray-x/go.nvim)
+        "cssls",
+        "dockerls",
         "html",
-        "lua_ls",
-        "rust_analyzer",
-        "sqls",
-        "tailwindcss",
-        "taplo",
-        "ts_ls",
-        "zls",
+        "jsonls",
     },
     automatic_installation = false,
     ensure_installed = {},
     -- No custom handlers needed; servers are configured in their respective
-    -- language_*.lua files or via vim.lsp.enable(). The default handler
-    -- (require('lspconfig')[name].setup({})) is sufficient.
+    -- language_*.lua files or via vim.lsp.config()/vim.lsp.enable().
     handlers = {},
 })

@@ -9,9 +9,12 @@ local autocmd = vim.api.nvim_create_autocmd
 -- Helper Functions
 -- ============================================================================
 
--- Find project root directory by searching for pattern files
-local function find_root(patterns)
-    local path = vim.fn.expand('%:p:h')
+-- Find the project root for a buffer. root_dir handlers receive
+-- (bufnr, on_dir) from vim.lsp.config, so the argument is a buffer number.
+local function buffer_root(bufnr, patterns)
+    local name = type(bufnr) == "number" and vim.api.nvim_buf_get_name(bufnr) or tostring(bufnr)
+    local dir = (name ~= "" and vim.fs.dirname(name)) or vim.fn.getcwd()
+    local path = dir
     for _, pattern in ipairs(patterns) do
         local found = vim.fn.finddir(pattern, path .. ';')
         if found ~= '' then
@@ -22,68 +25,60 @@ local function find_root(patterns)
             return vim.fn.fnamemodify(found, ':h')
         end
     end
-    return path
+    return dir
 end
 
 -- ============================================================================
--- LSP Server Setup Functions
+-- LSP Server Configuration
 -- ============================================================================
+-- Servers are configured once with vim.lsp.config() and started with
+-- vim.lsp.enable(). A FileType autocmd that also calls vim.lsp.start() would
+-- spawn a second client for the same buffer (bashls#1 + bashls#2).
 
 -- Shell script LSP (bash-language-server)
-local function setup_shell_lsp()
-    vim.lsp.start({
-        name = 'bashls',
-        cmd = { 'bash-language-server', 'start' },
-        filetypes = { 'sh', 'bash', 'zsh' },
-        root_dir = find_root({ '.git', 'Makefile' }),
-        settings = {
-            bashIde = {
-                globPattern = "*@(.sh|.inc|.bash|.command)"
-            }
+vim.lsp.config('bashls', {
+    cmd = { 'bash-language-server', 'start' },
+    filetypes = { 'sh', 'bash', 'zsh' },
+    root_dir = function(bufnr, on_dir)
+        on_dir(buffer_root(bufnr, { '.git', 'Makefile' }))
+    end,
+    settings = {
+        bashIde = {
+            globPattern = "*@(.sh|.inc|.bash|.command)"
         }
-    })
-end
+    },
+})
 
 -- Python LSP (pylsp)
-local function setup_python_lsp()
-    vim.lsp.start({
-        name = 'pylsp',
-        cmd = { 'pylsp' },
-        filetypes = { 'python' },
-        root_dir = find_root({ 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' }),
-        settings = {
-            pylsp = {
-                plugins = {
-                    pycodestyle = {
-                        enabled = false
-                    },
-                    flake8 = {
-                        enabled = true,
-                    },
-                    black = {
-                        enabled = true
-                    }
-                }
+vim.lsp.config('pylsp', {
+    cmd = { 'pylsp' },
+    filetypes = { 'python' },
+    root_dir = function(bufnr, on_dir)
+        on_dir(buffer_root(bufnr, { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' }))
+    end,
+    settings = {
+        pylsp = {
+            plugins = {
+                pycodestyle = { enabled = false },
+                flake8 = { enabled = true },
+                black = { enabled = true },
             }
         }
+    },
+})
+
+-- HTML LSP (superhtml). Configured, but only enabled when the binary exists.
+local superhtml = vim.fn.executable('superhtml') == 1
+if superhtml then
+    vim.lsp.config('superhtml', {
+        cmd = { 'superhtml', 'lsp' },
+        filetypes = { 'html', 'shtml', 'htm' },
     })
 end
 
 -- ============================================================================
--- Auto-start LSP by Filetype
+-- Enable LSP servers (configured above / in language_*.lua)
 -- ============================================================================
-
-autocmd('FileType', {
-    pattern = 'sh,bash,zsh',
-    callback = setup_shell_lsp,
-    desc = 'Start shell LSP'
-})
-
-autocmd('FileType', {
-    pattern = 'python',
-    callback = setup_python_lsp,
-    desc = 'Start Python LSP'
-})
 
 -- ============================================================================
 -- Code Formatting
@@ -203,32 +198,12 @@ vim.api.nvim_create_user_command('LspInfo', function()
 end, { desc = 'Show LSP client info' })
 
 -- ============================================================================
--- Additional LSP Servers
+-- Enable LSP servers
 -- ============================================================================
 
--- HTML LSP (superhtml)
-autocmd("Filetype", {
-    pattern = { "html", "shtml", "htm" },
-    callback = function()
-        local path = vim.fn.expand('%:p:h')
-        local root_dir = vim.fn.finddir('.git', path .. ';')
-        if root_dir == '' then
-            root_dir = path
-        else
-            root_dir = vim.fn.fnamemodify(root_dir, ':h')
-        end
-        vim.lsp.start({
-            name = "superhtml",
-            cmd = { "superhtml", "lsp" },
-            root_dir = root_dir,
-        })
-    end,
-    desc = 'Start HTML LSP',
-})
-
--- Enable default LSP servers
 vim.lsp.enable({
     "bashls",
+    "pylsp",
     -- "gopls",  -- managed by go.nvim (ray-x/go.nvim)
     "lua_ls",
     "oxlint",
@@ -238,3 +213,8 @@ vim.lsp.enable({
     "ts_ls",
     "yamlls",
 })
+
+-- superhtml only when the binary is available (configured above)
+if vim.fn.executable('superhtml') == 1 then
+    vim.lsp.enable('superhtml')
+end
