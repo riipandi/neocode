@@ -12,4 +12,7 @@ require("render-markdown").setup({})
 -- Keymaps
 -- ============================================================================
 
-vim.keymap.set("n", "<C-m>", "<cmd>RenderMarkdown toggle<cr>", { desc = "Markdown: Toggle inline render" })
+vim.keymap.set("n", "<C-m>", function()
+    vim.cmd("RenderMarkdown toggle")
+    vim.notify("Markdown render toggled", vim.log.levels.INFO)
+end, { desc = "Markdown: Toggle inline render" })
