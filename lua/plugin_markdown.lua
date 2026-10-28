@@ -6,45 +6,7 @@ vim.pack.add({
     { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
 })
 
-require("render-markdown").setup({
-    enabled = true,
-    render_modes = { "n", "c", "t" },
-    heading = {
-        enabled = true,
-    },
-    code = {
-        enabled = true,
-        sign = true,
-        style = "full",
-    },
-    dash = {
-        enabled = true,
-    },
-    bullet = {
-        enabled = true,
-    },
-    checkbox = {
-        enabled = true,
-    },
-    quote = {
-        enabled = true,
-    },
-    pipe_table = {
-        enabled = true,
-    },
-    link = {
-        enabled = true,
-    },
-    image = {
-        enabled = true,
-    },
-    callout = {
-        enabled = true,
-    },
-    latex = {
-        enabled = true,
-    },
-})
+require("render-markdown").setup({})
 
 -- ============================================================================
 -- Keymaps
