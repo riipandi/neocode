@@ -1,26 +1,48 @@
 -- ============================================================================
--- Markdown Preview (mdkite.nvim)
+-- Markdown Inline Rendering (render-markdown.nvim)
 -- ============================================================================
 
 vim.pack.add({
-    { src = "https://github.com/selimacerbas/kitehost.nvim" },
-    { src = "https://github.com/selimacerbas/mdkite.nvim" },
+    { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
 })
 
-require("mdkite").setup({
-    instance_mode = "takeover",
-    port = 0,
-    open_browser = true,
-    default_theme = "dark",
-    debounce_ms = 300,
-    scroll_sync = true,
-    hooks = {
-        on_start = function(url)
-            vim.notify("Markdown preview started", vim.log.levels.INFO)
-        end,
-        on_stop = function()
-            vim.notify("Markdown preview stopped", vim.log.levels.INFO)
-        end,
+require("render-markdown").setup({
+    enabled = true,
+    render_modes = { "n", "c", "t" },
+    heading = {
+        enabled = true,
+    },
+    code = {
+        enabled = true,
+        sign = true,
+        style = "full",
+    },
+    dash = {
+        enabled = true,
+    },
+    bullet = {
+        enabled = true,
+    },
+    checkbox = {
+        enabled = true,
+    },
+    quote = {
+        enabled = true,
+    },
+    pipe_table = {
+        enabled = true,
+    },
+    link = {
+        enabled = true,
+    },
+    image = {
+        enabled = true,
+    },
+    callout = {
+        enabled = true,
+    },
+    latex = {
+        enabled = true,
     },
 })
 
@@ -28,8 +50,4 @@ require("mdkite").setup({
 -- Keymaps
 -- ============================================================================
 
-vim.keymap.set("n", "<leader>mp", "<cmd>MdKite start<cr>", { desc = "Markdown: Start preview" })
-vim.keymap.set("n", "<leader>mP", "<cmd>MdKite stop<cr>", { desc = "Markdown: Stop preview" })
-vim.keymap.set("n", "<leader>mr", "<cmd>MdKite refresh<cr>", { desc = "Markdown: Refresh preview" })
-vim.keymap.set("n", "<leader>mt", "<cmd>MdKite toggle<cr>", { desc = "Markdown: Toggle preview" })
-vim.keymap.set("n", "<C-m>", "<cmd>MdKite toggle<cr>", { desc = "Markdown: Toggle preview" })
+vim.keymap.set("n", "<C-m>", "<cmd>RenderMarkdown toggle<cr>", { desc = "Markdown: Toggle inline render" })
