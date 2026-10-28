@@ -1,9 +1,7 @@
 -- ============================================================================
 -- Core Keymaps (modular)
 -- ============================================================================
--- Leader key setup
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+-- Leader keys are set in init.lua (must happen before any module runs).
 
 -- Load sub-modules in order
 require("core_keymaps.general")

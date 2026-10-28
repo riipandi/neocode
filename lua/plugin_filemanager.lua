@@ -45,7 +45,7 @@ vim.defer_fn(ui_close, 100)
 vim.keymap.set('n', '<leader>ma', miniharp.toggle_file, { desc = 'Toggle file mark' })
 vim.keymap.set('n', '<leader>mc', miniharp.clear, { desc = 'Clear marks' })
 vim.keymap.set('n', '<C-n>', miniharp.next, { desc = 'Next mark' })
-vim.keymap.set('n', '<C-S-m>', miniharp.prev, { desc = 'Previous mark' })
+vim.keymap.set('n', '<leader>mp', miniharp.prev, { desc = 'Previous mark' })
 
 -- =============================================================================
 -- Marks picker via snacks.picker (replaces native miniharp floating UI)

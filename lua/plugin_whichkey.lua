@@ -81,6 +81,7 @@ require('which-key').setup({
         -- Diagnostic
         { '<leader>d',  group = 'Diagnostic',                 mode = "n" },
         { '<leader>dl', desc = 'Set loclist',                 mode = "n" },
+        { '<leader>D',  desc = 'Delete without yanking',      mode = { 'n', 'v' } },
         { '<leader>nd', desc = 'Next diagnostic',             mode = "n" },
         { '<leader>pd', desc = 'Previous diagnostic',         mode = "n" },
 
@@ -141,7 +142,8 @@ require('which-key').setup({
         -- Search
         { '<leader>s',  group = 'Search',                     mode = "n" },
         { '<leader>sr', desc = 'swpui',                       mode = "n" },
-        { '<leader>c',  desc = 'Clear search',                mode = "n" },
+        { '<leader>sc', desc = 'Clear search',                mode = "n" },
+        { '<leader>ss', desc = 'Multi-cursor: skip match',    mode = { 'n', 'x' } },
 
         -- Tools
         { '<leader>t',  group = 'Tools',                      mode = "n" },
@@ -151,6 +153,15 @@ require('which-key').setup({
         { '<leader>tM', desc = 'Mason: TUI',                  mode = "n" },
         { '<leader>tr', desc = 'Resource monitor',            mode = "n" },
         { '<leader>tt', desc = 'Terminal',                    mode = "n" },
+        { '<leader>tT', desc = 'Terminal (cwd)',              mode = "n" },
+
+        -- Window
+        { '<leader>w',  group = 'Window',                     mode = "n" },
+        { '<leader>ws', desc = 'Split horizontal',            mode = "n" },
+        { '<leader>wv', desc = 'Split vertical',              mode = "n" },
+        { '<leader>ww', desc = 'Previous window',             mode = "n" },
+        { '<leader>wq', desc = 'Close window',                mode = "n" },
+        { '<leader>w=', desc = 'Equalize splits',             mode = "n" },
 
         -- Scratch
         { '<leader>.',  desc = 'Toggle scratch',              mode = "n" },
@@ -159,6 +170,7 @@ require('which-key').setup({
         -- Config
         { '<leader>,',  desc = 'Edit config',                 mode = "n" },
         { '<leader>;',  desc = 'Command palette',             mode = "n" },
+        { '<leader>:',  desc = 'Command palette (all)',       mode = "n" },
 
         -- Explorer
         { '<leader>e',  desc = 'File explorer (toggle)',      mode = "n" },
@@ -166,9 +178,6 @@ require('which-key').setup({
         -- Visual mode
         { "<leader>",   group = "Leader",                     mode = "v" },
         { "g",          group = "Goto",                       mode = "v" },
-
-        -- Global
-        { '<C-S-f>',    desc = 'Global Search (swpui)',       mode = "n" },
     },
 
     -- Disable for certain filetypes

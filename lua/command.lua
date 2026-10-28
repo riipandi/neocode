@@ -175,7 +175,13 @@ end
 -- Keymaps
 -- ============================================================================
 
--- Command palette: fuzzy search all Vim commands with categories
-snacks.keymap.set("n", "<C-S-p>", function()
+-- Command palette: fuzzy search all Vim commands with categories.
+-- <C-S-p> is kept for terminals that forward Shift (kitty/wezterm with the
+-- keyboard protocol); <leader>: is the portable alternative.
+snacks.keymap.set("n", "<leader>:", function()
     show_commands("Commands Center", get_vim_commands())
 end, { desc = "Command palette" })
+
+snacks.keymap.set("n", "<C-S-p>", function()
+    show_commands("Commands Center", get_vim_commands())
+end, { desc = "Command palette (terminal dependent)" })

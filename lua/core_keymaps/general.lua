@@ -24,12 +24,14 @@ vim.keymap.set({ "n", "t" }, "<Esc>", function()
 end, { silent = true })
 
 -- Search & Navigation
-snacks.keymap.set("n", "<leader>c", ":nohlsearch<CR>", { desc = "Clear search highlights" })
+snacks.keymap.set("n", "<leader>sc", ":nohlsearch<CR>", { desc = "Clear search highlights" })
 snacks.keymap.set("n", "n", "nzzzv", { desc = "Next search result (centered)" })
 snacks.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
 
 -- Editing
-snacks.keymap.set({ "n", "v" }, "<leader>d", '"_d', { desc = "Delete without yanking" })
+-- `<leader>d` is reserved as the Diagnostic group (which-key + LSP), so the
+-- delete-without-yank mapping lives on `<leader>D`.
+snacks.keymap.set({ "n", "v" }, "<leader>D", '"_d', { desc = "Delete without yanking" })
 snacks.keymap.set("n", "J", "mzJ`z", { desc = "Join lines and keep cursor position" })
 snacks.keymap.set("v", "<", "<gv", { desc = "Indent left and reselect" })
 
@@ -40,14 +42,18 @@ snacks.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection dow
 snacks.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
 -- Window Management
+-- NOTE: <C-S-...> / <C-A-...> combos are not transmittable by most terminals,
+-- so window actions live in the <leader>w group (see which-key: "Window").
 snacks.keymap.set("n", "<C-\\>", ":vsplit<CR>", { desc = "Split vertical" })
-snacks.keymap.set("n", "<C-S-\\>", ":split<CR>", { desc = "Split horizontal" })
-snacks.keymap.set("n", "<C-A-[>", ":wincmd p<CR>", { desc = "Previous window" })
-snacks.keymap.set("n", "<C-A-]>", ":wincmd w<CR>", { desc = "Next window" })
-snacks.keymap.set("n", "<C-A-=>", ":vertical resize +2<CR>", { desc = "Increase width" })
-snacks.keymap.set("n", "<C-A-->", ":vertical resize -2<CR>", { desc = "Decrease width" })
-snacks.keymap.set("n", "<C-S-=>", ":resize +2<CR>", { desc = "Increase height" })
-snacks.keymap.set("n", "<C-S-->", ":resize -2<CR>", { desc = "Decrease height" })
+snacks.keymap.set("n", "<leader>ws", ":split<CR>", { desc = "Window: Split horizontal" })
+snacks.keymap.set("n", "<leader>wv", ":vsplit<CR>", { desc = "Window: Split vertical" })
+snacks.keymap.set("n", "<leader>ww", ":wincmd p<CR>", { desc = "Window: Previous window" })
+snacks.keymap.set("n", "<leader>wq", ":close<CR>", { desc = "Window: Close window" })
+snacks.keymap.set("n", "<leader>w+", ":vertical resize +2<CR>", { desc = "Window: Increase width" })
+snacks.keymap.set("n", "<leader>w-", ":vertical resize -2<CR>", { desc = "Window: Decrease width" })
+snacks.keymap.set("n", "<leader>w>", ":resize +2<CR>", { desc = "Window: Increase height" })
+snacks.keymap.set("n", "<leader>w<", ":resize -2<CR>", { desc = "Window: Decrease height" })
+snacks.keymap.set("n", "<leader>w=", "<C-w>=", { desc = "Window: Equalize" })
 
 -- Config & Plugins
 snacks.keymap.set("n", "<leader>,", ":e ~/.config/nvim<CR>", { desc = "Edit neovim config" })

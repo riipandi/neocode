@@ -39,7 +39,7 @@ end
 snacks.keymap.set("n", "<C-x>", smart_close, { desc = 'Close buffer (smart)' })
 
 -- Close all buffers with snacks
-snacks.keymap.set("n", "<C-S-w>", function()
+snacks.keymap.set("n", "<leader>bW", function()
     Snacks.bufdelete.all()
 end, { desc = "Close all buffers" })
 

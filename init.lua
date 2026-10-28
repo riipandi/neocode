@@ -11,6 +11,11 @@ Last updated: 2025-10-12 (nvim 0.11+)
 
 --]]
 
+-- Leader keys must be defined before any module registers a mapping,
+-- otherwise `<leader>` resolves to the default "\\" for those mappings.
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 -- theme & transparency (loaded in core_theme.lua)
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })

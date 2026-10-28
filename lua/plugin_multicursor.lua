@@ -19,7 +19,7 @@ set({ "n", "x" }, "<leader><down>", function() mc.lineAddCursor(1) end)
 -- mc also triggers matchAddCursor(1) as a faster alternative to <leader>n
 set({ "n", "x" }, "mc", function() mc.matchAddCursor(1) end)
 set({ "n", "x" }, "<leader>n", function() mc.matchAddCursor(1) end)
-set({ "n", "x" }, "<leader>s", function() mc.matchSkipCursor(1) end)
+set({ "n", "x" }, "<leader>ss", function() mc.matchSkipCursor(1) end)
 set({ "n", "x" }, "<leader>N", function() mc.matchAddCursor(-1) end)
 -- NOTE: <leader>S is used by scratch select — using <leader>M instead
 set({ "n", "x" }, "<leader>M", function() mc.matchSkipCursor(-1) end)

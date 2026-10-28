@@ -322,10 +322,6 @@ end, { desc = "Command palette (no auto-complete, won't close on backspace)" })
 -- Git Keymaps
 -- ============================================================================
 
-snacks.keymap.set("n", "<C-S-g>", function()
-    snacks.lazygit.open()
-end, { desc = "Toggle LazyGit" })
-
 snacks.keymap.set("n", "<leader>gg", function()
     snacks.lazygit.open()
 end, { desc = "Toggle LazyGit" })
@@ -338,12 +334,7 @@ end, { desc = "Git status" })
 -- swpui Keymaps
 -- ============================================================================
 
--- Global search & replace (VSCode-style Ctrl+Shift+F)
-snacks.keymap.set("n", "<C-S-f>", function()
-    snacks.swpui.open()
-end, { desc = "Global search & replace (swpui)" })
-
--- Alternative keymap for swpui
+-- Global search & replace (VSCode-style) — reachable alternative to <C-S-f>
 snacks.keymap.set("n", "<leader>sr", function()
     snacks.swpui.open()
 end, { desc = "Global search & replace (swpui)" })
@@ -352,12 +343,14 @@ end, { desc = "Global search & replace (swpui)" })
 -- Terminal Keymaps
 -- ============================================================================
 
-snacks.keymap.set("n", "<C-S-s>", function()
+-- Floating terminal in the current working directory (the <leader>tt toggle
+-- in core_keymaps/tools.lua uses the same style).
+snacks.keymap.set("n", "<leader>tT", function()
     snacks.terminal.toggle(vim.o.shell, {
         cwd = vim.fn.getcwd(),
         win = { style = "terminal" },
     })
-end, { desc = "Toggle floating terminal" })
+end, { desc = "Toggle floating terminal (cwd)" })
 
 -- Override vim.ui.select with snacks picker for consistent UI
 -- Ensures Escape properly cancels (calls callback with nil)
