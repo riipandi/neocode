@@ -73,7 +73,7 @@ require('gitsigns').setup({
 
         -- Toggle commands
         map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = 'Git: Toggle blame' })
-        map('n', '<leader>tD', gitsigns.preview_hunk_inline, { desc = 'Git: Toggle deleted' })
+        map('n', '<leader>tD', gitsigns.preview_hunk_inline, { desc = 'Git: Preview deleted (inline)' })
     end,
 })
 

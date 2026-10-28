@@ -109,7 +109,7 @@ Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open
 | Diff (index)    | `hd`     | `<leader>hd` |
 | Diff (commit)   | `hD`     | `<leader>hD` |
 | Toggle blame    | `tb`     | `<leader>tb` |
-| Toggle deleted  | `tD`     | `<leader>tD` |
+| Preview deleted | `tD`     | `<leader>tD` |
 
 ## Go
 

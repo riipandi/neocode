@@ -148,7 +148,7 @@ require('which-key').setup({
         -- Tools
         { '<leader>t',  group = 'Tools',                      mode = "n" },
         { '<leader>tb', desc = 'Toggle blame',                mode = "n" },
-        { '<leader>tD', desc = 'Toggle deleted',              mode = "n" },
+        { '<leader>tD', desc = 'Preview deleted (inline)',     mode = "n" },
         { '<leader>tm', desc = 'Mason: packages',             mode = "n" },
         { '<leader>tM', desc = 'Mason: TUI',                  mode = "n" },
         { '<leader>tr', desc = 'Resource monitor',            mode = "n" },
