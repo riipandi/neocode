@@ -331,9 +331,11 @@ disables it for all levels; the heading colours come from treesitter
 (`@markup.heading.1..6`).
 
 Inline code is rendered foreground-only (`RenderMarkdownCodeInline` carries no
-background) and uses the theme `@markup.raw` colour — purple `#ba8ef7` — while
-links stay blue `#56a8f5`, so the two never look alike even with the backticks
-concealed. Code blocks keep their usual background band.
+background) and uses the theme `@markup.raw` colour — soft purple `#9976cb` —
+while links use `@markup.link`, a soft blue `#498bc9`, so the two never look
+alike even with the backticks concealed. Both are desaturated towards the
+background (Soft* colours in `core_theme.lua`) and still sit at ~4.8:1 contrast.
+Code blocks keep their usual background band.
 
 ## Insert Mode
 

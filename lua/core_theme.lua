@@ -56,6 +56,11 @@ local colors = {
     jsx_component = "#ba8ef7",
     directory = "#56a8f5",
     search_match = "#ffb347",
+
+    -- Soft (desaturated towards the background) colours for markdown markup:
+    -- inline code and links on a prose buffer should not shout.
+    soft_purple = "#9976cb",
+    soft_blue = "#498bc9",
 }
 
 function M.setup(opts)
@@ -229,10 +234,14 @@ function M.load()
         ["@markup.heading.6"] = { fg = "#cf8e6d", bold = true },
         ["@markup.quote"] = { fg = colors.variable },
         ["@markup.math"] = { fg = colors.keyword },
-        ["@markup.link"] = { fg = colors.number, underline = true },
-        ["@markup.link.label"] = { fg = colors.number },
-        ["@markup.link.url"] = { fg = colors.number, underline = true },
-        ["@markup.raw"] = { fg = "#ba8ef7" },
+        -- Links: soft blue (was `colors.number`, the same vivid blue used for
+        -- numeric literals in code).
+        ["@markup.link"] = { fg = colors.soft_blue, underline = true },
+        ["@markup.link.label"] = { fg = colors.soft_blue },
+        ["@markup.link.url"] = { fg = colors.soft_blue, underline = true },
+        -- Inline code: soft purple. `@markup.raw.block` (the text inside fenced
+        -- blocks) keeps the stronger colour.
+        ["@markup.raw"] = { fg = colors.soft_purple },
         ["@markup.raw.block"] = { fg = "#ba8ef7" },
         ["@markup.raw.delimiter"] = { fg = "#3c3f41" },
         ["@markup.list"] = { fg = colors.keyword },
