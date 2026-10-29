@@ -169,8 +169,7 @@ elsewhere.
 | `}` / `{`      | Move four rows down / up                                      |
 | `c` / `p` / `m`/ `d` / `D` | Copy, paste, move, delete, duplicate               |
 | `y` / `Y`      | Yank file content / full path                                 |
-| `r` / `a`      | Rename / add file                                             |
-| `.`            | Focus the current file in the view                            |
+| `r` / `a`      | Rename / add file or directory (the prompt is prefilled with the cursor row's directory) |
 | `I` / `H`      | Toggle ignored / hidden files                                 |
 | `.`            | Toggle git-ignored files (same action as `I`, replaces the source `explorer_focus`) |
 | `/`            | Focus the search field                                        |

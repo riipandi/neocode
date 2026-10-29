@@ -109,8 +109,45 @@ local function duplicate(picker)
     end)
 end
 
+-- `a` (add a file or directory) prefills the input with the absolute path of
+-- the directory the cursor row lives in, so typing a name creates it there
+-- instead of in an invisible default location.
+local function add_at_cursor(picker)
+    local item = picker:current()
+    local base = picker:cwd()
+    if item and item.file then
+        base = item.dir and item.file or vim.fs.dirname(item.file)
+    end
+    Snacks.input({
+        prompt = 'Add a new file or directory (directories end with a "/")',
+        default = base .. "/",
+    }, function(value)
+        if not value or value:find("^%s$") then return end
+        value = vim.trim(value)
+        -- an absolute path is used as typed, a bare name lands under the root
+        local path = value:match("^/") and vim.fs.normalize(value)
+            or vim.fs.normalize(picker:cwd() .. "/" .. value)
+        local is_file = value:sub(-1) ~= "/"
+        local dir = is_file and vim.fs.dirname(path) or path
+        if is_file and vim.uv.fs_stat(path) then
+            Snacks.notify.warn("File already exists:\n- `" .. path .. "`")
+            return
+        end
+        vim.fn.mkdir(dir, "p")
+        if is_file then
+            local f = io.open(path, "w")
+            if f then f:close() end
+        end
+        local Tree = require("snacks.explorer.tree")
+        Tree:open(dir)
+        Tree:refresh(dir)
+        require("snacks.explorer.actions").update(picker, { target = path })
+    end)
+end
+
 -- Override source-specific explorer keys
 local explorer_keys = require("snacks.picker.config.sources").explorer.win.list.keys
+explorer_keys["a"] = function() with_explorer(add_at_cursor) end
 explorer_keys["h"] = function() with_explorer(collapse_or_up) end
 explorer_keys["l"] = function() with_explorer(toggle_dir) end
 explorer_keys["<Left>"] = function() with_explorer(collapse_or_up) end
