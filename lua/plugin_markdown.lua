@@ -40,7 +40,9 @@ require("render-markdown").setup({
     },
     bullet = {
         enabled = true,
-        icons = { "●", "○", "◆", "◇" },
+        -- `•` instead of `●`: the filled circle reads as bold next to body text.
+        -- Levels 2-4 stay hollow so nesting is still obvious.
+        icons = { "•", "○", "◆", "◇" },
         left_pad = 0,
         right_pad = 1,
     },
