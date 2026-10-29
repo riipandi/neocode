@@ -97,6 +97,11 @@ These are the deliberate choices that differ from a stock configuration.
 - **Scrolling is native.** `scrolloff = 0`, so the cursor is never dragged by
   view scrolling; `<S-Up>`/`<S-Down>` and `}`/`{` move half a page like
   `<C-u>`/`<C-d>`. `snacks.scroll` animates the viewport at 45 ms per line.
+- **Left wraps at the line start.** `whichwrap` gains `h` and `<`, so `h` or
+  `<Left>` in the first column continues at the end of the previous line; a
+  count carries across. `l` and `>` are not wrapped, because Vim's stop at the
+  last character is what `$`, `A` and text objects rely on. In an operator the
+  wrap applies too: `dh` in the first column joins with the previous line.
 - **Markdown preview is foreground-first.** Rendered in normal/visual/command
   modes only; insert mode shows the raw source with `conceallevel = 0`. Code
   blocks keep a background band, headings have neither background nor sign,

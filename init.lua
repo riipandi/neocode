@@ -91,6 +91,10 @@ vim.g.have_nerd_font = true
 vim.opt.hidden = true                   -- Allow hidden buffers
 vim.opt.errorbells = false              -- No error bells
 vim.opt.backspace = "indent,eol,start"  -- Better backspace behavior
+-- h / <Left> at the first column continue at the end of the previous line
+-- (editor-style wrap). l / > are deliberately left out: Vim's own stop at the
+-- last character is what `$`, `A` and text objects assume.
+vim.opt.whichwrap:append("h,<")
 vim.opt.autochdir = false               -- Don't auto change directory
 vim.opt.iskeyword:append("-")           -- Treat dash as part of word
 vim.opt.path:append("**")               -- include subdirectories in search
