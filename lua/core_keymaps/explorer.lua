@@ -168,8 +168,11 @@ vim.api.nvim_create_autocmd("FileType", {
                 picker:focus("input")
             end, { buffer = ev.buf, silent = true, desc = "Focus search input" })
 
-            -- <C-.> shows or hides git-ignored entries (the action behind `I`).
-            vim.keymap.set({ "n", "i" }, "<C-.>", function()
+            -- `.` shows or hides git-ignored entries (the action behind `I`).
+            -- The list window only: in the search field `.` must stay a
+            -- character. This takes over the source default `explorer_focus`
+            -- (set cwd to the folder under the cursor); `:tcd` and :cd cover it.
+            vim.keymap.set("n", ".", function()
                 picker:action("toggle_ignored")
             end, { buffer = ev.buf, silent = true, desc = "Toggle git-ignored files" })
         end)

@@ -172,7 +172,7 @@ elsewhere.
 | `r` / `a`      | Rename / add file                                             |
 | `.`            | Focus the current file in the view                            |
 | `I` / `H`      | Toggle ignored / hidden files                                 |
-| `<C-.>`        | Toggle git-ignored files (same action as `I`, from either window) |
+| `.`            | Toggle git-ignored files (same action as `I`, replaces the source `explorer_focus`) |
 | `/`            | Focus the search field                                        |
 | `q`            | Close the explorer                                            |
 | `<Esc>`        | Search field: clear the query and return to the list (never closes). List: no-op |
