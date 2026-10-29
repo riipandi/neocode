@@ -173,7 +173,7 @@ elsewhere.
 | `I` / `H`      | Toggle ignored / hidden files                                 |
 | `/`            | Focus the search field                                        |
 | `q`            | Close the explorer                                            |
-| `<Esc>`        | Search field: clear the query and return to the list (never closes). List: close when the query is empty |
+| `<Esc>`        | Search field: clear the query and return to the list (never closes). List: no-op |
 
 ## Pickers
 

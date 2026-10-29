@@ -149,17 +149,8 @@ vim.api.nvim_create_autocmd("FileType", {
                 vim.keymap.set("n", "{", function() jump(-4) end, { buffer = ev.buf, silent = true })
                 -- q closes the explorer (native picker behaviour)
                 vim.keymap.set("n", "q", function() picker:close() end, { buffer = ev.buf, silent = true })
-                -- <Esc>: clear the search when it has text, otherwise close
-                vim.keymap.set("n", "<Esc>", function()
-                    local query = picker.input and picker.input:get() or ""
-                    if query ~= "" then
-                        picker.input:set("")
-                        picker:find()
-                        picker:focus()
-                    else
-                        picker:close()
-                    end
-                end, { buffer = ev.buf, silent = true })
+                -- <Esc>: never closes the explorer. Closing is `q` only.
+                vim.keymap.set("n", "<Esc>", function() end, { buffer = ev.buf, silent = true, nowait = true })
             else -- input window (search field)
                 -- <Esc> only leaves the search field: clear the query if there
                 -- is one, then focus the list. It never closes the explorer.
