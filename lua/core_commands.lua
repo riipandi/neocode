@@ -19,6 +19,18 @@ vim.api.nvim_create_user_command("Format", function()
     end
 end, { desc = "Format current buffer (conform.nvim)", range = true })
 
+-- :KeyProbe - report the notation of the next key, to check whether the
+-- terminal forwards e.g. <S-CR> or collapses it into <CR>.
+vim.api.nvim_create_user_command("KeyProbe", function()
+    vim.notify("Press the key to inspect…", vim.log.levels.INFO, { title = "KeyProbe" })
+    local ok, key = pcall(vim.fn.getcharstr)
+    if not ok or key == "" then
+        vim.notify("No key received", vim.log.levels.WARN, { title = "KeyProbe" })
+        return
+    end
+    vim.notify("Neovim sees: " .. vim.fn.keytrans(key), vim.log.levels.INFO, { title = "KeyProbe" })
+end, { desc = "Show the key notation Neovim receives" })
+
 -- :Update - Update all plugins via vim.pack
 vim.api.nvim_create_user_command("Update", function()
     vim.pack.update()

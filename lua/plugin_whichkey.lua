@@ -136,7 +136,8 @@ require('which-key').setup({
 
         -- Folds
         { '<S-CR>',     desc = 'Toggle fold under cursor',    mode = "n" },
-        { '<C-S-CR>',   desc = 'Toggle all folds',            mode = "n" },
+        { '<M-CR>',     desc = 'Toggle fold (Option+Enter)',  mode = "n" },
+        { '<M-S-CR>',   desc = 'Toggle all folds',            mode = "n" },
 
         -- Plugins
         { '<leader>p',  group = 'Plugins',                    mode = "n" },

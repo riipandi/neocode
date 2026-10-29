@@ -16,14 +16,20 @@ require("core_keymaps.ai") -- Mistral Codestral AI
 require("core_keymaps.picker")
 
 -- Smart fold toggle: works on any row, not only on a fold header
--- (see core_keymaps/folds.lua). Needs a terminal that forwards Shift+Enter as
--- its own key (kitty keyboard protocol, e.g. Ghostty); otherwise the key
--- arrives as <CR> and this mapping simply never matches.
+-- (see core_keymaps/folds.lua).
+--   <S-CR>    Shift+Enter        - needs the terminal to report Shift+Enter as
+--                                  its own key (kitty keyboard protocol)
+--   <M-CR>    Option/Alt+Enter   - same action where Shift+Enter is swallowed
+--   <M-S-CR>  Option+Shift+Enter - fold/unfold every block in the buffer
+--                                  (Ctrl+Shift+Enter is taken by the terminal)
 vim.keymap.set("n", "<S-CR>", function()
     require("core_keymaps.folds").toggle()
 end, { desc = "Toggle fold under cursor", silent = true })
 
--- Fold/unfold every block at once (also available as the native zM / zR).
-vim.keymap.set("n", "<C-S-CR>", function()
+vim.keymap.set("n", "<M-CR>", function()
+    require("core_keymaps.folds").toggle()
+end, { desc = "Toggle fold under cursor (Option+Enter)", silent = true })
+
+vim.keymap.set("n", "<M-S-CR>", function()
     require("core_keymaps.folds").toggle_all()
 end, { desc = "Toggle all folds", silent = true })

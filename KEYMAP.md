@@ -382,8 +382,8 @@ Code blocks keep their usual background band.
 
 | Action                    | Shortcut  |
 | ------------------------- | --------- |
-| Toggle fold around cursor | `<S-CR>`  |
-| Toggle all folds          | `<C-S-CR>` |
+| Toggle fold around cursor | `<S-CR>` or `<M-CR>` |
+| Toggle all folds          | `<M-S-CR>` |
 | Open all / close all      | `zR` / `zM` |
 | Same, keyboard-independent | `za`     |
 
@@ -396,9 +396,14 @@ aborts with E490 on rows that are not foldable (top-level statements):
    cursor stays where it was
 4. nothing foldable in the buffer → an info message instead of an error
 
-`<C-S-CR>` folds or unfolds every block: it closes all when the window
-`foldlevel` is open, and opens all when anything is closed (the same as `zM` /
-`zR`, which stay available).
+`<M-S-CR>` (Option+Shift+Enter) folds or unfolds every block: it closes all when
+the window `foldlevel` is open, and opens all when anything is closed (the same
+as `zM` / `zR`, which stay available). Ctrl+Shift+Enter is left alone — the
+terminal uses it.
+
+`<M-CR>` (Option+Enter) does the same as `<S-CR>` for terminals that swallow
+Shift+Enter. To find out what yours sends, run `:KeyProbe` and press the key:
+it reports e.g. `<S-CR>`, `<M-CR>` or plain `<CR>`.
 
 `<S-CR>` needs a terminal that forwards Shift+Enter as a distinct key —
 Ghostty/kitty/wezterm do, and Neovim enables the kitty keyboard protocol
