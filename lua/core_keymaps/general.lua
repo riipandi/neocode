@@ -31,6 +31,26 @@ vim.keymap.set({ "n", "t" }, "<Esc>", function()
     vim.cmd('nohlsearch')
 end, { silent = true })
 
+-- snacks.input (the vim.ui.input dialog) maps <Esc> in insert mode to
+-- `stopinsert` and only cancels with a second Escape in normal mode. One
+-- Escape should close a text prompt, so insert-mode <Esc> stops insert and
+-- then runs the buffer's own normal-mode mapping (`cancel`).
+local input_group = vim.api.nvim_create_augroup("snacks_input_esc", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+    group = input_group,
+    pattern = "snacks_input",
+    callback = function(ev)
+        vim.schedule(function()
+            if not vim.api.nvim_buf_is_valid(ev.buf) then return end
+            vim.keymap.set("i", "<Esc>", function()
+                vim.cmd("stopinsert")
+                -- "m" keeps mappings live so the buffer's n_esc (`cancel`) runs
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "m", false)
+            end, { buffer = ev.buf, silent = true, desc = "Cancel the input dialog" })
+        end)
+    end,
+})
+
 -- Search & Navigation
 snacks.keymap.set("n", "<leader>sc", ":nohlsearch<CR>", { desc = "Clear search highlights" })
 snacks.keymap.set("n", "n", "nzzzv", { desc = "Next search result (centered)" })

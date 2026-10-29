@@ -154,6 +154,11 @@ the list focused, so you stay in normal mode: `j`/`k` to move, `<CR>` to choose,
 `<Esc>` to cancel, `/` to type in the search field. A dialog opened from insert
 mode keeps the input focused instead.
 
+Text prompts (`vim.ui.input`, the explorer `a` dialog) cancel with one `<Esc>`,
+from insert mode too. snacks maps insert-mode `<Esc>` to `stopinsert` and needs
+a second press in normal mode; `lua/core_keymaps/general.lua` replaces that
+insert-mode mapping so one press cancels.
+
 ## File explorer (`<leader>e`)
 
 `<leader>e` toggles; `<A-e>` closes it when open or focuses it when the cursor is
