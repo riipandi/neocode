@@ -24,7 +24,11 @@ vim.opt.number = true          -- Line numbers
 vim.opt.relativenumber = false -- Relative line numbers
 vim.opt.cursorline = true      -- Highlight current line
 vim.opt.wrap = false           -- Don't wrap lines
-vim.opt.scrolloff = 10         -- Keep 10 lines above/below cursor
+-- No context margin: with scrolloff > 0 Vim must keep that many lines around
+-- the cursor, so at the end of a buffer it scrolls into the area below the last
+-- line and drags the cursor along (visible as the cursor jumping rows). 0 keeps
+-- scrolling 1:1 with the cursor and lets core_scroll.lua stop at the last line.
+vim.opt.scrolloff = 0
 vim.opt.sidescrolloff = 4      -- Keep 4 columns left/right of cursor
 
 -- Indentation
@@ -113,12 +117,12 @@ vim.opt.splitright = true -- Vertical splits go right
 -- ============================================================================
 -- Load core configurations
 -- ============================================================================
+require 'core_scroll'      -- Scroll bounds: must run before snacks.scroll hooks
 require 'core_plugins'     -- Snacks.nvim (must load first)
 require 'command'          -- Command palette & history
 require 'core_health'      -- Health checks
 require 'core_keymaps'     -- Key mappings
 require 'core_autocmds'    -- Autocommands utilities
-require 'core_scroll'      -- Keep the viewport inside the buffer
 require 'core_lsp'         -- LSP settings
 require 'core_lsp_toggles' -- LSP action toggles
 require 'core_commands'    -- User commands
