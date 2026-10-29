@@ -109,6 +109,7 @@ require('which-key').setup({
         { '<leader>iA', desc = 'Auth manager',                mode = "n" },
         { '<leader>ih', desc = 'Health check',                mode = "n" },
         { '<leader>ig', desc = 'Generate commit message',     mode = "n" },
+        { '<leader>ie', desc = 'Explain selected completion', mode = "n" },
 
         -- Git Hunk
         { '<leader>h',  group = 'Git Hunk',                   mode = { 'n', 'v' } },

@@ -332,12 +332,14 @@ vim.api.nvim_create_user_command("MistralExplainCompletion", ai_explain_selected
     desc = "Ask Mistral Codestral to explain the selected blink.cmp item",
 })
 
--- Also expose a keymap that works inside the blink menu
-vim.keymap.set({ "i", "n" }, "<C-g>", function()
+-- Also expose a keymap that works inside the blink menu.
+-- NOTE: does not use <C-g>; that is the "go to line" mapping in core_plugins.lua
+-- and this mapping used to shadow it.
+vim.keymap.set({ "i", "n" }, "<leader>ie", function()
     if blink.is_visible and blink.is_visible() then
         ai_explain_selected()
     else
-        vim.notify("[mistral-codestral] <C-g> only fires while the blink menu is open", vim.log.levels.INFO)
+        vim.notify("Mistral: <leader>ie only fires while the completion menu is open", vim.log.levels.INFO)
     end
 end, { desc = "Mistral: explain selected completion", silent = true })
 
