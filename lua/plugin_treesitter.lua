@@ -91,6 +91,17 @@ vim.defer_fn(function()
 end, 100)
 
 -- ============================================================================
+-- LSP progress in the bottom-right corner
+-- ============================================================================
+-- fidget was added to the pack list but never set up, so no progress was shown.
+vim.defer_fn(function()
+    local ok, fidget = pcall(require, 'fidget')
+    if ok then
+        fidget.setup({})
+    end
+end, 100)
+
+-- ============================================================================
 -- A pretty diagnostics, references, quickfix and location list
 -- ============================================================================
 vim.defer_fn(function()
