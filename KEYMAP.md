@@ -293,7 +293,7 @@ marker do not write to it. `signcolumn` stays reserved so text never shifts.
 | Select word          | `mc` (repeat for the next match)|
 | Add cursor           | `<leader>n` / `<leader>N`       |
 | Skip match           | `<leader>ss` / `<leader>M`      |
-| Cursor above / below | `<leader><Up>` / `<leader><Down>`(n, x) |
+| Cursor above / below | `<leader><Up>` / `<leader><Down>`, `<M-S-Up>` / `<M-S-Down>`(n, x) |
 | All matches          | `<leader>A`                     |
 | Align cursors        | `<leader>a`                     |
 | Restore cursor set   | `<leader>gv`                    |
@@ -307,6 +307,10 @@ For "one cursor per row, same column": `<C-v>` to select the block (or `V` for
 whole rows), then `<leader>v`. Each row of the selection becomes its own cursor,
 so one edit lands on every row: `<C-v>2j2l` `<leader>v` `iX` `<Esc>` inserts `X`
 at the same column on three rows.
+
+`<M-S-Up>`/`<M-S-Down>` (Option+Shift+arrow) add a cursor one row up or down at
+the same column, the Sublime-style pair. They arrive as `CSI 1;4A`/`CSI 1;4B`,
+so plain `<S-Up>`/`<S-Down>` stay half-page scrolling.
 
 ## Insert mode
 

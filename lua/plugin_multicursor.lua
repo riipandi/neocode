@@ -15,6 +15,12 @@ local set = vim.keymap.set
 set({ "n", "x" }, "<leader><up>", function() mc.lineAddCursor(-1) end)
 set({ "n", "x" }, "<leader><down>", function() mc.lineAddCursor(1) end)
 
+-- Same as above on Option+Shift+arrow, the Sublime-style pair. Ghostty with
+-- the kitty keyboard protocol reports them as <M-S-Up>/<M-S-Down>; run
+-- :KeyProbe when the terminal collapses the Shift.
+set({ "n", "x" }, "<M-S-up>", function() mc.lineAddCursor(-1) end)
+set({ "n", "x" }, "<M-S-down>", function() mc.lineAddCursor(1) end)
+
 -- Add or skip adding a new cursor by matching word/selection
 -- mc also triggers matchAddCursor(1) as a faster alternative to <leader>n
 set({ "n", "x" }, "mc", function() mc.matchAddCursor(1) end)
