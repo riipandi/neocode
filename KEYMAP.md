@@ -323,6 +323,13 @@ Set `vim.g.snacks_scroll = false` to disable it for the session.
 | -------------------- | ------------ |
 | Toggle inline render | `<leader>mt` |
 
+Headings carry no background band at any level: the plugin maps
+`backgrounds[level]` to `RenderMarkdownH1Bg..H6Bg`, which link to `DiffText` /
+`Visual` / `CursorColumn` in this theme, so H1, H5 and H6 used to be the only
+ones with a background. `heading.backgrounds = {}` in `lua/plugin_markdown.lua`
+disables it for all levels; the heading colours come from treesitter
+(`@markup.heading.1..6`).
+
 Inline code is rendered foreground-only (`RenderMarkdownCodeInline` is re-linked
 to a group without a background) and keeps its delimiters visible: treesitter
 conceals `code_span_delimiter` at conceallevel 2/3, so the backticks are redrawn

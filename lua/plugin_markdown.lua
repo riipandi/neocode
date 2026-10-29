@@ -18,6 +18,11 @@ require("render-markdown").setup({
         position = "overlay",
         width = "block",
         border = false,
+        -- No background band on any heading level. The defaults map
+        -- backgrounds[level] to RenderMarkdownH1Bg..H6Bg, which link to
+        -- DiffText / Visual / CursorColumn in this theme, so H1, H5 and H6 got
+        -- a background while H2-H4 did not.
+        backgrounds = {},
     },
     code = {
         enabled = true,
