@@ -77,10 +77,13 @@ require("render-markdown").setup({
         alignment_indicator = "━",
     },
     link = {
-        enabled = true,
-        image = "󰥶 ",
-        email = "󰀓 ",
-        hyperlink = "󰌹 ",
+        -- No icon in front of links. The renderer draws the fallback icon
+        -- (󰌹) for every link and swaps in per-site ones from `custom`
+        -- (web -> 󰖟 for http, github -> 󰊤, …); on documents that already
+        -- carry their own glyph next to the label this doubles up. Links keep
+        -- their soft-blue colour, which is enough to recognise them.
+        enabled = false,
+        hyperlink = "",
     },
     win_options = {
         conceallevel = {

@@ -362,6 +362,12 @@ ones with a background. `heading.backgrounds = {}` in `lua/plugin_markdown.lua`
 disables it for all levels; the heading colours come from treesitter
 (`@markup.heading.1..6`).
 
+Links carry no icon prefix: the renderer's fallback glyph (󰌹) and its
+per-site icons (`web` → 󰖟 for http, `github` → 󰊤, …) are disabled
+(`link.enabled = false`), because documents that already draw their own glyph
+next to the label ended up with two icons. Links stay recognisable from the soft
+blue colour.
+
 Inline code is rendered foreground-only (`RenderMarkdownCodeInline` carries no
 background) and uses the theme `@markup.raw` colour — soft purple `#9976cb` —
 while links use `@markup.link`, a soft blue `#498bc9`, so the two never look
