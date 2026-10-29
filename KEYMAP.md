@@ -336,6 +336,14 @@ Set `vim.g.snacks_scroll = false` to disable it for the session.
 | Action               | Shortcut     |
 | -------------------- | ------------ |
 | Toggle inline render | `<leader>mt` |
+| Open link under cursor | `<C-CR>` or `<leader>ml` |
+
+Link opening reads the URL straight from the buffer, so it works with the
+renderer and conceal active: `[label](https://url "title")`, `<https://url>`
+autolinks and bare URLs are all recognised (`:MarkdownOpenLink` does the same).
+Ctrl+Enter needs a terminal that forwards it — Ghostty/kitty/wezterm do, and
+Neovim enables the kitty keyboard protocol automatically; `<leader>ml` always
+works.
 
 The inline preview is rendered in normal, visual, command and terminal modes —
 **not** in insert mode. While typing you get the raw markdown (`- item`,

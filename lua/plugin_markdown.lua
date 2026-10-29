@@ -125,6 +125,55 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 -- Keymaps
 -- ============================================================================
 
+-- Open the link under the cursor with the system handler (`vim.ui.open`).
+-- Works on [label](https://…), <https://…> autolinks and bare URLs; the URL is
+-- read from the buffer, so it works with conceallevel and the renderer active.
+local function link_under_cursor()
+    local buf = vim.api.nvim_get_current_buf()
+
+    local ok, node = pcall(vim.treesitter.get_node, { bufnr = buf })
+    if ok and node then
+        local walk = node
+        while walk do
+            local kind = walk:type()
+            if kind == "inline_link" or kind == "image" or kind == "uri_autolink" then
+                for child in walk:iter_children() do
+                    local ckind = child:type()
+                    if ckind == "link_destination" or ckind == "uri_autolink" then
+                        local text = vim.treesitter.get_node_text(child, buf)
+                        local url = text:gsub("^<", ""):gsub(">$", ""):gsub("^%s+", ""):gsub("%s+$", "")
+                        if url ~= "" then
+                            return url
+                        end
+                    end
+                end
+            end
+            walk = walk:parent()
+        end
+    end
+
+    -- Fallback: first URL on the line, preferring ](…) destinations.
+    local line = vim.api.nvim_get_current_line()
+    local url = line:match("%]%(%s*<?([^%s%)>]+)>?") or line:match("(https?://[^%s%)>]+)")
+    return url
+end
+
+local function open_link()
+    local url = link_under_cursor()
+    if not url then
+        vim.notify("No link under cursor", vim.log.levels.WARN, { title = "Markdown" })
+        return
+    end
+    local ok, err = pcall(vim.ui.open, url)
+    if not ok then
+        vim.notify("Cannot open link: " .. tostring(err), vim.log.levels.ERROR, { title = "Markdown" })
+    end
+end
+
+vim.api.nvim_create_user_command("MarkdownOpenLink", open_link, {
+    desc = "Open the link under the cursor",
+})
+
 -- NOTE: `<C-m>` is the same keycode as `<CR>` — mapping it hijacked Enter in
 -- normal mode (it toggled the renderer instead of moving the cursor down).
 vim.keymap.set("n", "<leader>mt", function()
@@ -150,6 +199,22 @@ vim.api.nvim_create_autocmd("FileType", {
 -- the FileType callback next to the VimResized autocmd, so both leaked a new
 -- autocmd per opened markdown buffer)
 vim.api.nvim_set_hl(0, "RenderMarkdownBullet", { bold = false })
+
+-- Link opening: buffer-local so <C-CR> stays free of side effects elsewhere.
+vim.api.nvim_create_autocmd("FileType", {
+    group = md_group,
+    pattern = { "markdown" },
+    callback = function(ev)
+        vim.keymap.set("n", "<C-CR>", open_link, {
+            buffer = ev.buf,
+            desc = "Markdown: open link under cursor",
+        })
+        vim.keymap.set("n", "<leader>ml", open_link, {
+            buffer = ev.buf,
+            desc = "Markdown: open link under cursor",
+        })
+    end,
+})
 
 -- Re-render markdown tables on terminal resize
 vim.api.nvim_create_autocmd("VimResized", {

@@ -127,11 +127,12 @@ require('which-key').setup({
         { '<leader>rn', desc = 'Rename',                      mode = "n" },
 
         -- Marks
-        { '<leader>m',  group = 'Marks',                      mode = "n" },
+        { '<leader>m',  group = 'Marks / Markdown',           mode = "n" },
         { '<leader>ma', desc = 'Toggle file mark',            mode = "n" },
         { '<leader>mc', desc = 'Clear marks',                 mode = "n" },
         { '<leader>mp', desc = 'Previous mark',               mode = "n" },
         { '<leader>mt', desc = 'Markdown: render toggle',     mode = "n" },
+        { '<leader>ml', desc = 'Markdown: open link',         mode = "n" },
 
         -- Plugins
         { '<leader>p',  group = 'Plugins',                    mode = "n" },
