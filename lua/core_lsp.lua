@@ -201,6 +201,11 @@ vim.lsp.enable({
     -- "gopls",  -- managed by go.nvim (ray-x/go.nvim)
     "lua_ls",
     "oxlint",
+    -- oxfmt LSP: formatting for the filetypes conform does not cover (html,
+    -- css, yaml, toml, markdown). conform still wins for js/ts/json because
+    -- lsp_format = 'fallback'. Needs an oxfmt root marker (package.json,
+    -- .oxfmtrc.json, oxfmt.config.ts, vite.config.ts).
+    "oxfmt",
     -- "rust-analyzer",  -- managed by language_rust.lua (custom clippy settings)
     "tailwindcss",
     "texlab",

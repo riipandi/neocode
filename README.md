@@ -118,8 +118,8 @@ enabled when the matching filetype opens.
 | Language              | LSP                              | Formatter            |
 | --------------------- | -------------------------------- | -------------------- |
 | Lua (this config)     | `lua_ls` + lazydev types         | `stylua`             |
-| TypeScript / JS / JSX | `ts_ls`, `oxlint` (`deno` when a `deno.json` exists) | `oxfmt` → `prettierd` → `prettier` |
-| Astro / Vue / Svelte / Lit | `ts_ls`, `oxlint`; `astro` on demand | `oxfmt` → `prettier` |
+| TypeScript / JS / JSX | `ts_ls`, `oxlint`, `oxfmt` (LSP) (`deno` when a `deno.json` exists) | `oxfmt` → `prettierd` → `prettier` |
+| Astro / Vue / Svelte / Lit | `ts_ls`, `oxlint`, `oxfmt` (LSP); `astro` on demand | `oxfmt` → `prettier` |
 | Tailwind CSS          | `tailwindcss`                    | —                    |
 | Rust                  | `rust-analyzer` (clippy on save), crates.nvim | `rustfmt` |
 | Go                    | `gopls` via go.nvim, `golangci-lint` | `goimports` on save (go.nvim) |
@@ -130,10 +130,22 @@ enabled when the matching filetype opens.
 | Terraform / HCL       | `terraform_ls`                   | `terraform fmt`      |
 | Python                | `pylsp`                          | `black`              |
 | Shell                 | `bashls`                         | `shfmt`              |
-| HTML                  | `html`, `superhtml` (when installed) | —                |
-| CSS / JSON / Docker   | `cssls`, `jsonls`, `dockerls`    | —                    |
-| YAML / TOML / TeX     | `yamlls`, `taplo`, `texlab`      | —                    |
-| Markdown              | render-markdown preview          | —                    |
+| HTML                  | `html`, `superhtml` (when installed) | `oxfmt` (LSP)    |
+| CSS / JSON / Docker   | `cssls`, `jsonls`, `dockerls`    | `oxfmt` (LSP)        |
+| YAML / TOML / TeX     | `yamlls`, `taplo`, `texlab`      | `oxfmt` (LSP)        |
+| Markdown              | render-markdown preview          | `oxfmt` (LSP)        |
+
+`oxfmt` runs twice in two roles. As a conform formatter it is the first choice
+for js/ts/json/vue/astro/svelte/lit. As an LSP client it formats the filetypes
+conform has no formatter for (html, css, scss, less, yaml, toml, markdown,
+graphql, handlebars). conform's `lsp_format = 'fallback'` keeps the order: the
+conform formatter runs when there is one, otherwise the LSP formats.
+
+The `oxfmt` LSP client only starts in a project that opts in: a `package.json`
+listing `oxfmt` (or `vite-plus`), a `.oxfmtrc.json`/`.oxfmtrc.jsonc`/
+`oxfmt.config.ts`, or a `vite.config.ts` with a `fmt` field. Buffers outside
+such a project keep their current behaviour, and the binary resolves to
+`node_modules/.bin/oxfmt` when the project has it.
 
 Tree-sitter parsers: astro, bash, css, diff, eex, elixir, go, hcl, heex, html,
 javascript, jsdoc, json, json5, just, lua, luadoc, luap, markdown,
