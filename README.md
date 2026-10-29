@@ -7,278 +7,213 @@
 ▀  ▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀ ▀▀▀▀
 ```
 
-This is a personal Neovim configuration for Aris Ripandi ([@riipandi][riipandi]).
+Personal Neovim configuration for Aris Ripandi ([@riipandi][riipandi]), derived
+from [Kickstart.nvim][kickstart-nvim]. Plugins are installed with Neovim's own
+`vim.pack` — there is no plugin manager — and pinned in
+`nvim-pack-lock.json`.
 
-This configuration is based on [Kickstart.nvim][kickstart-nvim], a starting point
-for your own configuration. The goal is that you can read every line of code,
-top-to-bottom, understand what your configuration is doing, and modify it to
-suit your needs. If you don't know anything about Lua, I recommend taking some
-time to read [through a guide][learnxinyminutes].
+Keybindings: [KEYMAP.md](./KEYMAP.md).
 
-## Prerequisites
+## Requirements
 
-### Uninstall Neovim from Brew
+- Neovim 0.12 or newer (`vim.pack`, `vim.lsp.config`, `vim.ui.open`).
+- A terminal that forwards modified keys as their own keys: Shift+Enter,
+  Option+Enter and Option+Shift+Enter are used for folding. Ghostty, kitty and
+  wezterm do this through the kitty keyboard protocol, which Neovim enables
+  automatically. `:KeyProbe` reports what Neovim actually receives.
+- A Nerd Font (`vim.g.have_nerd_font = true` is set).
 
-```sh
-brew uninstall neovim
-```
-
-### Neovim 0.12+ (stable)
-
-```sh
-curl -fSL https://github.com/neovim/neovim/releases/download/stable/nvim-macos-arm64.tar.gz | tar xz
-xattr -c ./nvim-macos-arm64/ && sudo cp -R ./nvim-macos-arm64/* /usr/local/ && rm -fr nvim-macos-arm64
-```
-
-### Neovim 0.12+ (nightly)
+Optional, per feature:
 
 ```sh
-curl -fSL https://github.com/neovim/neovim/releases/download/nightly/nvim-macos-arm64.tar.gz | tar xz
-xattr -c ./nvim-macos-arm64/ && sudo cp -R ./nvim-macos-arm64/* /usr/local/ && rm -fr nvim-macos-arm64
-```
-
-### LSP & Formatters
-
-```sh
-brew install ripgrep fd luarocks taplo stylua rust-analyzer
-brew install bash-language-server yaml-language-server
-brew install oxlint oxfmt deno
-```
-
-```sh
+brew install ripgrep fd lazygit swp btop mactop
 brew tap homebrew/cask-fonts
 brew install --cask font-jetbrains-mono font-jetbrains-mono-nerd-font
-brew install --cask font-maple-mono font-maple-mono-nf
-brew install btop chafa markdownlint-cli swpui
-brew install jesseduffield/lazygit/lazygit
 ```
 
-## Quick Start
+LSP servers, formatters and linters come from Mason (`:Mason`), not from Homebrew.
 
-### Clean previous configuration (if any)
-
-```sh
-rm -fr ~/.config/nvim/nvim-pack-lock.json
-rm -fr ~/.local/share/nvim
-rm -fr ~/.local/state/nvim
-rm -fr ~/.cache/nvim
-```
-
-### Clone the starter
+## Install
 
 ```sh
 npx tiged https://github.com/riipandi/neocode ~/.config/nvim
 ```
 
-### Terminal Configuration
+Start Neovim. `vim.pack` installs the pinned plugins; Mason installs the tools
+listed in `lua/plugin_mason.lua` (LSP servers, formatters, tree-sitter-cli).
+Check the result with `:checkhealth` and `:HealthCheck`.
+
+Terminal and prompt configs live in this repo too:
 
 ```sh
 ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
 ln -s ~/.config/nvim/starship.toml ~/.config/starship.toml
 ```
 
-## Supported Languages
+To start over: `:CleanNvim` (drops `nvim-pack-lock.json` and the cache
+directory), or delete `~/.local/share/nvim`, `~/.local/state/nvim` and
+`~/.cache/nvim`.
 
-| Language         | LSP             | Treesitter   | Formatter         |
-| ---------------- | --------------- | ------------ | ----------------- |
-| TypeScript/React | ts_ls + oxlint  | tsx, js      | oxfmt             |
-| Tailwind CSS     | tailwindcss     | css          | oxfmt             |
-| Lit              | ts_ls           | lit          | oxfmt             |
-| Astro            | astro           | astro        | oxfmt             |
-| Rust             | rust-analyzer   | rust         | rustfmt           |
-| Go               | gopls (go.nvim) | go           | gofumpt (go.nvim) |
-| Elixir/Phoenix   | elixirls        | elixir, heex | mix               |
-| Zig              | zls             | zig          | zigfmt            |
-| SQL (PG/SQLite)  | sqls            | sql          | sql-formatter     |
-| Protobuf         | buf_ls          | proto        | buf               |
-| Terraform        | terraform-ls    | hcl          | terraform         |
-| Justfile         | -               | just         | -                 |
+## Layout
 
-## Dependencies (Plugins)
+| Path                                     | Contents                                                    |
+| ---------------------------------------- | ----------------------------------------------------------- |
+| `init.lua`                               | Options, leader keys, module load order                     |
+| `lua/core_*.lua`                         | Theme, LSP, autocmds, commands, health, plugin setup, scroll |
+| `lua/core_keymaps/*.lua`                 | Keymaps by topic (`general`, `scroll`, `folds`, `buffer`, `quit`, `tools`, `cmdline`, `explorer`, `picker`, `ai`, `undo`) |
+| `lua/plugin_*.lua`                       | One file per plugin group (editor, completion, treesitter, vcs, lsp tooling, markdown, AI) |
+| `lua/language_*.lua`                     | Per-language LSP/formatter setup (Rust, TypeScript, Go, Elixir, Zig, SQL, Terraform, Protobuf, Astro, Lit, Tailwind) |
+| `lua/mistral-codestral/`                 | Local fork of the Codestral client                          |
+| `lua/mason_pkg/`                         | Mason package picker                                        |
+| `lua/snacks/`                            | Picker layouts and the swpui wrapper                        |
+| `ghostty/`, `starship.toml`, `rio/`       | Terminal emulator and prompt configuration                  |
+| `KEYMAP.md`, `nvim-pack-lock.json`       | Keymap reference and plugin pin file                        |
 
-| Plugin                       | Description                                                   |
-| ---------------------------- | ------------------------------------------------------------- |
-| **snacks.nvim**              | All-in-one UI utilities (picker, explorer, etc.)              |
-| **noice.nvim**               | Cmdline UI replacement (floating popup)                       |
-| **nui.nvim**                 | UI component library for noice                                |
-| **blink.cmp**                | Code completion with snippet support                          |
-| **mistral-codestral (fork)** | AI autocompletion via Mistral Codestral (FIM, blink.cmp only) |
-| **lazydev.nvim**             | Neovim development                                            |
-| **colorful-menu.nvim**       | Colorful completion menus                                     |
-| **nvim-autopairs**           | Auto-close brackets and pairs                                 |
-| **todo-comments.nvim**       | Highlight TODO comments                                       |
-| **urlview.nvim**             | Open URLs from text files                                     |
-| **cloak.nvim**               | Blur lines for sensitive info                                 |
-| **conform.nvim**             | Async code formatting                                         |
-| **nvim-treesitter**          | Syntax highlighting                                           |
-| **trouble.nvim**             | Pretty diagnostics UI                                         |
-| **fff.nvim**                 | Ripgrep/fzf replacement for file & grep search                |
-| **ray-x/go.nvim**            | Go development toolkit (LSP, formatting, testing)             |
-| **miniharp.nvim**            | Quick file marks; snacks.picker UI; noice notifications       |
-| **lsp_signature.nvim**       | LSP signature help                                            |
-| **fidget.nvim**              | LSP progress indicator                                        |
-| **nvim-lspconfig**           | LSP configuration                                             |
-| **mason.nvim**               | LSP package manager                                           |
-| **mason-lspconfig**          | Mason LSP server config helper                                |
-| **mason-tool-installer**     | Automatic tool installation                                   |
-| **gitsigns.nvim**            | Git signs in gutter                                           |
-| **which-key.nvim**           | Keybinding helper                                             |
-| **lualine.nvim**             | Statusline                                                    |
-| **plenary.nvim**             | Lua utility library (dependency)                              |
-| **multicursor.nvim**         | VS Code-style multiple cursors (jake-stewart fork)            |
+Load order matters in one place: `core_scroll` is required before
+`snacks.nvim`, so its `WinScrolled` handler runs first and the fold/scroll
+correction happens before the scroll animation is set up.
 
-## Custom Commands
+## Behaviour notes
 
-| Command                            | Description                                                                                                       |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `:MasonPkg [category]`             | Browse and manage Mason packages via snacks.picker (e.g. `:MasonPkg LSP`, `:MasonPkg Formatter`, `:MasonPkg all`) |
-| `:MistralCodestralComplete`        | Request an inline Codestral completion (FIM) for the current cursor position                                      |
-| `:MistralCodestralToggle`          | Globally enable/disable Codestral completions                                                                     |
-| `:MistralCodestralAuth ...`        | Manage the API key (`status`, `set`, `clear`, `validate`)                                                         |
-| `:MistralCodestralVirtualComplete` | Manually trigger the ghost-text preview                                                                           |
-| `:MistralCodestralVirtualClear`    | Clear any active ghost-text preview                                                                               |
-| `:MistralCodestralHealth`          | Run the fork's :checkhealth-style report                                                                          |
-| `:CleanNvim`                       | Clear nvim cache and `nvim-pack-lock.json` for fresh plugin regeneration                                          |
-| `:Format [N]`                      | Format the current buffer (optionally to line N)                                                                  |
-| `:Update`                          | Update all plugins via `vim.pack.update()`                                                                        |
-| `:LspRestart`                      | Restart all attached LSP clients                                                                                  |
-| `:HealthCheck`                     | Run health check (Neovim version, required tools, LSP, pack-lock)                                                 |
-| `:ReloadConfig`                    | Reload Neovim config without restarting                                                                           |
+These are the deliberate choices that differ from a stock configuration.
 
-## AI Autocompletion (Mistral Codestral)
+- **Dialogs keep your mode.** `vim.ui.select` is backed by the snacks picker;
+  confirmations open with the list focused, so you stay in normal mode (`j`/`k`,
+  `<CR>`, `<Esc>`). Dialogs opened from insert mode keep the input focused.
+- **Folds are smart.** `<S-CR>` toggles the block around the cursor from any row,
+  not only from a fold header; on a top-level row it folds the nearest block and
+  leaves the cursor in place. `<M-S-CR>` toggles every fold. Folds come from the
+  treesitter foldexpr, which `init.lua` sets globally (Neovim only does it for
+  lua buffers).
+- **Gutter stays quiet.** Git hunks as `▎` bars, errors `󰅚`, warnings `󰀪`.
+  Info/hint diagnostics, markdown preview signs and the `~` end-of-buffer marker
+  are not drawn. `signcolumn = yes:1` keeps the column reserved so text never
+  shifts.
+- **Scrolling is native.** `scrolloff = 0`, so the cursor is never dragged by
+  view scrolling; `<S-Up>`/`<S-Down>` and `}`/`{` move half a page like
+  `<C-u>`/`<C-d>`. `snacks.scroll` animates the viewport at 45 ms per line.
+- **Markdown preview is foreground-first.** Rendered in normal/visual/command
+  modes only; insert mode shows the raw source with `conceallevel = 0`. Code
+  blocks keep a background band, headings have neither background nor sign,
+  inline code is soft purple `#9976cb` without a background, links are soft blue
+  `#498bc9` without an icon, and the sign column stays empty.
+- **No failed writes.** Format-on-save uses conform with flat fallback chains
+  (`stop_after_first`); `vim.b.disable_autoformat = true` skips a buffer (set for
+  `toml`).
+- **Commands that lie are gone.** `:Format`/`:FormatCode`/`<leader>fm` all use
+  conform, `:LspRestart` actually restarts clients, `:ReloadConfig` reloads all
+  config modules (not just `core_*`).
 
-A local fork of [jrollin/mistral-codestral.nvim](https://github.com/jrollin/mistral-codestral.nvim)
-lives under `lua/mistral-codestral/` and ships its own `plugin_mistral_codestral.lua`.
-It is optimized for this Neovim 0.12+ setup and uses **blink.cmp v1.6+** as the
-sole completion engine — the upstream `nvim-cmp` source has been removed.
+## Language support
 
-Key differences from upstream:
+LSP servers are configured in `lua/core_lsp.lua` and `lua/language_*.lua`,
+formatters in `lua/plugin_editor.lua` (conform). Servers marked *on demand* are
+enabled when the matching filetype opens.
 
-- **API key:** set `CODESTRAL_API_KEY` in your shell. `MISTRAL_API_KEY` is honored as a fallback, and you can also pass `api_key` in `setup()`.
-- **Deprecated APIs replaced:** `vim.loop` → `vim.uv`, `vim.fn.json_encode/decode` → `vim.json.encode/decode`, `nvim-treesitter.ts_utils` → `vim.treesitter.get_node`.
-- **blink.cmp source boilerplate:** proper `source.new(opts)` constructor and `get_completions(ctx, callback)` with cancel support.
-- **No nvim-cmp code paths** — the `cmp_source_enhanced.lua` file is dropped entirely; the `completion_engine` config key is gone.
-- **`virtual_text` ghost preview** kept (Windsurf-style) with default keymaps `M-l` / `C-Right` / `C-Down` / `M-]` / `M-[` / `C-c`.
+| Language              | LSP                              | Formatter            |
+| --------------------- | -------------------------------- | -------------------- |
+| Lua (this config)     | `lua_ls` + lazydev types         | `stylua`             |
+| TypeScript / JS / JSX | `ts_ls`, `oxlint` (`deno` when a `deno.json` exists) | `oxfmt` → `prettierd` → `prettier` |
+| Astro / Vue / Svelte / Lit | `ts_ls`, `oxlint`; `astro` on demand | `oxfmt` → `prettier` |
+| Tailwind CSS          | `tailwindcss`                    | —                    |
+| Rust                  | `rust-analyzer` (clippy on save), crates.nvim | `rustfmt` |
+| Go                    | `gopls` via go.nvim, `golangci-lint` | `goimports` on save (go.nvim) |
+| Elixir / Phoenix      | `elixirls`                       | `mix format`         |
+| Zig                   | `zls`                            | `zig fmt`            |
+| SQL                   | `sqls`                           | `sql-formatter`      |
+| Protobuf              | `buf_ls`                         | —                    |
+| Terraform / HCL       | `terraform_ls`                   | `terraform fmt`      |
+| Python                | `pylsp`                          | `black`              |
+| Shell                 | `bashls`                         | `shfmt`              |
+| HTML                  | `html`, `superhtml` (when installed) | —                |
+| CSS / JSON / Docker   | `cssls`, `jsonls`, `dockerls`    | —                    |
+| YAML / TOML / TeX     | `yamlls`, `taplo`, `texlab`      | —                    |
+| Markdown              | render-markdown preview          | —                    |
 
-Minimal setup (already wired in `plugin_mistral_codestral.lua`):
+Tree-sitter parsers: astro, bash, css, diff, eex, elixir, go, hcl, heex, html,
+javascript, jsdoc, json, json5, just, lua, luadoc, luap, markdown,
+markdown_inline, python, query, regex, rust, sql, svelte, toml, tsx, typescript,
+vim, vimdoc, xml, yaml, zig. They are installed with
+`require("nvim-treesitter").install()` and compiled with `tree-sitter-cli` from
+Mason.
+
+## Plugins
+
+| Plugin                       | Role                                                        |
+| ---------------------------- | ----------------------------------------------------------- |
+| **snacks.nvim**              | Explorer, picker, notifier, indent, terminal, lazygit, input, scope |
+| **fff**                      | File and grep search (Rust binary)                          |
+| **noice.nvim** + **nui.nvim**| Floating cmdline and message routing                        |
+| **blink.cmp** + **blink.lib**| Completion (`lua` fuzzy engine; capabilities for every LSP) |
+| **friendly-snippets**        | Snippet source for blink.cmp                                |
+| **lazydev.nvim**             | Neovim API types for `lua_ls`                               |
+| **colorful-menu.nvim**       | Completion menu highlighting                                |
+| **nvim-treesitter**          | Syntax highlighting, folds, indent                          |
+| **render-markdown.nvim**     | Inline markdown preview                                     |
+| **conform.nvim**             | Formatting (save and manual)                                |
+| **nvim-lspconfig**           | LSP configs used by `vim.lsp.config`                        |
+| **mason.nvim**, **mason-lspconfig**, **mason-tool-installer** | Tool installation |
+| **lsp_signature.nvim**, **fidget.nvim** | Signature help and LSP progress                 |
+| **trouble.nvim**             | Diagnostics list                                            |
+| **gitsigns.nvim**            | Gutter hunks and hunk actions                               |
+| **miniharp.nvim**            | File marks (picker UI supplied by snacks)                   |
+| **multicursor.nvim**         | Multiple cursors                                            |
+| **nvim-autopairs**           | Bracket and quote pairing                                   |
+| **todo-comments.nvim**, **urlview.nvim**, **cloak.nvim** | TODO highlights, URL list, secret masking |
+| **which-key.nvim**           | Keymap hints                                                |
+| **lualine.nvim**, **mini.icons**, **nvim-web-devicons** | Statusline and icons          |
+| **transparent.nvim**         | Transparent background groups                               |
+| **go.nvim**, **crates.nvim** | Go and Cargo tooling                                        |
+| **plenary.nvim**             | Lua utility library (dependency)                            |
+
+`mdkite.nvim` and `kitehost.nvim` are still pinned in `nvim-pack-lock.json` but
+nothing requires them; the markdown preview is render-markdown.
+
+Plugin management: `:Update` or `<leader>pu` runs `vim.pack.update()`; the lock
+file records the commit each plugin is pinned to.
+
+## Commands
+
+| Command                              | Purpose                                             |
+| ------------------------------------ | --------------------------------------------------- |
+| `:MasonPkg [category]`               | Mason picker with category cycling (`LSP`, `Formatter`, `Linter`, `DAP`, `Runtime`, `Compiler`, `All`) |
+| `:Format`, `:FormatCode`             | Format the buffer with conform                      |
+| `:LspInfo`, `:LspRestart`            | Show or restart LSP clients                         |
+| `:ConformInfo`                       | Which formatters apply to this buffer               |
+| `:Update`                            | Update plugins                                      |
+| `:ReloadConfig`                      | Reload config modules without restarting            |
+| `:CleanNvim`                         | Reset cache and lock file                           |
+| `:HealthCheck`                       | Version, tools, LSP, pack-lock                      |
+| `:checkhealth kickstart.nvim`        | Neovim version and required executables             |
+| `:KeyProbe`                          | Show the notation Neovim receives for the next key  |
+| `:MarkdownOpenLink`                  | Open the link under the cursor                      |
+| `:MistralCodestralAuth`              | Auth picker (subcommands `status`, `set`, `clear`, `validate`) |
+| `:MistralCodestralComplete`, `:MistralCodestralToggle` | Manual completion, on/off switch  |
+| `:MistralCodestralVirtualComplete`, `:MistralCodestralVirtualClear` | Ghost preview control |
+| `:MistralCodestralHealth`, `:MistralCodestralCommitMsg[!]` | Health report, commit message from the diff |
+
+## AI completion (Mistral Codestral)
+
+`lua/mistral-codestral/` is a local fork of
+[jrollin/mistral-codestral.nvim](https://github.com/jrollin/mistral-codestral.nvim)
+wired to blink.cmp only (no nvim-cmp code paths). Differences from upstream:
+
+- API key from `CODESTRAL_API_KEY`, then `MISTRAL_API_KEY`, then a system
+  keyring entry; `api_key` can also be passed to `setup()`.
+- Current Neovim APIs: `vim.uv` instead of `vim.loop`, `vim.json` instead of
+  `vim.fn.json_*`, `vim.treesitter.get_node` instead of `ts_utils`.
+- blink.cmp provider registered with `add_source_provider`, with cancel support.
+- Ghost-text preview with `<M-l>` / `<C-Right>` / `<C-Down>` / `<M-]>` / `<M-[>`
+  / `<C-c>`, plus `<leader>ie` to explain the selected completion.
 
 ```sh
 export CODESTRAL_API_KEY="your-key-here"
 ```
 
-````lua
--- Plugin already loaded by init.lua; override defaults here if needed:
-require("mistral-codestral").setup({
-  model = "codestral-latest",
-  max_tokens = 256,
-  max_items = 3,        -- one full + first-line variant
-  virtual_text = { enabled = true, idle_delay = 800, min_chars = 3 },
-```lua
--- Plugin already loaded by init.lua; override defaults here if needed:
-require("mistral-codestral").setup({
-  model = "codestral-latest",
-  max_tokens = 256,
-  max_items = 3,        -- one full + first-line variant
-  virtual_text = { enabled = true, idle_delay = 800, min_chars = 3 },
-})
-````
-
-### Keymaps (which-key `<leader>i`)
-
-| Key                                       | Action                                        |
-| ----------------------------------------- | --------------------------------------------- |
-| `<leader>ic`                              | Manual complete (`:MistralCodestralComplete`) |
-| `<leader>it`                              | Toggle AI completions on/off                  |
-| `<leader>iv`                              | Trigger ghost-text preview                    |
-| `<leader>ix`                              | Clear ghost-text preview                      |
-| `<leader>iA`                              | Auth manager (snacks picker)                  |
-| `<leader>ih`                              | Health check                                  |
-| `<leader>ig`                              | Generate commit message from `git diff`       |
-| `<C-g>` (in insert mode, blink menu open) | AI-explain the selected item                  |
-
-`<leader>i` was chosen because `<leader>m` is taken by miniharp file marks.
-
-### Commands
-
-| Command                                                              | Description                                                                                     |
-| -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `:MistralCodestralComplete`                                          | Request an inline FIM completion for the current cursor position                                |
-| `:MistralCodestralToggle`                                            | Globally enable/disable Codestral completions                                                   |
-| `:MistralCodestralAuth [sub]`                                        | Open the snacks picker (no arg) or run a subcommand (`status`, `set`, `clear`, `validate`)      |
-| `:MistralCodestralVirtualComplete` / `:MistralCodestralVirtualClear` | Manually trigger/clear the ghost-text preview                                                   |
-| `:MistralCodestralHealth`                                            | Run the fork's :checkhealth-style report                                                        |
-| `:MistralCodestralCommitMsg[!]`                                      | Generate a Conventional Commit message from staged (default) or working-tree (`!`) changes      |
-| `:MistralExplainCompletion`                                          | Ask Codestral to explain the currently selected blink.cmp item (opens floating markdown window) |
-
-### Integrations
-
-### Statusline
-
-A custom lualine component shows what Mistral Codestral is doing right now. The label uses plain words and a colored icon so it is readable at a glance:
-
-| State   | Display (icon + text)             | Color    | Meaning                                                   |
-| ------- | --------------------------------- | -------- | --------------------------------------------------------- |
-| idle    | `─ codestral-latest`              | dim gray | plugin loaded, no request in flight                       |
-| waiting | `◐ waiting 1.2s (function body)`  | orange   | API call in progress; `(...)` shows the inferred strategy |
-| ready   | `● ready` (or `● ready (2 of 3)`) | green    | ghost-text completion is showing                          |
-| error   | `✖ error: <message>`              | red      | last request failed                                       |
-
-The component is also clickable: clicking it runs `:MistralCodestralToggle` to enable/disable completions, and the hover tooltip shows the full status (e.g. `Mistral Codestral: 1 completion(s) available [strategy: normal]`).
-
-The status is driven by three functions on `mistral-codestral.virtual_text`:
-
-- `M.status()` — raw table (state, strategy, model, current, total, last_error, …)
-- `M.status_string()` — short single-token label (e.g. `◐ 1.2s`, `●`, `─`)
-- `M.status_label()` — rich `{ text, icon, color, tooltip }` for statuslines
-
-### Keymaps (which-key `<leader>i`)
-
-| Key                                       | Action                                        |
-| ----------------------------------------- | --------------------------------------------- |
-| `<leader>ic`                              | Manual complete (`:MistralCodestralComplete`) |
-| `<leader>it`                              | Toggle AI completions on/off                  |
-| `<leader>iv`                              | Trigger ghost-text preview                    |
-| `<leader>ix`                              | Clear ghost-text preview                      |
-| `<leader>iA`                              | Auth manager (snacks picker)                  |
-| `<leader>ih`                              | Health check                                  |
-| `<leader>ig`                              | Generate commit message from `git diff`       |
-| `<C-g>` (in insert mode, blink menu open) | AI-explain the selected item                  |
-
-`<leader>i` was chosen because `<leader>m` is taken by miniharp file marks.
-
-### Commands
-
-| Command                                                              | Description                                                                                     |
-| -------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `:MistralCodestralComplete`                                          | Request an inline FIM completion for the current cursor position                                |
-| `:MistralCodestralToggle`                                            | Globally enable/disable Codestral completions                                                   |
-| `:MistralCodestralAuth [sub]`                                        | Open the snacks picker (no arg) or run a subcommand (`status`, `set`, `clear`, `validate`)      |
-| `:MistralCodestralVirtualComplete` / `:MistralCodestralVirtualClear` | Manually trigger/clear the ghost-text preview                                                   |
-| `:MistralCodestralHealth`                                            | Run the fork's :checkhealth-style report                                                        |
-| `:MistralCodestralCommitMsg[!]`                                      | Generate a Conventional Commit message from staged (default) or working-tree (`!`) changes      |
-| `:MistralExplainCompletion`                                          | Ask Codestral to explain the currently selected blink.cmp item (opens floating markdown window) |
-
-### Integrations
-
-- **which-key:** `<leader>i` group in `plugin_whichkey.lua`
-- **lualine:** Status component in `lualine_y` showing AI state (`*` waiting, `1/1` completions) with orange/green color
-- **snacks:** Auth manager picker (`Status` / `Set` / `Clear` / `Validate`)
-- **blink.cmp:** Source provider registered via `add_source_provider`; the `<C-g>` keymap in insert mode triggers AI explain on the selected item
-- **noice:** All `vim.notify` calls go through the existing noice integration automatically
-
-## Features
-
-- **Custom file explorer** via `snacks.explorer` with hjkl navigation, Shift+Arrow scroll, file operations (c/p/m/d/D/y/Y/r/a), and Vim-style editor focus preservation when closing buffers
-- **MasonPkg picker** for managing LSP/formatter/linter packages with category filtering, preview, and batch install/uninstall
-- **Miniharp file marks** integrated with snacks.picker (no native floating window; noice notifications for all status messages)
-- **Native LSP and Tool installer** via mason-registry, mason-lspconfig, and mason-tool-installer
-- **Consistent UI** through noice.nvim, snacks.notifier, and snacks.picker — all status messages, dialogs, and pickers share the same look
-- **Telescope-style find files** via fff.nvim (Rust binary, ripgrep/fzf replacement) |
-- **LSP action toggles** (`<leader>li/ld/lf/ls/lI`) for inlay hints, diagnostics, format on save, smooth scroll, and client info |
-- **Multicursor** via `multicursor.nvim` — `mc` select word, `<leader>n` next match, `<leader><up>`/`<leader><down>` add cursor line, `<C-leftmouse>` click cursor, `I`/`A` block edit visual |
-- **Modular architecture** — each file under `lua/` has single responsibility (e.g. `core_keymaps/explorer.lua` only handles file explorer keymaps) |
-
-See [KEYMAP.md](./KEYMAP.md) for complete keybindings reference.
+The lualine status component shows the current state (`─ idle`,
+`◐ waiting 1.2s`, `● ready`, `✖ error`) and runs `:MistralCodestralToggle` when
+clicked. Three functions drive it: `status()`, `status_string()` and
+`status_label()` on `mistral-codestral.virtual_text`.
 
 ## License
 
@@ -298,5 +233,4 @@ See [LICENSE](./LICENSE) for details.
 <!-- link reference definition -->
 
 [kickstart-nvim]: https://github.com/nvim-lua/kickstart.nvim
-[learnxinyminutes]: https://learnxinyminutes.com/docs/lua
 [riipandi]: https://x.com/intent/follow?screen_name=riipandi

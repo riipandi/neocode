@@ -1,427 +1,329 @@
 # Keymaps
 
-## General
+Leader: `<Space>`. Every mapping below is global unless the section says
+otherwise (LSP, markdown link and explorer keys are buffer-local).
 
-| Action                | WhichKey | Shortcut          |
-| --------------------- | -------- | ----------------- |
-| Quit all              | `q`      | `<leader>q`       |
-| Quit all              | `qq`     | `<leader>qq`      |
-| Quit all              |          | `<C-q>` / `<A-q>` |
-| Close buffer or split |          | `<C-x>`           |
-| Close all buffers     |          | `<leader>bW`      |
-| Command palette       | `;`      | `<leader>;`       |
-| Command palette (all) | `:`      | `<leader>:`       |
-| Edit config           | `,`      | `<leader>,`       |
-
-> **Note:** `<C-x>` keeps the file explorer open and shows a blank buffer when the last editor buffer is closed, instead of letting the explorer expand to full width.
-
-## Dialogs
-
-Confirmation dialogs (quit, unsaved buffer, Mason actions) open through
-`vim.ui.select` with `focus = "list"`: the list is focused, so you stay in
-normal mode — `j`/`k` to move, `<CR>` to choose, `<Esc>` to cancel. Nothing is
-typed into the search field unless you press `/` (or `i`). Dialogs opened from
-insert mode keep the input focused instead, so typing continues to work.
-
-## Escape Key
-
-| Action                | Shortcut | Description                                            |
-| --------------------- | -------- | ------------------------------------------------------ |
-| Close floating window | `<Esc>`  | Closes lazygit, picker, etc. (normal mode only)        |
-| Clear search          | `<Esc>`  | Clears search highlights in a normal buffer            |
-
-`<Esc>` is **not** mapped in terminal mode, so terminal programs (fzf, htop,
-lazygit, ...) receive it. In a snacks terminal use `<Esc><Esc>` to leave.
-
-## Buffer
-
-| Action              | WhichKey | Shortcut     |
-| ------------------- | -------- | ------------ |
-| Buffer picker       | `bb`     | `<leader>bb` |
-| Delete buffer       | `bd`     | `<leader>bd` |
-| Close other buffers | `bo`     | `<leader>bo` |
-| Close all buffers   | `bW`     | `<leader>bW` |
-
-## Diagnostic
-
-| Action              | WhichKey | Shortcut     |
-| ------------------- | -------- | ------------ |
-| Open float          | `d`      | `<leader>d`  |
-| Set loclist         | `dl`     | `<leader>dl` |
-| Next diagnostic     | `nd`     | `<leader>nd` |
-| Previous diagnostic | `pd`     | `<leader>pd` |
-
-`<leader>d` is the diagnostic group; delete-without-yank is `<leader>D` (see
-Editing).
-
-## File
-
-| Action                 | WhichKey | Shortcut          |
-| ---------------------- | -------- | ----------------- |
-| Find files             |          | `<leader><space>` |
-| Find files             |          | `<C-p>`           |
-| File explorer (toggle) | `e`      | `<leader>e`       |
-| Live grep              | `fw`     | `<leader>fw`      |
-| Fuzzy grep             | `fz`     | `<leader>fz`      |
-| Grep cursor word       | `ff`     | `<leader>ff`      |
-| Format file            | `fm`     | `<leader>fm`      |
-
-### File Explorer (`<leader>e` / `<A-e>`)
-
-| Key             | Action         | Description                                                                                                 |
-| --------------- | -------------- | ----------------------------------------------------------------------------------------------------------- |
-| `h` / `<Left>`  | Focus parent   | Visual nav (no CWD change). File: collapse parent. Folder: collapse (if expanded) and move cursor to parent |
-| `l` / `<Right>` | Toggle folder  | Expand if collapsed, collapse if expanded                                                                   |
-| `j` / `<Down>`  | Move down      | Navigate list down                                                                                          |
-| `k` / `<Up>`    | Move up        | Navigate list up                                                                                            |
-| `<C-d>` / `]`   | Jump down 2    | Small jump (like section jump)                                                                              |
-| `<C-u>` / `[`   | Jump up 2      | Small jump                                                                                                  |
-| `}`             | Jump down 4    | Medium jump (like paragraph jump)                                                                           |
-| `{`             | Jump up 4      | Medium jump                                                                                                 |
-| `c`             | Copy           | Copy file(s) to target directory                                                                            |
-| `p`             | Paste          | Paste files from clipboard                                                                                  |
-| `m`             | Move           | Move file(s) with confirmation                                                                              |
-| `d`             | Delete         | Trash file(s) with confirmation                                                                             |
-| `D`             | Duplicate      | Duplicate file or directory with new name                                                                   |
-| `y`             | Yank content   | Copy file text content to clipboard                                                                         |
-| `Y`             | Yank path      | Copy full file path(s) to clipboard                                                                         |
-| `r`             | Rename         | Rename file                                                                                                 |
-| `a`             | Add file       | Create new file                                                                                             |
-| `.`             | Focus          | Focus current file/dir in view                                                                              |
-| `I`             | Toggle ignored | Show/hide gitignored files                                                                                  |
-| `H`             | Toggle hidden  | Show/hide dotfiles                                                                                          |
-| `/`             | Search field   | Focus the search input (`i` also works)                                                                     |
-
-Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open or focuses if cursor is elsewhere. `q` closes the explorer.
-
-Search field: `/` jumps to it from either window (`i` works too). `<Esc>` inside
-the search only unfocuses it — the query is cleared and focus returns to the
-list; the explorer stays open. `<Esc>` in the list closes the explorer once the
-query is empty.
-
-## Git
-
-| Action        | WhichKey | Shortcut     |
-| ------------- | -------- | ------------ |
-| LazyGit       | `gg`     | `<leader>gg` |
-| Push          | `gp`     | `<leader>gp` |
-| Status        | `gs`     | `<leader>gs` |
-| Next hunk     |          | `]c`         |
-| Previous hunk |          | `[c`         |
-
-### Git Hunk
-
-| Action          | WhichKey | Shortcut     |
-| --------------- | -------- | ------------ |
-| Stage hunk      | `hs`     | `<leader>hs` |
-| Reset hunk      | `hr`     | `<leader>hr` |
-| Stage buffer    | `hS`     | `<leader>hS` |
-| Reset buffer    | `hR`     | `<leader>hR` |
-| Unstage/reset   | `hu`     | `<leader>hu` |
-| Preview hunk    | `hp`     | `<leader>hp` |
-| Blame line      | `hb`     | `<leader>hb` |
-| Diff (index)    | `hd`     | `<leader>hd` |
-| Diff (commit)   | `hD`     | `<leader>hD` |
-| Toggle blame    | `tb`     | `<leader>tb` |
-| Preview deleted | `tD`     | `<leader>tD` |
-
-## Go
-
-| Action               | Shortcut     |
-| -------------------- | ------------ |
-| Run gotestsum (file) | `<leader>gt` |
-| Run gotestsum (all)  | `<leader>gT` |
-
-## LSP
-
-| Action                  | WhichKey | Shortcut     |
-| ----------------------- | -------- | ------------ |
-| Code action             | `ca`     | `<leader>ca` |
-| Rename                  | `rn`     | `<leader>rn` |
-| Definition              |          | `gD`         |
-| Declaration             |          | `gs`         |
-| References              |          | `gr`         |
-| References (picker)     |          | `grr`        |
-| Implementation          |          | `gi`         |
-| Implementation (picker) |          | `gri`        |
-| Definition (picker)     |          | `grd`        |
-| Declaration             |          | `grD`        |
-| Hover                   |          | `K`          |
-| Signature help          |          | `<C-k>`      |
-| Document symbols        |          | `gO`         |
-| Workspace symbols       |          | `gW`         |
-| Type definition         |          | `grt`        |
-| Format file             | `fm`     | `<leader>fm` |
-
-## Marks
-
-| Action           | WhichKey | Shortcut     |
-| ---------------- | -------- | ------------ |
-| Toggle file mark | `ma`     | `<leader>ma` |
-| Clear marks      | `mc`     | `<leader>mc` |
-| List marks       |          | `<C-l>`      |
-| Next mark        |          | `<C-n>`      |
-| Previous mark    | `mp`     | `<leader>mp` |
-
-Inside the marks picker (`<C-l>`):
-
-- `Enter` — jump to selected file
-- `dd` — remove mark
-- `Tab` — select mark for swap, then Tab on another mark to swap order
-
-## Plugins
-
-| Action                 | Shortcut     |
-| ---------------------- | ------------ |
-| Update plugins         | `<leader>pu` |
-| Clear cache & restart  | `:CleanNvim` |
-| Mason: manage packages | `<leader>tm` |
-| Mason: TUI (tree view) | `<leader>tM` |
-
-## Search
-
-| Action                 | WhichKey | Shortcut     |
-| ---------------------- | -------- | ------------ |
-| swpui (search/replace) | `sr`     | `<leader>sr` |
-| Live grep              | `fw`     | `<leader>fw` |
-| Fuzzy grep             | `fz`     | `<leader>fz` |
-| Grep cursor word       | `ff`     | `<leader>ff` |
-| Clear search           | `sc`     | `<leader>sc` |
-| Skip match (multicursor) | `ss`   | `<leader>ss` |
-| Next result            |          | `n`          |
-| Previous result        |          | `N`          |
-
-## Tools
-
-| Action           | WhichKey | Shortcut     |
-| ---------------- | -------- | ------------ |
-| Terminal         | `tt`     | `<leader>tt` |
-| Terminal (cwd)   | `tT`     | `<leader>tT` |
-| LazyGit          | `gg`     | `<leader>gg` |
-| Resource Monitor | `tr`     | `<leader>tr` |
-
-### Resource Monitor (`<leader>tr`)
-
-Uses the first available of `mactop`, `btop`, `htop`; warns when none exist.
-
-Requires installation:
-
-- macOS: `brew install mactop` (Apple Silicon)
-- Linux: `brew install btop` (cross-platform)
-
-### Mason (`:MasonPkg` / `<leader>tm`)
-
-| Action                   | Shortcut / Command              | Description                                                                                            |
-| ------------------------ | ------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| Mason: manage packages   | `<leader>tm` / `:MasonPkg`      | Browse & manage LSP/formatter/linter/DAP/runtime/compiler packages                                     |
-| Mason: TUI (tree view)   | `<leader>tM`                    | Native Mason TUI with expand/collapse navigation                                                       |
-| Mason: package category  | `:MasonPkg LSP` (etc.)          | Open picker filtered to a specific category (LSP, Formatter, Linter, DAP, Runtime, Compiler, or `all`) |
-| Mason: install package   | `i` (in picker)                 | Install the selected package(s)                                                                        |
-| Mason: uninstall package | `x` (in picker)                 | Uninstall the selected package(s)                                                                      |
-| Mason: cycle category    | `<Tab>` / `<S-Tab>` (in picker) | Cycle through package categories                                                                       |
-
-## LSP Toggles (`<leader>l`)
-
-| Action                | Shortcut     | Description                                |
-| --------------------- | ------------ | ------------------------------------------ |
-| Toggle inlay hints    | `<leader>li` | Show/hide LSP inlay hints                  |
-| Toggle diagnostics    | `<leader>ld` | Enable/disable diagnostics display         |
-| Toggle format on save | `<leader>lf` | Enable/disable auto-format on save         |
-| Toggle smooth scroll  | `<leader>ls` | Enable/disable smooth scroll animation     |
-| LSP client info       | `<leader>lI` | Show attached LSP clients and their config |
-
-## User Commands
-
-| Command         | Description                                               |
-| --------------- | --------------------------------------------------------- |
-| `:Format`       | Format the current buffer with conform.nvim (range ignored) |
-| `:FormatCode`   | Alias of `:Format` (same conform pipeline)                   |
-| `:Update`       | Update all plugins (alias for `vim.pack.update()`)        |
-| `:LspRestart`   | Restart all attached LSP clients                          |
-| `:HealthCheck`  | Run health check (Neovim version, tools, LSP, pack-lock)  |
-| `:ReloadConfig` | Reload Neovim config without restarting                   |
-
-## Editing
-
-| Action              | WhichKey | Shortcut    |
-| ------------------- | -------- | ----------- |
-| Delete without yank | `D`      | `<leader>D` |
-| Join lines          |          | `J`         |
-| Indent left         |          | `<`         |
-| Indent right        |          | `>`         |
-| Move line down      |          | `<A-j>`     |
-| Move line up        |          | `<A-k>`     |
-| Undo (with toast)   |          | `u`         |
-| Redo (with toast)   |          | `<C-r>`     |
-
-## Multicursor
-
-Trigger eksplisit — tidak aktif di normal mode sampai dipanggil.
-
-| Action           | Key              | Description                                             |
-| ---------------- | ---------------- | ------------------------------------------------------- |
-| Select word      | `mc`             | Select word under cursor, repeat to add next occurrence |
-| Next match       | `<leader>n`      | Add cursor to next match of word/selection              |
-| Prev match       | `<leader>N`      | Add cursor to previous match                            |
-| Skip match       | `<leader>ss`     | Skip next match without adding cursor                   |
-| Skip prev        | `<leader>M`      | Skip previous match                                     |
-| Add cursor above | `<leader><up>`   | Add cursor on line above                                |
-| Add cursor below | `<leader><down>` | Add cursor on line below                                |
-| Click cursor     | `<C-leftmouse>`  | Add cursor at mouse click position                      |
-| All matches      | `<leader>A`      | Add cursor to every match of word/selection in buffer   |
-| Align cursors    | `<leader>a`      | Align all cursor columns                                |
-| Restore          | `<leader>gv`     | Restore last cursor set                                 |
-
-**Keymap layer** (hanya aktif saat multi-cursor):
-
-| Action          | Key         |
-| --------------- | ----------- |
-| Previous cursor | `<left>`    |
-| Next cursor     | `<right>`   |
-| Delete cursor   | `<leader>x` |
-| Clear cursors   | `<esc>`     |
-
-## Window
-
-`<C-S-...>` and `<C-A-...>` combinations are not transmitted by most
-terminals, so window actions use the `<leader>w` group.
-
-| Action           | WhichKey | Shortcut     |
-| ---------------- | -------- | ------------ |
-| Split vertical   | `wv`     | `<leader>wv` |
-| Split vertical   |          | `<C-\>`     |
-| Split horizontal | `ws`     | `<leader>ws` |
-| Previous window  | `ww`     | `<leader>ww` |
-| Close window     | `wq`     | `<leader>wq` |
-| Equalize splits  | `w=`     | `<leader>w=` |
-| Increase width   | `w+`     | `<leader>w+` |
-| Decrease width   | `w-`     | `<leader>w-` |
-| Increase height  | `w>`     | `<leader>w>` |
-| Decrease height  | `w<`     | `<leader>w<` |
+Neovim builtins stay available: `zM`/`zR` (close/open all folds), `za`, `gx`
+(open path or URL), `]`/`[` prefixes (diagnostics, quickfix, buffers), `gr*`
+(`grn`, `gra`, `grr`, `gri`, `grt`).
 
 ## Scrolling
 
-Native Neovim behaviour, with one exception for `<S-Up>`/`<S-Down>`:
+| Action        | Keys                                              |
+| ------------- | ------------------------------------------------- |
+| One line      | `<C-e>` / `<C-y>`                                 |
+| Half page     | `<C-d>` / `<C-u>`, `<S-Down>` / `<S-Up>`, `}` / `{` |
+| Page down     | `<C-f>`                                           |
+| Mouse wheel   | `<ScrollWheelUp>` / `<ScrollWheelDown>`           |
 
-| Action          | Shortcut                                  |
-| --------------- | ----------------------------------------- |
-| One line        | `<C-e>` / `<C-y>`                         |
-| Half page       | `<C-d>` / `<C-u>`, `<S-Down>` / `<S-Up>`, `}` / `{` |
-| Page            | `<C-f>` / `<C-b>`                         |
-| Mouse wheel     | `<ScrollWheelUp/Down>`                    |
+`<S-Down>`/`<S-Up>` and `}`/`{` run the same builtin as `<C-d>`/`<C-u>` so a
+half page means one thing everywhere (`lua/core_keymaps/scroll.lua`, normal mode
+only). Paragraph motion is still available in operator-pending and visual mode
+(`d}`, `v{`).
 
-`<S-Up>`/`<S-Down>` and `}`/`{` use the same builtin as `<C-u>`/`<C-d>`, so a
-half page always means the same thing (normal mode only — insert mode,
-visual-mode selection and operator-pending motions like `d}`/`v{` keep the
-native behaviour).
+`<C-b>` opens the buffer list here, so it is not page up. Scrolling is native:
+the viewport can pass the last line, and `scrolloff = 0` means the cursor is
+never dragged by view scrolling.
 
-The viewport never travels past the last buffer line (`lua/core_scroll.lua`,
-loaded before snacks.nvim so it sees scroll events first):
-
-- the topline is corrected before snacks.scroll animates, so nothing snaps back
-  afterwards
-- only the clamped scroll skips the animation; normal scrolling stays smooth
-- `scrolloff = 0`, so the cursor is never dragged along by view scrolling and no
-  empty space is reserved below the last line
-
-`<C-b>` is remapped to the buffer picker in this config, so page up is
-`<C-u>` ×2 or `<C-y>`.
-
-Smooth scrolling comes from `snacks.scroll` (`lua/core_plugins.lua`):
-45 ms per scrolled line, 240 ms cap, 16 ms/line once a key is held for 130 ms.
-Set `vim.g.snacks_scroll = false` to disable it for the session.
-
-## Markdown
-
-| Action               | Shortcut     |
-| -------------------- | ------------ |
-| Toggle inline render | `<leader>mt` |
-| Open link under cursor | `<C-CR>` or `<leader>ml` (`:MarkdownOpenLink`) |
-
-Link opening reads the URL straight from the buffer, so it works with the
-renderer and conceal active: `[label](https://url "title")`, `<https://url>`
-autolinks and bare URLs are all recognised (`:MarkdownOpenLink` does the same).
-Ctrl+Enter needs a terminal that forwards it as its own key — Ghostty/kitty/
-wezterm do, and Neovim enables the kitty keyboard protocol automatically;
-`<leader>ml` always works.
-
-The inline preview is rendered in normal, visual, command and terminal modes —
-**not** in insert mode. While typing you get the raw markdown (`- item`,
-`` `code` ``, `[text](url)`, ``` fences), and `conceallevel` drops to 0 outside
-the rendered modes so nothing is concealed.
-
-The preview keeps the sign column empty: `heading.sign = false` and
-`code.sign = false` remove the heading glyph and the code-block language glyph
-(bullets, checkbox icons, table borders and the code background are still
-rendered as virtual text, not signs).
-
-Headings carry no background band at any level: the plugin maps
-`backgrounds[level]` to `RenderMarkdownH1Bg..H6Bg`, which link to `DiffText` /
-`Visual` / `CursorColumn` in this theme, so H1, H5 and H6 used to be the only
-ones with a background. `heading.backgrounds = {}` in `lua/plugin_markdown.lua`
-disables it for all levels; the heading colours come from treesitter
-(`@markup.heading.1..6`).
-
-Links carry no icon prefix: the renderer's fallback glyph (󰌹) and its
-per-site icons (`web` → 󰖟 for http, `github` → 󰊤, …) are disabled
-(`link.enabled = false`), because documents that already draw their own glyph
-next to the label ended up with two icons. Links stay recognisable from the soft
-blue colour.
-
-Inline code is rendered foreground-only (`RenderMarkdownCodeInline` carries no
-background) and uses the theme `@markup.raw` colour — soft purple `#9976cb` —
-while links use `@markup.link`, a soft blue `#498bc9`, so the two never look
-alike even with the backticks concealed. Both are desaturated towards the
-background (Soft* colours in `core_theme.lua`) and still sit at ~4.8:1 contrast.
-Code blocks keep their usual background band.
+Smooth scrolling comes from `snacks.scroll` (`lua/core_plugins.lua`): 45 ms per
+scrolled line, 240 ms cap, 16 ms/line once a key is held for 130 ms.
+`vim.g.snacks_scroll = false` disables it for the session; `<leader>ls` toggles
+the unrelated `smoothscroll` option.
 
 ## Folds
 
-`foldmethod=expr` with the treesitter foldexpr, set globally in `init.lua`
-(Neovim's runtime only does this for lua buffers, which is why folding used to
-do nothing in e.g. TypeScript and the toggle answered "Nothing to fold here").
-A fold is a syntax block: function, object literal, markdown section, …
+`foldmethod=expr` with the treesitter foldexpr, set globally in `init.lua`. A
+fold is a syntax block: function, object literal, markdown section.
 
-| Action                    | Shortcut  |
-| ------------------------- | --------- |
-| Toggle fold around cursor | `<S-CR>` or `<M-CR>` |
-| Toggle all folds          | `<M-S-CR>` |
-| Open all / close all      | `zR` / `zM` |
-| Same, keyboard-independent | `za`     |
+| Action                     | Keys          |
+| -------------------------- | ------------- |
+| Toggle fold around cursor  | `<S-CR>`      |
+| Same, when the terminal eats Shift+Enter | `<M-CR>` |
+| Toggle every fold          | `<M-S-CR>`    |
+| Close all / open all       | `zM` / `zR`   |
 
-`<S-CR>` is a smart toggle (`lua/core_keymaps/folds.lua`), because plain `za`
-aborts with E490 on rows that are not foldable (top-level statements):
+`<S-CR>` and `<M-CR>` are a smart toggle (`lua/core_keymaps/folds.lua`) because
+plain `za` aborts with E490 on rows that hold no fold:
 
 1. cursor inside a closed fold → open it
 2. cursor on a foldable row → close the innermost fold around it
-3. cursor on a top-level row → fold the nearest block below (or above), and the
-   cursor stays where it was
-4. nothing foldable in the buffer → an info message instead of an error
+3. cursor on a top-level row → fold the nearest block below (else above), cursor
+   stays where it was
+4. nothing foldable → an info message instead of an error
 
-`<M-S-CR>` (Option+Shift+Enter) folds or unfolds every block: it closes all when
-the window `foldlevel` is open, and opens all when anything is closed (the same
-as `zM` / `zR`, which stay available). Ctrl+Shift+Enter is left alone — the
-terminal uses it.
+`<M-S-CR>` closes all folds when the window `foldlevel` is open and opens all
+when anything is closed. Ctrl+Shift+Enter is avoided; the terminal uses it.
 
-`<M-CR>` (Option+Enter) does the same as `<S-CR>` for terminals that swallow
-Shift+Enter. To find out what yours sends, run `:KeyProbe` and press the key:
-it reports e.g. `<S-CR>`, `<M-CR>` or plain `<CR>`.
+Shift+Enter, Option+Enter and Option+Shift+Enter only arrive as distinct keys
+when the terminal forwards them (kitty keyboard protocol — Ghostty, kitty,
+wezterm). Run `:KeyProbe` and press the key to see what Neovim receives.
 
-`<S-CR>` needs a terminal that forwards Shift+Enter as a distinct key —
-Ghostty/kitty/wezterm do, and Neovim enables the kitty keyboard protocol
-automatically. On terminals that cannot, `za` is equivalent (and Enter itself is
-never affected, because a plain `<CR>` does not match `<S-CR>`).
+## Buffers
+
+| Action              | Keys          |
+| ------------------- | ------------- |
+| Close buffer (smart, asks about unsaved changes) | `<C-x>` |
+| Buffer picker       | `<C-b>`, `<leader>bb` |
+| Delete buffer       | `<leader>bd`  |
+| Close other buffers | `<leader>bo`  |
+| Close all buffers   | `<leader>bW`  |
+
+## Windows
+
+| Action            | Keys               |
+| ----------------- | ------------------ |
+| Split vertical    | `<C-\>`, `<leader>wv` |
+| Split horizontal  | `<leader>ws`       |
+| Previous window   | `<leader>ww`       |
+| Close window      | `<leader>wq`       |
+| Equalize splits   | `<leader>w=`       |
+| Resize width      | `<leader>w+` / `<leader>w-` |
+| Resize height     | `<leader>w>` / `<leader>w<` |
+
+`<C-S-...>` and `<C-A-...>` combinations are not transmitted by most terminals,
+which is why window actions live in the `<leader>w` group.
+
+## Search
+
+| Action                       | Keys                          |
+| ---------------------------- | ----------------------------- |
+| Find files                   | `<C-p>`, `<leader><Space>`    |
+| Live grep                    | `<leader>fw`                  |
+| Fuzzy grep                   | `<leader>fz`                  |
+| Grep word under cursor       | `<leader>ff`                  |
+| Search & replace (swpui)     | `<leader>sr`                  |
+| Clear search highlights      | `<leader>sc`                  |
+| Next / previous match        | `n` / `N` (centered)          |
+
+Files and grep use fff.nvim; swpui runs in a floating terminal (`swp`).
+`:search` runs natively, so `/pat/e` offsets work and a miss shows the E486
+message through noice.
+
+## Editing
+
+| Action                    | Keys                     |
+| ------------------------- | ------------------------ |
+| Delete without yanking    | `<leader>D` (n, x)       |
+| Join lines, keep cursor   | `J`                      |
+| Move line / selection     | `<A-j>` / `<A-k>`        |
+| Indent and reselect       | `<` (visual)             |
+| Undo / redo with toast    | `u` / `<C-r>`            |
+| Copy file path            | `<leader>pa`             |
+| Change cwd to file's dir  | `<leader>cd`             |
+
+`<leader>d` is not used for text: it is the LSP diagnostic float (buffer-local,
+see LSP).
+
+## Command palette
+
+| Action                    | Keys        |
+| ------------------------- | ----------- |
+| Insert a command (snacks input) | `<leader>;` |
+| Search all commands       | `<leader>:` |
+| Same, terminals that forward Shift | `<C-S-p>` |
+| Go to line or `line:col`  | `<C-g>`     |
+
+## Tools
+
+| Action                     | Keys           |
+| -------------------------- | -------------- |
+| Terminal (toggle)          | `<leader>tt`   |
+| Terminal in cwd            | `<leader>tT`   |
+| Resource monitor           | `<leader>tr`   |
+| Mason package picker       | `<leader>tm`   |
+| Mason TUI                  | `<leader>tM`   |
+| Scratch buffer             | `<leader>.`    |
+| Select scratch buffer      | `<leader>S`    |
+| Update plugins             | `<leader>pu`   |
+| Edit this config           | `<leader>,`    |
+
+`<leader>tr` runs the first available of `mactop`, `btop`, `htop` and warns when
+none is installed.
+
+## Quit and dialogs
+
+| Action        | Keys                        |
+| ------------- | --------------------------- |
+| Quit all      | `<leader>q`, `<leader>qq`, `<C-q>`, `<A-q>` |
+| Cancel a dialog | `<Esc>`                   |
+
+Dialogs (quit, unsaved buffer, Mason actions) open through `vim.ui.select` with
+the list focused, so you stay in normal mode: `j`/`k` to move, `<CR>` to choose,
+`<Esc>` to cancel, `/` to type in the search field. A dialog opened from insert
+mode keeps the input focused instead.
+
+## File explorer (`<leader>e`)
+
+`<leader>e` toggles; `<A-e>` closes it when open or focuses it when the cursor is
+elsewhere.
+
+| Key            | Action                                                        |
+| -------------- | ------------------------------------------------------------- |
+| `h` / `<Left>` | File: collapse parent and jump to it. Folder: collapse or jump to parent |
+| `l` / `<Right>`| Expand / collapse the folder                                  |
+| `j` / `k`      | Move down / up                                                |
+| `<C-d>` / `]`  | Move two rows down                                            |
+| `<C-u>` / `[`  | Move two rows up                                              |
+| `}` / `{`      | Move four rows down / up                                      |
+| `c` / `p` / `m`/ `d` / `D` | Copy, paste, move, delete, duplicate               |
+| `y` / `Y`      | Yank file content / full path                                 |
+| `r` / `a`      | Rename / add file                                             |
+| `.`            | Focus the current file in the view                            |
+| `I` / `H`      | Toggle ignored / hidden files                                 |
+| `/`            | Focus the search field                                        |
+| `q`            | Close the explorer                                            |
+| `<Esc>`        | Search field: clear the query and return to the list (never closes). List: close when the query is empty |
+
+## Pickers
+
+Snacks picker windows share these keys:
+
+| Key          | Action                                    |
+| ------------ | ----------------------------------------- |
+| `<Esc>`      | Close the picker                          |
+| `<C-q>` / `<A-q>` | Close the picker, then ask to quit   |
+| `e`          | Focus the editor window                   |
+| `<C-d>`/`<C-u>` | Scroll the list (explorer remaps these to row jumps) |
+
+## Git
+
+| Action              | Keys                          |
+| ------------------- | ----------------------------- |
+| LazyGit             | `<leader>gg`                  |
+| Push                | `<leader>gp` (terminal `git push`) |
+| Status picker       | `<leader>gs`                  |
+| Next / previous hunk| `]c` / `[c` (buffer-local)    |
+| Stage / reset hunk  | `<leader>hs` / `<leader>hr`   |
+| Stage buffer        | `<leader>hS`                  |
+| Reset buffer        | `<leader>hR`                  |
+| Unstage/reset hunk  | `<leader>hu`                  |
+| Preview hunk        | `<leader>hp`                  |
+| Blame line          | `<leader>hb`                  |
+| Diff against index  | `<leader>hd`                  |
+| Diff against HEAD   | `<leader>hD`                  |
+| Toggle line blame   | `<leader>tb`                  |
+| Preview deleted lines | `<leader>tD`                |
+| gotestsum (file / all) | `<leader>gt` / `<leader>gT` |
+
+Hunk keys are buffer-local and only exist when gitsigns attaches.
+
+## LSP (buffer-local, set on attach)
+
+| Action                     | Keys            |
+| -------------------------- | --------------- |
+| Definition / declaration   | `gD` / `gs`     |
+| References / implementation| `gr` / `gi`     |
+| Definition picker          | `grd`           |
+| References picker          | `grr`           |
+| Implementation picker      | `gri`           |
+| Declaration                | `grD`           |
+| Rename                     | `<leader>rn`, `grn` |
+| Code action                | `<leader>ca`, `gra` (n, x) |
+| Hover / signature help     | `K` / `<C-k>`   |
+| Document / workspace symbols | `gO` / `gW`   |
+| Type definition picker     | `grt`           |
+| Inlay hints toggle         | `<leader>th`    |
+| Toggle inlay hints         | `<leader>li` (global; `<leader>th` above is buffer-local) |
+| Diagnostics float          | `<leader>d`     |
+| Next / previous diagnostic | `<leader>nd` / `<leader>pd` |
+| Diagnostics to loclist     | `<leader>dl`    |
+| Toggle diagnostics         | `<leader>ld`    |
+| Toggle format on save      | `<leader>lf`    |
+| LSP client info            | `<leader>lI`    |
+
+`<leader>lf` sets `vim.g.auto_format`; actual format-on-save honours
+`vim.b.disable_autoformat` (conform). See `:LspInfo`, `:LspRestart`,
+`:ConformInfo`.
+
+## Marks (miniharp)
+
+| Action              | Keys        |
+| ------------------- | ----------- |
+| Toggle mark         | `<leader>ma` |
+| Clear marks         | `<leader>mc` |
+| Next / previous mark| `<C-n>` / `<leader>mp` |
+| List marks          | `<C-l>`     |
+
+Inside the marks picker: `<CR>` jumps, `dd` removes, `<Tab>` picks the first mark
+of a swap and `<Tab>` on another completes it.
+
+## AI (Mistral Codestral)
+
+| Action                        | Keys          |
+| ----------------------------- | ------------- |
+| Manual completion             | `<leader>ic`  |
+| Toggle completions            | `<leader>it`  |
+| Ghost preview on / off        | `<leader>iv` / `<leader>ix` |
+| Auth manager                  | `<leader>iA`  |
+| Health report                 | `<leader>ih`  |
+| Commit message from `git diff`| `<leader>ig`  |
+| Explain selected completion   | `<leader>ie` (insert and normal) |
+
+Ghost text controls in insert mode: `<M-l>` accept, `<C-Right>` accept word,
+`<C-Down>` accept line, `<M-]>` / `<M-[>` cycle, `<C-c>` clear (the key itself
+still works as usual).
+
+Set `CODESTRAL_API_KEY` in the environment; `MISTRAL_API_KEY` is the fallback.
+
+## Markdown
+
+| Action               | Keys                        |
+| -------------------- | --------------------------- |
+| Toggle inline render | `<leader>mt`                |
+| Open link under cursor | `<C-CR>` (buffer-local) or `<leader>ml` |
+| Same, from anywhere  | `:MarkdownOpenLink`         |
+
+The preview only renders outside insert mode. Code blocks keep their background
+and border; headings have no background and no sign; inline code is soft purple
+`#9976cb` with no background, links are soft blue `#498bc9` with no icon prefix;
+bullets are `◉ ○ ◆ ◇`. Links are read from the buffer, so conceal and the
+renderer do not matter.
 
 ## Gutter
 
-Kept minimal: git hunks (`▎` bars, colour = add/change/delete), errors (`󰅚`) and
-warnings (`󰀪`). Info/hint diagnostics, markdown preview signs and the `~` end-of-
-buffer marker do not write to it (`fillchars eob` is a space, `signcolumn` stays
-reserved so text never shifts).
+Git hunks (`▎` bars, colour = add/change/delete), errors (`󰅚`) and warnings
+(`󰀪`). Info/hint diagnostics, markdown preview signs and the `~` end-of-buffer
+marker do not write to it. `signcolumn` stays reserved so text never shifts.
 
-## Insert Mode
+## Multicursor
 
-| Action      | Shortcut |
-| ----------- | -------- |
-| Delete word | `<C-w>`  |
-| Delete line | `<C-u>`  |
+| Action               | Keys                            |
+| -------------------- | ------------------------------- |
+| Select word          | `mc` (repeat for the next match)|
+| Add cursor           | `<leader>n` / `<leader>N`       |
+| Skip match           | `<leader>ss` / `<leader>M`      |
+| Cursor above / below | `<leader><Up>` / `<leader><Down>`(n, x) |
+| All matches          | `<leader>A`                     |
+| Align cursors        | `<leader>a`                     |
+| Restore cursor set   | `<leader>gv`                    |
+| Add cursor with mouse| `<C-LeftMouse>` (and drag/release) |
+
+While multiple cursors exist: `<Left>`/`<Right>` move between cursors,
+`<leader>x` deletes the main cursor, `<Esc>` enables or clears them.
+
+## Insert mode
+
+| Keys                | Action                                            |
+| ------------------- | ------------------------------------------------- |
+| `<C-S>`             | Signature help                                    |
+| `<Tab>` / `<S-Tab>` | Jump through snippet placeholders when one is active |
+| `<CR>`              | Accept completion, otherwise new line (autopairs) |
+
+Completion is blink.cmp; `completeopt=menuone,noinsert,noselect,preview` and the
+menu does not preselect an entry.
+
+## User commands
+
+| Command               | Purpose                                             |
+| --------------------- | --------------------------------------------------- |
+| `:Format`             | Format the buffer with conform                      |
+| `:FormatCode`         | Same pipeline (kept for muscle memory)              |
+| `:Update`             | `vim.pack.update()`                                 |
+| `:LspRestart`         | Restart every attached client                       |
+| `:LspInfo`            | List clients attached to the buffer                 |
+| `:ReloadConfig`       | Drop config modules and re-source `init.lua`        |
+| `:CleanNvim`          | Delete `nvim-pack-lock.json` and the cache dir      |
+| `:HealthCheck`        | Neovim version, tools, LSP, pack-lock               |
+| `:MasonPkg [category]`| Mason picker (`LSP`, `Formatter`, `Linter`, `DAP`, `Runtime`, `Compiler`, `All`) |
+| `:KeyProbe`           | Show the notation Neovim receives for the next key  |
+| `:MarkdownOpenLink`   | Open the link under the cursor                      |
