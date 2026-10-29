@@ -130,6 +130,8 @@ require('which-key').setup({
         { '<leader>m',  group = 'Marks',                      mode = "n" },
         { '<leader>ma', desc = 'Toggle file mark',            mode = "n" },
         { '<leader>mc', desc = 'Clear marks',                 mode = "n" },
+        { '<leader>mp', desc = 'Previous mark',               mode = "n" },
+        { '<leader>mt', desc = 'Markdown: render toggle',     mode = "n" },
 
         -- Plugins
         { '<leader>p',  group = 'Plugins',                    mode = "n" },

@@ -79,7 +79,9 @@ require("render-markdown").setup({
 -- Keymaps
 -- ============================================================================
 
-vim.keymap.set("n", "<C-m>", function()
+-- NOTE: `<C-m>` is the same keycode as `<CR>` — mapping it hijacked Enter in
+-- normal mode (it toggled the renderer instead of moving the cursor down).
+vim.keymap.set("n", "<leader>mt", function()
     vim.cmd("RenderMarkdown toggle")
     vim.notify("Markdown render toggled", vim.log.levels.INFO)
 end, { desc = "Markdown: Toggle inline render" })

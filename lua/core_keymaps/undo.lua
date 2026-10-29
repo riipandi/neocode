@@ -8,6 +8,14 @@ local function notify_undo()
     local seq = vim.fn.undotree().seq_last
     local ok, err = pcall(vim.cmd, "undo" .. (count and " " .. count or ""))
     if not ok then
+        -- "Already at oldest change" is a normal boundary, not a failure
+        if tostring(err):match("oldest") then
+            vim.notify_once("Already at oldest change", vim.log.levels.WARN, {
+                title = "Undo",
+                timeout = 1200,
+            })
+            return
+        end
         vim.notify("Undo failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Undo" })
         return
     end
@@ -30,6 +38,13 @@ local function notify_redo()
     local seq = vim.fn.undotree().seq_last
     local ok, err = pcall(vim.cmd, "redo" .. (count and " " .. count or ""))
     if not ok then
+        if tostring(err):match("newest") then
+            vim.notify_once("Already at newest change", vim.log.levels.WARN, {
+                title = "Redo",
+                timeout = 1200,
+            })
+            return
+        end
         vim.notify("Redo failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Redo" })
         return
     end

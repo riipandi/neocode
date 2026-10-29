@@ -297,8 +297,14 @@ Native Neovim behaviour, with one exception for `<S-Up>`/`<S-Down>`:
 | Mouse wheel     | `<ScrollWheelUp/Down>`                    |
 
 `<S-Up>`/`<S-Down>` use the same builtin as `<C-u>`/`<C-d>` (normal mode only —
-insert mode and visual-mode selection keep the native arrows). Scrolling past
-the last line is allowed again; only scroll *keys* are consistent, not clamped.
+insert mode and visual-mode selection keep the native arrows).
+
+The viewport never travels past the last buffer line (`lua/core_scroll.lua`):
+a debounced WinScrolled handler clamps the topline after the scroll settles, so
+snacks.scroll keeps animating normally and the cursor is not dragged into the
+blank area. Near the end of a buffer the window-local `scrolloff` drops to 0
+(the context margin cannot be honoured there) and comes back as soon as the
+cursor moves away.
 
 `<C-b>` is remapped to the buffer picker in this config, so page up is
 `<C-u>` ×2 or `<C-y>`.
@@ -306,6 +312,12 @@ the last line is allowed again; only scroll *keys* are consistent, not clamped.
 Smooth scrolling comes from `snacks.scroll` (`lua/core_plugins.lua`):
 45 ms per scrolled line, 240 ms cap, 16 ms/line once a key is held for 130 ms.
 Set `vim.g.snacks_scroll = false` to disable it for the session.
+
+## Markdown
+
+| Action               | Shortcut     |
+| -------------------- | ------------ |
+| Toggle inline render | `<leader>mt` |
 
 ## Insert Mode
 
