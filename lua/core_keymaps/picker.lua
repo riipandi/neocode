@@ -9,6 +9,12 @@
 local snacks = require("snacks")
 local M = {}
 
+-- Document symbols (Ctrl+Shift+O in VS Code): a picker over the LSP symbols
+-- of the current buffer.
+vim.keymap.set("n", "<C-S-o>", function()
+    snacks.picker.lsp_symbols()
+end, { desc = "Document symbols (Ctrl+Shift+O)" })
+
 -- Lazy-load confirm_quit from quit module to avoid circular deps
 local function get_confirm_quit()
     return require("core_keymaps.quit").confirm_quit

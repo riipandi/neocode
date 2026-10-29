@@ -109,6 +109,7 @@ message through noice.
 | Move line / selection     | `<A-j>` / `<A-k>`        |
 | Indent and reselect       | `<` (visual)             |
 | Undo / redo with toast    | `u` / `<C-r>`            |
+| Toggle comment (normal / selection) | `<C-/>` (and `<C-_>` when the terminal cannot report Ctrl+/) |
 | Copy file path            | `<leader>pa`             |
 | Change cwd to file's dir  | `<leader>cd`             |
 
@@ -185,6 +186,7 @@ Snacks picker windows share these keys:
 | `<C-q>` / `<A-q>` | Close the picker, then ask to quit   |
 | `e`          | Focus the editor window                   |
 | `<C-d>`/`<C-u>` | Scroll the list (explorer remaps these to row jumps) |
+| `<C-S-o>` | Document symbols of the current buffer (VS Code layout) |
 
 ## Git
 
@@ -293,7 +295,7 @@ marker do not write to it. `signcolumn` stays reserved so text never shifts.
 | Select word          | `mc` (repeat for the next match)|
 | Add cursor           | `<leader>n` / `<leader>N`       |
 | Skip match           | `<leader>ss` / `<leader>M`      |
-| Cursor above / below | `<leader><Up>` / `<leader><Down>`, `<M-S-Up>` / `<M-S-Down>`(n, x) |
+| Cursor above / below | `<leader><Up>` / `<leader><Down>`, `<M-S-Up>` / `<M-S-Down>`, `<C-A-Up>` / `<C-A-Down>` (n, x) |
 | All matches          | `<leader>A`                     |
 | Align cursors        | `<leader>a`                     |
 | Restore cursor set   | `<leader>gv`                    |

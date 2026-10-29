@@ -3,6 +3,14 @@
 -- ============================================================================
 local snacks = require("snacks")
 
+-- Toggle comment with <C-/> (Ctrl+/ in VS Code). `gcc`/`gc` do the work, so
+-- this only adds a second key to the native operator. Terminals that cannot
+-- report Ctrl+/ send <C-_> instead, so both are mapped.
+vim.keymap.set("n", "<C-/>", "gcc", { remap = true, desc = "Toggle line comment" })
+vim.keymap.set("x", "<C-/>", "gc", { remap = true, desc = "Toggle comment on selection" })
+vim.keymap.set("n", "<C-_>", "gcc", { remap = true, desc = "Toggle line comment (Ctrl+_)" })
+vim.keymap.set("x", "<C-_>", "gc", { remap = true, desc = "Toggle comment on selection (Ctrl+_)" })
+
 -- Escape: Close floating windows or clear search
 -- Skips snacks picker/input/select windows — they handle Escape themselves
 vim.keymap.set({ "n", "t" }, "<Esc>", function()

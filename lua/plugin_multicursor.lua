@@ -21,6 +21,16 @@ set({ "n", "x" }, "<leader><down>", function() mc.lineAddCursor(1) end)
 set({ "n", "x" }, "<M-S-up>", function() mc.lineAddCursor(-1) end)
 set({ "n", "x" }, "<M-S-down>", function() mc.lineAddCursor(1) end)
 
+-- VS Code puts the same action on Ctrl+Alt+arrow. The terminal reports those
+-- as CSI 1;7A/CSI 1;7B, which Neovim decodes into one of several modifier
+-- spellings, so every alias is mapped.
+for _, key in ipairs({ "<C-A-up>", "<M-C-up>", "<C-M-up>" }) do
+    set({ "n", "x" }, key, function() mc.lineAddCursor(-1) end)
+end
+for _, key in ipairs({ "<C-A-down>", "<M-C-down>", "<C-M-down>" }) do
+    set({ "n", "x" }, key, function() mc.lineAddCursor(1) end)
+end
+
 -- Add or skip adding a new cursor by matching word/selection
 -- mc also triggers matchAddCursor(1) as a faster alternative to <leader>n
 set({ "n", "x" }, "mc", function() mc.matchAddCursor(1) end)
