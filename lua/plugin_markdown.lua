@@ -25,12 +25,7 @@ require("render-markdown").setup({
         style = "full",
         position = "left",
         width = "full",
-        -- Foreground-only code blocks: no background band behind the block and
-        -- no coloured border lines. Syntax highlighting from treesitter stays.
-        disable_background = true,
-        border = "none",
-        above = "",
-        below = "",
+        border = "thin",
     },
     dash = {
         enabled = true,
@@ -78,6 +73,30 @@ require("render-markdown").setup({
             rendered = 3,
         },
     },
+})
+
+-- ============================================================================
+-- Inline code: foreground only
+-- ============================================================================
+-- `RenderMarkdownCodeInline` links to `RenderMarkdownCode`, which paints the
+-- background band used by code *blocks*. Re-link it to a foreground-only group
+-- so `inline code` keeps its colour without a background chip; code blocks keep
+-- their background.
+local function inline_code_foreground_only()
+    local ok, raw = pcall(vim.api.nvim_get_hl, 0, { name = "@markup.raw" })
+    vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", {
+        fg = (ok and raw.fg) or nil,
+        bg = "none",
+    })
+end
+
+inline_code_foreground_only()
+
+-- Colourscheme changes reset highlight groups; re-apply the override.
+vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("markdown_inline_code", { clear = true }),
+    callback = inline_code_foreground_only,
+    desc = "Inline code without background",
 })
 
 -- ============================================================================
