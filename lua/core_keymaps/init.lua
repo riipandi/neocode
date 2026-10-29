@@ -22,3 +22,8 @@ require("core_keymaps.picker")
 vim.keymap.set("n", "<S-CR>", function()
     require("core_keymaps.folds").toggle()
 end, { desc = "Toggle fold under cursor", silent = true })
+
+-- Fold/unfold every block at once (also available as the native zM / zR).
+vim.keymap.set("n", "<C-S-CR>", function()
+    require("core_keymaps.folds").toggle_all()
+end, { desc = "Toggle all folds", silent = true })

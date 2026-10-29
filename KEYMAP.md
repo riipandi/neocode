@@ -383,7 +383,8 @@ Code blocks keep their usual background band.
 | Action                    | Shortcut  |
 | ------------------------- | --------- |
 | Toggle fold around cursor | `<S-CR>`  |
-| Open/close all folds      | `zR` / `zM` |
+| Toggle all folds          | `<C-S-CR>` |
+| Open all / close all      | `zR` / `zM` |
 | Same, keyboard-independent | `za`     |
 
 `<S-CR>` is a smart toggle (`lua/core_keymaps/folds.lua`), because plain `za`
@@ -394,6 +395,10 @@ aborts with E490 on rows that are not foldable (top-level statements):
 3. cursor on a top-level row → fold the nearest block below (or above), and the
    cursor stays where it was
 4. nothing foldable in the buffer → an info message instead of an error
+
+`<C-S-CR>` folds or unfolds every block: it closes all when the window
+`foldlevel` is open, and opens all when anything is closed (the same as `zM` /
+`zR`, which stay available).
 
 `<S-CR>` needs a terminal that forwards Shift+Enter as a distinct key —
 Ghostty/kitty/wezterm do, and Neovim enables the kitty keyboard protocol

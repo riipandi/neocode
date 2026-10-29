@@ -73,4 +73,15 @@ function M.toggle()
     vim.api.nvim_win_set_cursor(win, cursor)
 end
 
+--- Fold/unfold every block in the buffer.
+--- `zM` sets 'foldlevel' to 0 and `zR` restores it, so the window option is a
+--- reliable O(1) indicator of the current state (no scanning of the buffer).
+function M.toggle_all()
+    if vim.wo.foldlevel > 0 then
+        vim.cmd("silent! normal! zM")
+    else
+        vim.cmd("silent! normal! zR")
+    end
+end
+
 return M
