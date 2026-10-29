@@ -29,7 +29,9 @@ require("render-markdown").setup({
     },
     code = {
         enabled = true,
-        sign = true,
+        -- No language icon in the sign column either: the preview keeps the
+        -- gutter empty (heading.sign is disabled for the same reason).
+        sign = false,
         style = "full",
         position = "left",
         width = "full",
