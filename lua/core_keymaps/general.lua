@@ -28,12 +28,7 @@ snacks.keymap.set("n", "<leader>sc", ":nohlsearch<CR>", { desc = "Clear search h
 snacks.keymap.set("n", "n", "nzzzv", { desc = "Next search result (centered)" })
 snacks.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
 
--- Folds: <S-CR> (Shift+Enter) toggles the fold under the cursor.
--- `foldmethod=expr` with the treesitter foldexpr (set per buffer) means "block"
--- = syntax block/region. Needs a terminal that forwards Shift+Enter as its own
--- key (kitty keyboard protocol, e.g. Ghostty); otherwise it arrives as <CR> and
--- this map simply never matches, leaving Enter untouched.
-vim.keymap.set("n", "<S-CR>", "za", { desc = "Toggle fold under cursor", silent = true })
+-- Folds live in core_keymaps/folds.lua (smart toggle on <S-CR>).
 
 -- Editing
 -- `<leader>d` is reserved as the Diagnostic group (which-key + LSP), so the
