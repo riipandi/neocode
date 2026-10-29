@@ -167,6 +167,11 @@ vim.api.nvim_create_autocmd("FileType", {
             vim.keymap.set({ "n", "i" }, "/", function()
                 picker:focus("input")
             end, { buffer = ev.buf, silent = true, desc = "Focus search input" })
+
+            -- <C-.> shows or hides git-ignored entries (the action behind `I`).
+            vim.keymap.set({ "n", "i" }, "<C-.>", function()
+                picker:action("toggle_ignored")
+            end, { buffer = ev.buf, silent = true, desc = "Toggle git-ignored files" })
         end)
     end,
 })
