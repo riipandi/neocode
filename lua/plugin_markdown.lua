@@ -89,10 +89,10 @@ require("render-markdown").setup({
 -- so `inline code` keeps its colour without a background chip; code blocks keep
 -- their background.
 local function inline_code_foreground_only()
-    -- Colour of `@string` from the active theme: clearly apart from links
-    -- (`@markup.link`, blue + underline) and from headings (orange), which is
-    -- what makes inline code recognisable without drawing the backticks.
-    local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = "@string" })
+    -- Purple, taken from the theme's `@markup.raw` (the colour treesitter uses
+    -- for raw/inline markup). Links stay blue via `@markup.link`, so inline code
+    -- is recognisable without drawing the backticks.
+    local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = "@markup.raw" })
     vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", {
         fg = (ok and hl.fg) or nil,
         bg = "none",

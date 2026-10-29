@@ -331,9 +331,9 @@ disables it for all levels; the heading colours come from treesitter
 (`@markup.heading.1..6`).
 
 Inline code is rendered foreground-only (`RenderMarkdownCodeInline` carries no
-background) and uses the theme `@string` colour (green `#6aab73`) so it is
-clearly distinct from links (blue `#56a8f5`) and headings (orange `#cf8e6d`)
-without drawing the backticks. Code blocks keep their usual background band.
+background) and uses the theme `@markup.raw` colour — purple `#ba8ef7` — while
+links stay blue `#56a8f5`, so the two never look alike even with the backticks
+concealed. Code blocks keep their usual background band.
 
 ## Insert Mode
 
