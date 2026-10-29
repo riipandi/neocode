@@ -140,7 +140,6 @@ vim.api.nvim_create_autocmd("FileType", {
             local function jump(delta)
                 picker.list:move(delta); picker:update()
             end
-            local function refocus() picker:focus() end
             if ev.match == "snacks_picker_list" then
                 vim.keymap.set("n", "<C-d>", function() jump(2) end, { buffer = ev.buf, silent = true })
                 vim.keymap.set("n", "<C-u>", function() jump(-2) end, { buffer = ev.buf, silent = true })
@@ -162,20 +161,21 @@ vim.api.nvim_create_autocmd("FileType", {
                     end
                 end, { buffer = ev.buf, silent = true })
             else -- input window (search field)
-                -- <Esc> clears the search and returns focus to the list;
-                -- a second <Esc> (empty search) closes the explorer.
+                -- <Esc> only leaves the search field: clear the query if there
+                -- is one, then focus the list. It never closes the explorer.
                 vim.keymap.set({ "n", "i" }, "<Esc>", function()
-                    local query = picker.input and picker.input:get() or ""
-                    if query ~= "" then
+                    if picker.input and picker.input:get() ~= "" then
                         picker.input:set("")
                         picker:find()
-                        picker:focus()
-                    else
-                        picker:close()
                     end
+                    picker:focus("list")
                 end, { buffer = ev.buf, silent = true })
-                vim.keymap.set("n", "q", refocus, { buffer = ev.buf, silent = true })
             end
+
+            -- `/` always jumps to the search field, from either window.
+            vim.keymap.set({ "n", "i" }, "/", function()
+                picker:focus("input")
+            end, { buffer = ev.buf, silent = true, desc = "Focus search input" })
         end)
     end,
 })

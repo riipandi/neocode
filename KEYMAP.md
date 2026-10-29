@@ -82,8 +82,14 @@ Editing).
 | `.`             | Focus          | Focus current file/dir in view                                                                              |
 | `I`             | Toggle ignored | Show/hide gitignored files                                                                                  |
 | `H`             | Toggle hidden  | Show/hide dotfiles                                                                                          |
+| `/`             | Search field   | Focus the search input (`i` also works)                                                                     |
 
-Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open or focuses if cursor is elsewhere. `q` closes the explorer; `<Esc>` clears the search first and closes on a second press.
+Explorer toggle: `<leader>e` opens/closes; `<A-e>` (Alt/Option+e) closes if open or focuses if cursor is elsewhere. `q` closes the explorer.
+
+Search field: `/` jumps to it from either window (`i` works too). `<Esc>` inside
+the search only unfocuses it — the query is cleared and focus returns to the
+list; the explorer stays open. `<Esc>` in the list closes the explorer once the
+query is empty.
 
 ## Git
 
