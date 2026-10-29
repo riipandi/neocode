@@ -330,11 +330,10 @@ ones with a background. `heading.backgrounds = {}` in `lua/plugin_markdown.lua`
 disables it for all levels; the heading colours come from treesitter
 (`@markup.heading.1..6`).
 
-Inline code is rendered foreground-only (`RenderMarkdownCodeInline` is re-linked
-to a group without a background) and keeps its delimiters visible: treesitter
-conceals `code_span_delimiter` at conceallevel 2/3, so the backticks are redrawn
-via `inline_left`/`inline_right`, which also keeps inline code distinguishable
-from links. Code blocks keep their usual background band.
+Inline code is rendered foreground-only (`RenderMarkdownCodeInline` carries no
+background) and uses the theme `@string` colour (green `#6aab73`) so it is
+clearly distinct from links (blue `#56a8f5`) and headings (orange `#cf8e6d`)
+without drawing the backticks. Code blocks keep their usual background band.
 
 ## Insert Mode
 
