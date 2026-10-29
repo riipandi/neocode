@@ -312,6 +312,21 @@ While multiple cursors exist: `<Left>`/`<Right>` move between cursors,
 Completion is blink.cmp; `completeopt=menuone,noinsert,noselect,preview` and the
 menu does not preselect an entry.
 
+## Ctrl+Shift keys
+
+Ghostty and other kitty-protocol terminals deliver Ctrl+Shift+letter as its own
+key. Without a mapping Neovim falls back to the unmodified key, which is how
+Ctrl+Shift+G used to print `<C-g>` file info and split the layout.
+
+| Keys          | Action                                    |
+| ------------- | ----------------------------------------- |
+| `<C-S-g>`     | LazyGit                                   |
+| `<C-S-f>`     | Search & replace (swpui)                  |
+| `<C-S-s>`     | Terminal (toggle)                         |
+| `<C-S-m>`     | Previous mark                             |
+| `<C-S-p>`     | Command palette                           |
+| `<C-S-w>`     | Swallowed (`<Nop>`) — it would otherwise start `<C-w>` |
+
 ## User commands
 
 | Command               | Purpose                                             |

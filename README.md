@@ -77,6 +77,11 @@ correction happens before the scroll animation is set up.
 
 These are the deliberate choices that differ from a stock configuration.
 
+- **One-off messages never split the layout.** noice routes `msg_show` to the
+  mini toast view; `:messages` still opens the full history split. Ctrl+Shift
+  letters that the terminal forwards are mapped (`<C-S-g>` LazyGit, `<C-S-f>`
+  swpui, `<C-S-s>` terminal, `<C-S-m>` previous mark, `<C-S-p>` command palette)
+  so they do not fall back to the unmodified key.
 - **Dialogs keep your mode.** `vim.ui.select` is backed by the snacks picker;
   confirmations open with the list focused, so you stay in normal mode (`j`/`k`,
   `<CR>`, `<Esc>`). Dialogs opened from insert mode keep the input focused.
