@@ -26,6 +26,14 @@ require("render-markdown").setup({
         position = "left",
         width = "full",
         border = "thin",
+        inline = true,
+        -- Show the delimiters again: treesitter conceals
+        -- `code_span_delimiter` at conceallevel 2/3, which made inline code
+        -- look exactly like a link. These render as literal backticks.
+        inline_left = "`",
+        inline_right = "`",
+        highlight_inline_left = "NonText",
+        highlight_inline_right = "NonText",
     },
     dash = {
         enabled = true,

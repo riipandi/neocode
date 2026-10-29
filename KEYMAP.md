@@ -323,9 +323,11 @@ Set `vim.g.snacks_scroll = false` to disable it for the session.
 | -------------------- | ------------ |
 | Toggle inline render | `<leader>mt` |
 
-Inline code (`code`) is rendered foreground-only: `RenderMarkdownCodeInline` is
-re-linked to a group without a background (`lua/plugin_markdown.lua`). Code
-blocks keep their usual background band.
+Inline code is rendered foreground-only (`RenderMarkdownCodeInline` is re-linked
+to a group without a background) and keeps its delimiters visible: treesitter
+conceals `code_span_delimiter` at conceallevel 2/3, so the backticks are redrawn
+via `inline_left`/`inline_right`, which also keeps inline code distinguishable
+from links. Code blocks keep their usual background band.
 
 ## Insert Mode
 
