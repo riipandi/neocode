@@ -53,21 +53,31 @@ local function save_file()
         vim.notify("Nothing to write (" .. buftype .. " buffer)", vim.log.levels.WARN, { title = "Write" })
         return
     end
+
+    -- Write and report: a real write notifies "Saved", an unchanged buffer
+    -- stays quiet, a failed write shows the error the command raised.
+    local function write(cmd, prior_name)
+        local was_modified = vim.bo.modified
+        local ok, err = pcall(vim.cmd, cmd)
+        if not ok then
+            vim.notify("Write failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Write" })
+            return
+        end
+        if not was_modified then return end
+        local name = vim.api.nvim_buf_get_name(0)
+        local label = name ~= "" and vim.fn.fnamemodify(name, ":~:.") or (prior_name or "buffer")
+        vim.notify("Saved " .. label, vim.log.levels.INFO, { title = "Write", timeout = 1200 })
+    end
+
     if vim.api.nvim_buf_get_name(0) == "" then
         local cwd = vim.uv.cwd() or vim.fn.getcwd()
         vim.ui.input({ prompt = "Save as: ", default = cwd .. "/", completion = "file" }, function(input)
             if not input or input == "" then return end
-            local ok, err = pcall(vim.cmd, "write " .. vim.fn.fnameescape(input))
-            if not ok then
-                vim.notify("Write failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Write" })
-            end
+            write("write " .. vim.fn.fnameescape(input), vim.fn.fnamemodify(input, ":~:."))
         end)
         return
     end
-    local ok, err = pcall(vim.cmd, "silent write")
-    if not ok then
-        vim.notify("Write failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Write" })
-    end
+    write("silent write")
 end
 
 vim.keymap.set({ "n", "i" }, "<C-s>", save_file, { desc = "Save file" })
