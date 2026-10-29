@@ -78,6 +78,33 @@ require('cloak').setup({
 -- Conform: Code formatter with LSP integration
 -- ============================================================================
 
+local conform_util = require('conform.util')
+
+-- oxfmt entry point.
+-- vite-plus projects keep their formatter options inside vite.config.ts under
+-- `fmt`. The oxfmt CLI never reads that file, so such a project would be
+-- formatted with oxfmt defaults instead of its own style. `vp fmt` forwards
+-- every flag to oxfmt and loads the vite config first, so those projects use
+-- it; everything else keeps the plain CLI.
+local vite_configs = { 'vite.config.ts', 'vite.config.js' }
+
+local function vp_binary(ctx)
+    if not ctx.dirname or ctx.dirname == '' then return nil end
+    local root = vim.fs.root(ctx.dirname, vite_configs)
+    if not root then return nil end
+    local vp = vim.fs.joinpath(root, 'node_modules/.bin/vp')
+    if vim.fn.executable(vp) == 0 then return nil end
+    for _, name in ipairs(vite_configs) do
+        local fd = io.open(vim.fs.joinpath(root, name), 'r')
+        if fd then
+            local content = fd:read('*a') or ''
+            fd:close()
+            if content:find('fmt%s*:') then return vp end
+        end
+    end
+    return nil
+end
+
 require('conform').setup({
     notify_on_error = false,
     format_on_save = function(bufnr)
@@ -133,6 +160,26 @@ require('conform').setup({
         zig = { 'zigfmt' },
     },
     formatters = {
+        oxfmt = {
+            command = function(self, ctx)
+                local vp = vp_binary(ctx)
+                if vp then return vp end
+                return conform_util.from_node_modules('oxfmt')(self, ctx)
+            end,
+            args = function(_, ctx)
+                local args = { '--stdin-filepath', '$FILENAME' }
+                if vp_binary(ctx) then table.insert(args, 1, 'fmt') end
+                return args
+            end,
+            cwd = conform_util.root_file({
+                '.oxfmtrc.json',
+                '.oxfmtrc.jsonc',
+                'oxfmt.config.ts',
+                'vite.config.ts',
+                'vite.config.js',
+            }),
+            stdin = true,
+        },
         mix = {
             command = 'mix',
             args = { 'format', '--stdin-filename', '$FILENAME' },
