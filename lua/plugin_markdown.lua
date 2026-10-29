@@ -10,7 +10,8 @@ require("render-markdown").setup({
     anti_conceal = {
         enabled = false,
     },
-    render_modes = { "n", "c", "t", "i", "v", "V", "\22" },
+    -- Insert mode is intentionally absent: typing shows the raw markdown.
+    render_modes = { "n", "c", "t", "v", "V", "\22" },
     heading = {
         enabled = true,
         sign = true,
@@ -59,7 +60,8 @@ require("render-markdown").setup({
     },
     pipe_table = {
         enabled = true,
-        render_modes = { "n", "c", "t", "i", "v", "V", "\22" },
+        -- Insert mode is intentionally absent: typing shows the raw markdown.
+        render_modes = { "n", "c", "t", "v", "V", "\22" },
         style = "full",
         cell = "padded",
         border = {
@@ -78,7 +80,10 @@ require("render-markdown").setup({
     },
     win_options = {
         conceallevel = {
-            default = 2,
+            -- 0 outside the rendered modes: insert mode shows the raw source,
+            -- backticks and link targets included. treesitter conceals
+            -- markdown_inline delimiters from conceallevel 2 upward.
+            default = 0,
             rendered = 3,
         },
     },

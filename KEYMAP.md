@@ -323,6 +323,11 @@ Set `vim.g.snacks_scroll = false` to disable it for the session.
 | -------------------- | ------------ |
 | Toggle inline render | `<leader>mt` |
 
+The inline preview is rendered in normal, visual, command and terminal modes —
+**not** in insert mode. While typing you get the raw markdown (`- item`,
+`` `code` ``, `[text](url)`, ``` fences), and `conceallevel` drops to 0 outside
+the rendered modes so nothing is concealed.
+
 Headings carry no background band at any level: the plugin maps
 `backgrounds[level]` to `RenderMarkdownH1Bg..H6Bg`, which link to `DiffText` /
 `Visual` / `CursorColumn` in this theme, so H1, H5 and H6 used to be the only
