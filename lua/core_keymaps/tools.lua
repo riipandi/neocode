@@ -10,6 +10,12 @@ snacks.keymap.set("n", "<leader>tt", function()
     })
 end, { desc = "Toggle terminal" })
 
+-- <C-S-s>: without a mapping it arrives as <C-s> (flow control) and does
+-- nothing useful.
+snacks.keymap.set("n", "<C-S-s>", function()
+    Snacks.terminal(vim.o.shell, { lazy = false })
+end, { desc = "Toggle terminal (Ctrl+Shift+S)" })
+
 -- Resource Monitor (mactop on Mac, btop on Linux)
 -- Install: brew install mactop (Mac) or brew install btop (cross-platform)
 snacks.keymap.set("n", "<leader>tr", function()

@@ -48,6 +48,11 @@ snacks.keymap.set("n", "<leader>bW", function()
     Snacks.bufdelete.all()
 end, { desc = "Close all buffers" })
 
+-- Unmapped <C-S-w> falls back to <C-w>, the window prefix, so a mistyped
+-- Ctrl+Shift+W would start a window command. Swallow it instead of binding
+-- something destructive; <leader>bW closes all buffers.
+vim.keymap.set("n", "<C-S-w>", "<Nop>", { desc = "Swallowed (would fall back to <C-w>)" })
+
 -- Delete buffer
 snacks.keymap.set("n", "<leader>bd", function()
     Snacks.bufdelete()

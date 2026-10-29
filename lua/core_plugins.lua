@@ -319,6 +319,13 @@ snacks.keymap.set("n", "<leader>gg", function()
     snacks.lazygit.open()
 end, { desc = "Toggle LazyGit" })
 
+-- <C-S-g> reaches Neovim in terminals that implement the kitty keyboard
+-- protocol. Without a mapping it falls through to <C-g> (file info), which then
+-- opens a message split.
+snacks.keymap.set("n", "<C-S-g>", function()
+    snacks.lazygit.open()
+end, { desc = "Toggle LazyGit (Ctrl+Shift+G)" })
+
 snacks.keymap.set("n", "<leader>gs", function()
     snacks.picker.git_status()
 end, { desc = "Git status" })
@@ -327,10 +334,15 @@ end, { desc = "Git status" })
 -- swpui Keymaps
 -- ============================================================================
 
--- Global search & replace (VSCode-style) — reachable alternative to <C-S-f>
+-- Global search & replace (VSCode-style)
 snacks.keymap.set("n", "<leader>sr", function()
     snacks.swpui.open()
 end, { desc = "Global search & replace (swpui)" })
+
+-- <C-S-f> would otherwise fall through to <C-f> (page down).
+snacks.keymap.set("n", "<C-S-f>", function()
+    snacks.swpui.open()
+end, { desc = "Global search & replace (Ctrl+Shift+F)" })
 
 -- ============================================================================
 -- Terminal Keymaps

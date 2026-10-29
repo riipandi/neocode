@@ -46,6 +46,8 @@ vim.keymap.set('n', '<leader>ma', miniharp.toggle_file, { desc = 'Toggle file ma
 vim.keymap.set('n', '<leader>mc', miniharp.clear, { desc = 'Clear marks' })
 vim.keymap.set('n', '<C-n>', miniharp.next, { desc = 'Next mark' })
 vim.keymap.set('n', '<leader>mp', miniharp.prev, { desc = 'Previous mark' })
+-- Without this, <C-S-m> arrives as <C-m> (<CR>) and just moves the cursor.
+vim.keymap.set('n', '<C-S-m>', miniharp.prev, { desc = 'Previous mark (Ctrl+Shift+M)' })
 
 -- =============================================================================
 -- Marks picker via snacks.picker (replaces native miniharp floating UI)
