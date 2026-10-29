@@ -336,14 +336,12 @@ Set `vim.g.snacks_scroll = false` to disable it for the session.
 | Action               | Shortcut     |
 | -------------------- | ------------ |
 | Toggle inline render | `<leader>mt` |
-| Open link under cursor | `<C-CR>` or `<leader>ml` |
+| Open link under cursor | `<leader>ml` (or `:MarkdownOpenLink`) |
 
 Link opening reads the URL straight from the buffer, so it works with the
 renderer and conceal active: `[label](https://url "title")`, `<https://url>`
 autolinks and bare URLs are all recognised (`:MarkdownOpenLink` does the same).
-Ctrl+Enter needs a terminal that forwards it — Ghostty/kitty/wezterm do, and
-Neovim enables the kitty keyboard protocol automatically; `<leader>ml` always
-works.
+`<C-CR>` is reserved for folds (see below); `<leader>ml` always works.
 
 The inline preview is rendered in normal, visual, command and terminal modes —
 **not** in insert mode. While typing you get the raw markdown (`- item`,
@@ -374,6 +372,20 @@ while links use `@markup.link`, a soft blue `#498bc9`, so the two never look
 alike even with the backticks concealed. Both are desaturated towards the
 background (Soft* colours in `core_theme.lua`) and still sit at ~4.8:1 contrast.
 Code blocks keep their usual background band.
+
+## Folds
+
+`foldmethod=expr` with the treesitter foldexpr, so a fold is a syntax block
+(function, table, object, markdown section, …).
+
+| Action                    | Shortcut  |
+| ------------------------- | --------- |
+| Toggle fold under cursor  | `<C-CR>`  |
+| Same, keyboard-independent | `za`     |
+
+`<C-CR>` needs a terminal that forwards Ctrl+Enter as a distinct key —
+Ghostty/kitty/wezterm do, and Neovim enables the kitty keyboard protocol
+automatically. On terminals that cannot, `za` is equivalent.
 
 ## Gutter
 

@@ -203,15 +203,12 @@ vim.api.nvim_create_autocmd("FileType", {
 -- autocmd per opened markdown buffer)
 vim.api.nvim_set_hl(0, "RenderMarkdownBullet", { bold = false })
 
--- Link opening: buffer-local so <C-CR> stays free of side effects elsewhere.
+-- Link opening is buffer-local to markdown. <C-CR> is reserved globally for
+-- folds (core_keymaps/general.lua), so links use <leader>ml.
 vim.api.nvim_create_autocmd("FileType", {
     group = md_group,
     pattern = { "markdown" },
     callback = function(ev)
-        vim.keymap.set("n", "<C-CR>", open_link, {
-            buffer = ev.buf,
-            desc = "Markdown: open link under cursor",
-        })
         vim.keymap.set("n", "<leader>ml", open_link, {
             buffer = ev.buf,
             desc = "Markdown: open link under cursor",

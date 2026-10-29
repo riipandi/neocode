@@ -28,6 +28,11 @@ snacks.keymap.set("n", "<leader>sc", ":nohlsearch<CR>", { desc = "Clear search h
 snacks.keymap.set("n", "n", "nzzzv", { desc = "Next search result (centered)" })
 snacks.keymap.set("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
 
+-- Folds: <C-CR> toggles the fold under the cursor. `foldmethod=expr` with the
+-- treesitter foldexpr (set per buffer) means "block" = syntax block/region.
+-- Note: needs a terminal that forwards Ctrl+Enter (kitty protocol, e.g. Ghostty).
+vim.keymap.set("n", "<C-CR>", "za", { desc = "Toggle fold under cursor", silent = true })
+
 -- Editing
 -- `<leader>d` is reserved as the Diagnostic group (which-key + LSP), so the
 -- delete-without-yank mapping lives on `<leader>D`.
