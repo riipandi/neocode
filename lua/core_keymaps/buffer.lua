@@ -43,6 +43,35 @@ end
 
 snacks.keymap.set("n", "<C-x>", smart_close, { desc = 'Close buffer (smart)' })
 
+-- Save: <C-s> writes the current buffer from normal and insert mode without
+-- leaving insert mode. Special buffers are reported instead of erroring, and
+-- an unnamed buffer asks for a path first.
+local function save_file()
+    local buftype = vim.bo.buftype
+    -- acwrite buffers have a BufWriteCmd and can legitimately be written
+    if buftype ~= "" and buftype ~= "acwrite" then
+        vim.notify("Nothing to write (" .. buftype .. " buffer)", vim.log.levels.WARN, { title = "Write" })
+        return
+    end
+    if vim.api.nvim_buf_get_name(0) == "" then
+        local cwd = vim.uv.cwd() or vim.fn.getcwd()
+        vim.ui.input({ prompt = "Save as: ", default = cwd .. "/", completion = "file" }, function(input)
+            if not input or input == "" then return end
+            local ok, err = pcall(vim.cmd, "write " .. vim.fn.fnameescape(input))
+            if not ok then
+                vim.notify("Write failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Write" })
+            end
+        end)
+        return
+    end
+    local ok, err = pcall(vim.cmd, "silent write")
+    if not ok then
+        vim.notify("Write failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Write" })
+    end
+end
+
+vim.keymap.set({ "n", "i" }, "<C-s>", save_file, { desc = "Save file" })
+
 -- Close all buffers with snacks
 snacks.keymap.set("n", "<leader>bW", function()
     Snacks.bufdelete.all()

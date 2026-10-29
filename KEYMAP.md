@@ -62,6 +62,7 @@ wezterm). Run `:KeyProbe` and press the key to see what Neovim receives.
 
 | Action              | Keys          |
 | ------------------- | ------------- |
+| Save current file (normal and insert mode, stays in the current mode) | `<C-s>` |
 | Close buffer (smart, asks about unsaved changes) | `<C-x>` |
 | Buffer picker       | `<C-b>`, `<leader>bb` |
 | Delete buffer       | `<leader>bd`  |
