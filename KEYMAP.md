@@ -292,12 +292,14 @@ Native Neovim behaviour, with one exception for `<S-Up>`/`<S-Down>`:
 | Action          | Shortcut                                  |
 | --------------- | ----------------------------------------- |
 | One line        | `<C-e>` / `<C-y>`                         |
-| Half page       | `<C-d>` / `<C-u>`, `<S-Down>` / `<S-Up>`  |
+| Half page       | `<C-d>` / `<C-u>`, `<S-Down>` / `<S-Up>`, `}` / `{` |
 | Page            | `<C-f>` / `<C-b>`                         |
 | Mouse wheel     | `<ScrollWheelUp/Down>`                    |
 
-`<S-Up>`/`<S-Down>` use the same builtin as `<C-u>`/`<C-d>` (normal mode only —
-insert mode and visual-mode selection keep the native arrows).
+`<S-Up>`/`<S-Down>` and `}`/`{` use the same builtin as `<C-u>`/`<C-d>`, so a
+half page always means the same thing (normal mode only — insert mode,
+visual-mode selection and operator-pending motions like `d}`/`v{` keep the
+native behaviour).
 
 The viewport never travels past the last buffer line (`lua/core_scroll.lua`,
 loaded before snacks.nvim so it sees scroll events first):

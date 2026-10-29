@@ -1,19 +1,22 @@
 -- ============================================================================
 -- Editor scroll keys: keep them consistent
 -- ============================================================================
--- Native <S-Up>/<S-Down> move a whole page while <C-d>/<C-u> move half a page,
--- so the two pairs never matched. Route the arrows through the same builtin as
--- <C-d>/<C-u> (a jump of about half the window, which is "far enough" without
--- losing context).
+-- <C-d>/<C-u> (half page) is the reference behaviour. These keys now use the
+-- same builtin so a half page means exactly the same thing everywhere:
 --
--- Everything else stays native: <C-e>/<C-y>, <C-f>, <C-d>/<C-u>, the mouse
--- wheel, and the ability to scroll past the last line.
+--   <C-d> / <C-u>        half page down/up (native)
+--   <S-Down> / <S-Up>    half page (native Shift+Arrow jumps a whole page)
+--   } / {                half page (native jumps to the next/previous
+--                        paragraph, which lands on a different screen row on
+--                        every press)
 --
--- Normal mode only:
---   * insert mode keeps its native Shift+Arrow behaviour
---   * visual mode keeps extending the selection
---   * the picker/explorer keymaps are untouched (they live in
---     core_keymaps/explorer.lua and core_keymaps/picker.lua)
+-- Paragraph motion is still available where it matters: these mappings are
+-- normal-mode only, so `d}`, `y{`, `v}`, `c{` and friends keep working with
+-- operators and in visual mode.
+--
+-- Everything else stays native: <C-e>/<C-y>, <C-f>, the mouse wheel, insert
+-- mode, and the picker/explorer keymaps (core_keymaps/explorer.lua,
+-- core_keymaps/picker.lua).
 
 local function feed(keys)
     -- "nx": execute immediately without remapping, so the mapping cannot
@@ -21,10 +24,26 @@ local function feed(keys)
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), "nx", false)
 end
 
-vim.keymap.set("n", "<S-Down>", function()
-    feed("<C-d>")
-end, { desc = "Half page down (same as <C-d>)" })
+--- Repeat the half-page builtin as many times as the user typed, so counts
+--- keep working (3} == 3<C-d>).
+local function half_page(keys)
+    local count = vim.v.count
+    if count > 1 then
+        feed(count .. keys)
+    else
+        feed(keys)
+    end
+end
 
-vim.keymap.set("n", "<S-Up>", function()
-    feed("<C-u>")
-end, { desc = "Half page up (same as <C-u>)" })
+local half_page_down = function()
+    half_page("<C-d>")
+end
+
+local half_page_up = function()
+    half_page("<C-u>")
+end
+
+vim.keymap.set("n", "<S-Down>", half_page_down, { desc = "Half page down (same as <C-d>)" })
+vim.keymap.set("n", "<S-Up>", half_page_up, { desc = "Half page up (same as <C-u>)" })
+vim.keymap.set("n", "}", half_page_down, { desc = "Half page down (same as <C-d>)" })
+vim.keymap.set("n", "{", half_page_up, { desc = "Half page up (same as <C-u>)" })
