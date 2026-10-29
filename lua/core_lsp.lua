@@ -151,12 +151,14 @@ vim.diagnostic.config({
     severity_sort = true,
     float = { border = 'rounded', source = 'if_many' },
     underline = { severity = vim.diagnostic.severity.ERROR },
+    -- Gutter stays for errors and warnings only; info/hints would just add
+    -- noise there (they still show as virtual text).
     signs = vim.g.have_nerd_font and {
         text = {
             [vim.diagnostic.severity.ERROR] = '󰅚 ',
             [vim.diagnostic.severity.WARN] = '󰀪 ',
-            [vim.diagnostic.severity.INFO] = '󰋽 ',
-            [vim.diagnostic.severity.HINT] = '󰌶 ',
+            [vim.diagnostic.severity.INFO] = '',
+            [vim.diagnostic.severity.HINT] = '',
         },
     } or {},
     virtual_text = {

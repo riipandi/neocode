@@ -86,6 +86,9 @@ vim.opt.autowrite = false                         -- Don't auto save
 vim.opt.confirm = true                            -- Raise dialog to save changes
 
 -- Behavior settings
+-- Nerd Font is available (devicons, bullets, git bars), so component signs in
+-- the gutter use icons instead of the default E/W/I/H letters.
+vim.g.have_nerd_font = true
 vim.opt.hidden = true                   -- Allow hidden buffers
 vim.opt.errorbells = false              -- No error bells
 vim.opt.backspace = "indent,eol,start"  -- Better backspace behavior

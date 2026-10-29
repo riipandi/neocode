@@ -375,6 +375,13 @@ alike even with the backticks concealed. Both are desaturated towards the
 background (Soft* colours in `core_theme.lua`) and still sit at ~4.8:1 contrast.
 Code blocks keep their usual background band.
 
+## Gutter
+
+Kept minimal: git hunks (`▎` bars, colour = add/change/delete), errors (`󰅚`) and
+warnings (`󰀪`). Info/hint diagnostics, markdown preview signs and the `~` end-of-
+buffer marker do not write to it (`fillchars eob` is a space, `signcolumn` stays
+reserved so text never shifts).
+
 ## Insert Mode
 
 | Action      | Shortcut |

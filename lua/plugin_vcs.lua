@@ -17,12 +17,14 @@ local snacks = require("snacks")
 
 require('gitsigns').setup({
     signcolumn = true,
+    -- Bars instead of ASCII `+ ~ _`: the gutter stays clean and the colour
+    -- carries the meaning (GitSignsAdd / Change / Delete from the theme).
     signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
+        add = { text = '▎' },
+        change = { text = '▎' },
+        delete = { text = '▁' },
+        topdelete = { text = '▔' },
+        changedelete = { text = '▎' },
     },
     on_attach = function(bufnr)
         local gitsigns = require 'gitsigns'
