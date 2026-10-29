@@ -159,7 +159,7 @@ elsewhere.
 
 | Key            | Action                                                        |
 | -------------- | ------------------------------------------------------------- |
-| `h` / `<Left>` | File: collapse parent and jump to it. Folder: collapse or jump to parent |
+| `h` / `<Left>` | File: jump to the parent folder. Expanded folder: collapse it and stay. Collapsed folder: jump to the parent |
 | `l` / `<Right>`| Expand / collapse the folder                                  |
 | `j` / `k`      | Move down / up                                                |
 | `<C-d>` / `]`  | Move two rows down                                            |
