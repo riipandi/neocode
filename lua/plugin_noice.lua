@@ -42,10 +42,12 @@ noice.setup({
         },
     },
 
-    -- Messages: route undo/redo and search results to mini toast
+    -- Messages: route undo/redo and search results to mini toast.
+    -- `view = "messages"` used the classic message area, which with cmdheight=0
+    -- makes noice open a split for a single line of output (e.g. after <C-g>).
     messages = {
         enabled = true,
-        view = "messages",
+        view = "mini",
         view_search = "mini",
         view_history = "messages",
         view_error = "mini",
