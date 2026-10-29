@@ -135,7 +135,7 @@ require('which-key').setup({
         { '<leader>ml', desc = 'Markdown: open link',         mode = "n" },
 
         -- Folds
-        { '<C-CR>',     desc = 'Toggle fold under cursor',    mode = "n" },
+        { '<S-CR>',     desc = 'Toggle fold under cursor',    mode = "n" },
 
         -- Plugins
         { '<leader>p',  group = 'Plugins',                    mode = "n" },

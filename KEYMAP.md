@@ -336,12 +336,14 @@ Set `vim.g.snacks_scroll = false` to disable it for the session.
 | Action               | Shortcut     |
 | -------------------- | ------------ |
 | Toggle inline render | `<leader>mt` |
-| Open link under cursor | `<leader>ml` (or `:MarkdownOpenLink`) |
+| Open link under cursor | `<C-CR>` or `<leader>ml` (`:MarkdownOpenLink`) |
 
 Link opening reads the URL straight from the buffer, so it works with the
 renderer and conceal active: `[label](https://url "title")`, `<https://url>`
 autolinks and bare URLs are all recognised (`:MarkdownOpenLink` does the same).
-`<C-CR>` is reserved for folds (see below); `<leader>ml` always works.
+Ctrl+Enter needs a terminal that forwards it as its own key — Ghostty/kitty/
+wezterm do, and Neovim enables the kitty keyboard protocol automatically;
+`<leader>ml` always works.
 
 The inline preview is rendered in normal, visual, command and terminal modes —
 **not** in insert mode. While typing you get the raw markdown (`- item`,
@@ -380,12 +382,13 @@ Code blocks keep their usual background band.
 
 | Action                    | Shortcut  |
 | ------------------------- | --------- |
-| Toggle fold under cursor  | `<C-CR>`  |
+| Toggle fold under cursor  | `<S-CR>`  |
 | Same, keyboard-independent | `za`     |
 
-`<C-CR>` needs a terminal that forwards Ctrl+Enter as a distinct key —
+`<S-CR>` needs a terminal that forwards Shift+Enter as a distinct key —
 Ghostty/kitty/wezterm do, and Neovim enables the kitty keyboard protocol
-automatically. On terminals that cannot, `za` is equivalent.
+automatically. On terminals that cannot, `za` is equivalent (and Enter itself is
+never affected, because a plain `<CR>` does not match `<S-CR>`).
 
 ## Gutter
 
