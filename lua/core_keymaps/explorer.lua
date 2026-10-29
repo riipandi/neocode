@@ -157,6 +157,9 @@ explorer_keys["y"] = function() with_explorer(yank_content) end
 explorer_keys["Y"] = "explorer_yank"
 explorer_keys["D"] = function() with_explorer(duplicate) end
 explorer_keys["j"] = "list_down"
+-- Shift+I is not needed: `.` toggles the ignored filter. Bound to a no-op so
+-- the key does not fall through to insert mode in the explorer list.
+explorer_keys["I"] = function() end
 
 -- Buffer-style jump keys (list window only)
 -- Set via FileType autocmd below with vim.schedule to avoid race condition
