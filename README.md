@@ -102,9 +102,11 @@ These are the deliberate choices that differ from a stock configuration.
   blocks keep a background band, headings have neither background nor sign,
   inline code is soft purple `#9976cb` without a background, links are soft blue
   `#498bc9` without an icon, and the sign column stays empty.
-- **No failed writes.** Format-on-save uses conform with flat fallback chains
-  (`stop_after_first`); `vim.b.disable_autoformat = true` skips a buffer (set for
-  `toml`).
+- **Oxc only.** oxlint lints and oxfmt formats; prettier, prettierd, eslint and
+  biome are absent from the config and from Mason, so nothing competes with the
+  oxc tools.
+- **No failed writes.** Format-on-save uses conform with a single formatter per
+  filetype; `vim.b.disable_autoformat = true` skips a buffer (set for `toml`).
 - **Commands that lie are gone.** `:Format`/`:FormatCode`/`<leader>fm` all use
   conform, `:LspRestart` actually restarts clients, `:ReloadConfig` reloads all
   config modules (not just `core_*`).
@@ -118,8 +120,8 @@ enabled when the matching filetype opens.
 | Language              | LSP                              | Formatter            |
 | --------------------- | -------------------------------- | -------------------- |
 | Lua (this config)     | `lua_ls` + lazydev types         | `stylua`             |
-| TypeScript / JS / JSX | `ts_ls`, `oxlint`, `oxfmt` (LSP) (`deno` when a `deno.json` exists) | `oxfmt` → `prettierd` → `prettier` |
-| Astro / Vue / Svelte / Lit | `ts_ls`, `oxlint`, `oxfmt` (LSP); `astro` on demand | `oxfmt` → `prettier` |
+| TypeScript / JS / JSX | `ts_ls`, `oxlint`, `oxfmt` (LSP) (`deno` when a `deno.json` exists) | `oxfmt` |
+| Astro / Vue / Svelte / Lit | `ts_ls`, `oxlint`, `oxfmt` (LSP); `astro` on demand | `oxfmt` |
 | Tailwind CSS          | `tailwindcss`                    | —                    |
 | Rust                  | `rust-analyzer` (clippy on save), crates.nvim | `rustfmt` |
 | Go                    | `gopls` via go.nvim, `golangci-lint` | `goimports` on save (go.nvim) |
@@ -135,9 +137,9 @@ enabled when the matching filetype opens.
 | YAML / TOML / TeX     | `yamlls`, `taplo`, `texlab`      | `oxfmt` (LSP)        |
 | Markdown              | render-markdown preview          | `oxfmt` (LSP)        |
 
-`oxfmt` runs twice in two roles. As a conform formatter it is the first choice
-for js/ts/json/vue/astro/svelte/lit. As an LSP client it formats the filetypes
-conform has no formatter for (html, css, scss, less, yaml, toml, markdown,
+`oxfmt` runs twice in two roles. As a conform formatter it handles js/ts/json/
+vue/astro/svelte/lit. As an LSP client it formats the filetypes conform has no
+formatter for (html, css, scss, less, yaml, toml, markdown,
 graphql, handlebars). conform's `lsp_format = 'fallback'` keeps the order: the
 conform formatter runs when there is one, otherwise the LSP formats.
 

@@ -94,27 +94,29 @@ require('conform').setup({
     -- Note: a plain list runs every formatter; `stop_after_first` makes it a
     -- fallback chain. The nested `{ { "a", "b" } }` form is rejected by
     -- conform and aborts BufWritePre (i.e. the file is never written).
+    -- Oxc-only: oxlint lints and oxfmt formats. prettier, prettierd, eslint and
+    -- biome are deliberately absent, so nothing competes with the oxc tools.
     formatters_by_ft = {
-        astro = { 'oxfmt', 'prettier', stop_after_first = true },
+        astro = { 'oxfmt' },
         elixir = { 'mix' },
         -- go = { 'gofmt' },  -- handled by go.nvim (ray-x/go.nvim)
         hcl = { 'terraform' },
-        javascript = { 'oxfmt', 'prettierd', 'prettier', stop_after_first = true },
-        javascriptreact = { 'oxfmt', 'prettierd', 'prettier', stop_after_first = true },
-        json = { 'oxfmt', 'prettier', stop_after_first = true },
-        lit = { 'oxfmt', 'prettier', stop_after_first = true },
+        javascript = { 'oxfmt' },
+        javascriptreact = { 'oxfmt' },
+        json = { 'oxfmt' },
+        lit = { 'oxfmt' },
         lua = { 'stylua' },
         python = { 'black' },
         rust = { 'rustfmt' },
         sh = { 'shfmt' },
         bash = { 'shfmt' },
         zsh = { 'shfmt' },
-        svelte = { 'oxfmt', 'prettier', stop_after_first = true },
+        svelte = { 'oxfmt' },
         sql = { 'sql_formatter' },
         terraform = { 'terraform' },
-        typescript = { 'oxfmt', 'prettierd', 'prettier', stop_after_first = true },
-        typescriptreact = { 'oxfmt', 'prettierd', 'prettier', stop_after_first = true },
-        vue = { 'oxfmt', 'prettier', stop_after_first = true },
+        typescript = { 'oxfmt' },
+        typescriptreact = { 'oxfmt' },
+        vue = { 'oxfmt' },
         zig = { 'zigfmt' },
     },
     formatters = {

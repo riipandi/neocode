@@ -41,8 +41,6 @@ local ensure_installed = {
     "gotestsum",
     "markdownlint",
     "oxfmt",
-    "prettier",
-    "prettierd",
     "shfmt",
     "sql-formatter",
     "stylua",
