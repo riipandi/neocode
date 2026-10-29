@@ -111,12 +111,19 @@ require('conform').setup({
         local disable_filetypes = { c = true, cpp = true }
         if disable_filetypes[vim.bo[bufnr].filetype] or vim.b[bufnr].disable_autoformat then
             return nil
-        else
-            return {
-                timeout_ms = 500,
-                lsp_format = 'fallback',
-            }
         end
+        -- `vp fmt` starts node and loads the vite config (~1s), so it needs more
+        -- room than the plain oxfmt CLI (~50ms).
+        local filename = vim.api.nvim_buf_get_name(bufnr)
+        local timeout_ms = 500
+        if filename ~= '' then
+            local ctx = { dirname = vim.fn.fnamemodify(filename, ':p:h'), filename = filename }
+            if vp_binary(ctx) then timeout_ms = 3000 end
+        end
+        return {
+            timeout_ms = timeout_ms,
+            lsp_format = 'fallback',
+        }
     end,
     -- Note: a plain list runs every formatter; `stop_after_first` makes it a
     -- fallback chain. The nested `{ { "a", "b" } }` form is rejected by
