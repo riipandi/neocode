@@ -14,7 +14,9 @@ require("render-markdown").setup({
     render_modes = { "n", "c", "t", "v", "V", "\22" },
     heading = {
         enabled = true,
-        sign = true,
+        -- No sign-column glyph for headings (the default `󰫎` sign repeated for
+        -- every level); the overlay icons already mark the level.
+        sign = false,
         icons = { "# ", "## ", "### ", "#### ", "##### ", "###### " },
         position = "overlay",
         width = "block",

@@ -342,6 +342,10 @@ The inline preview is rendered in normal, visual, command and terminal modes —
 `` `code` ``, `[text](url)`, ``` fences), and `conceallevel` drops to 0 outside
 the rendered modes so nothing is concealed.
 
+Headings also carry no sign-column glyph (`heading.sign = false`); the overlay
+icons (`#`, `##`, …) already show the level. Code blocks keep their language
+sign.
+
 Headings carry no background band at any level: the plugin maps
 `backgrounds[level]` to `RenderMarkdownH1Bg..H6Bg`, which link to `DiffText` /
 `Visual` / `CursorColumn` in this theme, so H1, H5 and H6 used to be the only
