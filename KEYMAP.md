@@ -298,9 +298,15 @@ marker do not write to it. `signcolumn` stays reserved so text never shifts.
 | Align cursors        | `<leader>a`                     |
 | Restore cursor set   | `<leader>gv`                    |
 | Add cursor with mouse| `<C-LeftMouse>` (and drag/release) |
+| Cursor per row of the selection | `<leader>v` (visual)   |
 
 While multiple cursors exist: `<Left>`/`<Right>` move between cursors,
 `<leader>x` deletes the main cursor, `<Esc>` enables or clears them.
+
+For "one cursor per row, same column": `<C-v>` to select the block (or `V` for
+whole rows), then `<leader>v`. Each row of the selection becomes its own cursor,
+so one edit lands on every row: `<C-v>2j2l` `<leader>v` `iX` `<Esc>` inserts `X`
+at the same column on three rows.
 
 ## Insert mode
 

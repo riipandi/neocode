@@ -49,6 +49,11 @@ set("n", "<leader>gv", mc.restoreCursors)
 set("x", "I", mc.insertVisual)
 set("x", "A", mc.appendVisual)
 
+-- Turn each row of the selection into its own cursor: pick rows with <C-v>
+-- (block selection, keeps the column) or V (line start), press <leader>v,
+-- then run one edit and it lands on every row.
+set("x", "<leader>v", mc.visualToCursors)
+
 -- ============================================================================
 -- Keymap layer: only active when multiple cursors exist
 -- ============================================================================
