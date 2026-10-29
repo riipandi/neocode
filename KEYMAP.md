@@ -377,8 +377,10 @@ Code blocks keep their usual background band.
 
 ## Folds
 
-`foldmethod=expr` with the treesitter foldexpr, so a fold is a syntax block
-(function, table, object, markdown section, …).
+`foldmethod=expr` with the treesitter foldexpr, set globally in `init.lua`
+(Neovim's runtime only does this for lua buffers, which is why folding used to
+do nothing in e.g. TypeScript and the toggle answered "Nothing to fold here").
+A fold is a syntax block: function, object literal, markdown section, …
 
 | Action                    | Shortcut  |
 | ------------------------- | --------- |

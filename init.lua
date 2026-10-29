@@ -111,6 +111,9 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Folding settings
 vim.opt.foldmethod = "expr" -- Use expression for folding
+-- Neovim's runtime only sets the treesitter foldexpr for lua buffers; set it
+-- globally so every filetype with a parser folds by syntax block.
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.foldlevel = 99      -- Start with all folds open
 
 -- Split behavior
