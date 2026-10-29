@@ -323,6 +323,11 @@ Set `vim.g.snacks_scroll = false` to disable it for the session.
 | -------------------- | ------------ |
 | Toggle inline render | `<leader>mt` |
 
+Rendering is foreground-only: code blocks use the treesitter colours without a
+background band, border or `above`/`below` fill (`disable_background = true`,
+`border = "none"` in `lua/plugin_markdown.lua`). Inline code keeps its
+`RenderMarkdownCodeInline` background.
+
 ## Insert Mode
 
 | Action      | Shortcut |

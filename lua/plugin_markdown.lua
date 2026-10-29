@@ -25,7 +25,12 @@ require("render-markdown").setup({
         style = "full",
         position = "left",
         width = "full",
-        border = "thin",
+        -- Foreground-only code blocks: no background band behind the block and
+        -- no coloured border lines. Syntax highlighting from treesitter stays.
+        disable_background = true,
+        border = "none",
+        above = "",
+        below = "",
     },
     dash = {
         enabled = true,
