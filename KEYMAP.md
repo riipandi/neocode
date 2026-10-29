@@ -15,6 +15,14 @@
 
 > **Note:** `<C-x>` keeps the file explorer open and shows a blank buffer when the last editor buffer is closed, instead of letting the explorer expand to full width.
 
+## Dialogs
+
+Confirmation dialogs (quit, unsaved buffer, Mason actions) open through
+`vim.ui.select` with `focus = "list"`: the list is focused, so you stay in
+normal mode — `j`/`k` to move, `<CR>` to choose, `<Esc>` to cancel. Nothing is
+typed into the search field unless you press `/` (or `i`). Dialogs opened from
+insert mode keep the input focused instead, so typing continues to work.
+
 ## Escape Key
 
 | Action                | Shortcut | Description                                            |

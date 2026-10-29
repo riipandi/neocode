@@ -99,6 +99,7 @@ function M.open(cat_name)
                     or { "Install", "Details", "Cancel" }
                 vim.ui.select(choices, {
                     prompt = item.name .. "  [" .. item.cat .. "]",
+                    focus = "list",
                 }, function(choice)
                     if choice == "Install" then
                         local ok, err = pcall(function() item.pkg:install() end)

@@ -35,6 +35,7 @@ local function confirm_quit()
     if has_unsaved then
         vim.ui.select({ 'Save & Quit', 'Quit without saving', 'Cancel' }, {
             prompt = 'You have unsaved buffers:',
+            focus = 'list',
         }, function(choice)
             if choice == 'Save & Quit' then
                 local ok, err = pcall(vim.cmd, 'wa')
@@ -54,6 +55,7 @@ local function confirm_quit()
         -- No unsaved changes: simple Yes/No
         vim.ui.select({ 'Yes', 'No' }, {
             prompt = 'Quit Neovim?',
+            focus = 'list',
         }, function(choice)
             if choice == 'Yes' then
                 vim.cmd('qa')

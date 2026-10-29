@@ -349,6 +349,11 @@ end, { desc = "Toggle floating terminal (cwd)" })
 -- The vim.ui.select contract is (items, opts, on_choice); callers rely on
 -- opts.format_item, so it must be forwarded — without it snacks crashes on
 -- table items ("attempt to call method 'gsub'"). Escape cancels with nil.
+--
+-- Mode handling: a dialog must not drag you into insert mode. Callers can set
+-- `opts.focus = "list"` (confirmations do this); otherwise the focus follows
+-- the mode you were in — insert stays in the input, everything else opens on
+-- the list so normal mode is preserved.
 vim.ui.select = function(items, opts, on_choice)
     opts = opts or {}
 
@@ -375,10 +380,19 @@ vim.ui.select = function(items, opts, on_choice)
         end
     end
 
+    local mode = vim.api.nvim_get_mode().mode
+    local inserting = mode:sub(1, 1) == "i" or mode:sub(1, 1) == "R"
+
+    local focus = opts.focus
+    if focus ~= "list" and focus ~= "input" then
+        focus = inserting and "input" or "list"
+    end
+
     local ok, err = pcall(snacks.picker.select, items, {
         prompt = opts.prompt or "Select",
         format_item = function(item) return tostring(format_item(item)) end,
         layout = { preset = "select" },
+        snacks = { focus = focus },
     }, function(choice)
         on_choice(choice)
     end)

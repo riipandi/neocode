@@ -23,6 +23,7 @@ local function smart_close()
     if vim.bo.modified then
         vim.ui.select({ 'Save & Close', 'Close without saving', 'Cancel' }, {
             prompt = 'Buffer has unsaved changes:',
+            focus = 'list',
         }, function(choice)
             if choice == 'Save & Close' then
                 local ok, err = pcall(vim.cmd, 'w')
