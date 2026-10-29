@@ -40,9 +40,10 @@ require("render-markdown").setup({
     },
     bullet = {
         enabled = true,
-        -- `•` instead of `●`: the filled circle reads as bold next to body text.
-        -- Levels 2-4 stay hollow so nesting is still obvious.
-        icons = { "•", "○", "◆", "◇" },
+        -- Middle weight for level 1: `●` (U+25CF) fills the whole cell and reads
+        -- as bold, while `•` (U+2022) is too thin. `◉` (U+25C9, fisheye) sits in
+        -- between and comes from the same Unicode block as the other levels.
+        icons = { "◉", "○", "◆", "◇" },
         left_pad = 0,
         right_pad = 1,
     },
