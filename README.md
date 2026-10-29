@@ -106,7 +106,7 @@ These are the deliberate choices that differ from a stock configuration.
   biome are absent from the config and from Mason, so nothing competes with the
   oxc tools.
 - **No failed writes.** Format-on-save uses conform with a single formatter per
-  filetype; `vim.b.disable_autoformat = true` skips a buffer (set for `toml`).
+  filetype; `vim.b.disable_autoformat = true` skips a buffer when you need it.
 - **Commands that lie are gone.** `:Format`/`:FormatCode`/`<leader>fm` all use
   conform, `:LspRestart` actually restarts clients, `:ReloadConfig` reloads all
   config modules (not just `core_*`).
@@ -132,22 +132,21 @@ enabled when the matching filetype opens.
 | Terraform / HCL       | `terraform_ls`                   | `terraform fmt`      |
 | Python                | `pylsp`                          | `black`              |
 | Shell                 | `bashls`                         | `shfmt`              |
-| HTML                  | `html`, `superhtml` (when installed) | `oxfmt` (LSP)    |
-| CSS / JSON / Docker   | `cssls`, `jsonls`, `dockerls`    | `oxfmt` (LSP)        |
-| YAML / TOML / TeX     | `yamlls`, `taplo`, `texlab`      | `oxfmt` (LSP)        |
-| Markdown              | render-markdown preview          | `oxfmt` (LSP)        |
+| HTML                  | `html`, `superhtml` (when installed) | `oxfmt`          |
+| CSS / JSON / Docker   | `cssls`, `jsonls`, `dockerls`    | `oxfmt`              |
+| YAML / TOML / TeX     | `yamlls`, `taplo`, `texlab`      | `oxfmt` (TeX: none)  |
+| Markdown              | render-markdown preview          | `oxfmt`              |
 
-`oxfmt` runs twice in two roles. As a conform formatter it handles js/ts/json/
-vue/astro/svelte/lit. As an LSP client it formats the filetypes conform has no
-formatter for (html, css, scss, less, yaml, toml, markdown,
-graphql, handlebars). conform's `lsp_format = 'fallback'` keeps the order: the
-conform formatter runs when there is one, otherwise the LSP formats.
+`oxfmt` covers every filetype it can parse: js/ts/jsx/tsx, json, jsonc, json5,
+html, css, scss, less, vue, astro, svelte, lit, graphql, handlebars, markdown,
+yaml, and toml. No other formatter is registered for those filetypes.
 
-The `oxfmt` LSP client only starts in a project that opts in: a `package.json`
-listing `oxfmt` (or `vite-plus`), a `.oxfmtrc.json`/`.oxfmtrc.jsonc`/
-`oxfmt.config.ts`, or a `vite.config.ts` with a `fmt` field. Buffers outside
-such a project keep their current behaviour, and the binary resolves to
-`node_modules/.bin/oxfmt` when the project has it.
+The `oxfmt` LSP client stays enabled as a second route: conform formats on save
+through the CLI, and `lsp_format = 'fallback'` lets the LSP format a buffer that
+somehow has no conform formatter. The client only starts in a project that opts
+in: a `package.json` listing `oxfmt` (or `vite-plus`), a `.oxfmtrc.json`/
+`.oxfmtrc.jsonc`/`oxfmt.config.ts`, or a `vite.config.ts` with a `fmt` field.
+The binary resolves to `node_modules/.bin/oxfmt` when the project has it.
 
 Tree-sitter parsers: astro, bash, css, diff, eex, elixir, go, hcl, heex, html,
 javascript, jsdoc, json, json5, just, lua, luadoc, luap, markdown,

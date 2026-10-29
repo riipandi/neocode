@@ -96,27 +96,40 @@ require('conform').setup({
     -- conform and aborts BufWritePre (i.e. the file is never written).
     -- Oxc-only: oxlint lints and oxfmt formats. prettier, prettierd, eslint and
     -- biome are deliberately absent, so nothing competes with the oxc tools.
+    -- Every filetype oxfmt can parse goes through oxfmt (see `oxfmt --help`);
+    -- the rest keep their own tool.
     formatters_by_ft = {
         astro = { 'oxfmt' },
+        css = { 'oxfmt' },
         elixir = { 'mix' },
+        graphql = { 'oxfmt' },
         -- go = { 'gofmt' },  -- handled by go.nvim (ray-x/go.nvim)
+        handlebars = { 'oxfmt' },
         hcl = { 'terraform' },
+        html = { 'oxfmt' },
         javascript = { 'oxfmt' },
         javascriptreact = { 'oxfmt' },
         json = { 'oxfmt' },
+        json5 = { 'oxfmt' },
+        jsonc = { 'oxfmt' },
+        less = { 'oxfmt' },
         lit = { 'oxfmt' },
         lua = { 'stylua' },
+        markdown = { 'oxfmt' },
         python = { 'black' },
         rust = { 'rustfmt' },
+        scss = { 'oxfmt' },
         sh = { 'shfmt' },
         bash = { 'shfmt' },
         zsh = { 'shfmt' },
-        svelte = { 'oxfmt' },
         sql = { 'sql_formatter' },
+        svelte = { 'oxfmt' },
         terraform = { 'terraform' },
+        toml = { 'oxfmt' },
         typescript = { 'oxfmt' },
         typescriptreact = { 'oxfmt' },
         vue = { 'oxfmt' },
+        yaml = { 'oxfmt' },
         zig = { 'zigfmt' },
     },
     formatters = {

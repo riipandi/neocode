@@ -81,16 +81,6 @@ autocmd("FileType", {
     desc = "Set indent to 2 spaces for web/js",
 })
 
-autocmd("FileType", {
-    group = user_augroup,
-    pattern = { "toml" },
-    callback = function()
-        -- conform checks this flag in format_on_save (see plugin_editor.lua)
-        vim.b.disable_autoformat = true
-    end,
-    desc = "Disable autoformat for toml",
-})
-
 -- Terminal settings
 autocmd("TermClose", {
     group = user_augroup,
