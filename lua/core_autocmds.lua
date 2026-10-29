@@ -176,9 +176,3 @@ vim.opt.diffopt:append("linematch:60")
 -- Performance
 vim.opt.redrawtime = 10000
 vim.opt.maxmempattern = 20000
-
--- Create undo directory if not exists
-local undodir = vim.fn.expand("~/.vim/undodir")
-if vim.fn.isdirectory(undodir) == 0 then
-    vim.fn.mkdir(undodir, "p")
-end
