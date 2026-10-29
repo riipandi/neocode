@@ -55,7 +55,7 @@ local function save_file()
     end
 
     -- Write and report: a real write notifies "Saved", an unchanged buffer
-    -- stays quiet, a failed write shows the error the command raised.
+    -- reports "Nothing to save", a failed write shows the command error.
     local function write(cmd, prior_name)
         local was_modified = vim.bo.modified
         local ok, err = pcall(vim.cmd, cmd)
@@ -63,9 +63,12 @@ local function save_file()
             vim.notify("Write failed: " .. tostring(err), vim.log.levels.ERROR, { title = "Write" })
             return
         end
-        if not was_modified then return end
         local name = vim.api.nvim_buf_get_name(0)
         local label = name ~= "" and vim.fn.fnamemodify(name, ":~:.") or (prior_name or "buffer")
+        if not was_modified then
+            vim.notify("Nothing to save (" .. label .. ")", vim.log.levels.INFO, { title = "Write", timeout = 1000 })
+            return
+        end
         vim.notify("Saved " .. label, vim.log.levels.INFO, { title = "Write", timeout = 1200 })
     end
 
