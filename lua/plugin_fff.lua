@@ -52,17 +52,25 @@ pcall(function() require('fff').setup({
 -- Keys fall back to the snacks pickers and the first use downloads the binary
 -- in the background, so a fresh install or a wiped plugin dir never errors.
 
+-- The plugin itself can be absent too (first run, install still in progress).
+local function downloader()
+    local ok, mod = pcall(require, 'fff.download')
+    return ok and mod or nil
+end
+
 local function binary_ready()
-    return vim.uv.fs_stat(require('fff.download').get_binary_path()) ~= nil
+    local dl = downloader()
+    return dl ~= nil and vim.uv.fs_stat(dl.get_binary_path()) ~= nil
 end
 
 local installing = false
 local function install_binary()
-    if installing then return end
+    local dl = downloader()
+    if installing or not dl then return end
     installing = true
     vim.notify('Native binary missing, downloading it. Using the snacks picker meanwhile.',
         vim.log.levels.WARN, { title = 'fff' })
-    require('fff.download').ensure_downloaded({ force = true }, function(ok, err)
+    dl.ensure_downloaded({ force = true }, function(ok, err)
         vim.schedule(function()
             if not ok then installing = false end
             if ok then
