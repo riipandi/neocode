@@ -42,16 +42,17 @@ noice.setup({
         },
     },
 
-    -- Messages: route undo/redo and search results to mini toast.
-    -- `view = "messages"` used the classic message area, which with cmdheight=0
-    -- makes noice open a split for a single line of output (e.g. after <C-g>).
+    -- Messages: every msg_show goes to the `toast` view (a snacks toast), so
+    -- they look like vim.notify toasts. `view = "messages"` would use the
+    -- classic message area, which with cmdheight=0 makes noice open a split for
+    -- a single line of output (e.g. after <C-g>).
     messages = {
         enabled = true,
-        view = "mini",
-        view_search = "mini",
+        view = "toast",
+        view_search = "toast",
         view_history = "messages",
-        view_error = "mini",
-        view_warn = "mini",
+        view_error = "toast",
+        view_warn = "toast",
     },
 
     popupmenu = {
@@ -71,31 +72,26 @@ noice.setup({
     },
 
     routes = {
-        -- Undo/redo: mini toast
-        { filter = { event = "msg_show", find = "change;" },      view = "mini" },
-        { filter = { event = "msg_show", find = "already at" },   view = "mini" },
-        -- Substitute count
-        { filter = { event = "msg_show", find = "substitution" }, view = "mini" },
-        -- Search hit (extra guard beyond view_search)
-        { filter = { event = "msg_show", find = "search hit" },   view = "mini" },
-        -- Save confirmation: mini toast
-        { filter = { event = "msg_show", find = "written" },      view = "mini" },
-        { filter = { event = "msg_show", find = "appended" },     view = "mini" },
-        -- Yank confirmation
-        { filter = { event = "msg_show", find = "yanked" },       view = "mini" },
-        -- Backup: any other error messages → mini toast
-        { filter = { error = true },                              view = "mini" },
+        -- Install chatter: one toast per source, updated in place
+        {
+            filter = { event = "msg_show", find = "^%[nvim%-treesitter" },
+            view = "toast",
+            opts = { title = "nvim-treesitter" },
+        },
+        {
+            filter = { event = "msg_show", find = "^vim%.pack" },
+            view = "toast",
+            opts = { title = "vim.pack" },
+        },
     },
 
     views = {
-        mini = {
-            backend = "mini",
-            relative = "editor",
-            align = "message-right",
-            position = { row = -2, col = -2 },
-            win_options = {
-                winblend = 10,
-            },
+        toast = {
+            view = "notify",
+            title = "Message",
+            replace = true,
+            merge = true,
+            timeout = 4000,
         },
     },
 
