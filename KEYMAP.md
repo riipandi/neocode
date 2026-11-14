@@ -119,6 +119,10 @@ buffers, see LSP). `<leader>x` is the DAP debug group.
 
 ## Command palette
 
+The Commands Center (`<C-p>`, `<leader>:`) lists curated actions with their key
+hints, then plugin commands. Recently used entries (`↺`) come first; descriptions
+are searchable. Obscure built-in ex commands are left out: type `:` for those.
+
 In the `:` command line the suggestion menu opens while you type; `<Tab>` /
 `<S-Tab>` (or `<C-n>` / `<C-p>`) pick a suggestion, `<CR>` runs the line.
 

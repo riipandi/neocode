@@ -67,6 +67,7 @@ rm -fr ~/.cache/nvim
 | `lua/core_keymaps/*.lua`            | Keymaps by topic (`general`, `scroll`, `folds`, `buffer`, `quit`, `tools`, `cmdline`, `explorer`, `picker`, `ai`, `undo`)                                             |
 | `lua/plugin_*.lua`                  | One file per plugin group (editor, completion, treesitter, vcs, lsp tooling, markdown, AI)                                                                            |
 | `lua/language_*.lua`                | Per-language LSP setup (Rust, TypeScript/Deno, Go, Elixir, Tailwind; `language_servers.lua` enables Astro, Protobuf, SQL, Terraform, Zig with the lspconfig defaults) |
+| `lua/dialog.lua`, `lua/snacks/layouts.lua` | Shared dialog geometry (60 columns, row 8) and the picker layouts built on it |
 | `lua/mistral-codestral/`            | Local fork of the Codestral client                                                                                                                                    |
 | `lua/mason_pkg/`                    | Mason package picker                                                                                                                                                  |
 | `lua/snacks/`                       | Picker layouts and the swpui wrapper                                                                                                                                  |
