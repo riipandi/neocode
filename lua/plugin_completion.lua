@@ -31,6 +31,15 @@ require('blink.cmp').setup({
         ['<CR>'] = { 'accept', 'fallback' },
     },
 
+    cmdline = {
+        keymap = {
+            preset = 'cmdline',
+            -- arrows pick suggestions while the menu is open, history otherwise
+            ['<Up>'] = { 'select_prev', 'fallback' },
+            ['<Down>'] = { 'select_next', 'fallback' },
+        },
+    },
+
     appearance = {
         -- 'mono' (default) for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- Adjusts spacing to ensure icons are aligned
@@ -49,7 +58,7 @@ require('blink.cmp').setup({
                 local before = vim.fn.getcmdline():sub(1, vim.fn.getcmdpos() - 1)
                 local word_start = #before - #before:match('[%w_%-]*$')
                 local left = math.floor((vim.o.columns - (dialog.width + 2)) / 2)
-                return { dialog.row + 2, left - word_start + CMDLINE_MENU_SHIFT }
+                return { dialog.row, left - word_start + CMDLINE_MENU_SHIFT }
             end,
         },
     },
@@ -123,16 +132,37 @@ require('colorful-menu').setup({
     max_width = 60,
 })
 
--- The menu is as wide as the cmdline popup while a cmdline is open.
+-- While a cmdline is open the menu is as wide as the popup and its top edge
+-- (├──┤) replaces the popup's bottom edge, so the two read as one box.
 do
     local menu = require('blink.cmp.completion.windows.menu')
+    local normal_border = menu.win.config.border
     local group = vim.api.nvim_create_augroup('blink_cmdline_menu', { clear = true })
     vim.api.nvim_create_autocmd('CmdlineEnter', {
         group = group,
-        callback = function() menu.win.config.min_width = dialog.width + 2 end,
+        callback = function()
+            menu.win.config.min_width = dialog.width + 2
+            menu.win.config.border = dialog.joined_border
+        end,
     })
     vim.api.nvim_create_autocmd('CmdlineLeave', {
         group = group,
-        callback = function() menu.win.config.min_width = 15 end,
+        callback = function()
+            menu.win.config.min_width = 15
+            menu.win.config.border = normal_border
+            vim.schedule(function() require('blink.cmp').hide() end)
+        end,
     })
 end
+
+-- The search menu (blink) and the `:` menu (noice) share border and selection colours
+local function link_menu_highlights()
+    vim.api.nvim_set_hl(0, 'BlinkCmpMenuBorder', { link = 'FloatBorder' })
+    vim.api.nvim_set_hl(0, 'BlinkCmpMenuSelection', { link = 'PmenuSel' })
+    vim.api.nvim_set_hl(0, 'NoicePopupmenuSelected', { link = 'PmenuSel' })
+end
+link_menu_highlights()
+vim.api.nvim_create_autocmd('ColorScheme', {
+    group = vim.api.nvim_create_augroup('blink_menu_highlights', { clear = true }),
+    callback = link_menu_highlights,
+})

@@ -90,11 +90,11 @@ noice.setup({
         -- Sits right under the cmdline popup (3 rows tall) at the same
         -- width, so the two read as one box
         cmdline_popupmenu = {
-            position = { row = dialog.row + 3, col = "50%" },
+            position = { row = dialog.row + 2, col = "50%" },
             size = { width = dialog.width, height = "auto", max_height = 12 },
             -- the scrollbar track stays full height when the list shrinks to one row
             scrollbar = false,
-            border = { style = "rounded", padding = { 0, 1 } },
+            border = { style = dialog.joined_border, padding = { 0, 1 } },
         },
         toast = {
             view = "notify",

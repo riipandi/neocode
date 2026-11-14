@@ -17,4 +17,7 @@ M.keys = {
     ["<S-Tab>"] = { "list_up", mode = { "i", "n" } },
 }
 
+-- Rounded border whose top edge joins the box above it.
+M.joined_border = { "├", "─", "┤", "│", "╯", "─", "╰", "│" }
+
 return M

@@ -51,7 +51,14 @@ end
 function M.buffers()
     Snacks.picker.buffers({
         layout = { preset = "buffers" },
+        prompt = " ",
         win = { input = { keys = require("dialog").keys }, list = { keys = require("dialog").keys } },
+        -- pinned buffers first, then by relevance (or last use while the query is empty)
+        transform = function(item)
+            item.pin = item.buf and M.is_pinned(item.buf) and 1 or 0
+        end,
+        sort = { fields = { "pin:desc", "score:desc", "idx" } },
+        matcher = { sort_empty = true },
         -- the pin gets its own column, so rows stay aligned
         format = function(item, picker)
             local ret = Snacks.picker.format.buffer(item, picker)

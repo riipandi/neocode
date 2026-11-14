@@ -389,6 +389,7 @@ vim.ui.select = function(items, opts, on_choice)
         format_item = function(item) return tostring(format_item(item)) end,
         snacks = {
             focus = focus,
+            prompt = " ", -- one space of padding; the "" prefix is the Command Center's
             layout = { preset = "select", layout = { width = width, row = row } },
             win = { input = { keys = dialog.keys }, list = { keys = dialog.keys } },
         },
