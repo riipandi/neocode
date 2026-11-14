@@ -119,6 +119,9 @@ buffers, see LSP). `<leader>x` is the DAP debug group.
 
 ## Command palette
 
+In the `:` command line the suggestion menu opens while you type; `<Tab>` /
+`<S-Tab>` (or `<C-n>` / `<C-p>`) pick a suggestion, `<CR>` runs the line.
+
 | Action                    | Keys        |
 | ------------------------- | ----------- |
 | Insert a command (snacks input) | `<leader>;` |
@@ -135,7 +138,7 @@ buffers, see LSP). `<leader>x` is the DAP debug group.
 | Resource monitor           | `<leader>tr`   |
 | Toggle wrap (current window) | `<M-z>`, `<leader>tw`, `:ToggleWrap` |
 | Mason package picker       | `<leader>tm`   |
-| Mason TUI                  | `<leader>tM`   |
+| Mason TUI                  | `<leader>tM` (`[` `]`, `<Left>` `<Right>` or `1`-`5` switch tabs) |
 | Scratch buffer             | `<leader>.`    |
 | Select scratch buffer      | `<leader>S`    |
 | Update plugins             | `<leader>pu`   |
