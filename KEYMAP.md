@@ -290,6 +290,7 @@ Set `CODESTRAL_API_KEY` in the environment; `MISTRAL_API_KEY` is the fallback.
 | Toggle inline render | `<leader>mt`                |
 | Open link under cursor | `<C-CR>` (buffer-local) or `<leader>ml` |
 | Same, from anywhere  | `:MarkdownOpenLink`         |
+| Centered reading view (100 columns, toggle) | `<leader>mz` |
 
 The preview only renders outside insert mode. Code blocks keep their background
 and border; headings have no background and no sign; inline code is soft purple

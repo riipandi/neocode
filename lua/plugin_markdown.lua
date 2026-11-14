@@ -35,7 +35,13 @@ require("render-markdown").setup({
         style = "full",
         position = "left",
         width = "full",
-        border = "thin",
+        -- keeps the code off the left edge; the background still spans the window
+        left_pad = 2,
+        -- Every row of the block is background-coloured cells, so the band ends
+        -- at the same column on all of them. The "thin" ▀ █ glyph rows and the
+        -- language label row (also glyphs) ended one cell short of the code lines.
+        language = false,
+        border = "thick",
         inline = true,
     },
     dash = {
@@ -50,7 +56,8 @@ require("render-markdown").setup({
         -- between and comes from the same Unicode block as the other levels.
         icons = { "◉", "○", "◆", "◇" },
         left_pad = 0,
-        right_pad = 1,
+        -- The source already has a space after the marker; more would double it.
+        right_pad = 0,
     },
     checkbox = {
         enabled = true,
@@ -60,7 +67,8 @@ require("render-markdown").setup({
     quote = {
         enabled = true,
         icon = "▋",
-        repeat_linebreak = false,
+        -- the bar follows wrapped lines (they are indented by breakindent below)
+        repeat_linebreak = true,
     },
     pipe_table = {
         enabled = true,
@@ -115,13 +123,23 @@ local function inline_code_foreground_only()
     })
 end
 
+-- Quote and callout bodies read as normal text; the bar and the title carry
+-- the colour. The theme otherwise tints them like a string.
+local function quote_text_plain()
+    vim.api.nvim_set_hl(0, "@markup.quote.markdown", { link = "Normal" })
+end
+
 inline_code_foreground_only()
+quote_text_plain()
 
 -- Colourscheme changes reset highlight groups; re-apply the override.
 vim.api.nvim_create_autocmd("ColorScheme", {
     group = vim.api.nvim_create_augroup("markdown_inline_code", { clear = true }),
-    callback = inline_code_foreground_only,
-    desc = "Inline code without background",
+    callback = function()
+        inline_code_foreground_only()
+        quote_text_plain()
+    end,
+    desc = "Inline code without background, plain quote text",
 })
 
 -- ============================================================================
@@ -193,8 +211,12 @@ vim.api.nvim_create_autocmd("FileType", {
     callback = function()
         vim.opt_local.wrap = true
         vim.opt_local.linebreak = true
+        -- Wrapped lines align under the text of a list item or quote and
+        -- start at the margin in a plain paragraph: "list:-1" indents by the
+        -- length of what formatlistpat matches (quote prefix, then marker).
         vim.opt_local.breakindent = true
-        vim.opt_local.breakindentopt = "list:2,shift:0"
+        vim.opt_local.breakindentopt = "list:-1"
+        vim.opt_local.formatlistpat = [[^\s*\%(>\s*\)*\%(\%([-*+]\|\d\+[.)]\)\s\+\)\=]]
     end,
 })
 
@@ -226,3 +248,11 @@ vim.api.nvim_create_autocmd("VimResized", {
         pcall(vim.cmd, "RenderMarkdown enable")
     end,
 })
+-- ============================================================================
+-- Reading width
+-- ============================================================================
+-- Neovim cannot cap the soft-wrap width of a window, so the reading view is a
+-- centered 100-column zen window; the same key leaves it.
+vim.keymap.set("n", "<leader>mz", function()
+    Snacks.zen({ toggles = { dim = false }, win = { width = 100 } })
+end, { desc = "Markdown: centered reading view" })
