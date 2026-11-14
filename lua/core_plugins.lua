@@ -36,6 +36,27 @@ snacks.setup({
         sources = {
             explorer = {
                 hidden = true,
+                actions = {
+                    -- Enter on a file found by the search opens it. The stock confirm
+                    -- only reveals the item in the tree while a search is active. The search
+                    -- field is cleared afterwards, as Escape does.
+                    open_result = function(picker, item, action)
+                        if item and not item.dir and picker.input.filter.meta.searching then
+                            Snacks.picker.actions.jump(picker, item, action)
+                            -- jump defers itself when called from insert mode, so clear
+                            -- the search after it ran
+                            return vim.schedule(function()
+                                picker.input:set("")
+                                picker:find()
+                            end)
+                        end
+                        return require("snacks.explorer.actions").actions.confirm(picker, item, action)
+                    end,
+                },
+                win = {
+                    input = { keys = { ["<CR>"] = { "open_result", mode = { "n", "i" } } } },
+                    list = { keys = { ["<CR>"] = "open_result" } },
+                },
                 -- do not reveal the active buffer's file in the tree
                 follow_file = false,
                 -- sidebar preset defaults to 40 columns
