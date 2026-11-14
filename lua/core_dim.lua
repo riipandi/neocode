@@ -35,6 +35,7 @@ local function editing(win)
     local buf = vim.api.nvim_win_get_buf(win)
     return vim.api.nvim_win_get_config(win).relative == ""
         and vim.bo[buf].buftype == ""
+        and vim.bo[buf].buflisted
         and not vim.bo[buf].filetype:match("^snacks_")
 end
 
@@ -46,7 +47,26 @@ local function refresh()
     end
 end
 
+-- Deferred: a sidebar opens as a split that briefly shows the current buffer,
+-- and judging the windows at that moment would dim the real editing window.
+local pending = false
+local function refresh_soon()
+    if pending then return end
+    pending = true
+    vim.schedule(function()
+        pending = false
+        refresh()
+    end)
+end
+
 local group = vim.api.nvim_create_augroup("dim_inactive", { clear = true })
 vim.api.nvim_create_autocmd("ColorScheme", { group = group, callback = function() build(); refresh() end })
-vim.api.nvim_create_autocmd("VimEnter", { group = group, once = true, callback = build })
-vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, { group = group, callback = refresh })
+vim.api.nvim_create_autocmd("VimEnter", {
+    group = group,
+    once = true,
+    callback = function()
+        build()
+        refresh_soon()
+    end,
+})
+vim.api.nvim_create_autocmd({ "WinEnter", "BufWinEnter" }, { group = group, callback = refresh_soon })

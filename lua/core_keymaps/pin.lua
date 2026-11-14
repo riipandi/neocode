@@ -52,10 +52,13 @@ end
 function M.buffers()
     Snacks.picker.buffers({
         layout = { preset = "buffers" },
-        transform = function(item)
-            if item.buf and M.is_pinned(item.buf) then
-                item.flags = item.flags .. ICON
-            end
+        -- the pin gets its own column, so rows stay aligned
+        format = function(item, picker)
+            local ret = Snacks.picker.format.buffer(item, picker)
+            local pinned = item.buf and M.is_pinned(item.buf)
+            table.insert(ret, 4, { " " })
+            table.insert(ret, 5, { pinned and ICON or " ", pinned and "DiagnosticWarn" or "SnacksPickerBufFlags" })
+            return ret
         end,
     })
 end
