@@ -94,7 +94,7 @@ local function duplicate(picker)
     local is_dir = vim.fn.isdirectory(src) == 1
     local parent = vim.fs.dirname(src)
     local default_name = vim.fn.fnamemodify(src, ":t")
-    local prompt = is_dir and "Duplicate dir as: " or "Duplicate as: "
+    local prompt = is_dir and "Duplicate dir as" or "Duplicate as"
     Snacks.input({ prompt = prompt, default = default_name }, function(value)
         if not value or value == "" then return end
         local dst = parent .. "/" .. value

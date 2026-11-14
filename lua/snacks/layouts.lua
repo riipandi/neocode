@@ -6,23 +6,35 @@
 -- ============================================================================
 local M = {}
 
--- Small popup at top of screen for quick selections (e.g. : commands)
-M.select = {
-    hidden = { "preview" },
-    layout = {
-        backdrop = false,
-        width = 0.2,
-        min_width = 20,
-        height = 0.3,
-        min_height = 4,
-        box = "vertical",
-        border = "rounded",
-        title = "{title}",
-        title_pos = "center",
-        { win = "list",  border = "none" },
-        { win = "input", height = 1,     border = "top" },
-    },
-}
+local dialog = require("dialog")
+
+-- Single column, search field at the bottom: confirmations (vim.ui.select)
+-- and palettes. Palettes share
+-- the width and row of the input dialogs and the cmdline popup.
+local function column(height)
+    return {
+        layout = {
+            backdrop = false,
+            box = "vertical",
+            width = dialog.width + 2,
+            row = dialog.row,
+            height = height,
+            min_height = 4,
+            border = "rounded",
+            title = "{title}",
+            title_pos = "center",
+            { win = "list",  border = "none" },
+            { win = "input", height = 1,     border = "top" },
+        },
+    }
+end
+
+-- Confirmations are centered on screen; palettes stay on the shared row.
+M.select = column(0.3)
+M.select.hidden = { "preview" }
+M.select.layout.row = nil
+M.commands = column(0.55)
+M.list = M.commands
 
 -- Centered modal with preview (for buffer list, file finder, etc.)
 M.buffers = {
@@ -59,34 +71,6 @@ M.files = {
             { win = "input", height = 1,     border = "top" },
         },
         { win = "preview", title = "{preview}", width = 0.60, border = "rounded" },
-    },
-}
-
--- : commands picker
-M.commands = {
-    layout = {
-        box = "vertical",
-        width = 0.40,
-        height = 0.55,
-        border = "rounded",
-        title = "{title}",
-        title_pos = "center",
-        { win = "list",  border = "none" },
-        { win = "input", height = 1,     border = "top" },
-    },
-}
-
--- : command history picker
-M.cmd_history = {
-    layout = {
-        box = "vertical",
-        width = 0.40,
-        height = 0.55,
-        border = "rounded",
-        title = "{title}",
-        title_pos = "center",
-        { win = "list",  border = "none" },
-        { win = "input", height = 1,     border = "top" },
     },
 }
 

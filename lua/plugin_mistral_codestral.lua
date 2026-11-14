@@ -170,11 +170,11 @@ local function open_auth_picker()
         { label = "Validate — test API key against API", sub = "validate" },
     }
 
-    -- snacks.picker.select takes a flat list of items, a format_item
+    -- vim.ui.select takes a flat list of items, a format_item
     -- function (optional), and an on_choice callback. The default
     -- `format_item = tostring(item)` would render a table, which is
     -- why we provide a custom one.
-    snacks.picker.select(choices, {
+    vim.ui.select(choices, {
         prompt = "Mistral Codestral auth",
         format_item = function(item)
             return type(item) == "table" and (item.label or tostring(item)) or tostring(item)

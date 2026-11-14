@@ -140,20 +140,22 @@ vim.api.nvim_create_user_command('CleanNvim', function(opts)
     local cache_dir = vim.fn.stdpath('cache')
     local lock_file = vim.fn.stdpath('config') .. '/nvim-pack-lock.json'
     local what = opts.bang and ('the cache and ' .. lock_file) or cache_dir
-    if vim.fn.confirm('Delete ' .. what .. '?', '&Yes\n&No', 2) ~= 1 then
-        return
-    end
+    vim.ui.select({ 'Yes', 'No' }, { prompt = 'Delete ' .. what .. '?' }, function(choice)
+        if choice ~= 'Yes' then
+            return
+        end
 
-    -- Removing the lock file forgets every plugin pin (it is tracked in git)
-    if opts.bang and vim.uv.fs_stat(lock_file) then
-        vim.uv.fs_unlink(lock_file)
-        vim.notify('Deleted: nvim-pack-lock.json', vim.log.levels.INFO)
-    end
+        -- Removing the lock file forgets every plugin pin (it is tracked in git)
+        if opts.bang and vim.uv.fs_stat(lock_file) then
+            vim.uv.fs_unlink(lock_file)
+            vim.notify('Deleted: nvim-pack-lock.json', vim.log.levels.INFO)
+        end
 
-    for _, name in ipairs(vim.fn.readdir(cache_dir)) do
-        vim.fn.delete(cache_dir .. '/' .. name, 'rf')
-    end
-    vim.notify('Cleared: ' .. cache_dir .. '. Restart Neovim to regenerate.', vim.log.levels.INFO)
+        for _, name in ipairs(vim.fn.readdir(cache_dir)) do
+            vim.fn.delete(cache_dir .. '/' .. name, 'rf')
+        end
+        vim.notify('Cleared: ' .. cache_dir .. '. Restart Neovim to regenerate.', vim.log.levels.INFO)
+    end)
 end, { bang = true, desc = 'Clear the nvim cache; CleanNvim! also deletes the plugin lock file' })
 
 -- ============================================================================

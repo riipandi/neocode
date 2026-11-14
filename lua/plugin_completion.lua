@@ -20,6 +20,9 @@ require('lazydev').setup({
 -- ============================================================================
 -- Configuration for Rust crates management plugin
 -- ============================================================================
+local dialog = require('dialog')
+local CMDLINE_MENU_SHIFT = 1
+
 require('blink.cmp').setup({
     term = { enabled = false },
     keymap = {
@@ -39,6 +42,16 @@ require('blink.cmp').setup({
             selection = { auto_insert = false }
         },
         documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        menu = {
+            -- Search suggestions open right under the cmdline popup, left-aligned
+            -- with it, instead of following the word across the screen.
+            cmdline_position = function()
+                local before = vim.fn.getcmdline():sub(1, vim.fn.getcmdpos() - 1)
+                local word_start = #before - #before:match('[%w_%-]*$')
+                local left = math.floor((vim.o.columns - (dialog.width + 2)) / 2)
+                return { dialog.row + 2, left - word_start + CMDLINE_MENU_SHIFT }
+            end,
+        },
     },
 
     sources = {
@@ -109,3 +122,17 @@ require('colorful-menu').setup({
     -- beyond the truncation point are ignored. Default 60.
     max_width = 60,
 })
+
+-- The menu is as wide as the cmdline popup while a cmdline is open.
+do
+    local menu = require('blink.cmp.completion.windows.menu')
+    local group = vim.api.nvim_create_augroup('blink_cmdline_menu', { clear = true })
+    vim.api.nvim_create_autocmd('CmdlineEnter', {
+        group = group,
+        callback = function() menu.win.config.min_width = dialog.width + 2 end,
+    })
+    vim.api.nvim_create_autocmd('CmdlineLeave', {
+        group = group,
+        callback = function() menu.win.config.min_width = 15 end,
+    })
+end

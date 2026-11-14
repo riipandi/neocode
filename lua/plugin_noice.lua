@@ -5,6 +5,7 @@
 -- Also intercepts messages for toast-like notifications (undo/redo, search)
 
 local noice = require("noice")
+local dialog = require("dialog")
 
 noice.setup({
     cmdline = {
@@ -12,11 +13,11 @@ noice.setup({
         view = "cmdline_popup",
         opts = {
             position = {
-                row = 8,
+                row = dialog.row,
                 col = "50%",
             },
             size = {
-                width = 60,
+                width = dialog.width,
                 height = "auto",
                 max_height = 10,
             },
@@ -86,11 +87,13 @@ noice.setup({
     },
 
     views = {
-        -- Sits right under the cmdline popup (row 8, 3 rows tall) at the same
+        -- Sits right under the cmdline popup (3 rows tall) at the same
         -- width, so the two read as one box
         cmdline_popupmenu = {
-            position = { row = 11, col = "50%" },
-            size = { width = 60, height = "auto", max_height = 12 },
+            position = { row = dialog.row + 3, col = "50%" },
+            size = { width = dialog.width, height = "auto", max_height = 12 },
+            -- the scrollbar track stays full height when the list shrinks to one row
+            scrollbar = false,
             border = { style = "rounded", padding = { 0, 1 } },
         },
         toast = {

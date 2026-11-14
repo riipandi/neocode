@@ -38,7 +38,7 @@ function M.open(cat_name)
     M._instance = snacks.picker.pick({
         title = "Mason: " .. current_name .. " (" .. #items .. ")",
         items = items,
-        layout = { preset = "default" },
+        layout = { preset = "buffers" },
         format = format.format_item,
         preview = format.preview_item,
         actions = {
@@ -99,7 +99,6 @@ function M.open(cat_name)
                     or { "Install", "Details", "Cancel" }
                 vim.ui.select(choices, {
                     prompt = item.name .. "  [" .. item.cat .. "]",
-                    focus = "list",
                 }, function(choice)
                     if choice == "Install" then
                         local ok, err = pcall(function() item.pkg:install() end)

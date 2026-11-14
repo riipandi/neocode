@@ -13,6 +13,7 @@ vim.pack.add({
 })
 
 local snacks = require("snacks")
+local dialog = require("dialog")
 
 -- ============================================================================
 -- Snacks Setup
@@ -33,6 +34,9 @@ snacks.setup({
     -- Fuzzy picker (replaces fzf-lua/telescope; file finding replaced by fff.nvim)
     picker = {
         enabled = true,
+        -- vim.ui.select is defined below; snacks would otherwise replace it as
+        -- soon as the picker module loads (the explorer loads it at startup)
+        ui_select = false,
         sources = {
             explorer = {
                 hidden = true,
@@ -199,7 +203,8 @@ snacks.config.styles.input = {
     border = "rounded",
     title_pos = "center",
     height = 1,
-    width = 60,
+    width = dialog.width,
+    row = dialog.row,
     wo = {
         winhighlight = "NormalFloat:SnacksInputNormal,FloatBorder:SnacksInputBorder,FloatTitle:SnacksInputTitle",
         cursorline = false,
@@ -209,6 +214,16 @@ snacks.config.styles.input = {
         buftype = "prompt",
     },
 }
+
+-- Input prompts from plugins ("Rename to: ") get the same colon-free titles.
+local input = snacks.input.input
+snacks.input.input = function(opts, on_confirm)
+    opts = opts or {}
+    if opts.prompt then
+        opts = vim.tbl_extend("force", opts, { prompt = dialog.title(opts.prompt) })
+    end
+    return input(opts, on_confirm)
+end
 
 -- Enable smooth scrolling
 snacks.scroll.enable()
@@ -245,13 +260,8 @@ end, { desc = "Show buffer list" })
 -- ============================================================================
 
 snacks.keymap.set("n", "<C-g>", function()
-    local height = vim.o.lines
-    local row = math.floor((height - 3) / 2)
     snacks.input.input({
-        prompt = "Go to [line:col]: ",
-        win = {
-            row = row,
-        },
+        prompt = "Go to [line:col]",
     }, function(input)
         if input and input ~= "" then
             local line, col = input:match("(%d+):(%d+)")
@@ -269,13 +279,8 @@ snacks.keymap.set("n", "<C-g>", function()
 end, { desc = "Go to line or line:col" })
 
 snacks.keymap.set("n", "<leader>;", function()
-    local height = vim.o.lines
-    local row = math.floor((height - 3) / 2)
     snacks.input.input({
-        prompt = "Command: ",
-        win = {
-            row = row,
-        },
+        prompt = "Command",
     }, function(input)
         if input and input ~= "" then
             local ok, err = pcall(vim.cmd, input)
@@ -337,10 +342,8 @@ end, { desc = "Toggle floating terminal (cwd)" })
 -- opts.format_item, so it must be forwarded — without it snacks crashes on
 -- table items ("attempt to call method 'gsub'"). Escape cancels with nil.
 --
--- Mode handling: a dialog must not drag you into insert mode. Callers can set
--- `opts.focus = "list"` (confirmations do this); otherwise the focus follows
--- the mode you were in — insert stays in the input, everything else opens on
--- the list so normal mode is preserved.
+-- Focus: the cursor starts in the input (type to filter, <CR> to confirm); a
+-- caller can pass `opts.focus = "list"` to start on the list instead.
 vim.ui.select = function(items, opts, on_choice)
     opts = opts or {}
 
@@ -367,19 +370,28 @@ vim.ui.select = function(items, opts, on_choice)
         end
     end
 
-    local mode = vim.api.nvim_get_mode().mode
-    local inserting = mode:sub(1, 1) == "i" or mode:sub(1, 1) == "R"
+    local focus = opts.focus == "list" and "list" or "input"
 
-    local focus = opts.focus
-    if focus ~= "list" and focus ~= "input" then
-        focus = inserting and "input" or "list"
+    -- Confirmations stay narrow: as wide as the title or the longest choice
+    -- ("12. " prefix, borders, scrollbar), never past the shared dialog width.
+    local title = dialog.title(opts.prompt or "Select")
+    local widest = vim.fn.strdisplaywidth(title) + 6
+    for _, item in ipairs(items) do
+        widest = math.max(widest, vim.fn.strdisplaywidth(tostring(format_item(item))) + 8)
     end
+    local width = math.min(math.max(widest, 28), dialog.width + 2)
+    -- Centered vertically: rows = visible choices + input + separator + borders
+    local rows = math.max(math.min(#items, vim.o.lines * 0.8 - 10), 2) + 4
+    local row = math.max(math.floor((vim.o.lines - rows) / 2), 0)
 
     local ok, err = pcall(snacks.picker.select, items, {
-        prompt = opts.prompt or "Select",
+        prompt = title,
         format_item = function(item) return tostring(format_item(item)) end,
-        layout = { preset = "select" },
-        snacks = { focus = focus },
+        snacks = {
+            focus = focus,
+            layout = { preset = "select", layout = { width = width, row = row } },
+            win = { input = { keys = dialog.keys }, list = { keys = dialog.keys } },
+        },
     }, function(choice)
         on_choice(choice)
     end)

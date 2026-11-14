@@ -39,8 +39,7 @@ local function smart_close()
 
         if vim.bo.modified then
             vim.ui.select({ 'Save & Close', 'Close without saving', 'Cancel' }, {
-                prompt = 'Buffer has unsaved changes:',
-                focus = 'list',
+                prompt = 'Buffer has unsaved changes',
             }, function(choice)
                 if choice == 'Save & Close' then
                     local ok, err = pcall(vim.cmd, 'w')
@@ -94,7 +93,7 @@ local function save_file()
 
     if vim.api.nvim_buf_get_name(0) == "" then
         local cwd = vim.uv.cwd() or vim.fn.getcwd()
-        vim.ui.input({ prompt = "Save as: ", default = cwd .. "/", completion = "file" }, function(input)
+        vim.ui.input({ prompt = "Save as", default = cwd .. "/", completion = "file" }, function(input)
             if not input or input == "" then return end
             write("write " .. vim.fn.fnameescape(input), vim.fn.fnamemodify(input, ":~:."))
         end)

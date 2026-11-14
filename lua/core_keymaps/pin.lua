@@ -31,8 +31,7 @@ function M.confirm_close(buf, close)
         return close()
     end
     vim.ui.select({ "Close pinned buffer", "Cancel" }, {
-        prompt = "Buffer is pinned:",
-        focus = "list",
+        prompt = "Buffer is pinned",
     }, function(choice)
         if choice == "Close pinned buffer" then
             close()
@@ -52,6 +51,7 @@ end
 function M.buffers()
     Snacks.picker.buffers({
         layout = { preset = "buffers" },
+        win = { input = { keys = require("dialog").keys }, list = { keys = require("dialog").keys } },
         -- the pin gets its own column, so rows stay aligned
         format = function(item, picker)
             local ret = Snacks.picker.format.buffer(item, picker)

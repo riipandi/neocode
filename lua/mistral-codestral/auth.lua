@@ -318,15 +318,14 @@ function M.auth_command(args)
     elseif subcommand == "set" then
         local key = vim.fn.inputsecret("Enter your Mistral API key: ")
         if key and key ~= "" then
-            local choice = vim.fn.confirm(
-                "Where to save?",
-                "&Keyring\n&Skip (env var only)",
-                1
-            )
-            if choice == 1 then
-                M.save_to_keyring(key)
-            end
-            M.clear_cache()
+            vim.ui.select({ "Keyring", "Skip (env var only)" }, {
+                prompt = "Where to save the key",
+            }, function(choice)
+                if choice == "Keyring" then
+                    M.save_to_keyring(key)
+                end
+                M.clear_cache()
+            end)
         end
     elseif subcommand == "clear" then
         M.clear_cache()

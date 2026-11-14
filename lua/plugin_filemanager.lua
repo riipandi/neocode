@@ -83,6 +83,7 @@ local function show_marks_picker()
     end
 
     snacks.picker.pick({
+        layout = { preset = "list", preview = false },
         title = (swap_from and ("Swap from #" .. swap_from) or "Marks") .. " (" .. #ms.marks .. ")",
         items = items,
         format = function(item)
