@@ -382,15 +382,9 @@ local function generate_commit_message(opts)
     --   2. working tree (i.e. `git diff`) when nothing is staged
     --   3. (banged) the working tree only
     local function run_git(args)
-        local h = io.popen(
-            string.format("cd %s && git %s 2>/dev/null", vim.fn.shellescape(repo_root), args)
-        )
-        if not h then
-            return ""
-        end
-        local out = h:read("*a")
-        h:close()
-        return out or ""
+        local cmd = { "git", "-C", repo_root }
+        vim.list_extend(cmd, vim.split(args, " ", { trimempty = true }))
+        return vim.system(cmd, { text = true }):wait().stdout or ""
     end
 
     local diff

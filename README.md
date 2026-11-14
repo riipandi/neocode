@@ -58,21 +58,20 @@ rm -fr ~/.local/state/nvim
 rm -fr ~/.cache/nvim
 ```
 
-````
 ## Layout
 
-| Path                                     | Contents                                                    |
-| ---------------------------------------- | ----------------------------------------------------------- |
-| `init.lua`                               | Options, leader keys, module load order                     |
-| `lua/core_*.lua`                         | Theme, LSP, autocmds, commands, health, plugin setup, scroll |
-| `lua/core_keymaps/*.lua`                 | Keymaps by topic (`general`, `scroll`, `folds`, `buffer`, `quit`, `tools`, `cmdline`, `explorer`, `picker`, `ai`, `undo`) |
-| `lua/plugin_*.lua`                       | One file per plugin group (editor, completion, treesitter, vcs, lsp tooling, markdown, AI) |
-| `lua/language_*.lua`                     | Per-language LSP/formatter setup (Rust, TypeScript, Go, Elixir, Zig, SQL, Terraform, Protobuf, Astro, Lit, Tailwind) |
-| `lua/mistral-codestral/`                 | Local fork of the Codestral client                          |
-| `lua/mason_pkg/`                         | Mason package picker                                        |
-| `lua/snacks/`                            | Picker layouts and the swpui wrapper                        |
-| `ghostty/`, `starship.toml`, `rio/`       | Terminal emulator and prompt configuration                  |
-| `KEYMAP.md`, `nvim-pack-lock.json`       | Keymap reference and plugin pin file                        |
+| Path                                | Contents                                                                                                                                                              |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `init.lua`                          | Options, leader keys, module load order                                                                                                                               |
+| `lua/core_*.lua`                    | Theme, LSP, autocmds, commands, plugin setup, scroll, splash, dim inactive splits                                                                                     |
+| `lua/core_keymaps/*.lua`            | Keymaps by topic (`general`, `scroll`, `folds`, `buffer`, `quit`, `tools`, `cmdline`, `explorer`, `picker`, `ai`, `undo`)                                             |
+| `lua/plugin_*.lua`                  | One file per plugin group (editor, completion, treesitter, vcs, lsp tooling, markdown, AI)                                                                            |
+| `lua/language_*.lua`                | Per-language LSP setup (Rust, TypeScript/Deno, Go, Elixir, Tailwind; `language_servers.lua` enables Astro, Protobuf, SQL, Terraform, Zig with the lspconfig defaults) |
+| `lua/mistral-codestral/`            | Local fork of the Codestral client                                                                                                                                    |
+| `lua/mason_pkg/`                    | Mason package picker                                                                                                                                                  |
+| `lua/snacks/`                       | Picker layouts and the swpui wrapper                                                                                                                                  |
+| `ghostty/`, `starship.toml`, `rio/` | Terminal emulator and prompt configuration                                                                                                                            |
+| `KEYMAP.md`, `nvim-pack-lock.json`  | Keymap reference and plugin pin file                                                                                                                                  |
 
 Load order matters in one place: `core_scroll` is required before
 `snacks.nvim`, so its `WinScrolled` handler runs first and the fold/scroll
@@ -126,28 +125,30 @@ These are the deliberate choices that differ from a stock configuration.
 ## Language support
 
 LSP servers are configured in `lua/core_lsp.lua` and `lua/language_*.lua`,
-formatters in `lua/plugin_editor.lua` (conform). Servers marked *on demand* are
-enabled when the matching filetype opens.
+formatters in `lua/plugin_editor.lua` (conform). Every server is configured and
+enabled once at startup (commands, filetypes and root markers come from
+nvim-lspconfig; blink.cmp capabilities from `plugin_completion.lua`) and starts
+when a matching buffer opens.
 
-| Language              | LSP                              | Formatter            |
-| --------------------- | -------------------------------- | -------------------- |
-| Lua (this config)     | `lua_ls` + lazydev types         | `stylua`             |
-| TypeScript / JS / JSX | `ts_ls`, `oxlint`, `oxfmt` (LSP) (`deno` when a `deno.json` exists) | `oxfmt` |
-| Astro / Vue / Svelte / Lit | `ts_ls`, `oxlint`, `oxfmt` (LSP); `astro` on demand | `oxfmt` |
-| Tailwind CSS          | `tailwindcss`                    | —                    |
-| Rust                  | `rust-analyzer` (clippy on save), crates.nvim | `rustfmt` |
-| Go                    | `gopls` via go.nvim, `golangci-lint` | `goimports` on save (go.nvim) |
-| Elixir / Phoenix      | `elixirls`                       | `mix format`         |
-| Zig                   | `zls`                            | `zig fmt`            |
-| SQL                   | `sqls`                           | `sql-formatter`      |
-| Protobuf              | `buf_ls`                         | —                    |
-| Terraform / HCL       | `terraform_ls`                   | `terraform fmt`      |
-| Python                | `pylsp`                          | `black`              |
-| Shell                 | `bashls`                         | `shfmt`              |
-| HTML                  | `html`, `superhtml` (when installed) | `oxfmt`          |
-| CSS / JSON / Docker   | `cssls`, `jsonls`, `dockerls`    | `oxfmt`              |
-| YAML / TOML / TeX     | `yamlls`, `taplo`, `texlab`      | `oxfmt` (TeX: none)  |
-| Markdown              | render-markdown preview          | `oxfmt`              |
+| Language                   | LSP                                                                 | Formatter                     |
+| -------------------------- | ------------------------------------------------------------------- | ----------------------------- |
+| Lua (this config)          | `lua_ls` + lazydev types                                            | `stylua`                      |
+| TypeScript / JS / JSX      | `ts_ls`, `oxlint`, `oxfmt` (LSP) (`deno` when a `deno.json` exists) | `oxfmt`                       |
+| Astro / Vue / Svelte / Lit | `ts_ls`, `oxlint`, `oxfmt` (LSP); `astro`                           | `oxfmt`                       |
+| Tailwind CSS               | `tailwindcss`                                                       | —                             |
+| Rust                       | `rust-analyzer` (clippy on save), crates.nvim                       | `rustfmt`                     |
+| Go                         | `gopls` via go.nvim, `golangci-lint`                                | `goimports` on save (go.nvim) |
+| Elixir / Phoenix           | `expert` (`elixirls` when expert is absent)                         | `mix format`                  |
+| Zig                        | `zls`                                                               | `zig fmt`                     |
+| SQL                        | `sqls`                                                              | `sql-formatter`               |
+| Protobuf                   | `buf_ls`                                                            | —                             |
+| Terraform / HCL            | `terraformls`                                                       | `terraform fmt`               |
+| Python                     | `pylsp`                                                             | `black`                       |
+| Shell                      | `bashls`                                                            | `shfmt`                       |
+| HTML                       | `html`, `superhtml` (when installed)                                | `oxfmt`                       |
+| CSS / JSON / Docker        | `cssls`, `jsonls`, `dockerls`                                       | `oxfmt`                       |
+| YAML / TOML / TeX          | `yamlls`, `taplo`, `texlab`                                         | `oxfmt` (TeX: none)           |
+| Markdown                   | render-markdown preview                                             | `oxfmt`                       |
 
 `oxfmt` covers every filetype it can parse: js/ts/jsx/tsx, json, jsonc, json5,
 html, css, scss, less, vue, astro, svelte, lit, graphql, handlebars, markdown,
@@ -169,32 +170,31 @@ Mason.
 
 ## Plugins
 
-| Plugin                       | Role                                                        |
-| ---------------------------- | ----------------------------------------------------------- |
-| **snacks.nvim**              | Explorer, picker, notifier, indent, terminal, lazygit, input, scope |
-| **fff**                      | File and grep search (Rust binary)                          |
-| **noice.nvim** + **nui.nvim**| Floating cmdline and message routing                        |
-| **blink.cmp** + **blink.lib**| Completion (`lua` fuzzy engine; capabilities for every LSP) |
-| **friendly-snippets**        | Snippet source for blink.cmp                                |
-| **lazydev.nvim**             | Neovim API types for `lua_ls`                               |
-| **colorful-menu.nvim**       | Completion menu highlighting                                |
-| **nvim-treesitter**          | Syntax highlighting, folds, indent                          |
-| **render-markdown.nvim**     | Inline markdown preview                                     |
-| **conform.nvim**             | Formatting (save and manual)                                |
-| **nvim-lspconfig**           | LSP configs used by `vim.lsp.config`                        |
-| **mason.nvim**, **mason-lspconfig**, **mason-tool-installer** | Tool installation |
-| **lsp_signature.nvim** | Signature help (LSP progress is a snacks toast, see `core_lsp.lua`) |
-| **trouble.nvim**             | Diagnostics list                                            |
-| **gitsigns.nvim**            | Gutter hunks and hunk actions                               |
-| **miniharp.nvim**            | File marks (picker UI supplied by snacks)                   |
-| **multicursor.nvim**         | Multiple cursors                                            |
-| **nvim-autopairs**           | Bracket and quote pairing                                   |
-| **todo-comments.nvim**, **urlview.nvim**, **cloak.nvim** | TODO highlights, URL list, secret masking |
-| **which-key.nvim**           | Keymap hints                                                |
-| **lualine.nvim**, **mini.icons**, **nvim-web-devicons** | Statusline and icons          |
-| **transparent.nvim**         | Transparent background groups                               |
-| **go.nvim**, **crates.nvim** | Go and Cargo tooling                                        |
-| **plenary.nvim**             | Lua utility library (dependency)                            |
+| Plugin                                                        | Role                                                                |
+| ------------------------------------------------------------- | ------------------------------------------------------------------- |
+| **snacks.nvim**                                               | Explorer, picker, notifier, indent, terminal, lazygit, input, scope |
+| **fff**                                                       | File and grep search (Rust binary)                                  |
+| **noice.nvim** + **nui.nvim**                                 | Floating cmdline and message routing                                |
+| **blink.cmp** + **blink.lib**                                 | Completion (`lua` fuzzy engine; capabilities for every LSP)         |
+| **friendly-snippets**                                         | Snippet source for blink.cmp                                        |
+| **lazydev.nvim**                                              | Neovim API types for `lua_ls`                                       |
+| **colorful-menu.nvim**                                        | Completion menu highlighting                                        |
+| **nvim-treesitter**                                           | Syntax highlighting, folds, indent                                  |
+| **render-markdown.nvim**                                      | Inline markdown preview                                             |
+| **conform.nvim**                                              | Formatting (save and manual)                                        |
+| **nvim-lspconfig**                                            | LSP configs used by `vim.lsp.config`                                |
+| **mason.nvim**, **mason-lspconfig**, **mason-tool-installer** | Tool installation                                                   |
+| **trouble.nvim**                                              | Diagnostics list                                                    |
+| **gitsigns.nvim**                                             | Gutter hunks and hunk actions                                       |
+| **miniharp.nvim**                                             | File marks (picker UI supplied by snacks)                           |
+| **multicursor.nvim**                                          | Multiple cursors                                                    |
+| **nvim-autopairs**                                            | Bracket and quote pairing                                           |
+| **todo-comments.nvim**, **urlview.nvim**, **cloak.nvim**      | TODO highlights, URL list, secret masking                           |
+| **which-key.nvim**                                            | Keymap hints                                                        |
+| **lualine.nvim**, **mini.icons**, **nvim-web-devicons**       | Statusline and icons                                                |
+| **transparent.nvim**                                          | Transparent background groups                                       |
+| **go.nvim**, **crates.nvim**                                  | Go and Cargo tooling                                                |
+| **plenary.nvim**                                              | Lua utility library (dependency)                                    |
 
 `mdkite.nvim` and `kitehost.nvim` are still pinned in `nvim-pack-lock.json` but
 nothing requires them; the markdown preview is render-markdown.
@@ -204,23 +204,22 @@ file records the commit each plugin is pinned to.
 
 ## Commands
 
-| Command                              | Purpose                                             |
-| ------------------------------------ | --------------------------------------------------- |
-| `:MasonPkg [category]`               | Mason picker with category cycling (`LSP`, `Formatter`, `Linter`, `DAP`, `Runtime`, `Compiler`, `All`) |
-| `:Format`, `:FormatCode`             | Format the buffer with conform                      |
-| `:LspInfo`, `:LspRestart`            | Show or restart LSP clients                         |
-| `:ConformInfo`                       | Which formatters apply to this buffer               |
-| `:Update`                            | Update plugins                                      |
-| `:ReloadConfig`                      | Reload config modules without restarting            |
-| `:CleanNvim`                         | Reset cache and lock file                           |
-| `:HealthCheck`                       | Version, tools, LSP, pack-lock                      |
-| `:checkhealth kickstart.nvim`        | Neovim version and required executables             |
-| `:KeyProbe`                          | Show the notation Neovim receives for the next key  |
-| `:MarkdownOpenLink`                  | Open the link under the cursor                      |
-| `:MistralCodestralAuth`              | Auth picker (subcommands `status`, `set`, `clear`, `validate`) |
-| `:MistralCodestralComplete`, `:MistralCodestralToggle` | Manual completion, on/off switch  |
-| `:MistralCodestralVirtualComplete`, `:MistralCodestralVirtualClear` | Ghost preview control |
-| `:MistralCodestralHealth`, `:MistralCodestralCommitMsg[!]` | Health report, commit message from the diff |
+| Command                                                             | Purpose                                                                                                |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `:MasonPkg [category]`                                              | Mason picker with category cycling (`LSP`, `Formatter`, `Linter`, `DAP`, `Runtime`, `Compiler`, `All`) |
+| `:Format`, `:FormatCode`                                            | Format the buffer with conform                                                                         |
+| `:LspInfo`, `:LspRestart`                                           | Show or restart LSP clients                                                                            |
+| `:ConformInfo`                                                      | Which formatters apply to this buffer                                                                  |
+| `:Update`                                                           | Update plugins                                                                                         |
+| `:ReloadConfig`                                                     | Reload config modules without restarting                                                               |
+| `:CleanNvim[!]`                                                     | Clear the cache (`!` also deletes the lock file), asks first                                           |
+| `:HealthCheck`                                                      | Version, tools, LSP, pack-lock                                                                         |
+| `:KeyProbe`                                                         | Show the notation Neovim receives for the next key                                                     |
+| `:MarkdownOpenLink`                                                 | Open the link under the cursor                                                                         |
+| `:MistralCodestralAuth`                                             | Auth picker (subcommands `status`, `set`, `clear`, `validate`)                                         |
+| `:MistralCodestralComplete`, `:MistralCodestralToggle`              | Manual completion, on/off switch                                                                       |
+| `:MistralCodestralVirtualComplete`, `:MistralCodestralVirtualClear` | Ghost preview control                                                                                  |
+| `:MistralCodestralHealth`, `:MistralCodestralCommitMsg[!]`          | Health report, commit message from the diff                                                            |
 
 ## AI completion (Mistral Codestral)
 
@@ -238,7 +237,7 @@ wired to blink.cmp only (no nvim-cmp code paths). Differences from upstream:
 
 ```sh
 export CODESTRAL_API_KEY="your-key-here"
-````
+```
 
 The lualine status component shows the current state (`─ idle`,
 `◐ waiting 1.2s`, `● ready`, `✖ error`) and runs `:MistralCodestralToggle` when

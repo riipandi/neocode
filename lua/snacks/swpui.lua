@@ -88,12 +88,8 @@ function M.health()
     Snacks.health[ok and "ok" or "error"]("{swpui} %sinstalled", ok and "" or "not ")
 
     if ok then
-        local handle = io.popen("swp --version 2>&1")
-        if handle then
-            local version = handle:read("*a")
-            handle:close()
-            Snacks.health.ok("swpui version: %s", vim.trim(version))
-        end
+        local res = vim.system({ "swp", "--version" }, { text = true }):wait()
+        Snacks.health.ok("swpui version: %s", vim.trim((res.stdout or "") .. (res.stderr or "")))
     end
 end
 

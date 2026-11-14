@@ -76,13 +76,7 @@ local function command_exists(cmd)
     if not cmd:match("^[a-zA-Z0-9_-]+$") then
         return false
     end
-    local handle = io.popen("command -v " .. cmd .. " 2>/dev/null")
-    if not handle then
-        return false
-    end
-    local result = handle:read("*a")
-    handle:close()
-    return result and result ~= ""
+    return vim.fn.executable(cmd) == 1
 end
 
 -- Method: env var

@@ -16,8 +16,7 @@
 --   Enter            → action sub-menu (install/uninstall/details)
 -- ============================================================================
 local snacks = require("snacks")
-local picker = require("mason_pkg.picker")
-local util = require("mason_pkg.util")
+-- mason_pkg.* pulls in mason-registry; load it on first use, not at startup
 
 -- :MasonPkg [category]
 vim.api.nvim_create_user_command("MasonPkg", function(opts)
@@ -25,11 +24,11 @@ vim.api.nvim_create_user_command("MasonPkg", function(opts)
     local filter = raw ~= "" and raw or nil
     -- "all" is treated as no filter
     if filter and filter:lower() == "all" then filter = nil end
-    picker.open(filter)
+    require("mason_pkg.picker").open(filter)
 end, {
     desc = "Browse & manage Mason packages",
     nargs = "?",
-    complete = function() return util.CATEGORIES end,
+    complete = function() return require("mason_pkg.util").CATEGORIES end,
 })
 
 -- Keymaps

@@ -74,6 +74,10 @@ require('blink.cmp').setup({
     signature = { enabled = true },
 })
 
+-- Every server gets blink's capabilities from here; language files and
+-- core_lsp.lua do not repeat it.
+vim.lsp.config('*', { capabilities = require('blink.cmp').get_lsp_capabilities() })
+
 -- ============================================================================
 -- Colorful-menu, bring enjoyment to your auto completion.
 -- ============================================================================

@@ -65,140 +65,28 @@ require('which-key').setup({
         },
     },
 
+    -- Groups only: every mapping carries its own `desc`, which-key reads it
+    -- from there, so keys are described in one place (next to the mapping).
     spec = {
-        -- Built-in prefix groups (helix preset)
-        { "g",          group = "Goto",                       mode = "n" },
-        { "z",          group = "Fold",                       mode = "n" },
-        { "[",          group = "Prev",                       mode = "n" },
-        { "]",          group = "Next",                       mode = "n" },
-
-        -- Buffer
-        { '<leader>b',  group = 'Buffer',                     mode = "n" },
-        { '<leader>bb', desc = 'Buffer picker',               mode = "n" },
-        { '<leader>bd', desc = 'Delete buffer',               mode = "n" },
-        { '<leader>bo', desc = 'Close others',                mode = "n" },
-
-        -- Diagnostic
-        { '<leader>d',  group = 'Diagnostic',                 mode = "n" },
-        { '<leader>dd', desc = 'Diagnostics float',           mode = "n" },
-        { '<leader>dl', desc = 'Set loclist',                 mode = "n" },
-        { '<leader>dn', desc = 'Next diagnostic',             mode = "n" },
-        { '<leader>dp', desc = 'Previous diagnostic',         mode = "n" },
-        -- Debug (DAP)
-        { '<leader>x',  group = 'Debug (DAP)',                mode = "n" },
-        { '<leader>xx', desc = 'Continue/start',              mode = "n" },
-        { '<leader>xb', desc = 'Toggle breakpoint',           mode = "n" },
-        { '<leader>xo', desc = 'Step over',                   mode = "n" },
-        { '<leader>xi', desc = 'Step into',                   mode = "n" },
-        { '<leader>xO', desc = 'Step out',                    mode = "n" },
-        { '<leader>xq', desc = 'Terminate',                   mode = "n" },
-        { '<leader>D',  desc = 'Delete without yanking',      mode = { 'n', 'v' } },
-
-        -- File
-        { '<leader>f',  group = 'File',                       mode = "n" },
-        { '<leader>ff', desc = 'Search word (FFF)',           mode = "n" },
-        { '<leader>fm', desc = 'Format file',                 mode = "n" },
-        { '<C-f>',      desc = 'Format file',                 mode = "n" },
-        { '<leader>fw', desc = 'Live grep (FFF)',             mode = "n" },
-        { '<leader>fz', desc = 'Fuzzy grep (FFF)',            mode = "n" },
-
-        -- Git
-        { '<leader>g',  group = 'Git',                        mode = "n" },
-        { '<leader>gg', desc = 'LazyGit',                     mode = "n" },
-        { '<leader>gp', desc = 'Push',                        mode = "n" },
-        { '<leader>gs', desc = 'Status',                      mode = "n" },
-        { '<leader>gt', desc = 'Go: test (file)',             mode = "n" },
-        { '<leader>gT', desc = 'Go: test (all)',              mode = "n" },
-
-        -- AI / Mistral Codestral (prefix <leader>i = "intelligence")
-        { '<leader>i',  group = 'AI / Mistral',               mode = "n" },
-        { '<leader>ic', desc = 'Manual complete',             mode = "n" },
-        { '<leader>it', desc = 'Toggle AI on/off',            mode = "n" },
-        { '<leader>iv', desc = 'Trigger ghost preview',       mode = "n" },
-        { '<leader>ix', desc = 'Clear ghost preview',         mode = "n" },
-        { '<leader>iA', desc = 'Auth manager',                mode = "n" },
-        { '<leader>ih', desc = 'Health check',                mode = "n" },
-        { '<leader>ig', desc = 'Generate commit message',     mode = "n" },
-        { '<leader>ie', desc = 'Explain selected completion', mode = "n" },
-
-        -- Git Hunk
-        { '<leader>h',  group = 'Git Hunk',                   mode = { 'n', 'v' } },
-        { '<leader>hb', desc = 'Blame line',                  mode = "n" },
-        { '<leader>hd', desc = 'Diff (index)',                mode = "n" },
-        { '<leader>hD', desc = 'Diff (commit)',               mode = "n" },
-        { '<leader>hp', desc = 'Preview hunk',                mode = "n" },
-        { '<leader>hr', desc = 'Reset hunk',                  mode = { 'n', 'v' } },
-        { '<leader>hR', desc = 'Reset buffer',                mode = "n" },
-        { '<leader>hs', desc = 'Stage hunk',                  mode = { 'n', 'v' } },
-        { '<leader>hS', desc = 'Stage buffer',                mode = "n" },
-        { '<leader>hu', desc = 'Undo stage hunk',             mode = "n" },
-
-        -- LSP
-        { '<leader>ca', desc = 'Code action',                 mode = "n" },
-        { '<leader>rn', desc = 'Rename',                      mode = "n" },
-
-        -- Marks
-        { '<leader>m',  group = 'Marks / Markdown',           mode = "n" },
-        { '<leader>ma', desc = 'Toggle file mark',            mode = "n" },
-        { '<leader>mc', desc = 'Clear marks',                 mode = "n" },
-        { '<leader>mp', desc = 'Previous mark',               mode = "n" },
-        { '<leader>mt', desc = 'Markdown: render toggle',     mode = "n" },
-        { '<leader>ml', desc = 'Markdown: open link',         mode = "n" },
-
-        -- Folds
-        { '<S-CR>',     desc = 'Toggle fold under cursor',    mode = "n" },
-        { '<M-CR>',     desc = 'Toggle fold (Option+Enter)',  mode = "n" },
-        { '<M-S-CR>',   desc = 'Toggle all folds',            mode = "n" },
-
-        -- Plugins
-        { '<leader>p',  group = 'Plugins',                    mode = "n" },
-        { '<leader>pu', desc = 'Update plugins',              mode = "n" },
-
-        -- Quit
-        { '<leader>q',  group = 'Quit',                       mode = "n" },
-        { '<leader>qq', desc = 'Quit all',                    mode = "n" },
-
-        -- Search
-        { '<leader>s',  group = 'Search',                     mode = "n" },
-        { '<leader>sr', desc = 'swpui',                       mode = "n" },
-        { '<leader>sc', desc = 'Clear search',                mode = "n" },
-        { '<leader>ss', desc = 'Multi-cursor: skip match',    mode = { 'n', 'x' } },
-
-        -- Tools
-        { '<leader>t',  group = 'Tools',                      mode = "n" },
-        { '<leader>tb', desc = 'Toggle blame',                mode = "n" },
-        { '<leader>tD', desc = 'Preview deleted (inline)',     mode = "n" },
-        { '<leader>tm', desc = 'Mason: packages',             mode = "n" },
-        { '<leader>tM', desc = 'Mason: TUI',                  mode = "n" },
-        { '<leader>tr', desc = 'Resource monitor',            mode = "n" },
-        { '<leader>tt', desc = 'Terminal',                    mode = "n" },
-        { '<leader>tT', desc = 'Terminal (cwd)',              mode = "n" },
-
-        -- Window
-        { '<leader>w',  group = 'Window',                     mode = "n" },
-        { '<leader>ws', desc = 'Split horizontal',            mode = "n" },
-        { '<leader>wv', desc = 'Split vertical',              mode = "n" },
-        { '<leader>ww', desc = 'Previous window',             mode = "n" },
-        { '<leader>wq', desc = 'Close window',                mode = "n" },
-        { '<leader>w=', desc = 'Equalize splits',             mode = "n" },
-
-        -- Scratch
-        { '<leader>.',  desc = 'Toggle scratch',              mode = "n" },
-        { '<leader>S',  desc = 'Select scratch',              mode = "n" },
-
-        -- Config
-        { '<leader>,',  desc = 'Edit config',                 mode = "n" },
-        { '<C-,>',      desc = 'Edit config',                 mode = "n" },
-        { '<leader>;',  desc = 'Command palette',             mode = "n" },
-        { '<leader>:',  desc = 'Command palette (all)',       mode = "n" },
-
-        -- Explorer
-        { '<leader>e',  desc = 'File explorer (toggle)',      mode = "n" },
-        { '<A-e>',      desc = 'File explorer (toggle focus)', mode = "n" },
-        { '<A-E>',      desc = 'File explorer (open/close)',  mode = "n" },
-        -- Visual mode
-        { "<leader>",   group = "Leader",                     mode = "v" },
-        { "g",          group = "Goto",                       mode = "v" },
+        { "g",         group = "Goto",           mode = { "n", "v" } },
+        { "z",         group = "Fold",           mode = "n" },
+        { "[",         group = "Prev",           mode = "n" },
+        { "]",         group = "Next",           mode = "n" },
+        { "<leader>",  group = "Leader",         mode = "v" },
+        { "<leader>b", group = "Buffer",         mode = "n" },
+        { "<leader>d", group = "Diagnostic",     mode = "n" },
+        { "<leader>f", group = "File",           mode = "n" },
+        { "<leader>g", group = "Git",            mode = "n" },
+        { "<leader>h", group = "Git Hunk",       mode = { "n", "v" } },
+        { "<leader>i", group = "AI / Mistral",   mode = "n" },
+        { "<leader>l", group = "Toggles",    mode = "n" },
+        { "<leader>m", group = "Marks / Markdown", mode = "n" },
+        { "<leader>p", group = "Plugins",        mode = "n" },
+        { "<leader>q", group = "Quit",           mode = "n" },
+        { "<leader>s", group = "Search",         mode = "n" },
+        { "<leader>t", group = "Tools",          mode = "n" },
+        { "<leader>w", group = "Window",         mode = "n" },
+        { "<leader>x", group = "Debug (DAP)",    mode = "n" },
     },
 
     -- Disable for certain filetypes

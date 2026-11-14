@@ -185,6 +185,7 @@ end
 -- ============================================================================
 
 autocmd("LspAttach", {
+    group = vim.api.nvim_create_augroup("lsp-keymaps", { clear = true }),
     callback = function(event)
         local opts = { buffer = event.buf }
 
@@ -228,15 +229,6 @@ vim.diagnostic.config {
     virtual_text = {
         source = "if_many",
         spacing = 2,
-        format = function(diagnostic)
-            local diagnostic_message = {
-                [vim.diagnostic.severity.ERROR] = diagnostic.message,
-                [vim.diagnostic.severity.WARN] = diagnostic.message,
-                [vim.diagnostic.severity.INFO] = diagnostic.message,
-                [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-        end,
     },
 }
 
@@ -288,21 +280,24 @@ end
 -- Enable LSP servers
 -- ============================================================================
 
+vim.lsp.config("lua_ls", {
+    settings = { Lua = { completion = { callSnippet = "Replace" } } },
+})
+
+-- ts_ls, oxlint, denols and tailwindcss: language_typescript.lua / language_tailwind.lua
+-- Astro, buf, sqls, terraformls, zls: language_servers.lua
 vim.lsp.enable {
     "bashls",
     "pylsp",
     -- "gopls",  -- managed by go.nvim (ray-x/go.nvim)
     "lua_ls",
-    "oxlint",
     -- oxfmt LSP: formatting for the filetypes conform does not cover (html,
     -- css, yaml, toml, markdown). conform still wins for js/ts/json because
     -- lsp_format = 'fallback'. Needs an oxfmt root marker (package.json,
     -- .oxfmtrc.json, oxfmt.config.ts, vite.config.ts).
     "oxfmt",
     -- "rust-analyzer",  -- managed by language_rust.lua (custom clippy settings)
-    "tailwindcss",
     "texlab",
-    "ts_ls",
     "yamlls",
 }
 

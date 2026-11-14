@@ -63,25 +63,31 @@ autocmd("BufReadPost", {
     desc = "Restore cursor position",
 })
 
--- Filetype-specific settings
+-- Lua uses 4 spaces (stylua.toml) unless the project's .editorconfig says
+-- otherwise; the other languages keep the global 2 / ftplugin defaults.
 autocmd("FileType", {
     group = user_augroup,
-    pattern = { "lua", "python" },
-    callback = function()
-        vim.opt_local.tabstop = 4
-        vim.opt_local.shiftwidth = 4
+    pattern = "lua",
+    callback = function(args)
+        if vim.b[args.buf].editorconfig then
+            return
+        end
+        vim.bo[args.buf].tabstop = 4
+        vim.bo[args.buf].shiftwidth = 4
     end,
-    desc = "Set indent to 4 spaces for lua/python",
+    desc = "Lua indent (4 spaces) unless .editorconfig applies",
 })
 
-autocmd("FileType", {
+-- Reload buffers changed outside Neovim (formatters, git, coding agents).
+-- 'autoread' alone only reacts to an explicit :checktime.
+autocmd({ "FocusGained", "BufEnter", "TermLeave" }, {
     group = user_augroup,
-    pattern = { "javascript", "typescript", "json", "html", "css" },
     callback = function()
-        vim.opt_local.tabstop = 2
-        vim.opt_local.shiftwidth = 2
+        if vim.fn.mode() ~= "c" and vim.fn.getcmdwintype() == "" then
+            vim.cmd("checktime")
+        end
     end,
-    desc = "Set indent to 2 spaces for web/js",
+    desc = "Check for external file changes",
 })
 
 -- Terminal settings
@@ -101,6 +107,7 @@ autocmd("TermOpen", {
         vim.opt_local.number = false
         vim.opt_local.relativenumber = false
         vim.opt_local.signcolumn = "no"
+        vim.opt_local.foldmethod = "manual" -- new windows inherit the treesitter fold options
     end,
     desc = "Disable line numbers in terminal",
 })
@@ -127,28 +134,27 @@ autocmd("BufWritePre", {
 })
 
 -- ============================================================================
--- Cleanup: clear nvim cache and reset lock file
+-- Cleanup: clear nvim cache (and, with !, the plugin lock file)
 -- ============================================================================
-vim.api.nvim_create_user_command('CleanNvim', function()
-    local config_dir = vim.fn.stdpath('config')
+vim.api.nvim_create_user_command('CleanNvim', function(opts)
     local cache_dir = vim.fn.stdpath('cache')
-    local lock_file = config_dir .. '/nvim-pack-lock.json'
+    local lock_file = vim.fn.stdpath('config') .. '/nvim-pack-lock.json'
+    local what = opts.bang and ('the cache and ' .. lock_file) or cache_dir
+    if vim.fn.confirm('Delete ' .. what .. '?', '&Yes\n&No', 2) ~= 1 then
+        return
+    end
 
-    -- Remove lock file to force plugin re-pinning
-    local lock_stat = vim.uv.fs_stat(lock_file)
-    if lock_stat then
+    -- Removing the lock file forgets every plugin pin (it is tracked in git)
+    if opts.bang and vim.uv.fs_stat(lock_file) then
         vim.uv.fs_unlink(lock_file)
         vim.notify('Deleted: nvim-pack-lock.json', vim.log.levels.INFO)
     end
 
-    -- Clean nvim cache
     for _, name in ipairs(vim.fn.readdir(cache_dir)) do
         vim.fn.delete(cache_dir .. '/' .. name, 'rf')
     end
-    vim.notify('Cleared: ' .. cache_dir, vim.log.levels.INFO)
-
-    vim.notify('Done. Restart Neovim to regenerate.', vim.log.levels.INFO)
-end, { desc = 'Clean nvim cache and reset lock file' })
+    vim.notify('Cleared: ' .. cache_dir .. '. Restart Neovim to regenerate.', vim.log.levels.INFO)
+end, { bang = true, desc = 'Clear the nvim cache; CleanNvim! also deletes the plugin lock file' })
 
 -- ============================================================================
 -- Plugin install/update progress notifications
@@ -156,6 +162,7 @@ end, { desc = 'Clean nvim cache and reset lock file' })
 -- vim.pack default progress uses nvim_echo() which may be hidden by noice.nvim;
 -- this adds visual notifications through the notifier system.
 vim.api.nvim_create_autocmd('PackChangedPre', {
+    group = user_augroup,
     callback = function(ev)
         local kind = ev.data.kind
         local name = ev.data.spec.name

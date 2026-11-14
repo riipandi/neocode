@@ -294,18 +294,12 @@ require('lualine').setup({
     tabline = {},
     winbar = {},
     inactive_winbar = {},
-    extensions = {
-        "neo-tree",
-        "lazy",
-        "mason",
-        "oil",
-        "trouble",
-        "quickfix",
-    },
+    extensions = { "mason", "trouble", "quickfix" },
 })
 
 -- Add visual height to statusline via custom highlights
 vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("lualine_statusline_hl", { clear = true }),
     callback = function()
         vim.api.nvim_set_hl(0, "StatusLine", { bg = "#181a1d", fg = "#bcbec4", bold = true })
         vim.api.nvim_set_hl(0, "StatusLineNC", { bg = "#181a1d", fg = "#7a7e85" })

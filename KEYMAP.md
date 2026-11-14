@@ -309,7 +309,7 @@ marker do not write to it. `signcolumn` stays reserved so text never shifts.
 | Cursor per row of the selection | `<leader>v` (visual)   |
 
 While multiple cursors exist: `<Left>`/`<Right>` move between cursors,
-`<leader>x` deletes the main cursor, `<Esc>` enables or clears them.
+`<leader>X` deletes the main cursor, `<Esc>` enables or clears them.
 
 For "one cursor per row, same column": `<C-v>` to select the block (or `V` for
 whole rows), then `<leader>v`. Each row of the selection becomes its own cursor,

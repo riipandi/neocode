@@ -12,8 +12,10 @@ vim.keymap.set("n", "<C-_>", "gcc", { remap = true, desc = "Toggle line comment 
 vim.keymap.set("x", "<C-_>", "gc", { remap = true, desc = "Toggle comment on selection (Ctrl+_)" })
 
 -- Escape: Close floating windows or clear search
--- Skips snacks picker/input/select windows — they handle Escape themselves
-vim.keymap.set({ "n", "t" }, "<Esc>", function()
+-- Skips snacks picker/input/select windows — they handle Escape themselves.
+-- Normal mode only: in terminal mode a single <Esc> belongs to the program
+-- running there (shell vi-mode, vim, lazygit, fzf).
+vim.keymap.set("n", "<Esc>", function()
     if vim.bo.buftype == "terminal" then
         vim.cmd('close')
         return
@@ -30,6 +32,9 @@ vim.keymap.set({ "n", "t" }, "<Esc>", function()
     end
     vim.cmd('nohlsearch')
 end, { silent = true })
+
+-- Leave terminal mode with <Esc><Esc> (snacks terminals map it themselves).
+vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]], { desc = "Leave terminal mode" })
 
 -- snacks.input (the vim.ui.input dialog) maps <Esc> in insert mode to
 -- `stopinsert` and only cancels with a second Escape in normal mode. One

@@ -7,7 +7,7 @@ This is a personal Neovim configuration for Aris Ripandi (@riipandi).
   top-to-bottom, understand what your configuration is doing, and modify it to
   suit your needs.
 
-Last updated: 2025-10-12 (nvim 0.11+)
+Requires Neovim 0.12+
 
 --]]
 
@@ -56,14 +56,10 @@ vim.opt.wildoptions = "pum"                               -- Use popup menu for 
 vim.opt.pumheight = 15                                    -- Max items in popup menu
 vim.opt.pumblend = 10                                     -- Transparency for popup menu
 vim.opt.completeopt = "menuone,noinsert,noselect,preview" -- Completion options
-vim.opt.showmatch = true                                  -- Highlight matching brackets
-vim.opt.matchtime = 2                                     -- How long to show matching bracket
 vim.opt.cmdheight = 0                                     -- Command line height (noice handles UI)
 vim.opt.showmode = false                                  -- Don't show the mode, since it's already in the status line
-vim.opt.winblend = 0                                      -- Floating window transparency
 vim.opt.conceallevel = 0                                  -- Don't hide markup
 vim.opt.concealcursor = ""                                -- Don't hide cursor line markup
-vim.opt.lazyredraw = false                                -- Don't redraw during macros
 vim.opt.synmaxcol = 300                                   -- Syntax highlighting limit
 -- Blank end-of-buffer area (no `~` marker). Safe now that core_scroll.lua
 -- stops <C-e>/<C-f>/wheel from scrolling past the last line.
@@ -76,10 +72,10 @@ vim.g.markdown_recommended_style = 0                      -- Fix markdown indent
 vim.opt.backup = false                            -- Don't create backup files
 vim.opt.writebackup = false                       -- Don't create backup before writing
 vim.opt.swapfile = false                          -- Don't create swap files
-vim.opt.undofile = false                          -- Undo stops at the opened file, no cross-session history
+vim.opt.undofile = true                           -- Persistent undo (stdpath("state")/undo)
 vim.opt.updatetime = 300                          -- Faster completion
 vim.opt.timeoutlen = 500                          -- Key timeout duration
-vim.opt.ttimeoutlen = 0                           -- Key code timeout
+vim.opt.ttimeoutlen = 10                          -- Key code timeout (0 breaks Alt keys over SSH)
 vim.opt.autoread = true                           -- Auto reload files changed outside vim
 vim.opt.autowrite = false                         -- Don't auto save
 vim.opt.confirm = true                            -- Raise dialog to save changes
@@ -89,19 +85,14 @@ vim.opt.confirm = true                            -- Raise dialog to save change
 -- the gutter use icons instead of the default E/W/I/H letters.
 vim.g.have_nerd_font = true
 vim.opt.hidden = true                   -- Allow hidden buffers
-vim.opt.errorbells = false              -- No error bells
 vim.opt.backspace = "indent,eol,start"  -- Better backspace behavior
 -- h / <Left> at the first column continue at the end of the previous line, and
 -- l / <Right> at the last character continue at the start of the next line
 -- (editor-style wrap). Counts and operators carry across the boundary too.
 vim.opt.whichwrap:append("h,<,l,>")
 vim.opt.autochdir = false               -- Don't auto change directory
-vim.opt.iskeyword:append("-")           -- Treat dash as part of word
-vim.opt.path:append("**")               -- include subdirectories in search
-vim.opt.selection = "exclusive"         -- Selection behavior
 vim.opt.mouse = "a"                     -- Enable mouse support
 vim.opt.clipboard:append("unnamedplus") -- Use system clipboard
-vim.opt.modifiable = true               -- Allow buffer modifications
 
 -- Cursor settings
 vim.opt.guicursor =
@@ -112,12 +103,15 @@ vim.opt.guicursor =
 -- Display invisible characters
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
--- Folding settings
-vim.opt.foldmethod = "expr" -- Use expression for folding
--- Neovim's runtime only sets the treesitter foldexpr for lua buffers; set it
--- globally so every filetype with a parser folds by syntax block.
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.foldlevel = 99      -- Start with all folds open
+-- Folding: treesitter folds are switched on per window by the FileType hook in
+-- plugin_treesitter.lua, so terminals and pickers do not evaluate foldexpr.
+vim.opt.foldlevel = 99 -- Start with all folds open
+
+-- Language providers nobody uses (silences :checkhealth warnings)
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_python3_provider = 0
 
 -- Split behavior
 vim.opt.splitbelow = true -- Horizontal splits go below
@@ -129,7 +123,6 @@ vim.opt.splitright = true -- Vertical splits go right
 require 'core_scroll'      -- Scroll bounds: must run before snacks.scroll hooks
 require 'core_plugins'     -- Snacks.nvim (must load first)
 require 'command'          -- Command palette & history
-require 'core_health'      -- Health checks
 require 'core_keymaps'     -- Key mappings
 require 'core_autocmds'    -- Autocommands utilities
 require 'core_splash'       -- Intro screen + explorer sidebar on startup
@@ -157,14 +150,9 @@ require 'command_mason_pkg'        -- Mason package manager GUI (depends on maso
 require 'language_rust'            -- Rust development toolkit
 require 'language_typescript'      -- TypeScript/React/Lit/Deno
 require 'language_tailwind'        -- Tailwind CSS
-require 'language_lit'             -- Lit Web Component
-require 'language_astro'           -- Astro framework
 require 'language_go'              -- Go language
+require 'language_servers'         -- Astro, Protobuf, SQL, Terraform, Zig (defaults)
 require 'language_elixir'          -- Elixir/Phoenix
 require 'plugin_dap'               -- Debugging (nvim-dap + ElixirLS debug adapter)
-require 'language_zig'             -- Zig language
-require 'language_sql'             -- SQL (PostgreSQL/SQLite)
-require 'language_protobuf'        -- Protobuf/gRPC
-require 'language_terraform'       -- Terraform/HCL
 require 'plugin_multicursor'       -- Multiple cursors (jake-stewart/multicursor.nvim)
 require 'plugin_mistral_codestral' -- AI autocompletion (Codestral via blink.cmp)

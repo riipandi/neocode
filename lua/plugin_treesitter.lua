@@ -1,6 +1,5 @@
 vim.pack.add({
     { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-    { src = "https://github.com/ray-x/lsp_signature.nvim" },
     { src = "https://github.com/folke/trouble.nvim" },
     { src = "https://github.com/neovim/nvim-lspconfig" },
 }, { confirm = false })
@@ -78,30 +77,29 @@ end, 300)
 -- nvim-treesitter (main branch) only installs parsers; it does NOT call
 -- vim.treesitter.start() anymore, and Neovim's runtime only auto-starts
 -- lua/markdown/help/query. Without this, e.g. Elixir/Heex stay unhighlighted.
+-- Indentation is the same story: the plugin ships the `indents` queries but
+-- indentexpr has to be pointed at it per buffer.
 vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("treesitter-start", { clear = true }),
     callback = function(args)
         local lang = vim.treesitter.language.get_lang(args.match) or args.match
-        if vim.treesitter.language.add(lang) then
-            pcall(vim.treesitter.start, args.buf, lang)
+        if not vim.treesitter.language.add(lang) then
+            return
+        end
+        if not pcall(vim.treesitter.start, args.buf, lang) then
+            return
+        end
+        if vim.treesitter.query.get(lang, "indents") then
+            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
+        local win = vim.fn.bufwinid(args.buf)
+        if win ~= -1 then
+            vim.wo[win].foldmethod = "expr"
+            vim.wo[win].foldexpr = "v:lua.vim.treesitter.foldexpr()"
         end
     end,
-    desc = "Start treesitter highlighting when a parser is available",
+    desc = "Start treesitter highlighting and indent when a parser is available",
 })
-
--- ============================================================================
--- Show function signature when you type
--- ============================================================================
-vim.defer_fn(function()
-    local ok, lsp_signature = pcall(require, "lsp_signature")
-    if ok then
-        lsp_signature.setup {
-            bind = true,
-            handler_opts = {
-                border = "rounded",
-            },
-        }
-    end
-end, 100)
 
 -- ============================================================================
 -- A pretty diagnostics, references, quickfix and location list
@@ -124,7 +122,7 @@ end, 100)
 -- LSP configuration
 -- ============================================================================
 local lsp_attach_group =
-    vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true })
+    vim.api.nvim_create_augroup("lsp-attach", { clear = true })
 
 vim.api.nvim_create_autocmd("LspAttach", {
     group = lsp_attach_group,
@@ -186,7 +184,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
             )
         then
             local highlight_augroup = vim.api.nvim_create_augroup(
-                "kickstart-lsp-highlight",
+                "lsp-document-highlight",
                 { clear = false }
             )
             vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
@@ -201,15 +199,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
                 callback = vim.lsp.buf.clear_references,
             })
 
+            -- per buffer: a shared group cleared on every attach kept only the
+            -- last buffer's detach handler
             vim.api.nvim_create_autocmd("LspDetach", {
-                group = vim.api.nvim_create_augroup(
-                    "kickstart-lsp-detach",
-                    { clear = true }
-                ),
+                group = highlight_augroup,
+                buffer = event.buf,
+                once = true,
                 callback = function(event2)
                     vim.lsp.buf.clear_references()
                     vim.api.nvim_clear_autocmds {
-                        group = "kickstart-lsp-highlight",
+                        group = highlight_augroup,
                         buffer = event2.buf,
                     }
                 end,
@@ -232,30 +231,3 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
     end,
 })
-
--- ============================================================================
--- LSP capabilities and server setup using vim.lsp.config (Neovim 0.11+)
--- ============================================================================
-vim.defer_fn(function()
-    local ok, blink = pcall(require, "blink.cmp")
-    if not ok then
-        return
-    end
-
-    local capabilities = blink.get_lsp_capabilities()
-
-    -- Configure LSP servers using vim.lsp.config (replaces lspconfig)
-    vim.lsp.config("lua_ls", {
-        capabilities = capabilities,
-        settings = {
-            Lua = {
-                completion = {
-                    callSnippet = "Replace",
-                },
-            },
-        },
-    })
-
-    -- Enable the LSP servers
-    vim.lsp.enable { "lua_ls" }
-end, 100)

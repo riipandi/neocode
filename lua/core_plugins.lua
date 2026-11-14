@@ -142,36 +142,6 @@ snacks.setup({
         enabled = true,
     },
 
-    -- Keymap helper utilities
-    keymap = {
-        enabled = true,
-    },
-
-    -- Toggle utilities
-    toggle = {
-        enabled = true,
-    },
-
-    -- Buffer deletion (replaces custom buffer delete logic)
-    bufdelete = {
-        enabled = true,
-    },
-
-    -- Debug utilities
-    debug = {
-        enabled = true,
-    },
-
-    -- Window utilities
-    win = {
-        enabled = true,
-    },
-
-    -- Terminal
-    terminal = {
-        enabled = true,
-    },
-
     -- Smooth scrolling.
     -- `step` is the duration per scrolled line in ms, `total` caps the whole
     -- animation. 8ms/line made single-line scrolls finish in one frame (looked
@@ -260,28 +230,6 @@ snacks.config.styles.lazygit = {
 }
 
 -- ============================================================================
--- Helper Functions
--- ============================================================================
-
-local function is_explorer_open()
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-        local buf = vim.api.nvim_win_get_buf(win)
-        local buf_name = vim.api.nvim_buf_get_name(buf)
-        if buf_name:match("snacks_explorer") or vim.bo[buf].filetype == "snacks_picker_list" then
-            return true, win
-        end
-    end
-    return false, nil
-end
-
-local function is_in_explorer()
-    local buf_name = vim.api.nvim_buf_get_name(0)
-    local filetype = vim.bo.filetype
-    return buf_name:match("snacks_explorer") or filetype == "snacks_picker_list"
-end
-
-
--- ============================================================================
 -- Picker Keymaps
 -- ============================================================================
 
@@ -331,7 +279,10 @@ snacks.keymap.set("n", "<leader>;", function()
         },
     }, function(input)
         if input and input ~= "" then
-            vim.cmd(input)
+            local ok, err = pcall(vim.cmd, input)
+            if not ok then
+                vim.notify(tostring(err):match("E%d+:.*") or tostring(err), vim.log.levels.ERROR, { title = "Command" })
+            end
         end
     end)
 end, { desc = "Command palette (no auto-complete, won't close on backspace)" })
@@ -448,6 +399,7 @@ end
 -- callback. This autocmd adds a normal-mode <Esc> that properly closes
 -- the snacks input window, which fires its WinClosed handler -> callback(nil).
 vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("snacks_input_normal_esc", { clear = true }),
     pattern = "snacks_input",
     callback = function(ev)
         vim.keymap.set("n", "<Esc>", function()
