@@ -132,6 +132,7 @@ require 'command'          -- Command palette & history
 require 'core_health'      -- Health checks
 require 'core_keymaps'     -- Key mappings
 require 'core_autocmds'    -- Autocommands utilities
+require 'core_splash'       -- Intro screen + explorer sidebar on startup
 require 'core_lsp'         -- LSP settings
 require 'core_lsp_toggles' -- LSP action toggles
 require 'core_commands'    -- User commands

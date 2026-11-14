@@ -36,6 +36,8 @@ snacks.setup({
         sources = {
             explorer = {
                 hidden = true,
+                -- sidebar preset defaults to 40 columns
+                layout = { preset = "sidebar", preview = false, layout = { width = 34, min_width = 34 } },
             },
         },
         layouts = require("snacks.layouts"),
