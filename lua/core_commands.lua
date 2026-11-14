@@ -19,6 +19,18 @@ vim.api.nvim_create_user_command("Format", function()
     end
 end, { desc = "Format current buffer (conform.nvim)", range = true })
 
+-- :ToggleWrap - soft-wrap long lines in the current window (<M-z>, <leader>tw).
+-- 'linebreak' follows 'wrap' so lines break at word boundaries.
+local function toggle_wrap()
+    vim.wo.wrap = not vim.wo.wrap
+    vim.wo.linebreak = vim.wo.wrap
+    vim.notify("Wrap " .. (vim.wo.wrap and "on" or "off"), vim.log.levels.INFO, { title = "Wrap" })
+end
+vim.api.nvim_create_user_command("ToggleWrap", toggle_wrap, { desc = "Toggle soft wrap of long lines" })
+for _, lhs in ipairs({ "<M-z>", "<leader>tw" }) do
+    vim.keymap.set("n", lhs, toggle_wrap, { desc = "Toggle wrap" })
+end
+
 -- :KeyProbe - report the notation of the next key, to check whether the
 -- terminal forwards e.g. <S-CR> or collapses it into <CR>.
 vim.api.nvim_create_user_command("KeyProbe", function()

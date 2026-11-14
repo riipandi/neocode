@@ -28,33 +28,37 @@ local function smart_close()
         return
     end
 
-    -- Save prompt for unsaved changes
-    local function do_close(force)
-        -- Snacks.bufdelete replaces the current buffer with the most-recent
-        -- listed buffer (or creates an empty one if none remain). Explorer
-        -- is preserved because it lives in a separate window.
-        Snacks.bufdelete({ buf = 0, force = force })
+    local function close_current()
+        -- Save prompt for unsaved changes
+        local function do_close(force)
+            -- Snacks.bufdelete replaces the current buffer with the most-recent
+            -- listed buffer (or creates an empty one if none remain). Explorer
+            -- is preserved because it lives in a separate window.
+            Snacks.bufdelete({ buf = 0, force = force })
+        end
+
+        if vim.bo.modified then
+            vim.ui.select({ 'Save & Close', 'Close without saving', 'Cancel' }, {
+                prompt = 'Buffer has unsaved changes:',
+                focus = 'list',
+            }, function(choice)
+                if choice == 'Save & Close' then
+                    local ok, err = pcall(vim.cmd, 'w')
+                    if not ok then
+                        vim.notify('Save failed: ' .. tostring(err), vim.log.levels.ERROR, { title = 'Buffer' })
+                        return
+                    end
+                    do_close(false)
+                elseif choice == 'Close without saving' then
+                    do_close(true)
+                end
+            end)
+        else
+            do_close(false)
+        end
     end
 
-    if vim.bo.modified then
-        vim.ui.select({ 'Save & Close', 'Close without saving', 'Cancel' }, {
-            prompt = 'Buffer has unsaved changes:',
-            focus = 'list',
-        }, function(choice)
-            if choice == 'Save & Close' then
-                local ok, err = pcall(vim.cmd, 'w')
-                if not ok then
-                    vim.notify('Save failed: ' .. tostring(err), vim.log.levels.ERROR, { title = 'Buffer' })
-                    return
-                end
-                do_close(false)
-            elseif choice == 'Close without saving' then
-                do_close(true)
-            end
-        end)
-    else
-        do_close(false)
-    end
+    require("core_keymaps.pin").confirm_close(vim.api.nvim_get_current_buf(), close_current)
 end
 
 snacks.keymap.set("n", "<C-x>", smart_close, { desc = 'Close buffer (smart)' })
@@ -102,9 +106,8 @@ end
 vim.keymap.set({ "n", "i" }, "<C-s>", save_file, { desc = "Save file" })
 
 -- Close all buffers with snacks
-snacks.keymap.set("n", "<leader>bW", function()
-    Snacks.bufdelete.all()
-end, { desc = "Close all buffers" })
+snacks.keymap.set("n", "<leader>bW", require("core_keymaps.pin").close_all,
+    { desc = "Close all buffers (except pinned)" })
 
 -- Unmapped <C-S-w> falls back to <C-w>, the window prefix, so a mistyped
 -- Ctrl+Shift+W would start a window command. Swallow it instead of binding
@@ -113,17 +116,12 @@ vim.keymap.set("n", "<C-S-w>", "<Nop>", { desc = "Swallowed (would fall back to 
 
 -- Delete buffer
 snacks.keymap.set("n", "<leader>bd", function()
-    Snacks.bufdelete()
+    require("core_keymaps.pin").confirm_close(vim.api.nvim_get_current_buf(), function() Snacks.bufdelete() end)
 end, { desc = "Delete buffer" })
 
 -- Buffer picker
-snacks.keymap.set("n", "<leader>bb", function()
-    Snacks.picker.buffers({
-        layout = { preset = "buffers" },
-    })
-end, { desc = "Buffer picker" })
+snacks.keymap.set("n", "<leader>bb", require("core_keymaps.pin").buffers, { desc = "Buffer picker" })
 
 -- Close other buffers (keep only current)
-snacks.keymap.set("n", "<leader>bo", function()
-    Snacks.bufdelete.other()
-end, { desc = "Close other buffers" })
+snacks.keymap.set("n", "<leader>bo", require("core_keymaps.pin").close_others,
+    { desc = "Close other buffers (except pinned)" })

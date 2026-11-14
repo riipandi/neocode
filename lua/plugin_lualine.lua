@@ -137,6 +137,11 @@ require('lualine').setup({
         },
         lualine_c = {
             {
+                function() return require("core_keymaps.pin").statusline() end,
+                cond = function() return require("core_keymaps.pin").is_pinned(0) end,
+                padding = { left = 1, right = 0 },
+            },
+            {
                 "filename",
                 file_status = true,
                 newfile_status = false,

@@ -89,6 +89,7 @@ snacks.setup({
         enabled = true,
         timeout = 4000,
         top_down = false,
+        margin = { top = 0, right = 0, bottom = 0 },
     },
 
     -- Indentation guides (replaces indent-blankline.nvim)
@@ -234,9 +235,7 @@ snacks.config.styles.lazygit = {
 -- ============================================================================
 
 snacks.keymap.set("n", "<C-b>", function()
-    snacks.picker.buffers({
-        layout = { preset = "buffers" },
-    })
+    require("core_keymaps.pin").buffers()
 end, { desc = "Show buffer list" })
 
 -- NOTE: <C-o> file finding is now handled by fff.nvim (see plugin_fff.lua)

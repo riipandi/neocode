@@ -64,6 +64,7 @@ wezterm). Run `:KeyProbe` and press the key to see what Neovim receives.
 | Save current file (normal and insert mode, stays in the current mode) | `<C-s>` |
 | Close the active split, or the buffer when there is no split (asks about unsaved changes) | `<C-x>` |
 | Buffer picker       | `<C-b>`, `<leader>bb` |
+| Pin / unpin buffer  | `<C-S-.>` (kitty-protocol terminals), `<leader>bp`, `:TogglePin` |
 | Delete buffer       | `<leader>bd`  |
 | Close other buffers | `<leader>bo`  |
 | Close all buffers   | `<leader>bW`  |
@@ -132,6 +133,7 @@ buffers, see LSP). `<leader>x` is the DAP debug group.
 | Terminal (toggle)          | `<leader>tt`   |
 | Terminal in cwd            | `<leader>tT`   |
 | Resource monitor           | `<leader>tr`   |
+| Toggle wrap (current window) | `<M-z>`, `<leader>tw`, `:ToggleWrap` |
 | Mason package picker       | `<leader>tm`   |
 | Mason TUI                  | `<leader>tM`   |
 | Scratch buffer             | `<leader>.`    |
@@ -359,4 +361,6 @@ Ctrl+Shift+G used to print `<C-g>` file info and split the layout.
 | `:HealthCheck`        | Neovim version, tools, LSP, pack-lock               |
 | `:MasonPkg [category]`| Mason picker (`LSP`, `Formatter`, `Linter`, `DAP`, `Runtime`, `Compiler`, `All`) |
 | `:KeyProbe`           | Show the notation Neovim receives for the next key  |
+| `:ToggleWrap`         | Toggle soft wrap in the current window              |
+| `:TogglePin`          | Pin or unpin the current buffer                     |
 | `:MarkdownOpenLink`   | Open the link under the cursor                      |

@@ -215,6 +215,8 @@ file records the commit each plugin is pinned to.
 | `:CleanNvim[!]`                                                     | Clear the cache (`!` also deletes the lock file), asks first                                           |
 | `:HealthCheck`                                                      | Version, tools, LSP, pack-lock                                                                         |
 | `:KeyProbe`                                                         | Show the notation Neovim receives for the next key                                                     |
+| `:ToggleWrap`                                                       | Toggle soft wrap in the current window                                                                 |
+| `:TogglePin`                                                        | Pin or unpin the current buffer (kept by close-others/close-all, marked in the picker and statusline)  |
 | `:MarkdownOpenLink`                                                 | Open the link under the cursor                                                                         |
 | `:MistralCodestralAuth`                                             | Auth picker (subcommands `status`, `set`, `clear`, `validate`)                                         |
 | `:MistralCodestralComplete`, `:MistralCodestralToggle`              | Manual completion, on/off switch                                                                       |
