@@ -12,11 +12,11 @@ noice.setup({
         view = "cmdline_popup",
         opts = {
             position = {
-                row = "50%",
+                row = 8,
                 col = "50%",
             },
             size = {
-                width = "auto",
+                width = 60,
                 height = "auto",
                 max_height = 10,
             },
@@ -86,6 +86,13 @@ noice.setup({
     },
 
     views = {
+        -- Sits right under the cmdline popup (row 8, 3 rows tall) at the same
+        -- width, so the two read as one box
+        cmdline_popupmenu = {
+            position = { row = 11, col = "50%" },
+            size = { width = 60, height = "auto", max_height = 12 },
+            border = { style = "rounded", padding = { 0, 1 } },
+        },
         toast = {
             view = "notify",
             title = "Message",

@@ -177,7 +177,17 @@ vim.api.nvim_create_autocmd('PackChangedPre', {
 -- ============================================================================
 -- ============================================================================
 
--- Command-line completion ('wildmenu'/'wildmode' are set in init.lua)
+-- Command-line completion ('wildmenu'/'wildmode' are set in init.lua): the
+-- suggestion menu opens while typing an ex command instead of waiting for <Tab>.
+autocmd("CmdlineChanged", {
+    group = user_augroup,
+    pattern = ":",
+    callback = function()
+        pcall(vim.fn.wildtrigger)
+    end,
+    desc = "Suggest ex commands while typing",
+})
+
 vim.opt.wildignore:append({ "*.o", "*.obj", "*.pyc", "*.class", "*.jar" })
 
 -- Diff options

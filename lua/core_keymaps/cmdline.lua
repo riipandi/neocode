@@ -42,3 +42,11 @@ vim.keymap.set("c", "<CR>", function()
         "n", false
     )
 end, { desc = "Cmdline Enter with toast on command error" })
+
+-- <Up>/<Down> pick suggestions while the menu is open and keep their history
+-- behaviour otherwise.
+for key, step in pairs({ ["<Down>"] = "<C-n>", ["<Up>"] = "<C-p>" }) do
+    vim.keymap.set("c", key, function()
+        return vim.fn.cmdcomplete_info().pum_visible == 1 and step or key
+    end, { expr = true, desc = "Select suggestion / history" })
+end

@@ -51,7 +51,7 @@ vim.opt.signcolumn = "yes:1" -- Always show sign column
 
 -- Completion menu settings
 vim.opt.wildmenu = true                                   -- Enable wildmenu for command completion
-vim.opt.wildmode = "longest:full,full"                    -- Complete longest common match, then list all
+vim.opt.wildmode = "noselect:lastused,full"               -- Suggest as you type, select nothing until <Tab>
 vim.opt.wildoptions = "pum"                               -- Use popup menu for completions
 vim.opt.pumheight = 15                                    -- Max items in popup menu
 vim.opt.pumblend = 10                                     -- Transparency for popup menu
