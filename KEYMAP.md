@@ -370,5 +370,5 @@ Ctrl+Shift+G used to print `<C-g>` file info and split the layout.
 | `:KeyProbe`           | Show the notation Neovim receives for the next key  |
 | `:ToggleWrap`         | Toggle soft wrap in the current window              |
 | `:TogglePin`          | Pin or unpin the current buffer                     |
-| `:SessionClear`       | Forget this project's saved buffers and pins        |
+| `:SessionClear`       | Forget this project's saved buffers, pins and splits |
 | `:MarkdownOpenLink`   | Open the link under the cursor                      |

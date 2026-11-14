@@ -217,7 +217,7 @@ file records the commit each plugin is pinned to.
 | `:HealthCheck`                                                      | Version, tools, LSP, pack-lock                                                                         |
 | `:KeyProbe`                                                         | Show the notation Neovim receives for the next key                                                     |
 | `:ToggleWrap`                                                       | Toggle soft wrap in the current window                                                                 |
-| `:SessionClear`                                                     | Forget this project's saved buffers and pins (sessions restore automatically when nvim starts without file arguments) |
+| `:SessionClear`                                                     | Forget this project's saved buffers, pins and split layout (sessions restore automatically when nvim starts without file arguments) |
 | `:TogglePin`                                                        | Pin or unpin the current buffer (kept by close-others/close-all, marked in the picker and statusline)  |
 | `:MarkdownOpenLink`                                                 | Open the link under the cursor                                                                         |
 | `:MistralCodestralAuth`                                             | Auth picker (subcommands `status`, `set`, `clear`, `validate`)                                         |
