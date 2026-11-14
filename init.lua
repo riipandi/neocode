@@ -123,6 +123,7 @@ vim.opt.splitright = true -- Vertical splits go right
 -- ============================================================================
 require 'core_scroll'      -- Scroll bounds: must run before snacks.scroll hooks
 require 'core_plugins'     -- Snacks.nvim (must load first)
+require 'core_notify'      -- Fold mason-tool-installer toasts into one
 require 'command'          -- Command palette & history
 require 'core_keymaps'     -- Key mappings
 require 'core_autocmds'    -- Autocommands utilities

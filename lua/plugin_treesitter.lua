@@ -70,7 +70,18 @@ vim.defer_fn(function()
         end
     end
 
-    ts.install(wanted)
+    -- Parsers are compiled with the tree-sitter CLI, which Mason installs on
+    -- the first run; installing earlier fails once per language.
+    local tries = 0
+    local function install_when_ready()
+        if vim.fn.executable("tree-sitter") == 1 then
+            ts.install(wanted)
+        elseif tries < 60 then
+            tries = tries + 1
+            vim.defer_fn(install_when_ready, 2000)
+        end
+    end
+    install_when_ready()
 end, 300)
 
 -- Start treesitter highlighting for every filetype that has a parser.
