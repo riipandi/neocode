@@ -101,6 +101,10 @@
       "rev": "7b9923abad60b903ece7c52940e1321d39eccc79",
       "src": "https://github.com/windwp/nvim-autopairs"
     },
+    "nvim-dap": {
+      "rev": "cfa2d58f4537aca6ca83e2de1a0d9f1491121264",
+      "src": "https://github.com/mfussenegger/nvim-dap"
+    },
     "nvim-lspconfig": {
       "rev": "fef8b117ad5fb73943913f444f22065c4b834a60",
       "src": "https://github.com/neovim/nvim-lspconfig"

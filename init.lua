@@ -159,6 +159,7 @@ require 'language_lit'             -- Lit Web Component
 require 'language_astro'           -- Astro framework
 require 'language_go'              -- Go language
 require 'language_elixir'          -- Elixir/Phoenix
+require 'plugin_dap'               -- Debugging (nvim-dap + ElixirLS debug adapter)
 require 'language_zig'             -- Zig language
 require 'language_sql'             -- SQL (PostgreSQL/SQLite)
 require 'language_protobuf'        -- Protobuf/gRPC

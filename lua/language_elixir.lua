@@ -1,23 +1,36 @@
 -- =============================================================================
 -- Elixir & Phoenix Language Server Configuration
 -- =============================================================================
--- LSP: elixirls (Elixir LS)
+-- LSP: expert (official Elixir language server, https://expert-lsp.org)
+--      Binary installed manually to ~/.local/bin/expert (not in Mason/Homebrew).
+-- Fallback: elixirls (ElixirLS, from Mason) — kept for nvim-dap debugging,
+--      which Expert does not provide yet. Used only when `expert` is absent.
 -- Formatter: mix format (via conform.nvim)
 -- Supports: Elixir, Phoenix, Heex, EEx templates
 -- =============================================================================
 
-local autocmd = vim.api.nvim_create_autocmd
+local ft_pattern = { "elixir", "eelixir", "heex", "surface" }
+local use_expert = vim.fn.executable "expert" == 1
 
-local function setup_elixir_lsp()
-    local capabilities = {}
-    local ok, blink = pcall(require, 'blink.cmp')
-    if ok then
-        capabilities = blink.get_lsp_capabilities()
-    end
+local capabilities = {}
+local ok, blink = pcall(require, "blink.cmp")
+if ok then
+    capabilities = blink.get_lsp_capabilities()
+end
 
-    vim.lsp.config('elixirls', {
-        cmd = { 'elixir-ls' },
+if use_expert then
+    -- nvim-lspconfig ships the `expert` config (cmd, filetypes, and
+    -- umbrella-aware root_dir); we only add capabilities here.
+    vim.lsp.config("expert", {
+        filetypes = ft_pattern,
         capabilities = capabilities,
+    })
+    vim.lsp.enable "expert"
+else
+    vim.lsp.config("elixirls", {
+        cmd = { "elixir-ls" },
+        capabilities = capabilities,
+        filetypes = ft_pattern,
         settings = {
             elixirLS = {
                 dialyzerEnabled = true,
@@ -26,14 +39,5 @@ local function setup_elixir_lsp()
             },
         },
     })
-
-    vim.lsp.enable('elixirls')
+    vim.lsp.enable "elixirls"
 end
-
-autocmd('FileType', {
-    pattern = { 'elixir', 'eex', 'heex', 'surface' },
-    callback = setup_elixir_lsp,
-    desc = 'Start Elixir LSP',
-})
-
-vim.lsp.enable('elixirls')
