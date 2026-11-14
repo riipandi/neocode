@@ -7,6 +7,10 @@ vim.pack.add({
 })
 
 require("render-markdown").setup({
+    -- The debounce drops events instead of delaying them, so the last scroll
+    -- frame never triggered a render and the new rows stayed raw until a
+    -- CursorHold.
+    debounce = 0,
     anti_conceal = {
         enabled = false,
     },
