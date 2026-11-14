@@ -63,7 +63,7 @@ wezterm). Run `:KeyProbe` and press the key to see what Neovim receives.
 | Action              | Keys          |
 | ------------------- | ------------- |
 | Save current file (normal and insert mode, stays in the current mode) | `<C-s>` |
-| Close buffer (smart, asks about unsaved changes) | `<C-x>` |
+| Close the active split, or the buffer when there is no split (asks about unsaved changes) | `<C-x>` |
 | Buffer picker       | `<C-b>`, `<leader>bb` |
 | Delete buffer       | `<leader>bd`  |
 | Close other buffers | `<leader>bo`  |
@@ -74,7 +74,8 @@ wezterm). Run `:KeyProbe` and press the key to see what Neovim receives.
 | Action            | Keys               |
 | ----------------- | ------------------ |
 | Split vertical    | `<C-\>`, `<leader>wv` |
-| Split horizontal  | `<leader>ws`       |
+| Split horizontal  | `<C-S-\>` (kitty-protocol terminals), `<leader>ws` |
+| Focus split left/down/up/right | `<C-S-Left/Down/Up/Right>` (kitty-protocol terminals), `<C-w>h/j/k/l` |
 | Previous window   | `<leader>ww`       |
 | Close window      | `<leader>wq`       |
 | Equalize splits   | `<leader>w=`       |

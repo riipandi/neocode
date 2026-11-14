@@ -75,8 +75,16 @@ snacks.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up"
 -- NOTE: <C-S-...> / <C-A-...> combos are not transmittable by most terminals,
 -- so window actions live in the <leader>w group (see which-key: "Window").
 snacks.keymap.set("n", "<C-\\>", ":vsplit<CR>", { desc = "Split vertical" })
+-- Ctrl+Shift+\ needs a terminal with the kitty keyboard protocol (Ghostty,
+-- kitty); it arrives as <C-S-\> or <C-|> depending on the terminal.
+snacks.keymap.set("n", "<C-S-\\>", ":split<CR>", { desc = "Split horizontal" })
+snacks.keymap.set("n", "<C-|>", ":split<CR>", { desc = "Split horizontal" })
 snacks.keymap.set("n", "<leader>ws", ":split<CR>", { desc = "Window: Split horizontal" })
 snacks.keymap.set("n", "<leader>wv", ":vsplit<CR>", { desc = "Window: Split vertical" })
+-- Ctrl+Shift+arrows move between splits (kitty keyboard protocol terminals).
+for key, dir in pairs({ Left = "h", Down = "j", Up = "k", Right = "l" }) do
+    snacks.keymap.set("n", "<C-S-" .. key .. ">", "<C-w>" .. dir, { desc = "Window: Focus " .. key:lower() })
+end
 snacks.keymap.set("n", "<leader>ww", ":wincmd p<CR>", { desc = "Window: Previous window" })
 snacks.keymap.set("n", "<leader>wq", ":close<CR>", { desc = "Window: Close window" })
 snacks.keymap.set("n", "<leader>w+", ":vertical resize +2<CR>", { desc = "Window: Increase width" })

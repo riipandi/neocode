@@ -4,11 +4,27 @@
 -- Smart <C-x>:
 --   • multiple listed buffers → close current, load previous (or most recent) one
 --   • only listed buffer remaining → close current, create empty buffer
+--   • more than one editing split → close the active split, keep its buffer
 --   • explorer is preserved (it lives in a separate window)
 local snacks = require("snacks")
 local function smart_close()
     -- Don't close the explorer/picker window via <C-x>
     if (vim.bo.filetype or ""):match("snacks_picker") then
+        return
+    end
+
+    -- Splits: close just the active window. The explorer sidebar and floats
+    -- do not count as splits.
+    local splits = 0
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.api.nvim_win_get_config(win).relative == ""
+            and not vim.bo[buf].filetype:match("^snacks_") then
+            splits = splits + 1
+        end
+    end
+    if splits > 1 then
+        vim.cmd("close")
         return
     end
 
