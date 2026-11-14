@@ -109,6 +109,44 @@ require("render-markdown").setup({
 })
 
 -- ============================================================================
+-- Render ahead of the scroll
+-- ============================================================================
+-- Only the visible rows plus a fixed margin of 10 are rendered, and a redraw
+-- happens once the view has already left that range, so scrolling showed raw
+-- markdown for a frame. Widen the margin (hard-coded to 10 in the plugin) and
+-- refresh while the view is still well inside it.
+local MARGIN = 40
+local REFRESH = 15
+
+local env = require("render-markdown.lib.env")
+local range = env.range
+env.range = function(buf, win, offset)
+    return range(buf, win, offset == 10 and MARGIN or offset)
+end
+
+local refreshed = {}
+vim.api.nvim_create_autocmd("WinScrolled", {
+    group = vim.api.nvim_create_augroup("markdown_render_ahead", { clear = true }),
+    callback = function(ev)
+        local win = tonumber(ev.match)
+        if not win or not vim.api.nvim_win_is_valid(win) then
+            return
+        end
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.bo[buf].filetype ~= "markdown" then
+            return
+        end
+        local top = vim.fn.line("w0", win)
+        if refreshed[win] and math.abs(top - refreshed[win]) < REFRESH then
+            return
+        end
+        refreshed[win] = top
+        require("render-markdown").render({ buf = buf, win = win, force = true })
+    end,
+    desc = "Markdown: render rows before they scroll into view",
+})
+
+-- ============================================================================
 -- Inline code: foreground only
 -- ============================================================================
 -- `RenderMarkdownCodeInline` links to `RenderMarkdownCode`, which paints the

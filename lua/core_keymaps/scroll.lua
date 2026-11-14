@@ -14,7 +14,7 @@
 -- normal-mode only, so `d}`, `y{`, `v}`, `c{` and friends keep working with
 -- operators and in visual mode.
 --
--- Everything else stays native: <C-e>/<C-y>, the mouse wheel, insert
+-- Everything else stays native: <C-e>/<C-y>, the mouse wheel (see core_scroll), insert
 -- mode, and the picker/explorer keymaps (core_keymaps/explorer.lua,
 -- core_keymaps/picker.lua).
 
@@ -47,3 +47,10 @@ vim.keymap.set("n", "<S-Down>", half_page_down, { desc = "Half page down (same a
 vim.keymap.set("n", "<S-Up>", half_page_up, { desc = "Half page up (same as <C-u>)" })
 vim.keymap.set("n", "}", half_page_down, { desc = "Half page down (same as <C-d>)" })
 vim.keymap.set("n", "{", half_page_up, { desc = "Half page up (same as <C-u>)" })
+
+-- Insert and visual mode use the same half page (native Shift+Arrow is a full
+-- page there too). <C-d> in insert mode is an indent, so go through <C-o>.
+vim.keymap.set("x", "<S-Down>", "<C-d>", { desc = "Half page down" })
+vim.keymap.set("x", "<S-Up>", "<C-u>", { desc = "Half page up" })
+vim.keymap.set("i", "<S-Down>", "<C-o><C-d>", { desc = "Half page down" })
+vim.keymap.set("i", "<S-Up>", "<C-o><C-u>", { desc = "Half page up" })

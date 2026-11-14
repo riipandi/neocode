@@ -16,13 +16,18 @@ Neovim builtins stay available: `zM`/`zR` (close/open all folds), `za`, `gx`
 | Mouse wheel   | `<ScrollWheelUp>` / `<ScrollWheelDown>`           |
 
 `<S-Down>`/`<S-Up>` and `}`/`{` run the same builtin as `<C-d>`/`<C-u>` so a
-half page means one thing everywhere (`lua/core_keymaps/scroll.lua`, normal mode
-only). Paragraph motion is still available in operator-pending and visual mode
+half page means one thing everywhere (`lua/core_keymaps/scroll.lua`).
+`<S-Down>`/`<S-Up>` also work in insert and visual mode; `}`/`{` are normal mode
+only, so paragraph motion is still available in operator-pending and visual mode
 (`d}`, `v{`).
 
-`<C-b>` opens the buffer list here, so it is not page up. Scrolling is native:
-the viewport can pass the last line, and `scrolloff = 0` means the cursor is
-never dragged by view scrolling.
+`<C-b>` opens the buffer list here, so it is not page up. Scrolling is native
+except at the end: the viewport stops when the last line (counted in screen
+rows, so wrapped text works) reaches the bottom, and the wheel stops there
+without dragging the cursor, in normal, insert and visual mode and in the file
+explorer (`lua/core_scroll.lua`). Wheel up is done by hand there, because native
+scrolling stalls on the virtual lines render-markdown adds to tables. `scrolloff = 0` means the cursor is not
+dragged by view scrolling.
 
 Smooth scrolling comes from `snacks.scroll` (`lua/core_plugins.lua`): 45 ms per
 scrolled line, 240 ms cap, 16 ms/line once a key is held for 130 ms.
