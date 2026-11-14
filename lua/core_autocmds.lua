@@ -10,11 +10,14 @@ local augroup = vim.api.nvim_create_augroup
 -- Filetype Detection
 -- ============================================================================
 
--- Detect Justfile
+-- Detect Justfile; template configs (config.yml.example) are YAML
 vim.filetype.add({
     filename = {
         ['Justfile'] = 'just',
         ['justfile'] = 'just',
+    },
+    pattern = {
+        ['.*%.ya?ml%.example'] = 'yaml',
     },
 })
 

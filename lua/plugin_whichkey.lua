@@ -183,7 +183,8 @@ require('which-key').setup({
 
         -- Explorer
         { '<leader>e',  desc = 'File explorer (toggle)',      mode = "n" },
-        { '<A-e>',      desc = 'File explorer (close/focus)', mode = "n" },
+        { '<A-e>',      desc = 'File explorer (toggle focus)', mode = "n" },
+        { '<A-E>',      desc = 'File explorer (open/close)',  mode = "n" },
         -- Visual mode
         { "<leader>",   group = "Leader",                     mode = "v" },
         { "g",          group = "Goto",                       mode = "v" },

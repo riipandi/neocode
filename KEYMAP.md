@@ -162,8 +162,8 @@ insert-mode mapping so one press cancels.
 
 ## File explorer (`<leader>e`)
 
-`<leader>e` toggles; `<A-e>` closes it when open or focuses it when the cursor is
-elsewhere.
+`<leader>e` and `<A-S-e>` open/close the sidebar; `<A-e>` flips focus between the
+explorer and the editor (and opens the sidebar when it is closed).
 
 | Key            | Action                                                        |
 | -------------- | ------------------------------------------------------------- |

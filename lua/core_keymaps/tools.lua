@@ -42,25 +42,27 @@ snacks.keymap.set("n", "<leader>e", function()
     Snacks.explorer()
 end, { desc = "Toggle file explorer" })
 
--- File Explorer (close if in explorer, else focus or open)
+-- Opt+Shift+E: open or close the sidebar. Opt+Shift+E arrives as <M-E> in
+-- terminals without the kitty keyboard protocol, <M-S-e> in those with it.
+local function toggle_sidebar()
+    local picker = Snacks.picker.get({ source = "explorer" })[1]
+    if picker then picker:close() else Snacks.explorer() end
+end
+snacks.keymap.set("n", "<M-S-e>", toggle_sidebar, { desc = "File explorer: open/close sidebar" })
+snacks.keymap.set("n", "<M-E>", toggle_sidebar, { desc = "File explorer: open/close sidebar" })
+
+-- Opt+e: flip focus between the explorer and the editor. Opens the sidebar
+-- when it is closed.
 snacks.keymap.set("n", "<A-e>", function()
-    local buf_name = vim.api.nvim_buf_get_name(0)
-    local filetype = vim.bo.filetype
-    local in_explorer = buf_name:match("snacks_explorer") or filetype == "snacks_picker_list"
-
-    if in_explorer then
-        local pickers = Snacks.picker.get({ source = "explorer" })
-        if pickers and #pickers > 0 then
-            pickers[1]:close()
+    local picker = Snacks.picker.get({ source = "explorer" })[1]
+    if not picker then return Snacks.explorer() end
+    if vim.bo.filetype:match("^snacks_picker") then
+        if vim.api.nvim_win_is_valid(picker.main) then
+            vim.api.nvim_set_current_win(picker.main)
+        else
+            vim.cmd("wincmd p")
         end
-        return
-    end
-
-    -- Focus explorer if open, otherwise open it
-    local pickers = Snacks.picker.get({ source = "explorer" })
-    if pickers and #pickers > 0 then
-        pickers[1]:focus()
     else
-        Snacks.explorer()
+        picker:focus("list")
     end
-end, { desc = "File explorer: close/focus (<A-e>)" })
+end, { desc = "File explorer: toggle focus (<A-e>)" })

@@ -141,6 +141,7 @@ require 'core_commands'    -- User commands
 -- Load third-party plugins and their configurations in lua/plugins directory.
 -- ============================================================================
 require 'core_theme'               -- Theme configurations
+require 'core_dim'                 -- Dim inactive splits
 require 'plugin_editor'            -- Editor configurations
 require 'plugin_completion'        -- Code completion (blink.cmp + mistral-codestral fork)
 require 'plugin_treesitter'        -- Syntax highlighting (nvim-treesitter)
