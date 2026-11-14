@@ -20,7 +20,7 @@ vim.api.nvim_create_autocmd('PackChanged', {
 -- fff Setup
 -- ============================================================================
 
-require('fff').setup({
+pcall(function() require('fff').setup({
     lazy_sync = true,
     debug = {
         enabled = false,
@@ -44,45 +44,62 @@ require('fff').setup({
         smart_case = true,
         modes = { 'plain', 'regex', 'fuzzy' },
     },
-})
+}) end)
 
--- The Rust binary is fetched by the PackChanged handler above (install/update)
--- and can be rebuilt on demand with :FFFHealth. Downloading it 500ms after
--- startup would do network I/O on every launch when the binary is missing.
-vim.defer_fn(function()
-    local bin_path = require('fff.download').get_binary_path()
-    if not vim.uv.fs_stat(bin_path) then
-        vim.notify("fff: native binary missing — run :FFFHealth or restart Neovim to install it",
-            vim.log.levels.WARN, { title = "fff" })
-    end
-end, 500)
+-- ============================================================================
+-- Missing native binary
+-- ============================================================================
+-- Keys fall back to the snacks pickers and the first use downloads the binary
+-- in the background, so a fresh install or a wiped plugin dir never errors.
+
+local function binary_ready()
+    return vim.uv.fs_stat(require('fff.download').get_binary_path()) ~= nil
+end
+
+local installing = false
+local function install_binary()
+    if installing then return end
+    installing = true
+    vim.notify('Native binary missing, downloading it. Using the snacks picker meanwhile.',
+        vim.log.levels.WARN, { title = 'fff' })
+    require('fff.download').ensure_downloaded({ force = true }, function(ok, err)
+        vim.schedule(function()
+            if not ok then installing = false end
+            if ok then
+                vim.notify('Native binary installed.', vim.log.levels.INFO, { title = 'fff' })
+            else
+                vim.notify('Download failed: ' .. tostring(err) .. '\nRetry with :FFFHealth.',
+                    vim.log.levels.ERROR, { title = 'fff' })
+            end
+        end)
+    end)
+end
+
+local function map(lhs, desc, run, fallback)
+    vim.keymap.set('n', lhs, function()
+        if binary_ready() then
+            local ok, err = pcall(run, require('fff'))
+            if ok then return end
+            vim.notify(tostring(err), vim.log.levels.ERROR, { title = 'fff' })
+        else
+            install_binary()
+        end
+        fallback()
+    end, { desc = desc })
+end
 
 -- ============================================================================
 -- Keymaps
 -- ============================================================================
 
--- Find files (replaces <C-p> which was snacks.picker.files; <C-p> is now the
--- command palette)
-vim.keymap.set('n', '<C-o>', function()
-    require('fff').find_files()
-end, { desc = 'Find files (FFF)' })
+local function files() Snacks.picker.files() end
+local function grep() Snacks.picker.grep() end
 
--- Find files (alternative, was <leader><space> with snacks)
-vim.keymap.set('n', '<leader><space>', function()
-    require('fff').find_files()
-end, { desc = 'Find files (FFF)' })
-
--- Live grep (content search)
-vim.keymap.set('n', '<leader>fw', function()
-    require('fff').live_grep()
-end, { desc = 'Live grep (FFF)' })
-
--- Fuzzy live grep (more forgiving matching)
-vim.keymap.set('n', '<leader>fz', function()
-    require('fff').live_grep({ grep = { modes = { 'fuzzy', 'plain' } } })
-end, { desc = 'Live fuzzy grep (FFF)' })
-
--- Search for word under cursor
-vim.keymap.set('n', '<leader>ff', function()
-    require('fff').live_grep({ query = vim.fn.expand('<cword>') })
-end, { desc = 'Search current word (FFF)' })
+map('<C-o>', 'Find files (FFF)', function(fff) fff.find_files() end, files)
+map('<leader><space>', 'Find files (FFF)', function(fff) fff.find_files() end, files)
+map('<leader>fw', 'Live grep (FFF)', function(fff) fff.live_grep() end, grep)
+map('<leader>fz', 'Live fuzzy grep (FFF)',
+    function(fff) fff.live_grep({ grep = { modes = { 'fuzzy', 'plain' } } }) end, grep)
+map('<leader>ff', 'Search current word (FFF)',
+    function(fff) fff.live_grep({ query = vim.fn.expand('<cword>') }) end,
+    function() Snacks.picker.grep_word() end)
