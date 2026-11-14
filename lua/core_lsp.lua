@@ -129,9 +129,12 @@ end, {
     desc = "Format current buffer with conform.nvim",
 })
 
-snacks.keymap.set("n", "<leader>fm", function()
-    format_buffer()
-end, { desc = "Format file" })
+-- <C-f> replaces the native page-down (<C-d> and the mouse wheel still scroll)
+for _, lhs in ipairs({ "<leader>fm", "<C-f>" }) do
+    snacks.keymap.set("n", lhs, function()
+        format_buffer()
+    end, { desc = "Format file" })
+end
 
 -- ============================================================================
 -- LSP Keymaps
@@ -143,7 +146,7 @@ autocmd("LspAttach", {
 
         snacks.keymap.set("n", "gD", vim.lsp.buf.definition, opts)
         snacks.keymap.set("n", "gs", vim.lsp.buf.declaration, opts)
-        snacks.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+        -- no bare `gr`: it would delay the grr/grn/gra/gri/grt/grd family
         snacks.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
 
         snacks.keymap.set("n", "K", vim.lsp.buf.hover, opts)
@@ -152,9 +155,9 @@ autocmd("LspAttach", {
         snacks.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
         snacks.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
 
-        snacks.keymap.set("n", "<leader>nd", vim.diagnostic.goto_next, opts)
-        snacks.keymap.set("n", "<leader>pd", vim.diagnostic.goto_prev, opts)
-        snacks.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
+        snacks.keymap.set("n", "<leader>dn", vim.diagnostic.goto_next, opts)
+        snacks.keymap.set("n", "<leader>dp", vim.diagnostic.goto_prev, opts)
+        snacks.keymap.set("n", "<leader>dd", vim.diagnostic.open_float, opts)
         snacks.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, opts)
     end,
     desc = "LSP keymaps",

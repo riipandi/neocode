@@ -4,7 +4,7 @@
 -- Currently only Elixir is wired up. The adapter is ElixirLS's debug adapter
 -- (elixir-ls-debugger from Mason) because Expert does not provide a DAP yet.
 -- The ElixirLS *language* server is not started here; expert owns LSP.
--- Usage: :lua require('dap').continue()  (mapped to <leader>dd below)
+-- Usage: :lua require('dap').continue()  (mapped to <leader>xx below)
 -- =============================================================================
 
 local ok, dap = pcall(require, "dap")
@@ -67,21 +67,21 @@ dap.configurations.elixir = {
 -- over-engineering; global leader maps keep it discoverable).
 local snacks_ok, snacks = pcall(require, "snacks")
 local keymap = snacks_ok and snacks.keymap.set or vim.keymap.set
-keymap("n", "<leader>dd", function()
+keymap("n", "<leader>xx", function()
     dap.continue()
 end, { desc = "DAP: continue/start" })
-keymap("n", "<leader>db", function()
+keymap("n", "<leader>xb", function()
     dap.toggle_breakpoint()
 end, { desc = "DAP: breakpoint" })
-keymap("n", "<leader>do", function()
+keymap("n", "<leader>xo", function()
     dap.step_over()
 end, { desc = "DAP: step over" })
-keymap("n", "<leader>di", function()
+keymap("n", "<leader>xi", function()
     dap.step_into()
 end, { desc = "DAP: step into" })
-keymap("n", "<leader>dO", function()
+keymap("n", "<leader>xO", function()
     dap.step_out()
 end, { desc = "DAP: step out" })
-keymap("n", "<leader>dq", function()
+keymap("n", "<leader>xq", function()
     dap.terminate()
 end, { desc = "DAP: terminate" })

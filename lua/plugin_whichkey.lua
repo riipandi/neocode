@@ -80,15 +80,25 @@ require('which-key').setup({
 
         -- Diagnostic
         { '<leader>d',  group = 'Diagnostic',                 mode = "n" },
+        { '<leader>dd', desc = 'Diagnostics float',           mode = "n" },
         { '<leader>dl', desc = 'Set loclist',                 mode = "n" },
+        { '<leader>dn', desc = 'Next diagnostic',             mode = "n" },
+        { '<leader>dp', desc = 'Previous diagnostic',         mode = "n" },
+        -- Debug (DAP)
+        { '<leader>x',  group = 'Debug (DAP)',                mode = "n" },
+        { '<leader>xx', desc = 'Continue/start',              mode = "n" },
+        { '<leader>xb', desc = 'Toggle breakpoint',           mode = "n" },
+        { '<leader>xo', desc = 'Step over',                   mode = "n" },
+        { '<leader>xi', desc = 'Step into',                   mode = "n" },
+        { '<leader>xO', desc = 'Step out',                    mode = "n" },
+        { '<leader>xq', desc = 'Terminate',                   mode = "n" },
         { '<leader>D',  desc = 'Delete without yanking',      mode = { 'n', 'v' } },
-        { '<leader>nd', desc = 'Next diagnostic',             mode = "n" },
-        { '<leader>pd', desc = 'Previous diagnostic',         mode = "n" },
 
         -- File
         { '<leader>f',  group = 'File',                       mode = "n" },
         { '<leader>ff', desc = 'Search word (FFF)',           mode = "n" },
         { '<leader>fm', desc = 'Format file',                 mode = "n" },
+        { '<C-f>',      desc = 'Format file',                 mode = "n" },
         { '<leader>fw', desc = 'Live grep (FFF)',             mode = "n" },
         { '<leader>fz', desc = 'Fuzzy grep (FFF)',            mode = "n" },
 

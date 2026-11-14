@@ -1,5 +1,5 @@
 -- ============================================================================
--- Quit: <C-q>, <A-q>, <leader>q, <leader>qq
+-- Quit: <C-q>, <A-q>, <leader>qq
 -- ============================================================================
 -- With smart confirmation dialog that handles unsaved buffers and
 -- properly returns cursor if the user cancels.
@@ -68,7 +68,6 @@ end
 
 snacks.keymap.set("n", "<C-q>", confirm_quit, { desc = 'Quit all' })
 snacks.keymap.set("n", "<A-q>", confirm_quit, { desc = 'Quit all (Option+q)' })
-snacks.keymap.set("n", "<leader>q", confirm_quit, { desc = 'Quit all' })
 snacks.keymap.set("n", "<leader>qq", confirm_quit, { desc = 'Quit all' })
 
 M.confirm_quit = confirm_quit

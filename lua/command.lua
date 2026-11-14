@@ -130,6 +130,22 @@ end
 -- Command Palette UI
 -- ============================================================================
 
+-- Run the command right away. Only a command that needs an argument opens the
+-- cmdline, prefilled, so the argument can be typed.
+local function run_command(name)
+    local user_cmd = vim.api.nvim_get_commands({})[name]
+    if not (user_cmd and (user_cmd.nargs == "1" or user_cmd.nargs == "+")) then
+        local ok, err = pcall(vim.cmd, name)
+        if ok then return end
+        -- E471: Argument required (built-in commands do not report nargs)
+        if not tostring(err):find("E471", 1, true) then
+            vim.notify(tostring(err), vim.log.levels.ERROR, { title = "Command" })
+            return
+        end
+    end
+    vim.fn.feedkeys(":" .. name .. " ", "n")
+end
+
 -- Show command palette with categories
 local function show_commands(title, items)
     Snacks.picker({
@@ -152,10 +168,7 @@ local function show_commands(title, items)
             if type(item.action) == "string" then
                 if item.action:find("^:") then
                     picker:close()
-                    -- Always open prompt with command
-                    return picker:norm(function()
-                        vim.fn.feedkeys(":" .. item.action:sub(2) .. " ", "n")
-                    end)
+                    return picker:norm(function() run_command(item.action:sub(2)) end)
                 else
                     return picker:norm(function()
                         local keys = vim.api.nvim_replace_termcodes(item.action, true, true, true)
@@ -176,12 +189,7 @@ end
 -- ============================================================================
 
 -- Command palette: fuzzy search all Vim commands with categories.
--- <C-S-p> is kept for terminals that forward Shift (kitty/wezterm with the
--- keyboard protocol); <leader>: is the portable alternative.
-snacks.keymap.set("n", "<leader>:", function()
-    show_commands("Commands Center", get_vim_commands())
-end, { desc = "Command palette" })
-
-snacks.keymap.set("n", "<C-S-p>", function()
-    show_commands("Commands Center", get_vim_commands())
-end, { desc = "Command palette (terminal dependent)" })
+-- <C-p> and <leader>: open it.
+local function palette() show_commands("Commands Center", get_vim_commands()) end
+snacks.keymap.set("n", "<leader>:", palette, { desc = "Command palette" })
+snacks.keymap.set("n", "<C-p>", palette, { desc = "Command palette" })

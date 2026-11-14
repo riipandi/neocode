@@ -14,7 +14,7 @@
 -- normal-mode only, so `d}`, `y{`, `v}`, `c{` and friends keep working with
 -- operators and in visual mode.
 --
--- Everything else stays native: <C-e>/<C-y>, <C-f>, the mouse wheel, insert
+-- Everything else stays native: <C-e>/<C-y>, the mouse wheel, insert
 -- mode, and the picker/explorer keymaps (core_keymaps/explorer.lua,
 -- core_keymaps/picker.lua).
 

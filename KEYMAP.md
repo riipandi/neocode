@@ -13,7 +13,6 @@ Neovim builtins stay available: `zM`/`zR` (close/open all folds), `za`, `gx`
 | ------------- | ------------------------------------------------- |
 | One line      | `<C-e>` / `<C-y>`                                 |
 | Half page     | `<C-d>` / `<C-u>`, `<S-Down>` / `<S-Up>`, `}` / `{` |
-| Page down     | `<C-f>`                                           |
 | Mouse wheel   | `<ScrollWheelUp>` / `<ScrollWheelDown>`           |
 
 `<S-Down>`/`<S-Up>` and `}`/`{` run the same builtin as `<C-d>`/`<C-u>` so a
@@ -89,7 +88,7 @@ which is why window actions live in the `<leader>w` group.
 
 | Action                       | Keys                          |
 | ---------------------------- | ----------------------------- |
-| Find files                   | `<C-p>`, `<leader><Space>`    |
+| Find files                   | `<C-o>`, `<leader><Space>`    |
 | Live grep                    | `<leader>fw`                  |
 | Fuzzy grep                   | `<leader>fz`                  |
 | Grep word under cursor       | `<leader>ff`                  |
@@ -114,8 +113,8 @@ message through noice.
 | Copy file path            | `<leader>pa`             |
 | Change cwd to file's dir  | `<leader>cd`             |
 
-`<leader>d` is not used for text: it is the LSP diagnostic float (buffer-local,
-see LSP).
+`<leader>d` is not used for text: it is the diagnostics group (buffer-local on LSP
+buffers, see LSP). `<leader>x` is the DAP debug group.
 
 ## Command palette
 
@@ -123,7 +122,7 @@ see LSP).
 | ------------------------- | ----------- |
 | Insert a command (snacks input) | `<leader>;` |
 | Search all commands       | `<leader>:` |
-| Same, terminals that forward Shift | `<C-S-p>` |
+| Same, one key             | `<C-p>`     |
 | Go to line or `line:col`  | `<C-g>`     |
 
 ## Tools
@@ -147,7 +146,7 @@ none is installed.
 
 | Action        | Keys                        |
 | ------------- | --------------------------- |
-| Quit all      | `<leader>q`, `<leader>qq`, `<C-q>`, `<A-q>` |
+| Quit all      | `<leader>qq`, `<C-q>`, `<A-q>` |
 | Cancel a dialog | `<Esc>`                   |
 
 Dialogs (quit, unsaved buffer, Mason actions) open through `vim.ui.select` with
@@ -221,7 +220,7 @@ Hunk keys are buffer-local and only exist when gitsigns attaches.
 | Action                     | Keys            |
 | -------------------------- | --------------- |
 | Definition / declaration   | `gD` / `gs`     |
-| References / implementation| `gr` / `gi`     |
+| References / implementation| `grr` / `gi`    |
 | Definition picker          | `grd`           |
 | References picker          | `grr`           |
 | Implementation picker      | `gri`           |
@@ -233,10 +232,11 @@ Hunk keys are buffer-local and only exist when gitsigns attaches.
 | Type definition picker     | `grt`           |
 | Inlay hints toggle         | `<leader>th`    |
 | Toggle inlay hints         | `<leader>li` (global; `<leader>th` above is buffer-local) |
-| Diagnostics float          | `<leader>d`     |
-| Next / previous diagnostic | `<leader>nd` / `<leader>pd` |
+| Diagnostics float          | `<leader>dd`    |
+| Next / previous diagnostic | `<leader>dn` / `<leader>dp` |
 | Diagnostics to loclist     | `<leader>dl`    |
 | Toggle diagnostics         | `<leader>ld`    |
+| Format file                | `<C-f>`, `<leader>fm` |
 | Toggle format on save      | `<leader>lf`    |
 | LSP client info            | `<leader>lI`    |
 
@@ -343,7 +343,6 @@ Ctrl+Shift+G used to print `<C-g>` file info and split the layout.
 | `<C-S-f>`     | Search & replace (swpui)                  |
 | `<C-S-s>`     | Terminal (toggle)                         |
 | `<C-S-m>`     | Previous mark                             |
-| `<C-S-p>`     | Command palette                           |
 | `<C-S-w>`     | Swallowed (`<Nop>`) — it would otherwise start `<C-w>` |
 
 ## User commands

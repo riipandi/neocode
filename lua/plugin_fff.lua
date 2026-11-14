@@ -61,8 +61,9 @@ end, 500)
 -- Keymaps
 -- ============================================================================
 
--- Find files (replaces <C-p> which was snacks.picker.files)
-vim.keymap.set('n', '<C-p>', function()
+-- Find files (replaces <C-p> which was snacks.picker.files; <C-p> is now the
+-- command palette)
+vim.keymap.set('n', '<C-o>', function()
     require('fff').find_files()
 end, { desc = 'Find files (FFF)' })
 

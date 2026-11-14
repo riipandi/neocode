@@ -1,7 +1,7 @@
 -- ============================================================================
 -- Scroll bounds: stop the viewport at the last line
 -- ============================================================================
--- Every scroll key stays native (<C-e>/<C-y>, <C-d>/<C-u>, <C-f>, wheel,
+-- Every scroll key stays native (<C-e>/<C-y>, <C-d>/<C-u>, wheel,
 -- zt/zz/zb). Only the result is corrected, so keymaps and counts are untouched.
 --
 -- Problem: scrolling near the end of a buffer makes Vim move the viewport into
