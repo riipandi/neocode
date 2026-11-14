@@ -50,10 +50,15 @@ ln -s ~/.config/nvim/ghostty ~/.config/ghostty/config
 ln -s ~/.config/nvim/starship.toml ~/.config/starship.toml
 ```
 
-To start over: `:CleanNvim` (drops `nvim-pack-lock.json` and the cache
-directory), or delete `~/.local/share/nvim`, `~/.local/state/nvim` and
-`~/.cache/nvim`.
+To start over: `:CleanNvim` (drops `nvim-pack-lock.json` and the cache directory), or:
 
+```sh
+rm -fr ~/.local/share/nvim
+rm -fr ~/.local/state/nvim
+rm -fr ~/.cache/nvim
+```
+
+````
 ## Layout
 
 | Path                                     | Contents                                                    |
@@ -233,7 +238,7 @@ wired to blink.cmp only (no nvim-cmp code paths). Differences from upstream:
 
 ```sh
 export CODESTRAL_API_KEY="your-key-here"
-```
+````
 
 The lualine status component shows the current state (`─ idle`,
 `◐ waiting 1.2s`, `● ready`, `✖ error`) and runs `:MistralCodestralToggle` when
