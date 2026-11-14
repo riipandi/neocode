@@ -270,7 +270,7 @@ snacks.keymap.set("n", "<C-b>", function()
     })
 end, { desc = "Show buffer list" })
 
--- NOTE: <C-p> file finding is now handled by fff.nvim (see plugin_fff.lua)
+-- NOTE: <C-o> file finding is now handled by fff.nvim (see plugin_fff.lua)
 
 -- ============================================================================
 -- Input & Navigation Keymaps
@@ -343,7 +343,7 @@ snacks.keymap.set("n", "<leader>sr", function()
     snacks.swpui.open()
 end, { desc = "Global search & replace (swpui)" })
 
--- <C-S-f> would otherwise fall through to <C-f> (page down).
+-- <C-S-f> would otherwise fall through to <C-f> (format file).
 snacks.keymap.set("n", "<C-S-f>", function()
     snacks.swpui.open()
 end, { desc = "Global search & replace (Ctrl+Shift+F)" })

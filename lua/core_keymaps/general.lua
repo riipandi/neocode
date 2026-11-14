@@ -94,7 +94,23 @@ snacks.keymap.set("n", "<leader>w<", ":resize -2<CR>", { desc = "Window: Decreas
 snacks.keymap.set("n", "<leader>w=", "<C-w>=", { desc = "Window: Equalize" })
 
 -- Config & Plugins
-snacks.keymap.set("n", "<leader>,", ":e ~/.config/nvim<CR>", { desc = "Edit neovim config" })
+-- Same as `nvim ~/.config/nvim`: cd there and root the explorer on it. `:e <dir>`
+-- would hand the directory to snacks, which toggles an open sidebar closed.
+local function edit_config()
+    local dir = vim.fn.stdpath("config")
+    vim.fn.chdir(dir)
+    local picker = Snacks.picker.get({ source = "explorer" })[1]
+    if picker then
+        picker:set_cwd(dir)
+        picker:find()
+        picker:focus("list")
+    else
+        Snacks.explorer({ cwd = dir })
+    end
+end
+snacks.keymap.set("n", "<leader>,", edit_config, { desc = "Edit neovim config" })
+-- Ctrl+, needs the kitty keyboard protocol (Ghostty, kitty); `<leader>,` is the portable key
+snacks.keymap.set("n", "<C-,>", edit_config, { desc = "Edit neovim config (Ctrl+,)" })
 snacks.keymap.set("n", "<leader>pu", '<cmd>lua vim.pack.update()<CR>', { desc = "Update plugins" })
 snacks.keymap.set("n", "<leader>cd", '<cmd>lua vim.fn.chdir(vim.fn.expand("%:p:h"))<CR>',
     { desc = "Change working directory to current file" })

@@ -137,7 +137,7 @@ buffers, see LSP). `<leader>x` is the DAP debug group.
 | Scratch buffer             | `<leader>.`    |
 | Select scratch buffer      | `<leader>S`    |
 | Update plugins             | `<leader>pu`   |
-| Edit this config           | `<leader>,`    |
+| Edit this config           | `<C-,>` (kitty-protocol terminals), `<leader>,` |
 
 `<leader>tr` runs the first available of `mactop`, `btop`, `htop` and warns when
 none is installed.
@@ -220,7 +220,7 @@ Hunk keys are buffer-local and only exist when gitsigns attaches.
 | Action                     | Keys            |
 | -------------------------- | --------------- |
 | Definition / declaration   | `gD` / `gs`     |
-| References / implementation| `grr` / `gi`    |
+| References / implementation| `grr` / `gri`   |
 | Definition picker          | `grd`           |
 | References picker          | `grr`           |
 | Implementation picker      | `gri`           |

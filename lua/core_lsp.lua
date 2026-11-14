@@ -146,8 +146,7 @@ autocmd("LspAttach", {
 
         snacks.keymap.set("n", "gD", vim.lsp.buf.definition, opts)
         snacks.keymap.set("n", "gs", vim.lsp.buf.declaration, opts)
-        -- no bare `gr`: it would delay the grr/grn/gra/gri/grt/grd family
-        snacks.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+        -- no bare `gr` (delays grr/grn/gra/gri/grt/grd) and no `gi` (native insert at last position; use `gri`)
 
         snacks.keymap.set("n", "K", vim.lsp.buf.hover, opts)
         snacks.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)

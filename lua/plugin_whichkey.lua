@@ -188,6 +188,7 @@ require('which-key').setup({
 
         -- Config
         { '<leader>,',  desc = 'Edit config',                 mode = "n" },
+        { '<C-,>',      desc = 'Edit config',                 mode = "n" },
         { '<leader>;',  desc = 'Command palette',             mode = "n" },
         { '<leader>:',  desc = 'Command palette (all)',       mode = "n" },
 
