@@ -49,6 +49,8 @@ local ensure_installed = {
     "tree-sitter-cli",
 }
 
+require('mason_tabs')
+
 -- Mason's bin dir has to be on PATH before the first buffer opens (lua_ls and
 -- friends live there); everything else can wait until startup is done.
 vim.env.PATH = vim.fn.stdpath("data") .. "/mason/bin:" .. vim.env.PATH
