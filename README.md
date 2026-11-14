@@ -178,7 +178,7 @@ Mason.
 | **conform.nvim**             | Formatting (save and manual)                                |
 | **nvim-lspconfig**           | LSP configs used by `vim.lsp.config`                        |
 | **mason.nvim**, **mason-lspconfig**, **mason-tool-installer** | Tool installation |
-| **lsp_signature.nvim**, **fidget.nvim** | Signature help and LSP progress                 |
+| **lsp_signature.nvim** | Signature help (LSP progress is a snacks toast, see `core_lsp.lua`) |
 | **trouble.nvim**             | Diagnostics list                                            |
 | **gitsigns.nvim**            | Gutter hunks and hunk actions                               |
 | **miniharp.nvim**            | File marks (picker UI supplied by snacks)                   |

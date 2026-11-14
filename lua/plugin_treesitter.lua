@@ -2,7 +2,6 @@ vim.pack.add({
     { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
     { src = "https://github.com/ray-x/lsp_signature.nvim" },
     { src = "https://github.com/folke/trouble.nvim" },
-    { src = "https://github.com/j-hui/fidget.nvim" },
     { src = "https://github.com/neovim/nvim-lspconfig" },
 }, { confirm = false })
 
@@ -101,17 +100,6 @@ vim.defer_fn(function()
                 border = "rounded",
             },
         }
-    end
-end, 100)
-
--- ============================================================================
--- LSP progress in the bottom-right corner
--- ============================================================================
--- fidget was added to the pack list but never set up, so no progress was shown.
-vim.defer_fn(function()
-    local ok, fidget = pcall(require, "fidget")
-    if ok then
-        fidget.setup {}
     end
 end, 100)
 

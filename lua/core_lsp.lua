@@ -84,6 +84,50 @@ if superhtml then
 end
 
 -- ============================================================================
+-- LSP progress toast
+-- ============================================================================
+-- $/progress as one snacks toast per server (titled with the client name,
+-- spinner icon, updated in place), so it looks like every other toast.
+local progress = vim.defaulttable() -- client id -> list of { token, msg, done }
+local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+vim.api.nvim_create_autocmd("LspProgress", {
+    group = vim.api.nvim_create_augroup("lsp_progress_toast", { clear = true }),
+    callback = function(ev)
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        local value = ev.data.params.value
+        if not client or type(value) ~= "table" then return end
+
+        local items = progress[client.id]
+        local msg = ("[%3d%%] %s%s"):format(
+            value.kind == "end" and 100 or value.percentage or 100,
+            value.title or "",
+            value.message and (" " .. value.message) or ""
+        )
+        for i = 1, #items + 1 do
+            if i == #items + 1 or items[i].token == ev.data.params.token then
+                items[i] = { token = ev.data.params.token, msg = msg, done = value.kind == "end" }
+                break
+            end
+        end
+
+        local lines = {}
+        progress[client.id] = vim.tbl_filter(function(v)
+            table.insert(lines, v.msg)
+            return not v.done
+        end, items)
+
+        vim.notify(table.concat(lines, "\n"), vim.log.levels.INFO, {
+            id = "lsp_progress_" .. client.id,
+            title = client.name,
+            opts = function(notif)
+                notif.icon = #progress[client.id] == 0 and " "
+                    or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+            end,
+        })
+    end,
+})
+
+-- ============================================================================
 -- Enable LSP servers (configured above / in language_*.lua)
 -- ============================================================================
 
