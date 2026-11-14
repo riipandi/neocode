@@ -139,7 +139,7 @@ local function run_command(name)
         if ok then return end
         -- E471: Argument required (built-in commands do not report nargs)
         if not tostring(err):find("E471", 1, true) then
-            vim.notify(tostring(err), vim.log.levels.ERROR, { title = "Command" })
+            vim.notify(tostring(err):match("E%d+:.*") or tostring(err), vim.log.levels.ERROR, { title = "Command" })
             return
         end
     end
