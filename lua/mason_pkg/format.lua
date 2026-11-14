@@ -20,7 +20,7 @@ end
 -- Preview panel: shows package details in markdown
 function M.preview_item(ctx)
     local item = ctx.item
-    if not item then return "" end
+    if not item then return end
     local lines = {
         "# " .. item.name, "",
         "**Category:** " .. item.cat,
@@ -30,15 +30,20 @@ function M.preview_item(ctx)
         table.insert(lines, "**Languages:** " .. item.languages)
     end
     if item.description and item.description ~= "" then
-        table.insert(lines, "", item.description)
+        vim.list_extend(lines, { "", item.description })
     end
     if item.homepage and item.homepage ~= "" then
-        table.insert(lines, "", "**Homepage:** " .. item.homepage)
+        vim.list_extend(lines, { "", "**Homepage:** " .. item.homepage })
     end
-    table.insert(lines, "", "---")
-    table.insert(lines, "<Tab> category  |  i install  |  x uninstall  |  u update")
-    table.insert(lines, "Enter actions  |  <C-c> close")
-    return table.concat(lines, "\n")
+    vim.list_extend(lines, {
+        "", "---",
+        "<Tab> category  |  i install  |  x uninstall  |  u update",
+        "Enter actions  |  <C-c> close",
+    })
+    ctx.preview:reset()
+    ctx.preview:set_lines(vim.split(table.concat(lines, "\n"), "\n"))
+    ctx.preview:highlight({ ft = "markdown" })
+    ctx.preview:set_title(item.name)
 end
 
 return M

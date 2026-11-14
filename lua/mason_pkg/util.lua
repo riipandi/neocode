@@ -43,7 +43,7 @@ function M.get_items(filter_cat)
             local cat = M.get_category(pkg.spec.categories)
             if not filter_cat or cat == filter_cat then
                 local installed = pkg:is_installed()
-                local langs = vim.tbl_keys(pkg.spec.languages or {})
+                local langs = pkg.spec.languages or {}
                 local lang_str = #langs > 0 and table.concat(langs, ", ") or ""
 
                 table.insert(items, {
