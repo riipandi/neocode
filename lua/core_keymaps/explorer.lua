@@ -168,15 +168,18 @@ vim.api.nvim_create_autocmd("FileType", {
     group = s_group,
     pattern = { "snacks_picker_list", "snacks_picker_input" },
     callback = function(ev)
-        local picker
-        for _, p in ipairs(require("snacks").picker.get({ bufnr = ev.buf })) do
-            if p.opts.source == "explorer" then
-                picker = p; break
-            end
-        end
-        if not picker then return end
-        -- defer so it runs after snacks registers its own keymaps
+        -- defer so it runs after snacks registers its own keymaps and the
+        -- picker windows exist
         vim.schedule(function()
+            -- picker.get() ignores `bufnr`, so match the buffer by hand: another
+            -- picker (command center) must not get the explorer's mappings.
+            local picker
+            for _, p in ipairs(require("snacks").picker.get({ source = "explorer" })) do
+                if (p.input and p.input.win.buf == ev.buf) or (p.list and p.list.win.buf == ev.buf) then
+                    picker = p; break
+                end
+            end
+            if not picker then return end
             local function jump(delta)
                 picker.list:move(delta); picker:update()
             end
