@@ -88,8 +88,9 @@ vim.opt.hidden = true                   -- Allow hidden buffers
 vim.opt.backspace = "indent,eol,start"  -- Better backspace behavior
 -- h / <Left> at the first column continue at the end of the previous line, and
 -- l / <Right> at the last character continue at the start of the next line
--- (editor-style wrap). Counts and operators carry across the boundary too.
-vim.opt.whichwrap:append("h,<,l,>")
+-- (editor-style wrap). `[` and `]` are the same for <Left> / <Right> in insert
+-- and replace mode. Counts and operators carry across the boundary too.
+vim.opt.whichwrap:append("h,<,l,>,[,]")
 vim.opt.autochdir = false               -- Don't auto change directory
 vim.opt.mouse = "a"                     -- Enable mouse support
 vim.opt.clipboard:append("unnamedplus") -- Use system clipboard
