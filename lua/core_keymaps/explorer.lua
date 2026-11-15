@@ -161,6 +161,51 @@ explorer_keys["j"] = "list_down"
 -- the key does not fall through to insert mode in the explorer list.
 explorer_keys["I"] = function() end
 
+-- The list highlights the whole row, so the terminal cursor is hidden while
+-- the list has focus and kept on the first column (a click would move it).
+vim.api.nvim_set_hl(0, "ExplorerHiddenCursor", { blend = 100, nocombine = true })
+vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("explorer_cursor", { clear = true }),
+    callback = function()
+        vim.api.nvim_set_hl(0, "ExplorerHiddenCursor", { blend = 100, nocombine = true })
+    end,
+})
+
+local saved_guicursor
+local function show_cursor()
+    if saved_guicursor then
+        vim.o.guicursor = saved_guicursor
+        saved_guicursor = nil
+    end
+end
+
+local function keep_cursor_left(buf)
+    local group = vim.api.nvim_create_augroup("explorer_cursor_" .. buf, { clear = true })
+    local function hide()
+        saved_guicursor = saved_guicursor or vim.o.guicursor
+        vim.o.guicursor = "a:ExplorerHiddenCursor"
+    end
+    vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, { group = group, buffer = buf, callback = hide })
+    vim.api.nvim_create_autocmd({ "BufLeave", "WinLeave", "BufHidden", "BufWipeout" }, {
+        group = group,
+        buffer = buf,
+        callback = show_cursor,
+    })
+    vim.api.nvim_create_autocmd("CursorMoved", {
+        group = group,
+        buffer = buf,
+        callback = function()
+            local pos = vim.api.nvim_win_get_cursor(0)
+            if pos[2] ~= 0 then
+                vim.api.nvim_win_set_cursor(0, { pos[1], 0 })
+            end
+        end,
+    })
+    if vim.api.nvim_get_current_buf() == buf then
+        hide()
+    end
+end
+
 -- Buffer-style jump keys (list window only)
 -- Set via FileType autocmd below with vim.schedule to avoid race condition
 local s_group = vim.api.nvim_create_augroup("explorer_keys", { clear = true })
@@ -184,6 +229,7 @@ vim.api.nvim_create_autocmd("FileType", {
                 picker.list:move(delta); picker:update()
             end
             if ev.match == "snacks_picker_list" then
+                keep_cursor_left(ev.buf)
                 vim.keymap.set("n", "<C-d>", function() jump(2) end, { buffer = ev.buf, silent = true })
                 vim.keymap.set("n", "<C-u>", function() jump(-2) end, { buffer = ev.buf, silent = true })
                 vim.keymap.set("n", "]", function() jump(2) end, { buffer = ev.buf, silent = true })
