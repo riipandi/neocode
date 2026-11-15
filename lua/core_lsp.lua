@@ -189,8 +189,23 @@ autocmd("LspAttach", {
     callback = function(event)
         local opts = { buffer = event.buf }
 
-        snacks.keymap.set("n", "gD", vim.lsp.buf.definition, opts)
-        snacks.keymap.set("n", "gs", vim.lsp.buf.declaration, opts)
+        -- Dialog pickers (same layout as the buffer selector) instead of the
+        -- quickfix window the builtins open for several results; a single
+        -- result still jumps straight there.
+        local lsp_pickers = {
+            gd = { "lsp_definitions", "Go to definition" },
+            grd = { "lsp_definitions", "Go to definition" },
+            gD = { "lsp_declarations", "Go to declaration" },
+            gs = { "lsp_declarations", "Go to declaration" },
+            grr = { "lsp_references", "References" },
+            gri = { "lsp_implementations", "Implementations" },
+            grt = { "lsp_type_definitions", "Go to type definition" },
+        }
+        for lhs, picker in pairs(lsp_pickers) do
+            snacks.keymap.set("n", lhs, function()
+                Snacks.picker[picker[1]]({ layout = { preset = "buffers" }, prompt = " " })
+            end, { buffer = event.buf, desc = picker[2] })
+        end
         -- no bare `gr` (delays grr/grn/gra/gri/grt/grd) and no `gi` (native insert at last position; use `gri`)
 
         snacks.keymap.set("n", "K", vim.lsp.buf.hover, opts)

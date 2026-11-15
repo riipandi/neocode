@@ -233,7 +233,7 @@ Hunk keys are buffer-local and only exist when gitsigns attaches.
 
 | Action                     | Keys            |
 | -------------------------- | --------------- |
-| Definition / declaration   | `gD` / `gs`     |
+| Definition / declaration   | `gd` / `gD`, `gs` |
 | References / implementation| `grr` / `gri`   |
 | Definition picker          | `grd`           |
 | References picker          | `grr`           |
@@ -255,6 +255,10 @@ Hunk keys are buffer-local and only exist when gitsigns attaches.
 | LSP client info            | `<leader>lI`    |
 
 `<leader>lf` sets `vim.g.auto_format`; actual format-on-save honours
+`gd`, `gD`, `gs`, `grd`, `grr`, `gri` and `grt` open a Snacks picker in the buffer
+selector's dialog layout (list and preview) instead of the quickfix window; a
+single result jumps straight there (`lua/core_lsp.lua`).
+
 `vim.b.disable_autoformat` (conform). See `:LspInfo`, `:LspRestart`,
 `:ConformInfo`.
 

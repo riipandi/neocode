@@ -41,7 +41,9 @@ local function setup_go_plugin()
         -- LSP: use go.nvim's gopls configuration
         lsp_cfg = true,
         lsp_gofumpt = true,
-        lsp_keymaps = true,
+        -- the shared LspAttach keymaps (core_lsp.lua) apply; go.nvim's own set
+        -- overrides gd/gD with quickfix lists and adds bare gr/gi
+        lsp_keymaps = false,
         lsp_codelens = true,
         lsp_document_formatting = true,
         lsp_inlay_hints = {
