@@ -117,6 +117,7 @@ message through noice.
 | Undo / redo with toast    | `u` / `<C-r>`            |
 | Toggle comment (normal / selection) | `<C-/>` (and `<C-_>` when the terminal cannot report Ctrl+/) |
 | Copy file path            | `<leader>pa`             |
+| Open repository in browser | `gR` (shadows the builtin virtual replace) |
 | Change cwd to file's dir  | `<leader>cd`             |
 
 `<leader>d` is not used for text: it is the diagnostics group (buffer-local on LSP
@@ -254,11 +255,11 @@ Hunk keys are buffer-local and only exist when gitsigns attaches.
 | Toggle format on save      | `<leader>lf`    |
 | LSP client info            | `<leader>lI`    |
 
-`<leader>lf` sets `vim.g.auto_format`; actual format-on-save honours
 `gd`, `gD`, `gs`, `grd`, `grr`, `gri` and `grt` open a Snacks picker in the buffer
 selector's dialog layout (list and preview) instead of the quickfix window; a
 single result jumps straight there (`lua/core_lsp.lua`).
 
+`<leader>lf` sets `vim.g.auto_format`; actual format-on-save honours
 `vim.b.disable_autoformat` (conform). See `:LspInfo`, `:LspRestart`,
 `:ConformInfo`.
 

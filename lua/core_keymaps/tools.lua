@@ -66,3 +66,53 @@ snacks.keymap.set("n", "<A-e>", function()
         picker:focus("list")
     end
 end, { desc = "File explorer: toggle focus (<A-e>)" })
+
+-- ============================================================================
+-- Open the repository page in the default browser (gR)
+-- ============================================================================
+-- Shadows the builtin `gR` (virtual replace mode), which is rarely typed.
+
+--- Browser URL for a git remote URL: scp-like (git@host:owner/repo.git),
+--- ssh://, git://, http(s)://. Credentials, port and ".git" are dropped.
+---@param remote string
+---@return string?
+local function remote_to_url(remote)
+    remote = vim.trim(remote)
+    local host, path = remote:match("^[%w._-]+@([^:/]+):(.+)$") -- scp-like
+    if not host then
+        local rest = remote:match("^%a[%w+.-]*://(.+)$")
+        if not rest then
+            return nil
+        end
+        host, path = rest:gsub("^[^/]*@", ""):match("^([^/]+)/(.+)$")
+        if host then
+            host = host:gsub(":%d+$", "")
+        end
+    end
+    if not host or not path then
+        return nil
+    end
+    path = path:gsub("^/+", ""):gsub("/+$", ""):gsub("%.git$", "")
+    return ("https://%s/%s"):format(host, path)
+end
+
+snacks.keymap.set("n", "gR", function()
+    local dir = vim.fn.expand("%:p:h")
+    dir = vim.fn.isdirectory(dir) == 1 and dir or vim.fn.getcwd()
+    local res = vim.system({ "git", "-C", dir, "config", "--get", "remote.origin.url" }, { text = true }):wait()
+    local remote = res.code == 0 and vim.trim(res.stdout) or ""
+    if remote == "" then
+        return vim.notify("No git remote 'origin' here", vim.log.levels.WARN, { title = "Git" })
+    end
+    local url = remote_to_url(remote)
+    if not url then
+        return vim.notify("Cannot turn the remote into a URL: " .. remote, vim.log.levels.WARN, { title = "Git" })
+    end
+    local ok, err = pcall(vim.ui.open, url)
+    if not ok then
+        return vim.notify(tostring(err), vim.log.levels.ERROR, { title = "Git" })
+    end
+    vim.notify(url, vim.log.levels.INFO, { title = "Git" })
+end, { desc = "Open the git repository in the browser" })
+
+return { remote_to_url = remote_to_url }
