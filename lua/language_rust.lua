@@ -29,7 +29,9 @@ vim.lsp.config("rust_analyzer", {
                 loadOutDirsFromCheck = true,
                 runBuildScripts = true,
             },
-            checkOnSave = {
+            -- checkOnSave is a boolean now; the command moved to check.command
+            checkOnSave = true,
+            check = {
                 command = "clippy",
             },
             completion = {
