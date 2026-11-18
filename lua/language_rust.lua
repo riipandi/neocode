@@ -10,7 +10,16 @@ vim.pack.add {
     { src = "https://github.com/saecki/crates.nvim" },
 }
 
-require("crates").setup {}
+-- crates.nvim only works on Cargo.toml; set it up the first time one opens.
+vim.api.nvim_create_autocmd("BufRead", {
+    group = vim.api.nvim_create_augroup("crates_lazy", { clear = true }),
+    pattern = "Cargo.toml",
+    once = true,
+    callback = function()
+        require("crates").setup {}
+    end,
+    desc = "Set up crates.nvim on the first Cargo.toml",
+})
 
 vim.lsp.config("rust_analyzer", {
     settings = {

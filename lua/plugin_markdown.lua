@@ -2,11 +2,18 @@
 -- Markdown Inline Rendering (render-markdown.nvim)
 -- ============================================================================
 
+-- Registered without loading; load_renderer() sources it on the first markdown
+-- buffer, so the renderer stays off the startup path.
+local plugin_path
 vim.pack.add({
     { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
+}, {
+    load = function(plug)
+        plugin_path = plug.path
+    end,
 })
 
-require("render-markdown").setup({
+local config = {
     -- The debounce drops events instead of delaying them, so the last scroll
     -- frame never triggered a render and the new rows stayed raw until a
     -- CursorHold.
@@ -106,7 +113,7 @@ require("render-markdown").setup({
             rendered = 3,
         },
     },
-})
+}
 
 -- ============================================================================
 -- Render ahead of the scroll
@@ -118,11 +125,33 @@ require("render-markdown").setup({
 local MARGIN = 40
 local REFRESH = 15
 
-local env = require("render-markdown.lib.env")
-local range = env.range
-env.range = function(buf, win, offset)
-    return range(buf, win, offset == 10 and MARGIN or offset)
+local loaded = false
+local function load_renderer()
+    if loaded then
+        return
+    end
+    loaded = true
+    vim.opt.runtimepath:append(plugin_path)
+
+    local env = require("render-markdown.lib.env")
+    local range = env.range
+    env.range = function(buf, win, offset)
+        return range(buf, win, offset == 10 and MARGIN or offset)
+    end
+
+    -- The plugin file runs setup() with this table and attaches the current
+    -- buffer, whose FileType event has already fired.
+    vim.g.render_markdown_config = config
+    vim.cmd.source(vim.fs.joinpath(plugin_path, "plugin", "render-markdown.lua"))
 end
+
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("markdown_render_load", { clear = true }),
+    pattern = "markdown",
+    once = true,
+    callback = load_renderer,
+    desc = "Markdown: load render-markdown on the first markdown buffer",
+})
 
 local refreshed = {}
 vim.api.nvim_create_autocmd("WinScrolled", {
@@ -240,6 +269,7 @@ vim.api.nvim_create_user_command("MarkdownOpenLink", open_link, {
 -- NOTE: `<C-m>` is the same keycode as `<CR>` — mapping it hijacked Enter in
 -- normal mode (it toggled the renderer instead of moving the cursor down).
 vim.keymap.set("n", "<leader>mt", function()
+    load_renderer()
     vim.cmd("RenderMarkdown toggle")
     vim.notify("Markdown render toggled", vim.log.levels.INFO)
 end, { desc = "Markdown: Toggle inline render" })
@@ -287,6 +317,9 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("VimResized", {
     group = md_group,
     callback = function()
+        if not loaded then
+            return
+        end
         pcall(vim.cmd, "RenderMarkdown enable")
     end,
 })
