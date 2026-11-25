@@ -23,7 +23,6 @@ local ensure_installed = {
     "jsonls",
     "lua_ls",
     "oxlint",
-    "rust_analyzer",
     "sqls",
     "superhtml",
     "tailwindcss-language-server",

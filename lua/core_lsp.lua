@@ -311,7 +311,7 @@ vim.lsp.enable {
     -- lsp_format = 'fallback'. Needs an oxfmt root marker (package.json,
     -- .oxfmtrc.json, oxfmt.config.ts, vite.config.ts).
     "oxfmt",
-    -- "rust-analyzer",  -- managed by language_rust.lua (custom clippy settings)
+    -- "rust-glancer",  -- managed by language_rust.lua
     "texlab",
     "yamlls",
 }

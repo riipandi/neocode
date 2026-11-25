@@ -137,7 +137,7 @@ when a matching buffer opens.
 | TypeScript / JS / JSX      | `ts_ls`, `oxlint`, `oxfmt` (LSP) (`deno` when a `deno.json` exists) | `oxfmt`                       |
 | Astro / Vue / Svelte / Lit | `ts_ls`, `oxlint`, `oxfmt` (LSP); `astro`                           | `oxfmt`                       |
 | Tailwind CSS               | `tailwindcss`                                                       | —                             |
-| Rust                       | `rust-analyzer` (clippy on save), crates.nvim                       | `rustfmt`                     |
+| Rust                       | `rust-glancer` (cargo check on save), crates.nvim                   | `rustfmt`                     |
 | Go                         | `gopls` via go.nvim, `golangci-lint`                                | `goimports` on save (go.nvim) |
 | Elixir / Phoenix           | `expert` (`elixirls` when expert is absent)                         | `mix format`                  |
 | Zig                        | `zls`                                                               | `zig fmt`                     |

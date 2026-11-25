@@ -1,7 +1,8 @@
 -- =============================================================================
 -- Rust Language Server Configuration
 -- =============================================================================
--- LSP: rust-analyzer
+-- LSP: rust-glancer, a release binary on PATH (~/.local/bin); the Mason
+-- package points at a missing asset. Needs `rustup component add rust-src`.
 -- Formatter: rustfmt (via conform.nvim)
 -- Additional: crates.nvim for dependency management
 -- =============================================================================
@@ -21,38 +22,14 @@ vim.api.nvim_create_autocmd("BufRead", {
     desc = "Set up crates.nvim on the first Cargo.toml",
 })
 
-vim.lsp.config("rust_analyzer", {
-    settings = {
-        ["rust-analyzer"] = {
-            cargo = {
-                allFeatures = true,
-                loadOutDirsFromCheck = true,
-                runBuildScripts = true,
-            },
-            -- checkOnSave is a boolean now; the command moved to check.command
-            checkOnSave = true,
-            check = {
-                command = "clippy",
-            },
-            completion = {
-                autoImport = true,
-                snippets = "custom",
-            },
-            diagnostics = {
-                enable = true,
-            },
-            hover = {
-                actions = {
-                    enable = true,
-                },
-                documentation = true,
-                links = true,
-            },
-            procMacro = {
-                enable = true,
-            },
+-- Diagnostics (cargo check) are off by default. The server reads its options
+-- from initializationOptions only, not from `settings`.
+vim.lsp.config("rust_glancer", {
+    init_options = {
+        diagnostics = {
+            onSave = true,
         },
     },
 })
 
-vim.lsp.enable "rust_analyzer"
+vim.lsp.enable "rust_glancer"
