@@ -66,7 +66,7 @@ rm -fr ~/.cache/nvim
 | `lua/core_*.lua`                    | Theme, LSP, autocmds, commands, plugin setup, scroll, splash, dim inactive splits                                                                                     |
 | `lua/core_keymaps/*.lua`            | Keymaps by topic (`general`, `scroll`, `folds`, `buffer`, `quit`, `tools`, `cmdline`, `explorer`, `picker`, `ai`, `undo`)                                             |
 | `lua/plugin_*.lua`                  | One file per plugin group (editor, completion, treesitter, vcs, lsp tooling, markdown, AI)                                                                            |
-| `lua/language_*.lua`                | Per-language LSP setup (Rust, TypeScript/Deno, Go, Elixir, Tailwind; `language_servers.lua` enables Astro, Protobuf, SQL, Terraform, Zig with the lspconfig defaults) |
+| `lua/language_*.lua`                | Per-language LSP setup (Rust, TypeScript, Go, Elixir, Tailwind; `language_servers.lua` enables Astro, Protobuf, SQL, OpenTofu, Zig with the lspconfig defaults) |
 | `lua/dialog.lua`, `lua/snacks/layouts.lua` | Shared dialog geometry (60 columns, row 8) and the picker layouts built on it |
 | `lua/mistral-codestral/`            | Local fork of the Codestral client                                                                                                                                    |
 | `lua/mason_pkg/`                    | Mason package picker                                                                                                                                                  |
@@ -134,7 +134,7 @@ when a matching buffer opens.
 | Language                   | LSP                                                                 | Formatter                     |
 | -------------------------- | ------------------------------------------------------------------- | ----------------------------- |
 | Lua (this config)          | `lua_ls` + lazydev types                                            | `stylua`                      |
-| TypeScript / JS / JSX      | `ts_ls`, `oxlint`, `oxfmt` (LSP) (`deno` when a `deno.json` exists) | `oxfmt`                       |
+| TypeScript / JS / JSX      | `ts_ls`, `oxlint`, `oxfmt` (LSP)                                    | `oxfmt`                       |
 | Astro / Vue / Svelte / Lit | `ts_ls`, `oxlint`, `oxfmt` (LSP); `astro`                           | `oxfmt`                       |
 | Tailwind CSS               | `tailwindcss`                                                       | —                             |
 | Rust                       | `rust-glancer` (cargo check on save), crates.nvim                   | `rustfmt`                     |
@@ -143,7 +143,7 @@ when a matching buffer opens.
 | Zig                        | `zls`                                                               | `zig fmt`                     |
 | SQL                        | `sqls`                                                              | `sql-formatter`               |
 | Protobuf                   | `buf_ls`                                                            | —                             |
-| Terraform / HCL            | `terraformls`                                                       | `terraform fmt`               |
+| OpenTofu / Terraform / HCL | `tofu_ls`                                                           | `tofu fmt`                    |
 | Python                     | `pylsp`                                                             | `black`                       |
 | Shell                      | `bashls`                                                            | `shfmt`                       |
 | HTML                       | `html`, `superhtml` (when installed)                                | `oxfmt`                       |

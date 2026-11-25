@@ -151,10 +151,10 @@ require 'plugin_markdown'          -- Markdown preview (mdkite.nvim)
 require 'plugin_mason'             -- Mason package manager
 require 'command_mason_pkg'        -- Mason package manager GUI (depends on mason)
 require 'language_rust'            -- Rust development toolkit
-require 'language_typescript'      -- TypeScript/React/Lit/Deno
+require 'language_typescript'      -- TypeScript/React/Lit
 require 'language_tailwind'        -- Tailwind CSS
 require 'language_go'              -- Go language
-require 'language_servers'         -- Astro, Protobuf, SQL, Terraform, Zig (defaults)
+require 'language_servers'         -- Astro, Protobuf, SQL, OpenTofu, Zig (defaults)
 require 'language_elixir'          -- Elixir/Phoenix
 require 'plugin_dap'               -- Debugging (nvim-dap + ElixirLS debug adapter)
 require 'plugin_multicursor'       -- Multiple cursors (jake-stewart/multicursor.nvim)

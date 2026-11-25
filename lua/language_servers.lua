@@ -9,8 +9,8 @@
 --   astro       Astro (formatter: oxfmt via conform)
 --   buf_ls      Protobuf (formatter: buf via conform)
 --   sqls        SQL (formatter: sql-formatter via conform)
---   terraformls Terraform / HCL (formatter: terraform fmt via conform)
+--   tofu_ls     OpenTofu / Terraform / HCL (formatter: tofu fmt via conform)
 --   zls         Zig (formatter: zigfmt via conform)
 -- =============================================================================
 
-vim.lsp.enable({ 'astro', 'buf_ls', 'sqls', 'terraformls', 'zls' })
+vim.lsp.enable({ 'astro', 'buf_ls', 'sqls', 'tofu_ls', 'zls' })

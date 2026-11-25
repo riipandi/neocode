@@ -139,7 +139,7 @@ require('conform').setup({
         graphql = { 'oxfmt' },
         -- go = { 'gofmt' },  -- handled by go.nvim (ray-x/go.nvim)
         handlebars = { 'oxfmt' },
-        hcl = { 'terraform' },
+        hcl = { 'tofu' },
         html = { 'oxfmt' },
         javascript = { 'oxfmt' },
         javascriptreact = { 'oxfmt' },
@@ -158,7 +158,10 @@ require('conform').setup({
         zsh = { 'shfmt' },
         sql = { 'sql_formatter' },
         svelte = { 'oxfmt' },
-        terraform = { 'terraform' },
+        terraform = { 'tofu' },
+        ['terraform-vars'] = { 'tofu' },
+        opentofu = { 'tofu' },
+        ['opentofu-vars'] = { 'tofu' },
         toml = { 'oxfmt' },
         typescript = { 'oxfmt' },
         typescriptreact = { 'oxfmt' },
@@ -192,8 +195,8 @@ require('conform').setup({
             args = { 'format', '--stdin-filename', '$FILENAME' },
             stdin = true,
         },
-        terraform = {
-            command = 'terraform',
+        tofu = {
+            command = 'tofu',
             args = { 'fmt', '-' },
             stdin = true,
         },

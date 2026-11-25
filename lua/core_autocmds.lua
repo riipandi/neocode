@@ -10,8 +10,12 @@ local augroup = vim.api.nvim_create_augroup
 -- Filetype Detection
 -- ============================================================================
 
--- Detect Justfile; template configs (config.yml.example) are YAML
+-- Detect Justfile; template configs (config.yml.example) are YAML; .tofu is
+-- OpenTofu (highlighted with the HCL parser)
 vim.filetype.add({
+    extension = {
+        tofu = 'opentofu',
+    },
     filename = {
         ['Justfile'] = 'just',
         ['justfile'] = 'just',
@@ -20,6 +24,7 @@ vim.filetype.add({
         ['.*%.ya?ml%.example'] = 'yaml',
     },
 })
+vim.treesitter.language.register('hcl', { 'opentofu', 'opentofu-vars' })
 
 -- ============================================================================
 -- Keymaps

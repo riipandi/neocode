@@ -15,7 +15,6 @@ local ensure_installed = {
     "buf",
     "buf_ls",
     "cssls",
-    "deno",
     "dockerls",
     "elixirls",
     "gopls",
@@ -28,7 +27,7 @@ local ensure_installed = {
     "tailwindcss-language-server",
     "taplo",
     "templ",
-    "terraform-ls",
+    "tofu-ls",
     "texlab",
     "ts_ls",
     "zls",
@@ -43,7 +42,6 @@ local ensure_installed = {
     "shfmt",
     "sql-formatter",
     "stylua",
-    "terraform",
     -- nvim-treesitter (main branch) compiles parsers with the tree-sitter CLI
     "tree-sitter-cli",
 }

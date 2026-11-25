@@ -299,8 +299,8 @@ vim.lsp.config("lua_ls", {
     settings = { Lua = { completion = { callSnippet = "Replace" } } },
 })
 
--- ts_ls, oxlint, denols and tailwindcss: language_typescript.lua / language_tailwind.lua
--- Astro, buf, sqls, terraformls, zls: language_servers.lua
+-- ts_ls, oxlint and tailwindcss: language_typescript.lua / language_tailwind.lua
+-- Astro, buf, sqls, tofu_ls, zls: language_servers.lua
 vim.lsp.enable {
     "bashls",
     "pylsp",
